@@ -1,0 +1,7 @@
+---
+layout: post
+title:  "Hello!"
+date:   2016-04-20 20:22:42 +0100
+categories: anthony new shiny
+---
+How does this post look
