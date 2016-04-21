@@ -18,10 +18,8 @@ author:
 
 paginate:         5
 
-# Custom vars
-version:          2.1.0
 
-github:
+github:           http://anthonylloyd.github.io
   repo:           http://anthonylloyd.github.io
 
 gems: [jekyll-paginate]
