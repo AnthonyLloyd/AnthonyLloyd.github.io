@@ -1,8 +1,27 @@
-title: Anthony Lloyd
-email: anthony_lloyd@yahoo.com
-description: ''
-baseurl: http://anthonylloyd.github.io
-url: http://anthonylloyd.github.io
-twitter_username: AnthonyLloyd123
-github_username:  AnthonyLloyd
-markdown: kramdown
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        /blog/:year/:month/:day/:title
+
+# Setup
+title:            Anthony Lloyd
+tagline:          ''
+description:      ''
+url:              http://anthonylloyd.github.io
+baseurl:          /
+
+author:
+  name:           'Anthony Lloyd'
+  url:            http://anthonylloyd.github.io
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           http://anthonylloyd.github.io
+
+gems: [jekyll-paginate]
