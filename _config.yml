@@ -8,7 +8,7 @@ permalink:        /blog/:year/:month/:day/:title
 # Setup
 title:            Anthony Lloyd
 tagline:          ''
-description:      'A few of my own ideas. Mainly functional software design.'
+description:      'A few of my own ideas on functional software design'
 url:              http://anthonylloyd.github.io
 baseurl:          /
 
