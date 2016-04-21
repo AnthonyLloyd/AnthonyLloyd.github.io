@@ -19,7 +19,7 @@ author:
 paginate:         5
 
 
-github:           http://anthonylloyd.github.io
+github:
   repo:           http://anthonylloyd.github.io
 
 gems: [jekyll-paginate]
