@@ -1,14 +1,14 @@
 # Dependencies
 markdown:         kramdown
-highlighter:      pygments
+highlighter:      rouge
 
 # Permalinks
 permalink:        /blog/:year/:month/:day/:title
 
 # Setup
 title:            Anthony Lloyd
-tagline:          ''
-description:      ''
+tagline:          'My tagline'
+description:      'A few of my own programming ideas'
 url:              http://anthonylloyd.github.io
 baseurl:          /
 
