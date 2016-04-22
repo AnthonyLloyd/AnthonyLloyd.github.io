@@ -2,13 +2,14 @@
 markdown:         kramdown
 highlighter:      rouge
 permalink:        /blog/:year/:month/:day/:title
-title:            Anthony Lloyd
-tagline:          'functional thoughts'
+title:            'Anthony Lloyd'
+tagline:          'Functional thoughts'
 description:      'A few of my own ideas on functional programming'
 url:              http://anthonylloyd.github.io
 baseurl:          /
 author:
   name:           'Anthony Lloyd'
   url:            http://anthonylloyd.github.io
+paginate:         5
 github:
   repo:           http://anthonylloyd.github.io
