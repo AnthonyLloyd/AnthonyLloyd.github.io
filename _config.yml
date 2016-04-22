@@ -1,25 +1,13 @@
-# Dependencies
 markdown:         kramdown
 highlighter:      rouge
-
-# Permalinks
 permalink:        /blog/:year/:month/:day/:title
-
-# Setup
 title:            Anthony Lloyd
-tagline:          ''
+tagline:          'functional thoughts'
 description:      'A few of my own ideas on functional programming'
 url:              http://anthonylloyd.github.io
 baseurl:          /
-
-author:
-  name:           'Anthony Lloyd'
+author:           Anthony Lloyd
+  name:           Anthony Lloyd
   url:            http://anthonylloyd.github.io
-
-paginate:         5
-
-
-github:
+github:           AnthonyLloyd123
   repo:           http://anthonylloyd.github.io
-
-gems: [jekyll-paginate]
