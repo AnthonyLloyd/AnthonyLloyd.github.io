@@ -6,8 +6,8 @@ tagline:          'functional thoughts'
 description:      'A few of my own ideas on functional programming'
 url:              http://anthonylloyd.github.io
 baseurl:          /
-author:           Anthony Lloyd
-  name:           Anthony Lloyd
+author:           'Anthony Lloyd'
+  name:           'Anthony Lloyd'
   url:            http://anthonylloyd.github.io
 github:           AnthonyLloyd123
   repo:           http://anthonylloyd.github.io
