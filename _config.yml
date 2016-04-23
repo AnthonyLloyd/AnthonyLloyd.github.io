@@ -13,3 +13,4 @@ author:
 paginate:         5
 github:
   repo:           http://anthonylloyd.github.io
+gems:             [jekyll-paginate]
