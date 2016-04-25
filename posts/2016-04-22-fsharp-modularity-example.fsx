@@ -54,6 +54,9 @@ Both the derivative and intergal estimate can be shown to have an error term tha
 $$$
 Actual = Estimate(h) + e_1 h^2 + e_2 h^4 + e_3 h^6 + \cdots
 
+Richardson extrapolation combines multiple estimates to eliminate the lower power error terms.
+For small h this rapidly improves the accuracy of the estimate. 
+
 $$$
 \begin{align}
 R_{i0} &= Estimate\left(\frac{h}{2^i}\right) \\
@@ -81,10 +84,11 @@ let richardsonStoppingCriteriaNF tol (rows:List<float array>) =
 
 /// Derivative accurate to tol using Richardson extrapolation 
 let derivativeNonFunctional tol h0 f x =
-    let mutable h = h0
     let richardsonRows = List<float array>()
+    richardsonRows.Add ([|derivativeEstimate f x h0|])
+    let mutable h = h0*0.5
     let rec run () =
-        let lastRow = if richardsonRows.Count=0 then Array.empty else richardsonRows.[richardsonRows.Count-1]
+        let lastRow = richardsonRows.[richardsonRows.Count-1]
         let row = Array.zeroCreate (lastRow.Length+1)
         row.[0] <- derivativeEstimate f x h
         let mutable pow4 = 4.0
@@ -142,7 +146,7 @@ let integralEstimateSeq f a b =
     Seq.unfoldInf ((*)0.5) h0 |> Seq.scan (fun i h -> i*0.5 + h*Seq.sumBy f {a+h..h*2.0..b}) i0
 
 /// Intergral accurate to tol using Richardson extrapolation
-let integral tol f a b = if a=b then 0.0 else integralEstimateSeq f a b |> richardsonExtrapolationEven |> richardsonStoppingCriteria tol
+let integral tol f a b = integralEstimateSeq f a b |> richardsonExtrapolationEven |> richardsonStoppingCriteria tol
 
 (**
 ## This is a section
