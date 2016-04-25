@@ -1,4 +1,4 @@
 source https://www.nuget.org/api/v2
 
 nuget FAKE
-nuget FSharp.Formatting.CommandTool
+nuget FSharp.Formatting.CommandTool 2.14.0

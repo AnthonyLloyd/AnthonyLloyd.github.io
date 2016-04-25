@@ -8,5 +8,3 @@ title: Home
 {% for post in site.posts %}
   * {{ post.date | date_to_long_string }} &raquo; [ {{ post.title }} ]({{ post.url }})
 {% endfor %}
-
-<script id="dsq-count-scr" src="http://anthonylloyd.disqus.com/count.js" async></script>

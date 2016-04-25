@@ -4,7 +4,7 @@ highlighter:      rouge
 permalink:        /blog/:year/:month/:day/:title
 title:            'Anthony Lloyd'
 tagline:          'Functional thoughts'
-description:      'A few of my own ideas on functional programming'
+description:      'A few ideas on functional programming'
 url:              http://anthonylloyd.github.io
 baseurl:          /
 author:
