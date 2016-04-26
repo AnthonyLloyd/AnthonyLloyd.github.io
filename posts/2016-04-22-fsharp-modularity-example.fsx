@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "F# Modularity Example - Richardson Extrapolation"
+title: "F# Modularity From Lazy Evaluation Example - Richardson Extrapolation"
 tags: [modularity,higher-order,lazy evaluation]
-description: "An F# example of how higher-order functions and lazy evaluation can reduce complexity and lead to more modular reusable software"
+description: "An F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software"
 keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity
 \---
 *)
@@ -36,7 +36,7 @@ module Seq =
 let inline trd (_,_,i) = i
 
 (**
-This is an F# example of how higher-order functions and lazy evaluation can reduce complexity and lead to more modular reusable software.
+This is an F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software.
 
 ## Background
 
@@ -55,7 +55,7 @@ let integralEstimate f a b h = h*(f a+f b)*0.5 + h*Seq.sumBy f {a+h..h*2.0..b}
 Both the derivative and intergal estimate can be shown to have an error term that has even powers in h.
 
 $$$
-Actual = Estimate(h) + e_1 h^2 + e_2 h^4 + e_3 h^6 + \cdots
+Actual = Estimate(h) + e_1 h^2 + e_2 h^4 + \cdots
 
 Richardson extrapolation combines multiple estimates to eliminate the lower power error terms.
 
@@ -63,38 +63,46 @@ $$$
 R_{ij} =
 \left\{
     \begin{align}
-        Estimate\left(\frac{h}{2^i}\right) & j=0 \\
-        \frac{4^j R_{i,j-1} - R_{i-1,j-1}}{4^j-1}  & j \ne 0 , i \geq j \\
+        & Estimate\left(\frac{h}{2^i}\right) & j=0 \\
+        & \frac{4^j R_{i,j-1} - R_{i-1,j-1}}{4^j-1} & i \geq j, j \ne 0 \\
     \end{align}
 \right.
 
 For small h this rapidly improves the accuracy of the estimate.
 
 $$$
-R_{ij} = Actual + O(h^{2j+2})
+Actual = R_{ij} + \hat{e}_1 h^{2j+2} + \hat{e}_2 h^{2j+4} + \cdots
 
-This leads to a triangle of improving estimates as we move down and right.
+This leads to a triangle of improving estimates as we move down and to the right.
 
 $$$
 \begin{matrix}
-\mathbf{R_{00}} & \\
+R_{00} & \\
 & \searrow & \\
-\mathbf{R_{10}} & \rightarrow & \mathbf{R_{11}} \\
+R_{10} & \rightarrow & R_{11} \\
 & \searrow & & \searrow \\
-\mathbf{R_{20}} & \rightarrow & \mathbf{R_{21}} & \rightarrow & \mathbf{R_{22}} \\
+R_{20} & \rightarrow & R_{21} & \rightarrow & R_{22} \\
 \vdots & & \vdots & & \vdots & \ddots \\
 \end{matrix}
 
-The stopping criteria is usually that $|R_{n-1,n-1}-R_{n,n}$ and $|R_{n-2,n-2}-R_{n-1,n-1}$ are within a desired tolerance.
+The stopping criteria is usually that $|R_{n-2,n-2}-R_{n-1,n-1}|$ and $|R_{n-1,n-1}-R_{n,n}|$ are within a desired accuracy.
 
 ## First attempt
 
-The first attempt at an implimentation will not use functional techniques.
+The first implementation attempt will be done without using functional techniques.
+
 *)
 
-let richardsonStoppingCriteriaNF tol (rows:List<float array>) =
+/// Stopping criteria for a given accuracy and list of Richardson estimates.
+let stoppingCriteriaNonFunctional tol (rows:List<float array>) =
     let c = rows.Count
-    c>2 && abs(rows.[c-3].[c-3]-rows.[c-2].[c-2])<=tol && abs(rows.[c-2].[c-2]-rows.[c-1].[c-1])<=tol
+    c>2 &&
+    abs(rows.[c-3].[c-3]-rows.[c-2].[c-2])<=tol &&
+    abs(rows.[c-2].[c-2]-rows.[c-1].[c-1])<=tol
+
+/// The Richardson formula for a function estimate that has even power error term.
+let richardsonFormula currentRowR previousRowR pow4 =
+     (currentRowR*pow4-previousRowR)/(pow4-1.0)
 
 /// Derivative accurate to tol using Richardson extrapolation 
 let derivativeNonFunctional tol h0 f x =
@@ -102,19 +110,23 @@ let derivativeNonFunctional tol h0 f x =
     richardsonRows.Add ([|derivativeEstimate f x h0|])
     let mutable h = h0*0.5
     let rec run () =
-        let lastRow = richardsonRows.[richardsonRows.Count-1]
-        let row = Array.zeroCreate (lastRow.Length+1)
+        let lastRow = Seq.last richardsonRows
+        let row = Array.zeroCreate (Array.length lastRow+1)
         row.[0] <- derivativeEstimate f x h
         let mutable pow4 = 4.0
-        for i = 0 to lastRow.Length-1 do
-            row.[i+1] <- (row.[i]*pow4-lastRow.[i])/(pow4-1.0)
+        for i = 0 to Array.length lastRow-1 do
+            row.[i+1] <- richardsonFormula row.[i] lastRow.[i] pow4
             pow4 <- pow4*4.0
-        if richardsonStoppingCriteriaNF tol richardsonRows then lastRow.[lastRow.Length-1]
+        if stoppingCriteriaNonFunctional tol richardsonRows then Array.last lastRow
         else
             richardsonRows.Add row
             h<-h*0.5
             run()
     run()
+    
+/// Iterative integral estimate (h is half the value used in the previous estimate)
+let integralEstimateIterative f a b previousEstimate h =
+    previousEstimate*0.5+h*Seq.sumBy f {a+h..h*2.0..b}
     
 /// Intergral accurate to tol using Richardson extrapolation 
 let integralNonFunctional tol f a b =
@@ -122,14 +134,14 @@ let integralNonFunctional tol f a b =
     let mutable h = (b-a)*0.5
     richardsonRows.Add ([|(f a+f b)*h|])
     let rec run () =
-        let lastRow = richardsonRows.[richardsonRows.Count-1]
-        let row = Array.zeroCreate (lastRow.Length+1)
-        row.[0] <- lastRow.[0]*0.5+h*Seq.sumBy f {a+h..h*2.0..b}
+        let lastRow = Seq.last richardsonRows
+        let row = Array.zeroCreate (Array.length lastRow+1)
+        row.[0] <- integralEstimateIterative f a b lastRow.[0] h
         let mutable pow4 = 4.0
-        for i = 0 to lastRow.Length-1 do
-            row.[i+1] <- (row.[i]*pow4-lastRow.[i])/(pow4-1.0)
+        for i = 0 to Array.length lastRow-1 do
+            row.[i+1] <- richardsonFormula row.[i] lastRow.[i] pow4
             pow4 <- pow4*4.0
-        if richardsonStoppingCriteriaNF tol richardsonRows then lastRow.[lastRow.Length-1]
+        if stoppingCriteriaNonFunctional tol richardsonRows then Array.last lastRow
         else
             richardsonRows.Add row
             h<-h*0.5
@@ -137,37 +149,66 @@ let integralNonFunctional tol f a b =
     run()
     
 (**
+
 ## The refactor
-Template pattern - http://blog.leifbattermann.de/2016/03/06/template-method-pattern-there-might-be-a-better-way/
-Downsides
 
-WhyFP.pdf - lazy evaluation - light bulb moment
-http://www.cse.chalmers.se/~rjmh/Papers/whyfp.html
+There is a lot of duplicate code in the functions above.
+The object-oriented solution to this is the [Template Method](https://en.wikipedia.org/wiki/Template_method_pattern) design pattern.
+The downside of this approach is that it results in a lot of boiler-plate code with state being shared across multiple classes.
+
+Leif Battermann has a very good [post](http://blog.leifbattermann.de/2016/03/06/template-method-pattern-there-might-be-a-better-way/)
+on how this can be solved in a functional way using higher-order functions. This results in much more modular and testable code.
+
+Unfortunatly in our case higher-order functions alone will not solve the problem.
+The integral estimate needs the previous estimate for its calculation.
+This difference in state requirements means the higher-order function would need different signatures for the derivative and integral.
+
+The solution can be found in the excellent paper [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) by John Hughes.
+  
+Lazy evaluation allows us to cleanly split the implementation into three parts:
+
+1. A function that produces an infinite sequence of function estimates.
+2. A function that produces a sequence of Richardson estimates from a sequence of function estimates.
+3. A function that iterates a sequence of Richardson estimates and stops at a desired accuracy.
+
+## Final code
 *)
-        
-/// Richardson extrapolation for an estimate sequence with an error term in even powers of h.  
-let richardsonExtrapolation s =
-    let row prev n0 = Seq.scan (fun (njh,pow4) nj2h -> (pow4*njh-nj2h)/(pow4-1.0),pow4*4.0) (n0,4.0) prev |> Seq.map fst |> Seq.cache
-    Seq.scan row Seq.empty s |> Seq.cache |> Seq.tail
 
-let stoppingCriteria tol s = Seq.map Seq.last s |> Seq.triplewise |> Seq.find (fun (a,b,c) -> abs(a-b)<=tol && abs(b-c)<=tol) |> trd
+/// Infinite sequence of derivative estimates.
+let derivativeEstimates f x h0 = Seq.unfoldInf ((*)0.5) h0 |> Seq.map (derivativeEstimate f x)        
 
-let derivativeEstimateSeq f x h0 = Seq.unfoldInf ((*)0.5) h0 |> Seq.map (derivativeEstimate f x)
-
-/// Derivative accurate to tol using Richardson extrapolation
-let derivative tol h0 f x = derivativeEstimateSeq f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
-
-let integralEstimateSeq f a b =
+/// Infinte sequence of integral estimates.
+let integralEstimates f a b =
     let h0 = (b-a)*0.5
     let i0 = (f a+f b)*h0            
-    Seq.unfoldInf ((*)0.5) h0 |> Seq.scan (fun i h -> i*0.5 + h*Seq.sumBy f {a+h..h*2.0..b}) i0
+    Seq.unfoldInf ((*)0.5) h0 |> Seq.scan (integralEstimateIterative f a b) i0
+
+/// Richardson extrapolation for a given estimate sequence.
+let richardsonExtrapolation s =
+    let createRow previousRow estimate_i =
+        let richardsonAndPow4 (currentRowR,pow4) previousRowR =
+            richardsonFormula currentRowR previousRowR pow4, pow4*4.0
+        Seq.scan richardsonAndPow4 (estimate_i,4.0) previousRow |> Seq.map fst |> Seq.cache
+    Seq.scan createRow Seq.empty s |> Seq.tail
+
+/// Stopping criteria for a given accuracy and sequence of Richardson estimates.
+let stoppingCriteria tol s =
+    Seq.map Seq.last s |> Seq.triplewise |> Seq.find (fun (a,b,c) -> abs(a-b)<=tol && abs(b-c)<=tol) |> trd
+
+/// Derivative accurate to tol using Richardson extrapolation.
+let derivative tol f x h0 = derivativeEstimates f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
 
 /// Intergral accurate to tol using Richardson extrapolation
-let integral tol f a b = integralEstimateSeq f a b |> richardsonExtrapolation |> stoppingCriteria tol
+let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> stoppingCriteria tol
 
 (**
 ## Conclusion
-More modular. Parts don't know each other. Easier to reuse. Easier to test.
-Can also use in higher code. True its easier to see in algorithms. In my experience it also works at a higher levels of abstraction.
 
+'Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.'
+Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place. 
+
+Higher-order functions and lazy evaluation are applicable across many software areas not just numeric algorithms.
+The why functional programming matters paper has examples of their use in game artificial intelligence. The conclusion also lists a number of other areas.
+
+Modularity is the most important concept in software design. It makes software easier to write, understand, test and reuse.
 *)

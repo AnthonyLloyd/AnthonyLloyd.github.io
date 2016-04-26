@@ -3,6 +3,8 @@ layout: page
 title: About
 ---
 
-State of the art quantitative financial software development in F#, C# and C.
+Anthony Lloyd
 
-**Current Role:**  Head of Quantitative Development at Tindeco Financial Services AG
+I'm a quantitative financial software developer in F#, C# and C.
+
+anthony_lloyd@yahoo.com

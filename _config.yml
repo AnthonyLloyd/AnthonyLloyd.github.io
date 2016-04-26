@@ -10,7 +10,5 @@ baseurl:          /
 author:
   name:           'Anthony Lloyd'
   url:            http://anthonylloyd.github.io
-paginate:         5
 github:
   repo:           http://anthonylloyd.github.io
-gems:             [jekyll-paginate]
