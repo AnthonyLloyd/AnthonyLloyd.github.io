@@ -198,7 +198,7 @@ let stoppingCriteria tol s =
 /// Derivative accurate to tol using Richardson extrapolation.
 let derivative tol f x h0 = derivativeEstimates f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
 
-/// Intergral accurate to tol using Richardson extrapolation
+/// Intergral accurate to tol using Richardson extrapolation.
 let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> stoppingCriteria tol
 
 (**
@@ -208,7 +208,7 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place. 
 
 Higher-order functions and lazy evaluation are applicable across many software areas not just numeric algorithms.
-The why functional programming matters paper has examples of their use in game artificial intelligence. The conclusion also lists a number of other areas.
+The why functional programming matters paper has examples of their use in game artificial intelligence, and the conclusion also lists a number of other areas.
 
 Modularity is the most important concept in software design. It makes software easier to write, understand, test and reuse.
 *)
