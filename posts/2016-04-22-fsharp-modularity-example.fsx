@@ -205,15 +205,15 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 (**
 ## Conclusion
 
-Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.
+Lazy evaluation makes it practical to modularise a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.
 
-Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place.
+Without it, either state has to be fully generated upfront or generation and consumption have to be done in the same place.
 
 Higher-order functions and lazy evaluation can be applied to all software layers.
 The [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) paper has examples of their use in game artificial intelligence and other areas.
-In my own experience the complexity reduction it produces allows software functionality to be pushed further more easily.
+In my experience the complexity reduction it produces allows software functionality to be pushed further more easily.
 
 Modularity is the most important concept in software design.
 It makes software easier to write, understand, test and reuse.
-Functional languages have features that can lead to greater modularity.
+The features of functional languages enable improved modularity.
 *)
