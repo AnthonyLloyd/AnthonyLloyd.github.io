@@ -217,5 +217,5 @@ In my experience the complexity reduction it produces allows software functional
 
 Modularity is the most important concept in software design.
 It makes software easier to write, understand, test and reuse.
-The features of functional languages enable improved modularity.
+The features of functional languages enable greater modularity.
 *)
