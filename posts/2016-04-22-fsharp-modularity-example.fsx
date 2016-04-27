@@ -45,14 +45,14 @@ In this post we will cover estimating the derivative and the integral of a funct
 
 *)
 
-/// Derivative estimate
+/// Derivative estimate.
 let derivativeEstimate f x h = (f(x+h)-f(x-h))/h*0.5
 
-/// Integral estimate (h = (b-a)/n where n is an integer)
+/// Integral estimate (h = (b-a)/n where n is an integer).
 let integralEstimate f a b h = h*(f a+f b)*0.5 + h*Seq.sumBy f {a+h..h*2.0..b}
 
 (**
-Both the derivative and integral estimate can be shown to have an error term that has even powers in h.
+Both the derivative and integral estimate can be shown to have an error term that has even powers of $h$.
 
 $$$
 Actual = Estimate(h) + e_1 h^2 + e_2 h^4 + \cdots
@@ -68,12 +68,12 @@ R_{ij} =
     \end{align}
 \right.
 
-For small h this rapidly improves the accuracy of the estimate.
+For small $h$ this rapidly improves the accuracy of the estimate.
 
 $$$
 Actual = R_{ij} + \hat{e}_1 h^{2j+2} + \hat{e}_2 h^{2j+4} + \cdots
 
-This leads to a triangle of improving estimates.
+This produces a triangle of improving estimates.
 
 $$$
 \begin{matrix}
@@ -100,7 +100,7 @@ let stoppingCriteriaNonFunctional tol (rows:List<float array>) =
     abs(rows.[c-3].[c-3]-rows.[c-2].[c-2])<=tol &&
     abs(rows.[c-2].[c-2]-rows.[c-1].[c-1])<=tol
 
-/// The Richardson formula for a function estimate that has even power error term.
+/// The Richardson formula for a function estimate that has even power error terms.
 let richardsonFormula currentRowR previousRowR pow4 =
      (currentRowR*pow4-previousRowR)/(pow4-1.0)
 
@@ -179,7 +179,7 @@ Lazy evaluation allows us to cleanly split the implementation into three parts:
 /// Infinite sequence of derivative estimates.
 let derivativeEstimates f x h0 = Seq.unfoldInf ((*)0.5) h0 |> Seq.map (derivativeEstimate f x)        
 
-/// Infinte sequence of integral estimates.
+/// Infinite sequence of integral estimates.
 let integralEstimates f a b =
     let h0 = (b-a)*0.5
     let i0 = (f a+f b)*h0            
@@ -205,16 +205,15 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 (**
 ## Conclusion
 
-'Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.'
+Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.
 
-Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place. 
+Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place.
 
 Higher-order functions and lazy evaluation are applicable across many software areas.
 The [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) paper has examples of their use in game artificial intelligence and other areas.
-In my own experience this complexity reduction allows software functionality to be pushed further.
+In my own experience the complexity reduction it produces allows software functionality to be pushed further more easily.
 
 Modularity is the most important concept in software design.
 It makes software easier to write, understand, test and reuse.
 Functional languages have features that can lead to greater modularity.
-
 *)
