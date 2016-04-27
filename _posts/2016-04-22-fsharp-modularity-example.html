@@ -169,7 +169,7 @@ The downside of this approach is that it results in a lot of boiler-plate code w
 on how this can be solved in a functional way using higher-order functions. This results in much more modular and testable code.</p>
 <p>Unfortunately, in our case higher-order functions alone will not solve the problem.
 The integral estimate needs the previous estimate for its calculation.
-This difference in state requirements means the higher-order function would need different signatures for the derivative and integral.</p>
+This difference in state means the higher-order function would need different signatures for the derivative and integral.</p>
 <p>The solution can be found in the excellent paper <a href="http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf">Why Functional Programming Matters</a> by John Hughes.
 Lazy evaluation is a functional language feature that can contribute greatly to modularity.</p>
 <p>Lazy evaluation allows us to cleanly split the implementation into three parts:</p>

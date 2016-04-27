@@ -162,7 +162,7 @@ on how this can be solved in a functional way using higher-order functions. This
 
 Unfortunately, in our case higher-order functions alone will not solve the problem.
 The integral estimate needs the previous estimate for its calculation.
-This difference in state requirements means the higher-order function would need different signatures for the derivative and integral.
+This difference in state means the higher-order function would need different signatures for the derivative and integral.
 
 The solution can be found in the excellent paper [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) by John Hughes.
 Lazy evaluation is a functional language feature that can contribute greatly to modularity.
