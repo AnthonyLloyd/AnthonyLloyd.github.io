@@ -64,7 +64,7 @@ R_{ij} =
 \left\{
     \begin{align}
         & Estimate\left(\frac{h}{2^i}\right) & j=0 \\
-        & \frac{4^j R_{i,j-1} - R_{i-1,j-1}}{4^j-1} & i \geq j, j \ne 0 \\
+        & \frac{4^j R_{i,j-1} - R_{i-1,j-1}}{4^j-1} & i \geq j, \, j > 0 \\
     \end{align}
 \right.
 
@@ -73,7 +73,7 @@ For small h this rapidly improves the accuracy of the estimate.
 $$$
 Actual = R_{ij} + \hat{e}_1 h^{2j+2} + \hat{e}_2 h^{2j+4} + \cdots
 
-This leads to a triangle of improving estimates as we move down and to the right.
+This leads to a triangle of improving estimates.
 
 $$$
 \begin{matrix}
@@ -85,7 +85,7 @@ R_{20} & \rightarrow & R_{21} & \rightarrow & R_{22} \\
 \vdots & & \vdots & & \vdots & \ddots \\
 \end{matrix}
 
-The stopping criteria is usually that $|R_{n-2,n-2}-R_{n-1,n-1}|$ and $|R_{n-1,n-1}-R_{n,n}|$ are within a desired accuracy.
+The stopping criteria is usually that $|R_{n-2,n-2}-R_{n-1,n-1}|$ and $|R_{n-1,n-1}-R_{n,n}|$ are within a desired accuracy.  
 
 ## First attempt
 
@@ -104,11 +104,11 @@ let stoppingCriteriaNonFunctional tol (rows:List<float array>) =
 let richardsonFormula currentRowR previousRowR pow4 =
      (currentRowR*pow4-previousRowR)/(pow4-1.0)
 
-/// Derivative accurate to tol using Richardson extrapolation 
+/// Derivative accurate to tol using Richardson extrapolation.
 let derivativeNonFunctional tol h0 f x =
     let richardsonRows = List<float array>()
-    richardsonRows.Add ([|derivativeEstimate f x h0|])
     let mutable h = h0*0.5
+    richardsonRows.Add ([|derivativeEstimate f x h0|])
     let rec run () =
         let lastRow = Seq.last richardsonRows
         let row = Array.zeroCreate (Array.length lastRow+1)
@@ -124,11 +124,11 @@ let derivativeNonFunctional tol h0 f x =
             run()
     run()
     
-/// Iterative integral estimate (h is half the value used in the previous estimate)
+/// Iterative integral estimate (h is half the value used in the previous estimate).
 let integralEstimateIterative f a b previousEstimate h =
     previousEstimate*0.5+h*Seq.sumBy f {a+h..h*2.0..b}
     
-/// Intergral accurate to tol using Richardson extrapolation 
+/// Intergral accurate to tol using Richardson extrapolation.
 let integralNonFunctional tol f a b =
     let richardsonRows = List<float array>()
     let mutable h = (b-a)*0.5
@@ -153,6 +153,7 @@ let integralNonFunctional tol f a b =
 ## The refactor
 
 There is a lot of duplicate code in the functions above.
+
 The object-oriented solution to this is the [Template Method](https://en.wikipedia.org/wiki/Template_method_pattern) design pattern.
 The downside of this approach is that it results in a lot of boiler-plate code with state being shared across multiple classes.
 
@@ -164,6 +165,7 @@ The integral estimate needs the previous estimate for its calculation.
 This difference in state requirements means the higher-order function would need different signatures for the derivative and integral.
 
 The solution can be found in the excellent paper [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) by John Hughes.
+Lazy evaluation is a functional language feature that can contribute greatly to modularity.
   
 Lazy evaluation allows us to cleanly split the implementation into three parts:
 
@@ -186,8 +188,7 @@ let integralEstimates f a b =
 /// Richardson extrapolation for a given estimate sequence.
 let richardsonExtrapolation s =
     let createRow previousRow estimate_i =
-        let richardsonAndPow4 (currentRowR,pow4) previousRowR =
-            richardsonFormula currentRowR previousRowR pow4, pow4*4.0
+        let richardsonAndPow4 (current,pow4) previous = richardsonFormula current previous pow4, pow4*4.0
         Seq.scan richardsonAndPow4 (estimate_i,4.0) previousRow |> Seq.map fst |> Seq.cache
     Seq.scan createRow Seq.empty s |> Seq.tail
 
@@ -205,10 +206,15 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 ## Conclusion
 
 'Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.'
+
 Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place. 
 
-Higher-order functions and lazy evaluation are applicable across many software areas not just numeric algorithms.
-The why functional programming matters paper has examples of their use in game artificial intelligence, and the conclusion also lists a number of other areas.
+Higher-order functions and lazy evaluation are applicable across many software areas.
+The why functional programming matters paper has examples of their use in game artificial intelligence and other areas.
+In my own experience the complexity reduction allows software functionality to be pushed further.
 
-Modularity is the most important concept in software design. It makes software easier to write, understand, test and reuse.
+Modularity is the most important concept in software design.
+It makes software easier to write, understand, test and reuse.
+Functional languages lead to greater modularity.
+
 *)
