@@ -207,7 +207,7 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 (**
 ## Conclusion
 
-Lazy evaluation makes it possible to modularise a program into a producer that constructs a large number of possible answers, and a consumer that chooses the appropriate one.
+Lazy evaluation makes it possible to modularise software into a producer that constructs a large number of possible answers, and a consumer that chooses the appropriate one.
 
 Without it, either state has to be fully generated upfront or production and consumption have to be done in the same place.
 
