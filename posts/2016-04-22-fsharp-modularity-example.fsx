@@ -41,7 +41,7 @@ This is an F# example of how higher-order functions together with lazy evaluatio
 ## Background
 
 Richardson extrapolation is a method of combining multiple function estimates to increase estimate accuracy.
-In this post we will cover estimating the derivative and the integral of a function to an arbitrary accuracy.
+This post will cover estimating the derivative and the integral of a function to an arbitrary accuracy.
 
 *)
 
@@ -160,7 +160,7 @@ The downside of this approach is that it results in a lot of boiler-plate code w
 Leif Battermann has a very good [post](http://blog.leifbattermann.de/2016/03/06/template-method-pattern-there-might-be-a-better-way/)
 on how this can be solved in a functional way using higher-order functions. This results in much more modular and testable code.
 
-Unfortunately, in our case higher-order functions alone will not solve the problem.
+Unfortunately, in this case higher-order functions alone will not solve the problem.
 The integral estimate needs the previous estimate for its calculation.
 This difference in state means the higher-order function would need different signatures for the derivative and integral.
 

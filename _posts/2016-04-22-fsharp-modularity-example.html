@@ -8,7 +8,7 @@ keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modul
 <p>This is an F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software.</p>
 <h2>Background</h2>
 <p>Richardson extrapolation is a method of combining multiple function estimates to increase estimate accuracy.
-In this post we will cover estimating the derivative and the integral of a function to an arbitrary accuracy.</p>
+This post will cover estimating the derivative and the integral of a function to an arbitrary accuracy.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -167,7 +167,7 @@ R_{20} &amp; \rightarrow &amp; R_{21} &amp; \rightarrow &amp; R_{22} \\
 The downside of this approach is that it results in a lot of boiler-plate code with state being shared across multiple classes.</p>
 <p>Leif Battermann has a very good <a href="http://blog.leifbattermann.de/2016/03/06/template-method-pattern-there-might-be-a-better-way/">post</a>
 on how this can be solved in a functional way using higher-order functions. This results in much more modular and testable code.</p>
-<p>Unfortunately, in our case higher-order functions alone will not solve the problem.
+<p>Unfortunately, in this case higher-order functions alone will not solve the problem.
 The integral estimate needs the previous estimate for its calculation.
 This difference in state means the higher-order function would need different signatures for the derivative and integral.</p>
 <p>The solution can be found in the excellent paper <a href="http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf">Why Functional Programming Matters</a> by John Hughes.
