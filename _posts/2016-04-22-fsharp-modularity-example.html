@@ -46,7 +46,7 @@ R_{20} &amp; \rightarrow &amp; R_{21} &amp; \rightarrow &amp; R_{22} \\
 \end{matrix}\]</span></p>
 <p>The stopping criteria is usually that <span class="math">\(|R_{n-2,n-2}-R_{n-1,n-1}|\)</span> and <span class="math">\(|R_{n-1,n-1}-R_{n,n}|\)</span> are within a desired accuracy.</p>
 <h2>First attempt</h2>
-<p>The first implementation attempt will be done without using functional techniques.</p>
+<p>The first implementation will be attempted without using functional techniques.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -236,7 +236,7 @@ Lazy evaluation is a functional language feature that can contribute greatly to 
 <h2>Conclusion</h2>
 <p>Lazy evaluation makes it practical to modularize a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.</p>
 <p>Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place.</p>
-<p>Higher-order functions and lazy evaluation are applicable across many software areas.
+<p>Higher-order functions and lazy evaluation can be applied to all software layers.
 The <a href="http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf">Why Functional Programming Matters</a> paper has examples of their use in game artificial intelligence and other areas.
 In my own experience the complexity reduction it produces allows software functionality to be pushed further more easily.</p>
 <p>Modularity is the most important concept in software design.

@@ -89,7 +89,7 @@ The stopping criteria is usually that $|R_{n-2,n-2}-R_{n-1,n-1}|$ and $|R_{n-1,n
 
 ## First attempt
 
-The first implementation attempt will be done without using functional techniques.
+The first implementation will be attempted without using functional techniques.
 
 *)
 
@@ -209,7 +209,7 @@ Lazy evaluation makes it practical to modularize a program as a generator that c
 
 Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place.
 
-Higher-order functions and lazy evaluation are applicable across many software areas.
+Higher-order functions and lazy evaluation can be applied to all software layers.
 The [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) paper has examples of their use in game artificial intelligence and other areas.
 In my own experience the complexity reduction it produces allows software functionality to be pushed further more easily.
 
