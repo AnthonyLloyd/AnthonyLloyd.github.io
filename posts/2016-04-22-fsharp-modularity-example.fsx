@@ -207,9 +207,9 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 (**
 ## Conclusion
 
-Lazy evaluation makes it practical to modularise a program as a generator that constructs a large number of possible answers, and a selector that chooses the appropriate one.
+Lazy evaluation makes it possible to modularise a program into a producer that constructs a large number of possible answers, and a consumer that chooses the appropriate one.
 
-Without it, either state has to be fully generated upfront or generation and consumption have to be done in the same place.
+Without it, either state has to be fully generated upfront or production and consumption have to be done in the same place.
 
 Higher-order functions and lazy evaluation can be applied to all software layers.
 The [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) paper has examples of their use in game artificial intelligence and other areas.
