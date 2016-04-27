@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "F# Modularity From Lazy Evaluation Example - Richardson Extrapolation"
+title: "Modularity from Lazy Evaluation F# Example - Richardson Extrapolation"
 tags: [modularity,higher-order,lazy evaluation]
 description: "An F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software"
 keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity
@@ -41,7 +41,7 @@ This is an F# example of how higher-order functions together with lazy evaluatio
 ## Background
 
 Richardson extrapolation is a method of combining multiple function estimates to increase estimate accuracy.
-In this post we will cover estimating the derivative and the intergral of a function to an arbitrary accuracy.
+In this post we will cover estimating the derivative and the integral of a function to an arbitrary accuracy.
 
 *)
 
@@ -128,7 +128,7 @@ let derivativeNonFunctional tol h0 f x =
 let integralEstimateIterative f a b previousEstimate h =
     previousEstimate*0.5+h*Seq.sumBy f {a+h..h*2.0..b}
     
-/// Intergral accurate to tol using Richardson extrapolation.
+/// Integral accurate to tol using Richardson extrapolation.
 let integralNonFunctional tol f a b =
     let richardsonRows = List<float array>()
     let mutable h = (b-a)*0.5
@@ -160,7 +160,7 @@ The downside of this approach is that it results in a lot of boiler-plate code w
 Leif Battermann has a very good [post](http://blog.leifbattermann.de/2016/03/06/template-method-pattern-there-might-be-a-better-way/)
 on how this can be solved in a functional way using higher-order functions. This results in much more modular and testable code.
 
-Unfortunatly in our case higher-order functions alone will not solve the problem.
+Unfortunately, in our case higher-order functions alone will not solve the problem.
 The integral estimate needs the previous estimate for its calculation.
 This difference in state requirements means the higher-order function would need different signatures for the derivative and integral.
 
@@ -199,7 +199,7 @@ let stoppingCriteria tol s =
 /// Derivative accurate to tol using Richardson extrapolation.
 let derivative tol f x h0 = derivativeEstimates f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
 
-/// Intergral accurate to tol using Richardson extrapolation.
+/// Integral accurate to tol using Richardson extrapolation.
 let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> stoppingCriteria tol
 
 (**
