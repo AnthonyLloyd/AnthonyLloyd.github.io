@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "Modularity from Lazy Evaluation F# Example - Richardson Extrapolation"
+title: "Modularity from Lazy Evaluation F# Example - Richardson Extrapolation"
 tags: [modularity,higher-order,lazy evaluation]
 description: "An F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software"
 keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity
