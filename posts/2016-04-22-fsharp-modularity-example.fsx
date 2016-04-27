@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "Modularity from Lazy Evaluation F# Example - Richardson Extrapolation"
+title: "Modularity from Lazy Evaluation - Richardson Extrapolation F# Example"
 tags: [modularity,higher-order,lazy evaluation]
 description: "An F# example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software"
 keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity
@@ -210,11 +210,11 @@ let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> s
 Without it either state has to be fully generated upfront or generation and consumption has to be done in the same place. 
 
 Higher-order functions and lazy evaluation are applicable across many software areas.
-The why functional programming matters paper has examples of their use in game artificial intelligence and other areas.
-In my own experience the complexity reduction allows software functionality to be pushed further.
+The [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.pdf) paper has examples of their use in game artificial intelligence and other areas.
+In my own experience this complexity reduction allows software functionality to be pushed further.
 
 Modularity is the most important concept in software design.
 It makes software easier to write, understand, test and reuse.
-Functional languages lead to greater modularity.
+Functional languages have features that can lead to greater modularity.
 
 *)
