@@ -52,7 +52,7 @@ let derivativeEstimate f x h = (f(x+h)-f(x-h))/h*0.5
 let integralEstimate f a b h = h*(f a+f b)*0.5 + h*Seq.sumBy f {a+h..h*2.0..b}
 
 (**
-Both the derivative and intergal estimate can be shown to have an error term that has even powers in h.
+Both the derivative and integral estimate can be shown to have an error term that has even powers in h.
 
 $$$
 Actual = Estimate(h) + e_1 h^2 + e_2 h^4 + \cdots
