@@ -173,6 +173,8 @@ Lazy evaluation allows us to cleanly split the implementation into three parts:
 2. A function that produces a sequence of Richardson estimates from a sequence of function estimates.
 3. A function that iterates a sequence of Richardson estimates and stops at a desired accuracy.
 
+Lazy evaluation can be achieved in F# by using the `Seq` collection and also the `lazy` keyword.
+
 ## Final code
 *)
 
