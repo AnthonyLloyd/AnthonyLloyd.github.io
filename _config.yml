@@ -4,7 +4,7 @@ highlighter:      rouge
 permalink:        /blog/:year/:month/:day/:title
 title:            'Anthony Lloyd'
 tagline:          'Functional thoughts'
-description:      'Personal blog on functional programming'
+description:      'Personal blog on F# and maybe a little maths'
 url:              http://anthonylloyd.github.io
 baseurl:          /
 author:

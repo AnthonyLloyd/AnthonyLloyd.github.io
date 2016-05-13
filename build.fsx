@@ -3,7 +3,9 @@
 open Fake
 
 Target "Posts" (fun _ ->
-    FSharpFormatting.run "literate --processDirectory --inputDirectory  posts --outputDirectory _posts --lineNumbers false" 
+    ["./_posts/"] |> CleanDirs
+    FSharpFormatting.run "literate --processDirectory --inputDirectory  posts --outputDirectory _posts --lineNumbers false"
+    !!"./_posts/*" |> ReplaceInFiles ["<p>---","---";"---</p>","---"]
 )
 
 RunTargetOrDefault "Posts"
