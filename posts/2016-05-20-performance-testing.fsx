@@ -24,15 +24,40 @@ module Functions =
     let sqr x = x*x
     
 (**
-This is the second example of how higher-order functions together with lazy evaluation can reduce complexity and lead to more modular software.
+This is the second example of how higher-order functions and lazy evaluation can reduce complexity and lead to more modular software.
 
 ## Background
 
-Often when performance testing function an arbitrary number sample of runs and ...
+When performance testing code a number of runs have to be performed so a more stable average can be compared.
+The number of runs is usually an input to the performance testing code and chosen arbitrarily.
 
+This post will cover how we can use statistical tests to remove the need for this input.
+This simplifies performance testing and makes the results more robust and useful.
 
+## Statistics
 
+The [standard error](https://en.wikipedia.org/wiki/Standard_error) of the sample mean is given by
 
+$$$
+SE_{\bar{x}} = \frac{s}{\sqrt{n}}
+
+[Welch's t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test) is given by
+
+$$$
+t = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{f_1+f_2}}
+
+$$$
+df = \frac{\left(f_1+f_2\right)^2}{\frac{f_1^2}{n_1-1}+\frac{f_2^2}{n_2-1}}
+
+$$$
+f_i = \frac{s_i^2}{n_i}
+
+where $n$ is the sample size, $\bar{x}$ is the sample mean and $s^2$ is the sample variance.
+
+Lazy evaluation can be used to produce an [online](https://en.wikipedia.org/wiki/Online_algorithm) sample statistics sequence.
+This sequence can then be iterated until a given precision or confidence level is satisfied.
+
+## Statistics code
 *)
 
 type SampleStatistics = {N:int;Mean:float;Variance:float}
@@ -53,10 +78,8 @@ module Statistics =
     let twoSampleTStatistic x1 x2 =
         let f1 = x1.Variance/float x1.N
         let f2 = x2.Variance/float x2.N
-        if f1=0.0&&f2=0.0 then {T=0.0;DF=1}
-        else
-            let df = sqr(f1+f2)/(f1*f1/float(x1.N-1)+f2*f2/(float(x2.N-1)))
-            {T=(x1.Mean-x2.Mean)/sqrt(f1+f2);DF=int(df+0.5)}
+        let df = if f1=0.0&&f2=0.0 then 1.0 else sqr(f1+f2)/(f1*f1/float(x1.N-1)+f2*f2/(float(x2.N-1)))
+        {T=(x1.Mean-x2.Mean)/sqrt(f1+f2);DF=int df}
  
     //T.INV(0.999,i) ie to 0.1% level
     let tInv = [|318.309;22.327;10.215;7.173;5.893;5.208;4.785;4.501;4.297;4.144;4.025;3.93;
@@ -78,8 +101,6 @@ module Statistics =
 (**
 
 ## Performance code
-
-
 *)
 
 module Performance =
