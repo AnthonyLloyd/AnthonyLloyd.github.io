@@ -11,10 +11,6 @@ keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modul
 (*** hide ***)
 namespace Main
 
-module NumericLiteralG =
-    let inline FromZero() = LanguagePrimitives.GenericZero
-    let inline FromOne() = LanguagePrimitives.GenericOne
-    
 open System
 open System.Diagnostics
     
@@ -53,10 +49,10 @@ f_i = \frac{s_i^2}{n_i}
 
 where $n$ is the sample size, $\bar{x}$ is the sample mean, $s^2$ is the sample variance, $t$ is Welch's t statistic, and $df$ is the degrees of freedom of the statistic.
 
-Welch's t statistic can then be compared using the inverse Student's t-distribution for a given confidence interval to test if sample means are different and which one is greater. 
+Welch's t statistic can then be compared using the inverse Student's t-distribution for a given confidence interval to test if sample means are different and which one is larger. 
 
-Lazy evaluation can be used to produce an [online](https://en.wikipedia.org/wiki/Online_algorithm) sample statistics sequence.
-A statistics sequence can then be iterated until a given mean standard error level of accuracy is achieved.
+Lazy evaluation can be used to produce an [online](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm) sample statistics sequence.
+The statistics sequence can then be iterated until a given mean standard error level of accuracy is achieved.
 Two sample statistics sequences can be iterated and compared to decide if one mean is larger than the other.
 
 ## Statistics code
@@ -70,10 +66,11 @@ type WelchStatistic = {T:float;DF:int}
 module Statistics =
     /// Online statistics sequence for a given sample sequence.
     let inline sampleStatistics s =
-        let calc (n,t,t2) =
-            let m = float t/float n
-            {N=n;Mean=m;Variance=(float t2-m*float t)/float(n-1)}
-        Seq.scan (fun (n,t,t2) x -> n+1,t+x,t2+x*x) (0,0G,0G) s |> Seq.skip 3 |> Seq.map calc
+        let calc (n,m,s) x =
+            let m'=m+(x-m)/float(n+1)
+            n+1,m',s+(x-m)*(x-m')
+        Seq.map float s |> Seq.scan calc (0,0.0,0.0) |> Seq.skip 3
+        |> Seq.map (fun (n,m,s) -> {N=n;Mean=m;Variance=s/float(n-1)})
 
     /// Scale the statistics for the given underlying random variable change of scale.
     let scale f s = {s with Mean=s.Mean*f;Variance=s.Variance*sqr f}
@@ -135,11 +132,8 @@ module Performance =
                       |> Seq.map (singleIteration ic)
         Seq.map2 welchStatistic (stats f1) (stats f2)
         |> Seq.pick (fun w ->
-            let maximumDF = 10000
-            if w.DF>maximumDF then Some 0
-            else
-                let c = welchTest w
-                if c=0 then None else Some c)
+            let maxDF = 10000
+            if w.DF>maxDF then Some 0 else match welchTest w with |0->None |c->Some c)
 
     let private measureMetric startMetric endMetric ic f =
         GC.Collect()
