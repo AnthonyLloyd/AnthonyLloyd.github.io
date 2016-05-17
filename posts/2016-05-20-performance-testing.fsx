@@ -116,7 +116,7 @@ Each of these will be repeated until at least the metric target is reached to en
 Statistics functions will be created for each of the metrics to measure a function accurate to a mean standard error of 1%.
 
 Compare functions will be created for each of the metrics to compare two functions to a confidence level of 0.1%.
-The functions will be considered equal after 10,000 degrees of freedom have past.
+The functions will be considered equal after 10,000 degrees of freedom have past without a positive test result.
 
 ## Performance testing code
 *)
