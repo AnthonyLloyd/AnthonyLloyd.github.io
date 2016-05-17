@@ -9,7 +9,7 @@ keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modul
 <h2>Background</h2>
 <p>To performance test code a number of iterations have to be performed so a more stable average can be compared.
 The number of iterations is usually an input and chosen arbitrarily.</p>
-<p>This post will cover how statistical tests can be used to remove the need for this input.
+<p>This post covers how statistical tests can be used to remove the need for this input.
 This simplifies performance testing and makes the results more robust and useful.</p>
 <h2>Statistics</h2>
 <p>Lazy evaluation can be used to produce an <a href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm">online</a> sample statistics sequence.</p>
@@ -290,7 +290,7 @@ The functions will be considered equal after 10,000 degrees of freedom have past
 The statistics functions just take the function to be measured.
 The compare functions just take the two functions to be compared.</p>
 <p>The statistics functions give an overview of a function's performance.
-These could easily be combined to produce a useful ad hoc performance report.</p>
+These can easily be combined to produce a useful performance report.</p>
 <p>The compare functions can be used in unit tests since they are a relative test and hence should be independent of the machine.
 They are also fast since they stop as soon as the given confidence level is achieved.
 The compare functions could also be extended to test if a function is a given percentage better than another.</p>

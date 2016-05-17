@@ -26,7 +26,7 @@ This is the second example of how higher-order functions and lazy evaluation can
 To performance test code a number of iterations have to be performed so a more stable average can be compared.
 The number of iterations is usually an input and chosen arbitrarily.
 
-This post will cover how statistical tests can be used to remove the need for this input.
+This post covers how statistical tests can be used to remove the need for this input.
 This simplifies performance testing and makes the results more robust and useful.
 
 ## Statistics
@@ -206,7 +206,7 @@ The statistics functions just take the function to be measured.
 The compare functions just take the two functions to be compared.
 
 The statistics functions give an overview of a function's performance.
-These could easily be combined to produce a useful ad hoc performance report.
+These can easily be combined to produce a useful performance report.
 
 The compare functions can be used in unit tests since they are a relative test and hence should be independent of the machine.
 They are also fast since they stop as soon as the given confidence level is achieved.
