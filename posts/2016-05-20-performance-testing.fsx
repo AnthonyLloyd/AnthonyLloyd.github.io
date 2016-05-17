@@ -2,9 +2,9 @@
 \---
 layout: post
 title: "Modularity from Lazy Evaluation - Performance Testing"
-tags: [modularity,higher-order,lazy evaluation]
+tags: [modularity,higher-order,lazy evaluation,performance,testing]
 description: ""
-keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity
+keywords: f#, fsharp, functional, higher-order functions, lazy evaluation, modularity, performance, testing
 \---
 *)
 
@@ -16,7 +16,7 @@ open System.Diagnostics
     
 [<AutoOpen>]
 module Functions =
-    let sqr x = x*x
+    let inline sqr x = x*x
     
 (**
 This is the second example of how higher-order functions and lazy evaluation can reduce complexity and lead to more modular software.
@@ -24,17 +24,21 @@ This is the second example of how higher-order functions and lazy evaluation can
 ## Background
 
 When performance testing code a number of iterations have to be performed so a more stable average can be compared.
-The number of iterations is usually an input to the performance testing code and chosen arbitrarily.
+The number of iterations is usually an input and chosen arbitrarily.
 
-This post will cover how we can use statistical tests to remove the need for this input.
+This post will cover how statistical tests can be used to remove the need for this input.
 This simplifies performance testing and makes the results more robust and useful.
 
 ## Statistics
+
+Lazy evaluation can be used to produce an [online](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm) sample statistics sequence.
 
 The [standard error](https://en.wikipedia.org/wiki/Standard_error) of a sample mean is given by
 
 $$$
 SE_{\bar{x}} = \frac{s}{\sqrt{n}}
+
+The statistics sequence can be iterated until a given mean standard error level of accuracy is achieved.
 
 [Welch's t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test) for comparing the mean of two samples is given by
 
@@ -49,11 +53,9 @@ f_i = \frac{s_i^2}{n_i}
 
 where $n$ is the sample size, $\bar{x}$ is the sample mean, $s^2$ is the sample variance, $t$ is Welch's t statistic, and $df$ is the degrees of freedom of the statistic.
 
-Welch's t statistic can then be compared using the inverse Student's t-distribution for a given confidence interval to test if sample means are different and which one is larger. 
+Welch's t statistic can be compared to the inverse Student's t-distribution for a given confidence level to test if the sample means are different. 
 
-Lazy evaluation can be used to produce an [online](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm) sample statistics sequence.
-The statistics sequence can then be iterated until a given mean standard error level of accuracy is achieved.
-Two sample statistics sequences can be iterated and compared to decide if one mean is larger than the other.
+Two sample statistics sequences can be iterated together and compared to decide if one mean is larger than the other.
 
 ## Statistics code
 *)
@@ -75,10 +77,10 @@ module Statistics =
     /// Scale the statistics for the given underlying random variable change of scale.
     let scale f s = {s with Mean=s.Mean*f;Variance=s.Variance*sqr f}
 
-    /// Single iteration statistics for the given iteration count and sum statistics.
+    /// Single iteration statistics for a given iteration count and total statistics.
     let singleIteration ic s = {N=s.N*ic;Mean=s.Mean/float ic;Variance=s.Variance/float ic}
 
-    /// Student's t-distribution inverse for the 0.1% confidence level by degrees of freedom.
+    /// Student's t-distribution inverse for 0.1% confidence level by degrees of freedom.
     let private tInv = 
         [|636.6;31.60;12.92;8.610;6.869;5.959;5.408;5.041;4.781;4.587;4.437;4.318;4.221;
           4.140;4.073;4.015;3.965;3.922;3.883;3.850;3.819;3.792;3.768;3.745;3.725;3.707;
@@ -105,25 +107,36 @@ module Statistics =
 (*** hide ***)
 open Statistics
 (**
-## Performance
+## Performance testing
 
+Three performance metrics will be created: time, memory allocated, and garbage collections.
 
-## Performance code
+Each of these will be repeated until at least a metric target is reached to ensure it is reliably measuring the metric and not any framework overhead.
+
+Statistics functions will be created for each of the metrics to measure a function accurate to a mean standard error of 1%.
+
+Compare functions will be created for each of the metrics to compare two functions to a confidence level of 0.1%.
+The functions will be considered equal after 10,000 degrees of freedom have past.
+
+## Performance testing code
 *)
 module Performance =
+    /// Find the iteration count to get to at least the metric target.
     let inline private targetIterationCount metric metricTarget f =
         let rec find n =
             let item = metric n f
             if (item<<<3)>=metricTarget then n*int metricTarget/int item+1
             else find (n*10)
         find 1
-
+        
+    /// Create and iterate a statistics sequence for a metric until the given accuracy.
     let inline private measureStatistics (metric,metricTarget) relativeError f =
         let ic = targetIterationCount metric metricTarget f
         Seq.initInfinite (fun _ -> metric ic f) |> sampleStatistics
         |> Seq.map (singleIteration ic)
         |> Seq.find (fun s -> s.MeanStandardError<=relativeError*s.Mean)
 
+    /// Create and iterate two statistics sequences until the metric means can be compared.
     let inline private measureCompare (metric,metricTarget) f1 f2 =
         if f1()<>f2() then failwith "function results are not the same"
         let ic = targetIterationCount metric metricTarget f2
@@ -135,6 +148,7 @@ module Performance =
             let maxDF = 10000
             if w.DF>maxDF then Some 0 else match welchTest w with |0->None |c->Some c)
 
+    /// Measure the given function for the iteration count using the start and end metric.
     let private measureMetric startMetric endMetric ic f =
         GC.Collect()
         GC.WaitForPendingFinalizers()
@@ -143,10 +157,12 @@ module Performance =
         let rec loop i = if i>0 then f() |> ignore; loop (i-1)
         loop ic
         endMetric s
-
+    
+    /// Measure the time metric for the given function and iteration count.
     let private timeMetric ic f = 
         measureMetric Stopwatch.StartNew (fun sw -> sw.ElapsedTicks) ic f
-
+        
+    /// Measure the memory metric for the given function and iteration count.
     let private memoryMetric ic f =
         let inline startMetric() =
             if GC.TryStartNoGCRegion(1L<<<22) |> not then failwith "TryStartNoGCRegion"
@@ -157,10 +173,12 @@ module Performance =
             t
         measureMetric startMetric endMetric ic f
 
+    /// Measure the garbage collection metric for the given function and iteration count.
     let private garbageMetric ic f =
         let count() = GC.CollectionCount 0 + GC.CollectionCount 1 + GC.CollectionCount 2
         measureMetric count (fun s -> count() - s) ic f
 
+    /// Measure definitions which are a metric together with a metric target.
     let private oneMillisecond = Stopwatch.Frequency/1000L
     let private timeMeasure = timeMetric, oneMillisecond
     let private memoryMeasure = memoryMetric, 1024L //1KB
@@ -174,19 +192,25 @@ module Performance =
     /// GC count statistics for a given function accurate to a mean standard error of 1%.
     let gcCountStatistics f = measureStatistics garbageMeasure 0.01 f
     
-    /// Time comparison for two given functions.
+    /// Time comparison for two given functions to a confidence level of 0.1%.
     let timeCompare f1 f2 = measureCompare timeMeasure f1 f2
-    /// Memory comparison for two given functions.
+    /// Memory comparison for two given functions to a confidence level of 0.1%.
     let memoryCompare f1 f2 = measureCompare memoryMeasure f1 f2
-    /// GC count comparison for two given functions.
+    /// GC count comparison for two given functions to a confidence level of 0.1%.
     let gcCountCompare f1 f2 = measureCompare garbageMeasure f1 f2
 (**
 ## Conclusion
 
-Very simple API
+The performance testing functions have a very simple signature.
+The statistics functions just take the function to be measured.
+The compare functions just take the two functions to be compared.
 
-Statistics function give an overview of a function.
+The statistics functions give an overview of a functions performance.
+These could easily be combined to produce a useful ad hoc performance report.
 
-Compare can be used in unit tests because it independent of machine.
+The compare functions can be used in unit tests since it is a relative test and hence should be independent of machine.
+It is also fast since it stops as soon as the given confidence level is achieved.11
+The compare function could also be extended to test if a function is a given percentage better than another.  
 
+Modularity from higher-order functions and lazy evaluation together with a little maths have produced a simple yet powerful performance testing tool.
 *)
