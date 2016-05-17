@@ -212,5 +212,5 @@ The compare functions can be used in unit tests since they are a relative test a
 They are also fast since they stop as soon as the given confidence level is achieved.
 The compare functions could also be extended to test if a function is a given percentage better than another.  
 
-Modularity from higher-order functions and lazy evaluation together with a little maths have produced a simple yet powerful performance testing tool.
+Modularity from higher-order functions and lazy evaluation together with a little maths have produced a simple yet powerful performance testing library.
 *)
