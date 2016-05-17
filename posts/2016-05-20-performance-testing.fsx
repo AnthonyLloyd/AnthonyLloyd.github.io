@@ -23,7 +23,7 @@ This is the second example of how higher-order functions and lazy evaluation can
 
 ## Background
 
-When performance testing code a number of iterations have to be performed so a more stable average can be compared.
+To performance test code a number of iterations have to be performed so a more stable average can be compared.
 The number of iterations is usually an input and chosen arbitrarily.
 
 This post will cover how statistical tests can be used to remove the need for this input.
@@ -74,7 +74,7 @@ module Statistics =
         Seq.map float s |> Seq.scan calc (0,0.0,0.0) |> Seq.skip 3
         |> Seq.map (fun (n,m,s) -> {N=n;Mean=m;Variance=s/float(n-1)})
 
-    /// Scale the statistics for the given underlying random variable change of scale.
+    /// Scale the statistics for a given underlying random variable change of scale.
     let scale f s = {s with Mean=s.Mean*f;Variance=s.Variance*sqr f}
 
     /// Single iteration statistics for a given iteration count and total statistics.
@@ -101,7 +101,7 @@ module Statistics =
                 else sqr(f1+f2)/(sqr f1/float(s1.N-1)+sqr f2/float(s2.N-1)) |> int
         }
 
-    /// Welch's t-test for a given Welch statistic using a 0.1% confidence level.
+    /// Welch's t-test for a given Welch statistic to a confidence level of 0.1%.
     let welchTest w =
         if abs w.T < Array.get tInv (min w.DF (Array.length tInv) - 1) then 0 else sign w.T
 (*** hide ***)
@@ -111,7 +111,7 @@ open Statistics
 
 Three performance metrics will be created: time, memory allocated, and garbage collections.
 
-Each of these will be repeated until at least a metric target is reached to ensure it is reliably measuring the metric and not any framework overhead.
+Each of these will be repeated until at least the metric target is reached to ensure it is reliably measuring the metric and not any framework overhead.
 
 Statistics functions will be created for each of the metrics to measure a function accurate to a mean standard error of 1%.
 
@@ -205,12 +205,12 @@ The performance testing functions have a very simple signature.
 The statistics functions just take the function to be measured.
 The compare functions just take the two functions to be compared.
 
-The statistics functions give an overview of a functions performance.
+The statistics functions give an overview of a function's performance.
 These could easily be combined to produce a useful ad hoc performance report.
 
-The compare functions can be used in unit tests since it is a relative test and hence should be independent of machine.
-It is also fast since it stops as soon as the given confidence level is achieved.11
-The compare function could also be extended to test if a function is a given percentage better than another.  
+The compare functions can be used in unit tests since they are a relative test and hence should be independent of the machine.
+They are also fast since they stop as soon as the given confidence level is achieved.
+The compare functions could also be extended to test if a function is a given percentage better than another.  
 
 Modularity from higher-order functions and lazy evaluation together with a little maths have produced a simple yet powerful performance testing tool.
 *)
