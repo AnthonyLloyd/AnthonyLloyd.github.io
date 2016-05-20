@@ -175,7 +175,7 @@ module Performance =
     /// Measure the garbage collection metric for the given function and iteration count.
     let private garbageMetric ic f =
         let count() = GC.CollectionCount 0 + GC.CollectionCount 1 + GC.CollectionCount 2
-        measureMetric count (fun s -> count() - s) ic f
+        measureMetric count (fun s -> count()-s) ic f
 
     /// Measure definitions which are a metric together with a metric target.
     let private oneMillisecond = Stopwatch.Frequency/1000L
