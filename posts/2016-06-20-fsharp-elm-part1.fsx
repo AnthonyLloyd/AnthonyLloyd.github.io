@@ -2,16 +2,14 @@
 \---
 layout: post
 title: "F# Implementation of The Elm Architecture"
-tags: [Elm,UI]
+tags: [Elm,UI,GUI,WPF,Xamerin]
 description: ""
-keywords: elm, ui
+keywords: elm, ui, gui, WPF, Xamerin
 \---
 *)
 
 (*** hide ***)
 namespace Main
-
-type text (t:string) = class end  
 
 module List =
     let remove n l =
@@ -32,31 +30,37 @@ module List =
 
 (**
 This is a prototype implementation of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
-This post will cover the model and a follow up post will cover using it with WPF and Xamarin.
+This post covers the UI implementation and a follow up post will cover using it with WPF and Xamarin.
 
 ## Background
 
-[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) is a simple pattern for creating functional user interfaces.
+[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) is a simple pattern for creating functional UIs.
 Due to its modularity and composability it makes UI code easier to write, understand, test and reuse.
 
-Model of the UI and produce a list of changes. Interact with the UI as little as possible.
+The UI implementation is a complete representation of the native UI.
+A minimal list of UI updates is calculated from the current and future UI.
+This is then used to update the native UI with as little interaction as possible.
+This means the native UI renders faster and is more responsive.
+It also means multiple native UI platforms can be targeted with the same application code.
 
 ## UI types
 
-Events...
-Memoise...
+UI events are implemented using simple functions that are mapped and combined up to the top level message event.
+At the primitive UI component level events are implemented using a double `ref`.
+This is so the native UI events only have to be hooked up once.
+The events can be quickly redirected as the UI changes without the potential memory leak that arise from a single `ref` implementation.
 *)
-/// Message event used on the primative UI components.
+/// Message event used on the primitive UI components.
 type 'msg Event = ('msg->unit) ref ref
 
 /// Layout for a section of UI components.
 type Layout = Horizontal | Vertical
 
-/// Primative UI components.
+/// Primitive UI components.
 type UI =
-    | Text of text
-    | Input of text * text Event
-    | Button of text * unit Event
+    | Text of string
+    | Input of string * string Event
+    | Button of string * unit Event
     | Div of Layout * UI list
 
 /// UI component update and event redirection.
@@ -79,7 +83,9 @@ type INativeUI =
 (**
 ## UI module
 
-Some ...
+The UI rendering can be made even faster by using the memoize function in larger views.
+This stores a weak reference to a model and its view output.
+It makes the view and diff functions quicker and can remove unnecessary UI updates.
 
 *)
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
@@ -133,20 +139,33 @@ module UI =
         let inline update e1 e2 = fun () -> let ev = !e1 in ev:=!(!e2); e2:=ev
         let rec diff ui1 ui2 path index diffs =
             match ui1,ui2 with
-            | _,_ when obj.ReferenceEquals(ui1,ui2) -> diffs
+            |_ when obj.ReferenceEquals(ui1,ui2) -> diffs
             |Text t1,Text t2 -> if t1=t2 then diffs else UpdateUI(path,ui2)::diffs
-            |Button (t1,e1),Button (t2,e2) -> if t1=t2 then EventUI(update e1 e2)::diffs else EventUI(update e1 e2)::UpdateUI(path,ui2)::diffs
-            |Input (t1,e1),Input (t2,e2) -> if t1=t2 then EventUI(update e1 e2)::diffs else EventUI(update e1 e2)::UpdateUI(path,ui2)::diffs
+            |Button (t1,e1),Button (t2,e2) ->
+                if t1=t2 then EventUI(update e1 e2)::diffs 
+                else EventUI(update e1 e2)::UpdateUI(path,ui2)::diffs
+            |Input (t1,e1),Input (t2,e2) -> 
+                if t1=t2 then EventUI(update e1 e2)::diffs
+                else EventUI(update e1 e2)::UpdateUI(path,ui2)::diffs
             |Button _,Button _ |Input _,Input _ -> UpdateUI(path,ui2)::diffs
             |Div (l1,_),Div (l2,_) when l1<>l2 -> ReplaceUI(index::path,ui2)::diffs
             |Div (_,[]),Div (_,[]) -> diffs
-            |Div (_,[]),Div (_,l) -> List.fold (fun (i,diffs) ui -> i+1,InsertUI(i::path,ui)::diffs) (index,diffs) l |> snd
-            |Div (_,l),Div (_,[]) -> List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs) (index,diffs) l |> snd
-            |Div (l,(h1::t1)),Div (_,(h2::t2)) when obj.ReferenceEquals(h1,h2) -> diff (Div(l,t1)) (Div(l,t2)) path (index+1) diffs
-            |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when obj.ReferenceEquals(h1,h3) -> diff (Div(l,t1)) (Div(l,t2)) path (index+1) (InsertUI(index::path,h2)::diffs)
-            |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when obj.ReferenceEquals(h2,h3) -> diff (Div(l,t1)) (Div(l,t2)) path (index+1) (RemoveUI(index::path)::diffs)
-            |Div (l,(h1::t1)),Div (_,(h2::t2)) -> diff h1 h2 (index::path) 0 diffs |> diff (Div(l,t1)) (Div(l,t2)) path (index+1)
-            |_,_ -> ReplaceUI(index::path,ui2)::diffs
+            |Div (_,[]),Div (_,l) ->
+                List.fold (fun (i,diffs) ui->i+1,InsertUI(i::path,ui)::diffs) (index,diffs) l
+                |> snd
+            |Div (_,l),Div (_,[]) ->
+                List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs) (index,diffs) l
+                |> snd
+            |Div (l,(h1::t1)),Div (_,(h2::t2)) when obj.ReferenceEquals(h1,h2) ->
+                diff (Div(l,t1)) (Div(l,t2)) path (index+1) diffs
+            |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when obj.ReferenceEquals(h1,h3) ->
+                diff (Div(l,t1)) (Div(l,t2)) path (index+1) (InsertUI(index::path,h2)::diffs)
+            |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when obj.ReferenceEquals(h2,h3) ->
+                diff (Div(l,t1)) (Div(l,t2)) path (index+1) (RemoveUI(index::path)::diffs)
+            |Div (l,(h1::t1)),Div (_,(h2::t2)) ->
+                diff h1 h2 (index::path) 0 diffs
+                |> diff (Div(l,t1)) (Div(l,t2)) path (index+1)
+            |_ -> ReplaceUI(index::path,ui2)::diffs
         diff ui1.UI ui2.UI [] 0 []
 
     /// Returns a UI application from a UI model, update and view.
@@ -161,55 +180,56 @@ module UI =
             diff ui newUI |> nativeUI.Send
         let ui = app.View app.Model
         ui.Event<-handle app.Model ui
-        [InsertUI([],ui.UI)] |> nativeUI.Send
+        nativeUI.Send [InsertUI([],ui.UI)]
 (**
 ## Example UI applications
 
-The pattern has three parts:
+The UI application pattern has four main parts:
 
 1. **Model** - the state of the application.
-2. **Update** - a way to update the state.
-3. **View** - a way to view the state as a UI.
+2. **Msg** - an update message.
+3. **Update** - a function that updates the state.
+4. **View** - a function that views state as a UI.
 *)
 module Counter =
-    type Msg = Increment | Decrement
-
     type Model = int
 
     let init i : Model = i
 
-    let update msg model : Model =
-        match msg with
-        |Increment -> model+1
-        |Decrement -> model-1
+    type Msg = Increment | Decrement
 
-    let view (model:Model) :Msg UI =
+    let update msg model =
+        match msg with
+        | Increment -> model+1
+        | Decrement -> model-1
+
+    let view model =
         UI.div Horizontal [
-            UI.button (text "+") Increment
-            UI.button (text "-") Decrement
-            UI.text (string model |> text)
+            UI.button "+" Increment
+            UI.button "-" Decrement
+            UI.text (string model)
         ]
 
     let app i =
         UI.app (init i) update view
 
 module CounterPair =
-    type Msg =
-        |Reset
-        |Top of Counter.Msg
-        |Bottom of Counter.Msg
-
     type Model = {Top:Counter.Model;Bottom:Counter.Model}
 
     let init top bottom = {Top=Counter.init top;Bottom=Counter.init bottom}
 
+    type Msg =
+        | Reset
+        | Top of Counter.Msg
+        | Bottom of Counter.Msg
+
     let update msg model =
         match msg with
-        |Reset -> init 0 0
-        |Top msg -> {model with Top=Counter.update msg model.Top}
-        |Bottom msg -> {model with Bottom=Counter.update msg model.Bottom}
+        | Reset -> init 0 0
+        | Top msg -> {model with Top=Counter.update msg model.Top}
+        | Bottom msg -> {model with Bottom=Counter.update msg model.Bottom}
 
-    let view (model:Model) =
+    let view model =
         UI.div Vertical [
             Counter.view model.Top |> UI.map Top
             Counter.view model.Bottom |> UI.map Bottom
@@ -219,28 +239,34 @@ module CounterPair =
         UI.app (init top bottom) update view
 
 module CounterList =
-    type Msg =
-        |Insert
-        |Remove
-        |Modify of int * Counter.Msg
-
     type Model = {Counters:Counter.Model list}
 
     let init = {Counters=[]}
 
+    type Msg =
+        | Insert
+        | Remove
+        | Modify of int * Counter.Msg
+
     let update msg model =
         match msg with
-        |Insert -> {model with Counters=Counter.init 0::model.Counters}
-        |Remove -> {model with Counters=Counter.init 0::model.Counters}
-        |Modify (i,msg) -> {model with Counters=List.mapAt i (Counter.update msg) model.Counters}
+        | Insert -> {model with Counters=Counter.init 0::model.Counters}
+        | Remove -> {model with Counters=List.tail model.Counters}
+        | Modify (i,msg) ->
+            {model with Counters=List.mapAt i (Counter.update msg) model.Counters}
 
-    let view (model:Model) =
-        List.mapi (fun i c -> Counter.view c |> UI.map (fun v -> Modify(i,v))) model.Counters |> UI.div Vertical
+    let view model =
+        UI.button "Add" Insert ::
+        UI.button "Remove" Remove ::
+        List.mapi (fun i c -> Counter.view c |> UI.map (fun v -> Modify(i,v))) model.Counters
+        |> UI.div Vertical
 
     let app =
         UI.app init update view
 (**
 ## Conclusion
 
-The ...
+[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) pattern is very promising.
+It produces type safe UIs that are highly composable.
+Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.
 *)
