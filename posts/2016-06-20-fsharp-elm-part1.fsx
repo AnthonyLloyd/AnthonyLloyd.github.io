@@ -111,7 +111,7 @@ module UI =
     /// Returns a Text display UI component.
     let text text = {UI=Text text;Event=ignore}
     
-    /// Returns a Text input UI component.
+    /// Returns a text Input UI component.
     let input text = 
         let ev = ref ignore |> ref
         let ui = {UI=Input(text,ev);Event=ignore}
