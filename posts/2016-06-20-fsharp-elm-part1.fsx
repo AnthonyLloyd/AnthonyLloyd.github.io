@@ -50,7 +50,7 @@ It also means multiple native UI platforms can be targeted with the same applica
 UI events are implemented using simple functions that are mapped and combined up to the top level message event.
 At the primitive UI component level events are implemented using a double `ref`.
 This is so the native UI events only have to be hooked up once.
-The events can be quickly redirected as the UI changes without the potential memory leak that arise from a single `ref` implementation.
+The events can be redirected quickly as the UI changes without the potential memory leak that arises from a single `ref` implementation.
 *)
 /// Message event used on the primitive UI components.
 type 'msg Event = ('msg->unit) ref ref
