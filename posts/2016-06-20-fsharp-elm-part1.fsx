@@ -11,6 +11,8 @@ keywords: elm, ui, gui, WPF, Xamerin
 (*** hide ***)
 namespace Main
 
+open System.Runtime.CompilerServices
+
 module List =
     let remove n l =
         let rec pop n l p =
@@ -75,7 +77,12 @@ type UIUpdate =
 type 'msg UI = {UI:UI;mutable Event:'msg->unit}
 
 /// UI application.
-type App<'msg,'model> = {Model:'model;Update:'msg->'model->'model;View:'model->'msg UI}
+type App<'msg,'model> =
+    {
+        Model:'model
+        Update:'msg->'model->'model
+        View:'model->'msg UI
+    }
 
 /// Native UI interface.
 type INativeUI =
@@ -92,14 +99,14 @@ It makes the view and diff functions quicker and can remove unnecessary UI updat
 module UI =
     /// Memoize view generation from model object references.
     let memoize<'model ,'msg  when 'model : not struct and 'msg : not struct> =
-        let d = System.Runtime.CompilerServices.ConditionalWeakTable<'model,'msg UI>()
-        fun f k ->
-            match d.TryGetValue k with
-            |true,v -> v
+        let d = ConditionalWeakTable<'model,'msg UI>()
+        fun view model ->
+            match d.TryGetValue model with
+            |true,ui -> ui
             |false,_ ->
-                let v = f k
-                d.Add(k,v)
-                v
+                let ui = view model
+                d.Add(model,ui)
+                ui
 
     /// Returns a Text display UI component.
     let text text = {UI=Text text;Event=ignore}
@@ -113,14 +120,14 @@ module UI =
         ui
 
     /// Returns a Button UI component.
-    let button text a =
+    let button text msg =
         let ev = ref ignore |> ref
         let ui = {UI=Button(text,ev);Event=ignore}
-        (!ev):=fun () -> ui.Event a
+        (!ev):=fun () -> ui.Event msg
         ui
 
     /// Returns a section of UI components given a layout.
-    /// The name div comes from HTML and represents a division (or section) of UI components.
+    /// The name div comes from HTML and represents a division (or section) of the UI.
     let div layout list =
         let ui = {UI=Div(layout,List.map (fun ui -> ui.UI) list);Event=ignore}
         let raise a = ui.Event a
@@ -151,17 +158,19 @@ module UI =
             |Div (l1,_),Div (l2,_) when l1<>l2 -> ReplaceUI(index::path,ui2)::diffs
             |Div (_,[]),Div (_,[]) -> diffs
             |Div (_,[]),Div (_,l) ->
-                List.fold (fun (i,diffs) ui->i+1,InsertUI(i::path,ui)::diffs) (index,diffs) l
-                |> snd
+                List.fold (fun (i,diffs) ui->i+1,InsertUI(i::path,ui)::diffs)
+                    (index,diffs) l |> snd
             |Div (_,l),Div (_,[]) ->
-                List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs) (index,diffs) l
-                |> snd
+                List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs)
+                    (index,diffs) l |> snd
             |Div (l,(h1::t1)),Div (_,(h2::t2)) when obj.ReferenceEquals(h1,h2) ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1) diffs
             |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when obj.ReferenceEquals(h1,h3) ->
-                diff (Div(l,t1)) (Div(l,t2)) path (index+1) (InsertUI(index::path,h2)::diffs)
+                diff (Div(l,t1)) (Div(l,t2)) path (index+1)
+                    (InsertUI(index::path,h2)::diffs)
             |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when obj.ReferenceEquals(h2,h3) ->
-                diff (Div(l,t1)) (Div(l,t2)) path (index+1) (RemoveUI(index::path)::diffs)
+                diff (Div(l,t1)) (Div(l,t2)) path (index+1)
+                    (RemoveUI(index::path)::diffs)
             |Div (l,(h1::t1)),Div (_,(h2::t2)) ->
                 diff h1 h2 (index::path) 0 diffs
                 |> diff (Div(l,t1)) (Div(l,t2)) path (index+1)
@@ -216,7 +225,8 @@ module Counter =
 module CounterPair =
     type Model = {Top:Counter.Model;Bottom:Counter.Model}
 
-    let init top bottom = {Top=Counter.init top;Bottom=Counter.init bottom}
+    let init top bottom =
+        {Top=Counter.init top;Bottom=Counter.init bottom}
 
     type Msg =
         | Reset
@@ -258,7 +268,8 @@ module CounterList =
     let view model =
         UI.button "Add" Insert ::
         UI.button "Remove" Remove ::
-        List.mapi (fun i c -> Counter.view c |> UI.map (fun v -> Modify(i,v))) model.Counters
+        List.mapi (fun i c -> Counter.view c |> UI.map (fun v -> Modify(i,v)))
+            model.Counters
         |> UI.div Vertical
 
     let app =
