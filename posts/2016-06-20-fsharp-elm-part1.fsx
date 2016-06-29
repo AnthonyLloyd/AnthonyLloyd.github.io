@@ -2,9 +2,9 @@
 \---
 layout: post
 title: "F# Implementation of The Elm Architecture"
-tags: [Elm,UI,GUI,WPF,Xamerin]
+tags: [Elm,UI,GUI,WPF,Xamarin]
 description: ""
-keywords: elm, ui, gui, WPF, Xamerin
+keywords: elm, ui, gui, WPF, Xamarin
 \---
 *)
 
@@ -186,7 +186,9 @@ module UI =
             let newModel = app.Update msg model
             let newUI = app.View newModel
             newUI.Event<-handle newModel newUI
-            diff ui newUI |> nativeUI.Send
+            let diff = diff ui newUI
+            List.iter (function |EventUI f -> f() |_-> ()) diff
+            nativeUI.Send diff
         let ui = app.View app.Model
         ui.Event<-handle app.Model ui
         nativeUI.Send [InsertUI([],ui.UI)]
