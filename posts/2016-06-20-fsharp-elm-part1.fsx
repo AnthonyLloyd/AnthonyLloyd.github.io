@@ -32,7 +32,7 @@ module List =
 
 (**
 This is a prototype implementation of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
-This post covers the UI implementation and a follow up post will cover using it with WPF and Xamarin.
+This post covers the UI implementation and a follow up [post]({% post_url 2016-07-01-fsharp-elm-part2 %}) covers using it with WPF and Xamarin.
 
 ## Background
 
