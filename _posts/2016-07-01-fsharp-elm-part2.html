@@ -5,17 +5,13 @@ tags: [Elm,UI,GUI,WPF,Xamarin]
 description: ""
 keywords: elm, ui, gui, WPF, Xamarin
 ---
-<p>This is a prototype implementation of <a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> in F#.
-This post covers the UI implementation and a follow up post will cover using it with WPF and Xamarin.</p>
-<h2>Background</h2>
-<p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> is a simple pattern for creating functional UIs.
-Due to its modularity and composability it makes UI code easier to write, understand, test and reuse.</p>
-<p>The UI implementation is a complete representation of the native UI.
-A minimal list of UI updates is calculated from the current and future UI.
-This is then used to update the native UI with as little interaction as possible.
-This means the native UI renders faster and is more responsive.
-It also means multiple native UI platforms can be targeted with the same application code.</p>
-<h2>Native UI</h2>
+<p>This is the second part of a prototype of <a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> in F#.
+The first <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> covers the logical UI and this covers using it with WPF and Xamarin.</p>
+<h2>Native UI Implementation</h2>
+<p>Below is the WPF implementation of the <code>INativeUI</code> interface.
+The Xamarin <a href="https://github.com/AnthonyLloyd/Elm/blob/master/XamarinApp/Xamarin.fs">implementation</a> is very similar.</p>
+<p>Threading proves to be simple with all the updates being performed on the UI thread in a single call.
+<code>UIUpdate</code> maps well to the operations required to locate and update the native UI elements.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -150,15 +146,26 @@ It also means multiple native UI platforms can be targeted with the same applica
 </code></pre></td>
 </tr>
 </table>
-<h2>Pics</h2>
-<p><img src="{{site.baseurl}}public/elm/WinApp.png" alt="WinApp" title="Win App" />
-<img src="{{site.baseurl}}public/elm/WinPhone80.png" alt="WinPhone" title="Win Phone" />
-<img src="{{site.baseurl}}public/elm/WinUWP.png" alt="WinUWP" title="Win UWP" />
-<img src="{{site.baseurl}}public/elm/WinWPF.png" alt="WinWPF" title="Win WPF" /></p>
+<h2>Results</h2>
+<p>The same <code>CounterList</code> UI application from the previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> has been used across a number of native UIs.
+The example <a href="https://github.com/AnthonyLloyd/Elm">source</a> produces the following mobile and desktop UIs.</p>
+<table style="border:0px">
+	<tr>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinPhone80.png" title="Mobile Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinWPF.png" title="WPF Application" width="340px" height="500px"/></td>
+	</tr>
+	<tr>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinApp.png" title="Metro Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinUWP.png" title="UWP Application" width="340px" height="500px"/></td>
+	</tr>
+</table>
 <h2>Conclusion</h2>
-<p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> pattern is very promising.
-It produces type safe UIs that are highly composable.
-Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.</p>
+<p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> continues to look to be a very promising pattern.</p>
+<p>The <code>INativeUI</code> implementation is a single place for native UI element creation and is much more DRY than other UI models.
+So far styling has not been considered but this single place should make it easier with both an Elm and a CSS model being possible.</p>
+<p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> moves the view and event logic away from the native UI.
+This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.</p>
+<p>These benefits combined with the type safety and composable outlined in the previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> make this pattern compelling.</p>
 
 
 <div class="tip" id="fs1">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>

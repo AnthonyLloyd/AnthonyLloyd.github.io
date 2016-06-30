@@ -231,22 +231,16 @@ module CounterList =
 open System.Windows
 open System.Windows.Controls
 (**
-This is a prototype implementation of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
-This post covers the UI implementation and a follow up post will cover using it with WPF and Xamarin.
+This is the second part of a prototype of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
+The first [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) covers the logical UI and this covers using it with WPF and Xamarin. 
 
-## Background
+## Native UI Implementation
 
-[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) is a simple pattern for creating functional UIs.
-Due to its modularity and composability it makes UI code easier to write, understand, test and reuse.
+Below is the WPF implementation of the `INativeUI` interface.
+The Xamarin [implementation](https://github.com/AnthonyLloyd/Elm/blob/master/XamarinApp/Xamarin.fs) is very similar.
 
-The UI implementation is a complete representation of the native UI.
-A minimal list of UI updates is calculated from the current and future UI.
-This is then used to update the native UI with as little interaction as possible.
-This means the native UI renders faster and is more responsive.
-It also means multiple native UI platforms can be targeted with the same application code.
-
-## Native UI
-
+Threading proves to be simple with all the updates being performed on the UI thread in a single call.
+`UIUpdate` maps well to the operations required to locate and update the native UI elements.
 *)
 module WPF =
     let CreateNaiveUI (root:ContentControl) =
@@ -314,19 +308,31 @@ module WPF =
                 root.Dispatcher.Invoke (fun () -> List.iter uiUpdate list)
         }
 (**
-## Pics
-![WinApp]({{site.baseurl}}public/elm/WinApp.png "Win App")
-![WinPhone]({{site.baseurl}}public/elm/WinPhone80.png "Win Phone")
-![WinUWP]({{site.baseurl}}public/elm/WinUWP.png "Win UWP")
-![WinWPF]({{site.baseurl}}public/elm/WinWPF.png "Win WPF")
-*)
+## Results
 
+The same `CounterList` UI application from the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) has been used across a number of native UIs.
+The example [source](https://github.com/AnthonyLloyd/Elm) produces the following mobile and desktop UIs. 
 
+<table style="border:0px">
+	<tr>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinPhone80.png" title="Mobile Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinWPF.png" title="WPF Application" width="340px" height="500px"/></td>
+	</tr>
+	<tr>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinApp.png" title="Metro Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinUWP.png" title="UWP Application" width="340px" height="500px"/></td>
+	</tr>
+</table>
 
-(**
 ## Conclusion
 
-[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) pattern is very promising.
-It produces type safe UIs that are highly composable.
-Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.
+[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) continues to look to be a very promising pattern.
+
+The `INativeUI` implementation is a single place for native UI element creation and is much more DRY than other UI models.
+So far styling has not been considered but this single place should make it easier with both an Elm and a CSS model being possible.
+
+[The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) moves the view and event logic away from the native UI.
+This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.
+
+These benefits combined with the type safety and composable outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) make this pattern compelling.  
 *)
