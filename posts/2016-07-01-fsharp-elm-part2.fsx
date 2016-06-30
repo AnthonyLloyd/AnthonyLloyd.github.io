@@ -334,5 +334,5 @@ So far styling has not been considered but this single place should make it easi
 [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) moves the view and event logic away from the native UI.
 This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.
 
-These benefits combined with the type safety and composable outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) make this pattern compelling.  
+These benefits combined with the type safety and composability outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) make this pattern compelling.  
 *)
