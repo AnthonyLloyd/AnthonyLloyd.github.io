@@ -29,7 +29,6 @@ module List =
     let mapAt i mapping list =
         let removed,tail = remove i list
         add removed ((List.head tail |> mapping)::(List.tail tail))
-
 (**
 This is a prototype implementation of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
 This post covers the UI implementation and a follow up [post]({% post_url 2016-07-01-fsharp-elm-part2 %}) covers using it with WPF and Xamarin.
