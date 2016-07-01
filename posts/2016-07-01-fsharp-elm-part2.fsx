@@ -232,7 +232,7 @@ open System.Windows
 open System.Windows.Controls
 (**
 This is the second part of a prototype of [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) in F#.
-The first [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) covers the logical UI and this covers using it with WPF and Xamarin. 
+The first [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) covered the logical UI and this covers using it with WPF and Xamarin. 
 
 ## Native UI Implementation
 
@@ -329,10 +329,10 @@ The example [source](https://github.com/AnthonyLloyd/Elm) produces the following
 [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) continues to look to be a very promising pattern.
 
 The `INativeUI` implementation is a single place for native UI element creation and is much more DRY than other UI models.
-So far styling has not been considered but this single place should make it easier with both an Elm and a CSS model being possible.
+So far, styling has not been considered, but this single place should make it easier with both an Elm and a CSS model being possible.
 
 [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) moves the view and event logic away from the native UI.
 This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.
 
-These benefits combined with the type safety and composability outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}) make this pattern compelling.  
+These benefits, combined with the type safety and composability outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}), make this pattern compelling.  
 *)

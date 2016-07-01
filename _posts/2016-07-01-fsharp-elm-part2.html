@@ -6,7 +6,7 @@ description: ""
 keywords: elm, ui, gui, WPF, Xamarin
 ---
 <p>This is the second part of a prototype of <a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> in F#.
-The first <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> covers the logical UI and this covers using it with WPF and Xamarin.</p>
+The first <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> covered the logical UI and this covers using it with WPF and Xamarin.</p>
 <h2>Native UI Implementation</h2>
 <p>Below is the WPF implementation of the <code>INativeUI</code> interface.
 The Xamarin <a href="https://github.com/AnthonyLloyd/Elm/blob/master/XamarinApp/Xamarin.fs">implementation</a> is very similar.</p>
@@ -162,10 +162,10 @@ The example <a href="https://github.com/AnthonyLloyd/Elm">source</a> produces th
 <h2>Conclusion</h2>
 <p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> continues to look to be a very promising pattern.</p>
 <p>The <code>INativeUI</code> implementation is a single place for native UI element creation and is much more DRY than other UI models.
-So far styling has not been considered but this single place should make it easier with both an Elm and a CSS model being possible.</p>
+So far, styling has not been considered, but this single place should make it easier with both an Elm and a CSS model being possible.</p>
 <p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> moves the view and event logic away from the native UI.
 This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.</p>
-<p>These benefits combined with the type safety and composability outlined in the previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> make this pattern compelling.</p>
+<p>These benefits, combined with the type safety and composability outlined in the previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a>, make this pattern compelling.</p>
 
 
 <div class="tip" id="fs1">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
