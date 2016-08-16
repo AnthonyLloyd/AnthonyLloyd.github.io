@@ -154,7 +154,7 @@ module UI =
                 if t1=t2 then EventUI(update e1 e2)::diffs
                 else EventUI(update e1 e2)::UpdateUI(path,ui2)::diffs
             |Button _,Button _ |Input _,Input _ -> UpdateUI(path,ui2)::diffs
-            |Div (l1,_),Div (l2,_) when l1<>l2 -> ReplaceUI(index::path,ui2)::diffs
+            |Div (l1,_),Div (l2,_) when l1<>l2 -> ReplaceUI(path,ui2)::diffs
             |Div (_,[]),Div (_,[]) -> diffs
             |Div (_,[]),Div (_,l) ->
                 List.fold (fun (i,diffs) ui->i+1,InsertUI(i::path,ui)::diffs)
@@ -173,7 +173,7 @@ module UI =
             |Div (l,(h1::t1)),Div (_,(h2::t2)) ->
                 diff h1 h2 (index::path) 0 diffs
                 |> diff (Div(l,t1)) (Div(l,t2)) path (index+1)
-            |_ -> ReplaceUI(index::path,ui2)::diffs
+            |_ -> ReplaceUI(path,ui2)::diffs
         diff ui1.UI ui2.UI [] 0 []
 
     /// Returns a UI application from a UI model, update and view.
