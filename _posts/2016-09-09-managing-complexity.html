@@ -16,18 +16,18 @@ keywords: f#, fsharp, functional, complexity, simplicity
 <li>Why not use something like Python that has lots of libraries to quickly build things?</li>
 </ul>
 <h2>The Answer</h2>
-<p>The answer is I want to reduce and control complexity.
-Simplicity and the flexibility it brings increases the chance of discovering the best abstraction for your domain.
+<p>The answer is I want to reduce and control complexity.</p>
+<p>Simplicity and the flexibility it brings increases the chance of discovering the best abstraction for the domain.
 The classic example of this is 'everything is a file' in Unix.
 If you find this for your domain it will put you streets ahead.
-Now you are also minimising the inherent complexity of the domain.</p>
+Now you are minimising the inherent complexity of the domain.</p>
 <blockquote>
 <p>Simplicity is the ultimate sophistication.<br />
 <cite>Leonardo da Vinci</cite></p>
 </blockquote>
 <p>Software languages and frameworks bring with them different degrees of accidental complexity.</p>
-<p>Is the problem you are solving simple enough that you can handle the complexity brought by your language and frameworks?
-Are you sure this will always be the case?</p>
+<p>Is the problem you are solving simple enough that you can handle this additional complexity?
+Are you sure that will always be the case?</p>
 <blockquote>
 <p>The primary cause of software project failure is complexity.<br />
 <cite>Roger Sessions</cite></p>
@@ -38,47 +38,59 @@ Are you sure this will always be the case?</p>
 <li>Object oriented programming</li>
 <li>GOF patterns</li>
 <li>SOLID patterns</li>
+<li>Null</li>
+<li>Exceptions</li>
+<li>Circular references</li>
 <li>Object relational mapping</li>
 <li>Dependency Injection</li>
 <li>Dynamic or weak type systems</li>
 <li>Mutable domain model</li>
-<li>Circular references</li>
 <li>Databinding &amp; MVVM (since learning the Elm architecture)</li>
 </ul>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
-<p>Building systems out of a batch of data transformation scripts or moving to Microservices doesn't reduce complexity. It dramatically increases it.
-Distributed systems are harder to reason about and change. Of course it brings the ability to scaling out but has to be done with great care.</p>
+<p>In an attempt to reduce complexity, I see a trend of building systems out of batches of data transformation scripts or moving to microservices.
+These don't reduce complexity; they dramatically increase it.
+Distributed systems are harder to reason about and change. Doing this to be able to scale out can make sense but it has to be done with great skill.</p>
 <h3>Short term gain, long term pain</h3>
-<p>Rich Hickey has a great <a href="https://www.infoq.com/presentations/Simple-Made-Easy">presentation</a> explaining the difference between simple and easy.
-Short term development speed gains from picking the easy option pails in the long term compared to aiming for simplicity.</p>
+<p>Rich Hickey has a great <a href="https://www.infoq.com/presentations/Simple-Made-Easy">presentation</a> explaining the difference between simple and easy in software development.
+Short term development speed gains from picking the easy option pale in comparison in the long term to aiming for simplicity.</p>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 <h3>Performance of low vs high level languages</h3>
-<p>C can be say 20% faster than F# for a given algorithm.
-In my experience getting to the best algorithm produces an order of magnitude increase (if not more) in performance.
-Using a high level language provides simplicity to explorer these and use generic performance techniques such as asynchronous programming and memoization.<br />
-Performance is complicated. It is often more about the movement of data than the calculation itself.
-I prefer to start in F# (the highest level) and move an algorithm to C (the lowest level) as a last resort.
-How often do I need to do this? Very rarely. Only for access to chip optimised linear algebra, optimisation libraries and encoding.</p>
+<p>C can be say 20% faster than F# for a given algorithm.</p>
+<p>In my experience getting to the best algorithm produces an order of magnitude (or more) increase in performance.
+Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.</p>
+<p>Performance is complicated. It is often more about the movement of data than the calculation itself.
+I prefer to start in the highest level language (F#) and move an algorithm to the lowest level langauage (C) as a last resort.
+How often do I need to do this? Very rarely. Currently only for access to chip optimised linear algebra and optimisation libraries.</p>
 <h2>Why F#?</h2>
 <p>Functional programming is simple-first programming.</p>
-<p>Why is functional so simple? Because it comes from mathematics as the simplest possible programming model.
-You don't have to understand category theory to benefit from that.</p>
+<p>Why is functional programming so simple? Because it comes from mathematics as the simplest possible programming construct.
+You don't have to understand category theory to benefit from this.</p>
 <blockquote>
 <p>Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.<br />
 <cite>Philip Wadler</cite></p>
 </blockquote>
+<p>Functional programming is not a fad you can ignore. It's rigorous mathematical foundation mean it will be around forever.</p>
 <h3>Pick data type safety and functions over objects</h3>
 <p>Data is simple. This is especially true in a strong type system that supports union types. Illegal state can be made unrepresentable.</p>
 <p>Pure functions are simple. They always give the same output for the same input. They are easy to reason about and test.</p>
-<p>Objects are complex. They fuse data and functions with side effects. They are hard to almost impossible to reason about. Testing is painful.
+<p>Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to reason about. Testing is painful.
 Software developers have to become familiar with the codebase and hold a large model of the system in their head. Don't let them go on holiday.</p>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
-<h3>Pick immutability over mutability</h3>
-<p>How do you handle long running queries and calculations on a mutable domain model? Concurrent collections? Cross domain locking?
+<h3>Pick immutability over the mutant</h3>
+<p>How do you handle queries and calculations (possibly long running) on a mutable domain model? Concurrent collections? Cross domain locking?
 What you have created is a bug paradise. They will get cosy and settle in for the long term.</p>
-<p>In my domain a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
-How would you do this in an object orientated language? Locking and transactions? Clone the world? Visitor pattern? I've been there and wouldn't wish it on anyone.</p>
+<p>In the domain I work in a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
+How would you do this in a mutable domain model? Locking and transactions? Clone the world? Visitor pattern? I've been there and wouldn't wish it on anyone.</p>
+<h3>Pick linear composition over spaghetti</h3>
+<p>There is something missing between perfect data, pure functions and beautiful systems.</p>
+<p>Functional programming allows functions to be passed around just like data. Functions can accept other functions as an input in a generic way. They are called higher-order functions.</p>
+<p>This may sound alien but it provides a quantum leap in terms of code reuse and building systems.
+In fact, I didn't understand the full power of code reuse until I started programming in a functional language.</p>
+<p>Object orientated programming has a poorer way of building systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
+This results in systems that have a greater number of circular references and complexity.</p>
 <h2>Conclusion</h2>
-<p>Start simple it's the least risky option.</p>
+<p>For a one off short term or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.</p>
+<p>For long term critical systems that evolve over time you have to focus on simplicity. The programming language and tools need to help you do this. This is why I code in F#.</p>
 
 
