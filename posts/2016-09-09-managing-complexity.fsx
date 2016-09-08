@@ -9,7 +9,7 @@ keywords: f#, fsharp, functional, complexity, simplicity
 
 This post outlines my views on the often overlooked and misunderstood topic of managing complexity in software development.
 
-The post answers questions I'm asked sometimes on why I prefer to develop systems in F#, a strongly typed functional-first language.
+It answers questions I'm asked sometimes on why I prefer to develop systems in F#, a strongly typed functional-first language.
 
 The next time someone asks I can refer them here!
 
@@ -91,7 +91,7 @@ You don't have to understand category theory to benefit from this.
 > Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
 > <cite>Philip Wadler</cite>
 
-Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation means that it will be around forever. 
+Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever. 
 
 ### Choose data type safety and functions over objects
 
@@ -132,5 +132,5 @@ As an industry we need to decide how we should move on.
 
 For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
 
-For long term critical systems that evolve over time you have to focus on simplicity. The programming language and tools need to help you do this. This is why I code in F#.
+For long term critical systems that evolve over time the focus must be on simplicity. The programming language and tools need to help us do this. This is why I code in F#.
 *)
