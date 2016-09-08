@@ -52,7 +52,7 @@ The more I use a functional language the longer the list of frameworks and patte
 - SOLID patterns
 - Null
 - Exceptions
-- Circular references
+- Circular dependencies
 - Object relational mapping
 - Dependency Injection
 - Dynamic or weak type systems
@@ -61,27 +61,27 @@ The more I use a functional language the longer the list of frameworks and patte
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
 
-In an attempt to reduce complexity, I see a trend of building systems out of batches of data transformation scripts or moving to microservices.
+In an attempt to reduce complexity, there is a trend of building systems out of batches of data transformation scripts or moving to microservices.
 These don't reduce complexity; they dramatically increase it.
 Distributed systems are harder to reason about and change. Doing this to be able to scale out can make sense but it has to be done with great skill.
 
 ### Short term gain, long term pain
 
-Rich Hickey has a great [presentation](https://www.infoq.com/presentations/Simple-Made-Easy) explaining the difference between simple and easy in software development.
+Rich Hickey has a brilliant [presentation](https://www.infoq.com/presentations/Simple-Made-Easy) explaining the difference between simple and easy in software development.
 Short term development speed gains from picking the easy option pale in comparison in the long term to aiming for simplicity.
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 
 ### Performance of low vs high level languages 
 
-C can be say 20% faster than F# for a given algorithm.  
+C can be 20% faster than F# for a given algorithm say.  
 
 In my experience getting to the best algorithm produces an order of magnitude (or more) increase in performance.
 Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.  
 
 Performance is complicated. It is often more about the movement of data than the calculation itself.
 I prefer to start in the highest level language (F#) and move an algorithm to the lowest level langauage (C) as a last resort.
-How often do I need to do this? Very rarely. Currently only for access to chip optimised linear algebra and optimisation libraries. 
+How often do I need to do this? Very rarely. Really only for access to chip optimised linear algebra and optimisation libraries. 
 
 ## Why F#?
 
@@ -93,7 +93,7 @@ You don't have to understand category theory to benefit from this.
 > Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
 > <cite>Philip Wadler</cite>
 
-Functional programming is not a fad you can ignore. It's rigorous mathematical foundation mean it will be around forever. 
+Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation mean it will be around forever. 
 
 ### Pick data type safety and functions over objects
 
@@ -120,13 +120,17 @@ There is something missing between perfect data, pure functions and beautiful sy
 
 Functional programming allows functions to be passed around just like data. Functions can accept other functions as an input in a generic way. They are called higher-order functions.
 
-This may sound alien but it provides a quantum leap in terms of code reuse and building systems.
+This may sound alien but it provides a quantum leap in terms of code reuse and assembling systems.
 In fact, I didn't understand the full power of code reuse until I started programming in a functional language.
 
-Object orientated programming has a poorer way of building systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
-This results in systems that have a greater number of circular references and complexity.
+Object orientated programming has a poorer method of assembling systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
+This helps but results in systems that are harder to reason about and increases complexity.
 
 ## Conclusion
+
+We really need to talk about object oriented programming. We have patterns to work around its deficiencies. These taken to the limit make it look more functional.
+Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it's just not possible.
+As an industry we need to decide how we should move on. 
 
 For a one off short term or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
 

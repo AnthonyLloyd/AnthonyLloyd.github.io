@@ -19,7 +19,7 @@ keywords: f#, fsharp, functional, complexity, simplicity
 <p>The answer is I want to reduce and control complexity.</p>
 <p>Simplicity and the flexibility it brings increases the chance of discovering the best abstraction for the domain.
 The classic example of this is 'everything is a file' in Unix.
-If you find this for your domain it will put you streets ahead.
+If you find this for your domain, it will put you streets ahead.
 Now you are minimising the inherent complexity of the domain.</p>
 <blockquote>
 <p>Simplicity is the ultimate sophistication.<br />
@@ -40,7 +40,7 @@ Are you sure that will always be the case?</p>
 <li>SOLID patterns</li>
 <li>Null</li>
 <li>Exceptions</li>
-<li>Circular references</li>
+<li>Circular dependencies</li>
 <li>Object relational mapping</li>
 <li>Dependency Injection</li>
 <li>Dynamic or weak type systems</li>
@@ -48,20 +48,20 @@ Are you sure that will always be the case?</p>
 <li>Databinding &amp; MVVM (since learning the Elm architecture)</li>
 </ul>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
-<p>In an attempt to reduce complexity, I see a trend of building systems out of batches of data transformation scripts or moving to microservices.
+<p>In an attempt to reduce complexity, there is a trend of building systems out of batches of data transformation scripts or moving to microservices.
 These don't reduce complexity; they dramatically increase it.
 Distributed systems are harder to reason about and change. Doing this to be able to scale out can make sense but it has to be done with great skill.</p>
 <h3>Short term gain, long term pain</h3>
-<p>Rich Hickey has a great <a href="https://www.infoq.com/presentations/Simple-Made-Easy">presentation</a> explaining the difference between simple and easy in software development.
+<p>Rich Hickey has a brilliant <a href="https://www.infoq.com/presentations/Simple-Made-Easy">presentation</a> explaining the difference between simple and easy in software development.
 Short term development speed gains from picking the easy option pale in comparison in the long term to aiming for simplicity.</p>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 <h3>Performance of low vs high level languages</h3>
-<p>C can be say 20% faster than F# for a given algorithm.</p>
+<p>C can be 20% faster than F# for a given algorithm say.</p>
 <p>In my experience getting to the best algorithm produces an order of magnitude (or more) increase in performance.
 Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.</p>
 <p>Performance is complicated. It is often more about the movement of data than the calculation itself.
 I prefer to start in the highest level language (F#) and move an algorithm to the lowest level langauage (C) as a last resort.
-How often do I need to do this? Very rarely. Currently only for access to chip optimised linear algebra and optimisation libraries.</p>
+How often do I need to do this? Very rarely. Really only for access to chip optimised linear algebra and optimisation libraries.</p>
 <h2>Why F#?</h2>
 <p>Functional programming is simple-first programming.</p>
 <p>Why is functional programming so simple? Because it comes from mathematics as the simplest possible programming construct.
@@ -70,7 +70,7 @@ You don't have to understand category theory to benefit from this.</p>
 <p>Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.<br />
 <cite>Philip Wadler</cite></p>
 </blockquote>
-<p>Functional programming is not a fad you can ignore. It's rigorous mathematical foundation mean it will be around forever.</p>
+<p>Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation mean it will be around forever.</p>
 <h3>Pick data type safety and functions over objects</h3>
 <p>Data is simple. This is especially true in a strong type system that supports union types. Illegal state can be made unrepresentable.</p>
 <p>Pure functions are simple. They always give the same output for the same input. They are easy to reason about and test.</p>
@@ -85,11 +85,14 @@ How would you do this in a mutable domain model? Locking and transactions? Clone
 <h3>Pick linear composition over spaghetti</h3>
 <p>There is something missing between perfect data, pure functions and beautiful systems.</p>
 <p>Functional programming allows functions to be passed around just like data. Functions can accept other functions as an input in a generic way. They are called higher-order functions.</p>
-<p>This may sound alien but it provides a quantum leap in terms of code reuse and building systems.
+<p>This may sound alien but it provides a quantum leap in terms of code reuse and assembling systems.
 In fact, I didn't understand the full power of code reuse until I started programming in a functional language.</p>
-<p>Object orientated programming has a poorer way of building systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
-This results in systems that have a greater number of circular references and complexity.</p>
+<p>Object orientated programming has a poorer method of assembling systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
+This helps but results in systems that are harder to reason about and increases complexity.</p>
 <h2>Conclusion</h2>
+<p>We really need to talk about object oriented programming. We have patterns to work around its deficiencies. These taken to the limit make it look more functional.
+Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it's just not possible.
+As an industry we need to decide how we should move on.</p>
 <p>For a one off short term or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.</p>
 <p>For long term critical systems that evolve over time you have to focus on simplicity. The programming language and tools need to help you do this. This is why I code in F#.</p>
 
