@@ -91,7 +91,8 @@ You don't have to understand category theory to benefit from this.
 > Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
 > <cite>Philip Wadler</cite>
 
-Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever. 
+Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever.
+Software developers should be encouraged to learn the benefits it provides. 
 
 ### Choose data type safety and functions over objects
 
@@ -126,8 +127,8 @@ This helps but results in systems that are harder to reason about and increases 
 
 ## Conclusion
 
-We really need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
-Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it just increases the complexity.
+We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
+Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it just increases their complexity.
 As an industry we need to decide how we should move on. 
 
 For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
