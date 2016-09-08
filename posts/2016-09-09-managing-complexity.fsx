@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "Managing Complexity - Or why do you code in F#?"
+title: "Managing Complexity - Or "why do you code in F#?\"
 tags: [complexity,simplicity]
 description: ""
 keywords: f#, fsharp, functional, complexity, simplicity
@@ -9,9 +9,9 @@ keywords: f#, fsharp, functional, complexity, simplicity
 
 This post outlines my views on the often overlooked and misunderstood topic of managing complexity in software development.
 
-The post answers questions I sometimes get on why I prefer to develop systems in F#, a strongly typed functional-first language.
+The post answers questions I'm asked sometimes on why I prefer to develop systems in F#, a strongly typed functional-first language.
 
-The next time someone asks I can point them here!
+The next time someone asks I can refer them here!
 
 ## The Questions
 
@@ -74,9 +74,7 @@ Short term development speed gains from picking the easy option pale in comparis
 
 ### Performance of low vs high level languages 
 
-C can be 20% faster than F# for a given algorithm say.  
-
-In my experience getting to the best algorithm produces an order of magnitude (or more) increase in performance.
+Let's say C can be 20% faster than F# for a given algorithm. In my experience, getting to the best algorithm produces an order of magnitude (or more) increase in performance.
 Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.  
 
 Performance is complicated. It is often more about the movement of data than the calculation itself.
@@ -93,7 +91,7 @@ You don't have to understand category theory to benefit from this.
 > Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
 > <cite>Philip Wadler</cite>
 
-Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation mean it will be around forever. 
+Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation means that it will be around forever. 
 
 ### Pick data type safety and functions over objects
 
@@ -114,7 +112,7 @@ What you have created is a bug paradise. They will get cosy and settle in for th
 In the domain I work in a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
 How would you do this in a mutable domain model? Locking and transactions? Clone the world? Visitor pattern? I've been there and wouldn't wish it on anyone.
 
-### Pick linear composition over spaghetti
+### Choose linear composition over spaghetti
 
 There is something missing between perfect data, pure functions and beautiful systems.
 
@@ -128,11 +126,11 @@ This helps but results in systems that are harder to reason about and increases 
 
 ## Conclusion
 
-We really need to talk about object oriented programming. We have patterns to work around its deficiencies. These taken to the limit make it look more functional.
-Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it's just not possible.
+We really need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
+Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it just increases the complexity.
 As an industry we need to decide how we should move on. 
 
-For a one off short term or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
+For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
 
 For long term critical systems that evolve over time you have to focus on simplicity. The programming language and tools need to help you do this. This is why I code in F#.
 *)
