@@ -54,10 +54,10 @@ The more I use a functional language the longer the list of frameworks and patte
 - Exceptions
 - Circular dependencies
 - Object relational mapping
-- Dependency Injection
+- Dependency injection
 - Dynamic or weak type systems
 - Mutable domain model
-- Databinding & MVVM (since learning the Elm architecture)
+- Databinding & MVVM (since learning the [Elm Architecture]({% post_url 2016-06-20-fsharp-elm-part1 %}))
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
 
