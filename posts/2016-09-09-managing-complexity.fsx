@@ -78,7 +78,7 @@ Let's say C can be 20% faster than F# for a given algorithm. In my experience, g
 Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.  
 
 Performance is complicated. It is often more about the movement of data than the calculation itself.
-I prefer to start in the highest level language (F#) and move an algorithm to the lowest level langauage (C) as a last resort.
+I prefer to start in the highest level language (F#) and move an algorithm to the lowest level language (C) as a last resort.
 How often do I need to do this? Very rarely. Really only for access to chip optimised linear algebra and optimisation libraries. 
 
 ## Why F#?
@@ -89,7 +89,7 @@ Why is functional programming so simple? Because it comes from mathematics as th
 You don't have to understand category theory to benefit from this.
 
 > Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
-> <cite>Philip Wadler</cite>
+> <cite>Prof Philip Wadler</cite>
 
 Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever.
 Software developers should be encouraged to learn the benefits it provides. 
@@ -128,7 +128,7 @@ This helps but results in systems that are harder to reason about and increases 
 ## Conclusion
 
 We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
-Every release of Java and C# add more functional features. Unfortunately this will not ultimately fix these lanaguages, it just increases their complexity.
+Every release of Java and C# add more functional features. Unfortunately, this will not ultimately fix these languages, it just increases their complexity.
 As an industry we need to decide how we should move on. 
 
 For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
