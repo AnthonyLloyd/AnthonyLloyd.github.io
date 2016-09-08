@@ -93,7 +93,7 @@ You don't have to understand category theory to benefit from this.
 
 Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation means that it will be around forever. 
 
-### Pick data type safety and functions over objects
+### Choose data type safety and functions over objects
 
 Data is simple. This is especially true in a strong type system that supports union types. Illegal state can be made unrepresentable.  
 
@@ -104,7 +104,7 @@ Software developers have to become familiar with the codebase and hold a large m
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
 
-### Pick immutability over the mutant
+### Choose immutability over the mutant
 
 How do you handle queries and calculations (possibly long running) on a mutable domain model? Concurrent collections? Cross domain locking?
 What you have created is a bug paradise. They will get cosy and settle in for the long term.  

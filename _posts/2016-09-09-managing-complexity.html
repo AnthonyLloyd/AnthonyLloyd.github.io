@@ -70,13 +70,13 @@ You don't have to understand category theory to benefit from this.</p>
 <cite>Philip Wadler</cite></p>
 </blockquote>
 <p>Functional programming is not a fad the profession can ignore. It's rigorous mathematical foundation means that it will be around forever.</p>
-<h3>Pick data type safety and functions over objects</h3>
+<h3>Choose data type safety and functions over objects</h3>
 <p>Data is simple. This is especially true in a strong type system that supports union types. Illegal state can be made unrepresentable.</p>
 <p>Pure functions are simple. They always give the same output for the same input. They are easy to reason about and test.</p>
 <p>Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to reason about. Testing is painful.
 Software developers have to become familiar with the codebase and hold a large model of the system in their head. Don't let them go on holiday.</p>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
-<h3>Pick immutability over the mutant</h3>
+<h3>Choose immutability over the mutant</h3>
 <p>How do you handle queries and calculations (possibly long running) on a mutable domain model? Concurrent collections? Cross domain locking?
 What you have created is a bug paradise. They will get cosy and settle in for the long term.</p>
 <p>In the domain I work in a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
