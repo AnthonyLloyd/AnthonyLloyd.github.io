@@ -145,7 +145,7 @@ module UI =
         let inline update e1 e2 = fun () -> let ev = !e1 in ev:=!(!e2); e2:=ev
         let rec diff ui1 ui2 path index diffs =
             match ui1,ui2 with
-            |_ when obj.ReferenceEquals(ui1,ui2) -> diffs
+            |_ when LanguagePrimitives.PhysicalEquality ui1 ui2 -> diffs
             |Text t1,Text t2 -> if t1=t2 then diffs else UpdateUI(path,ui2)::diffs
             |Button (t1,e1),Button (t2,e2) ->
                 if t1=t2 then EventUI(update e1 e2)::diffs 
@@ -162,12 +162,12 @@ module UI =
             |Div (_,l),Div (_,[]) ->
                 List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs)
                     (index,diffs) l |> snd
-            |Div (l,(h1::t1)),Div (_,(h2::t2)) when obj.ReferenceEquals(h1,h2) ->
+            |Div (l,(h1::t1)),Div (_,(h2::t2)) when LanguagePrimitives.PhysicalEquality h1 h2 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1) diffs
-            |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when obj.ReferenceEquals(h1,h3) ->
+            |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when LanguagePrimitives.PhysicalEquality h1 h3 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1)
                     (InsertUI(index::path,h2)::diffs)
-            |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when obj.ReferenceEquals(h2,h3) ->
+            |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when LanguagePrimitives.PhysicalEquality h2 h3 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1)
                     (RemoveUI(index::path)::diffs)
             |Div (l,(h1::t1)),Div (_,(h2::t2)) ->
