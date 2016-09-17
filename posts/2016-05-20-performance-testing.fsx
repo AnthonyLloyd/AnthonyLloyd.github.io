@@ -159,7 +159,7 @@ module Performance =
     
     /// Measure the time metric for the given function and iteration count.
     let private timeMetric ic f = 
-        measureMetric Stopwatch.StartNew (fun sw -> sw.ElapsedTicks) ic f
+        measureMetric Stopwatch.GetTimestamp (fun t -> Stopwatch.GetTimestamp()-t) ic f
         
     /// Measure the memory metric for the given function and iteration count.
     let private memoryMetric ic f =
