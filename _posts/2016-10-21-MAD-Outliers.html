@@ -6,7 +6,7 @@ description: ""
 keywords: median absolute deviation, MAD, median, outlier, statistics
 ---
 <p>This post presents a more robust method of detecting outliers in sample data than commonly used.
-The method is based on the median and an optimised F# median function is provided.</p>
+The method is based on the median and an optimised F# median function is developed.</p>
 <h2>Background</h2>
 <p><a href="https://www.researchgate.net/publication/256752600_Detecting_outliers_Do_not_use_standard_deviation_around_the_mean_use_absolute_deviation_around_the_median">Researchers</a> most commonly use standard deviation around the mean to detect outliers.
 This is a problem because the mean and standard deviation give greater weight to extreme data points.</p>
@@ -14,7 +14,7 @@ This is a problem because the mean and standard deviation give greater weight to
 The median and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">median absolute deviation</a> give a more robust measure of statistical dispersion and are more resilient to outliers.</p>
 <p>When a politician says average wages are increasing be sure to check the median is being reported.</p>
 <h2>Median Absolute Deviation</h2>
-<p>The <a href="https://en.wikipedia.org/wiki/Median">median</a> is the value separating the higher half of the sample from the lower half of the sample.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Median">median</a> is the value separating the higher half of the sample from the lower half.</p>
 <p>The <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">median absolute deviation</a> is defined as</p>
 <p><span class="math">\[\operatorname{MAD} = \operatorname{median}\left(\left|x_i - \operatorname{median}(x_i)\right|\right)\]</span></p>
 <p>Outliers can be identified as points that are outside a fixed multiple of the median absolute deviation from the median. Recommended values for this multiple are 2.5 or 3.</p>
@@ -286,10 +286,10 @@ The <code>selectInPlace</code> function has also been extended to optionally ret
 </tr>
 </table>
 <h2>Property and Performance testing</h2>
-<p>A simple FsCheck property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.</p>
-<p>The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.</p>
-<p>The performance testing library developed in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> was used after extending it to allow sub function measurement.
-This was run from the build script in 64-bit Release mode.</p>
+<p>A simple <code>FsCheck</code> property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.</p>
+<p>The performance versus a full sort algorithm and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.</p>
+<p>The performance testing library developed in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> is used after extending it to allow sub function measurement.
+This is run from the build script in 64-bit Release mode.</p>
 <table>
 <thead>
 <tr class="header">

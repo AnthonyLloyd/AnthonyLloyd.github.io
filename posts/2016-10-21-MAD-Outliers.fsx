@@ -195,7 +195,7 @@ module Performance =
     let gcCountCompare f1 f2 = measureCompare garbageMeasure f1 f2
 (**
 This post presents a more robust method of detecting outliers in sample data than commonly used.
-The method is based on the median and an optimised F# median function is provided. 
+The method is based on the median and an optimised F# median function is developed. 
 
 ## Background
 
@@ -209,7 +209,7 @@ When a politician says average wages are increasing be sure to check the median 
 
 ## Median Absolute Deviation
 
-The [median](https://en.wikipedia.org/wiki/Median) is the value separating the higher half of the sample from the lower half of the sample.
+The [median](https://en.wikipedia.org/wiki/Median) is the value separating the higher half of the sample from the lower half.
 
 
 The [median absolute deviation](https://en.wikipedia.org/wiki/Median_absolute_deviation) is defined as
@@ -361,12 +361,12 @@ module Statistics =
 
 ## Property and Performance testing
 
-A simple FsCheck property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.
+A simple `FsCheck` property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.
 
-The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
+The performance versus a full sort algorithm and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
 
-The performance testing library developed in a previous [post]({% post_url 2016-05-20-performance-testing %}) was used after extending it to allow sub function measurement.
-This was run from the build script in 64-bit Release mode.
+The performance testing library developed in a previous [post]({% post_url 2016-05-20-performance-testing %}) is used after extending it to allow sub function measurement.
+This is run from the build script in 64-bit Release mode.
 
 
 | Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |
