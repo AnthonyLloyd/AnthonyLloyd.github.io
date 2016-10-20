@@ -22,7 +22,7 @@ The median and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation"
 <p>The following median function makes use of the <a href="http://dhost.info/zabrodskyvlada/algor.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect</a> algorithm.</p>
 <p>The inner array while loops allow equality which improves performance when there is duplication and ordering in the data.
-The <code>selectInPlace</code> function has also been extended to optionally return the middle of the kth and the next element.</p>
+The <code>selectInPlace</code> function has also been extended to optionally return the middle of the kth and the k+1 element.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">  1: </span>
 <span class="l">  2: </span>
 <span class="l">  3: </span>
@@ -287,9 +287,9 @@ The <code>selectInPlace</code> function has also been extended to optionally ret
 </table>
 <h2>Property and Performance testing</h2>
 <p>A simple FsCheck property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.</p>
-<p>The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
-This uses the performance testing library provided in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> after extending it to allow sub function measurement.
-This was run from the build script in a Release 64-bit mode.</p>
+<p>The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.</p>
+<p>The performance testing library developed in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> was used after extending it to allow sub function measurement.
+This was run from the build script in 64-bit Release mode.</p>
 <table>
 <thead>
 <tr class="header">
@@ -306,72 +306,72 @@ This was run from the build script in a Release 64-bit mode.</p>
 <td align="center"><p>Low</p></td>
 <td align="center"><p>No</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.367</p></td>
-<td align="center"><p>6.568</p></td>
-<td align="center"><p>0.1030s</p></td>
+<td align="center"><p>1.369</p></td>
+<td align="center"><p>6.582</p></td>
+<td align="center"><p>0.1028s</p></td>
 </tr>
 <tr class="even">
 <td align="center"><p>Low</p></td>
 <td align="center"><p>Part</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.339</p></td>
-<td align="center"><p>9.227</p></td>
-<td align="center"><p>0.0478s</p></td>
+<td align="center"><p>1.350</p></td>
+<td align="center"><p>9.269</p></td>
+<td align="center"><p>0.0476s</p></td>
 </tr>
 <tr class="odd">
 <td align="center"><p>Low</p></td>
 <td align="center"><p>Yes</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.536</p></td>
-<td align="center"><p>13.347</p></td>
-<td align="center"><p>0.0105s</p></td>
+<td align="center"><p>1.516</p></td>
+<td align="center"><p>12.964</p></td>
+<td align="center"><p>0.0106s</p></td>
 </tr>
 <tr class="even">
 <td align="center"><p>Medium</p></td>
 <td align="center"><p>No</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.358</p></td>
-<td align="center"><p>6.569</p></td>
-<td align="center"><p>0.1027s</p></td>
+<td align="center"><p>1.373</p></td>
+<td align="center"><p>6.577</p></td>
+<td align="center"><p>0.1018s</p></td>
 </tr>
 <tr class="odd">
 <td align="center"><p>Medium</p></td>
 <td align="center"><p>Part</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.384</p></td>
-<td align="center"><p>9.425</p></td>
-<td align="center"><p>0.0481s</p></td>
+<td align="center"><p>1.397</p></td>
+<td align="center"><p>9.471</p></td>
+<td align="center"><p>0.0478s</p></td>
 </tr>
 <tr class="even">
 <td align="center"><p>Medium</p></td>
 <td align="center"><p>Yes</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.833</p></td>
-<td align="center"><p>17.559</p></td>
+<td align="center"><p>1.840</p></td>
+<td align="center"><p>17.519</p></td>
 <td align="center"><p>0.0100s</p></td>
 </tr>
 <tr class="odd">
 <td align="center"><p>High</p></td>
 <td align="center"><p>No</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.340</p></td>
-<td align="center"><p>4.748</p></td>
-<td align="center"><p>0.1062s</p></td>
+<td align="center"><p>1.341</p></td>
+<td align="center"><p>4.745</p></td>
+<td align="center"><p>0.1059s</p></td>
 </tr>
 <tr class="even">
 <td align="center"><p>High</p></td>
 <td align="center"><p>Part</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>1.590</p></td>
-<td align="center"><p>8.021</p></td>
+<td align="center"><p>1.576</p></td>
+<td align="center"><p>8.050</p></td>
 <td align="center"><p>0.0526s</p></td>
 </tr>
 <tr class="odd">
 <td align="center"><p>High</p></td>
 <td align="center"><p>Yes</p></td>
 <td align="center"><p>1.000</p></td>
-<td align="center"><p>3.176</p></td>
-<td align="center"><p>26.609</p></td>
+<td align="center"><p>3.193</p></td>
+<td align="center"><p>26.390</p></td>
 <td align="center"><p>0.0087s</p></td>
 </tr>
 </tbody>
@@ -511,7 +511,7 @@ This was run from the build script in a Release 64-bit mode.</p>
 </table>
 <h2>Conclusion</h2>
 <p>The post provides optimised generic select, median and median absolute deviation functions.</p>
-<p>The performance results show a good improvement over Quickselect which is already a highly optimised algorithm.
+<p>The performance results show a good improvement over Quickselect which is already an optimised algorithm.
 The performance of the code is also more predictable due to its handling of duplication and partially sorted data.</p>
 <p>The post demonstrates how simple property based testing and a performance testing library can be used together to optimise algorithms.</p>
 
