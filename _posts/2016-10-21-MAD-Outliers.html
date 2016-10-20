@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Get MAD with Outliers with an improved Median function"
+title: "Get MAD with Outliers with an Improved Median Function"
 tags: [MAD,median,outlier,statistics]
 description: ""
 keywords: median absolute deviation, MAD, median, outlier, statistics
@@ -13,39 +13,377 @@ This is a problem because the mean and standard deviation give greater weight to
 <p>The mean is the point that minimises the sum of the square deviations, whereas the median is the point that minimises the sum of the absolute deviations.
 The median and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">median absolute deviation</a> give a more robust measure of statistical dispersion and are more resilient to outliers.</p>
 <p>When a politician says average wages are increasing be sure to check the median is being reported.</p>
-<h2>Statistics</h2>
+<h2>Median Absolute Deviation</h2>
 <p>The <a href="https://en.wikipedia.org/wiki/Median">median</a> is the value separating the higher half of the sample from the lower half of the sample.</p>
 <p>The <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">median absolute deviation</a> is defined as</p>
 <p><span class="math">\[\operatorname{MAD} = \operatorname{median}\left(\left|x_i - \operatorname{median}(x_i)\right|\right)\]</span></p>
-<p>Outliers can be identified as points that are outside a fixed multiple of median absolute deviation from the median. Recommended values for this multiple are 2.5 or 3.</p>
-<h2>Median and MAD functions</h2>
+<p>Outliers can be identified as points that are outside a fixed multiple of the median absolute deviation from the median. Recommended values for this multiple are 2.5 or 3.</p>
+<h2>Median and MAD code</h2>
 <p>The following median function makes use the <a href="http://dhost.info/zabrodskyvlada/algor.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect</a> algorithm.
-In addition I have added features to improve the performance when the data has a high degree of duplicate or sorting.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
-<span class="l">2: </span>
-<span class="l">3: </span>
+In addition I have added features to improve the performance when the data has a high degree of duplication or sorting.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">  1: </span>
+<span class="l">  2: </span>
+<span class="l">  3: </span>
+<span class="l">  4: </span>
+<span class="l">  5: </span>
+<span class="l">  6: </span>
+<span class="l">  7: </span>
+<span class="l">  8: </span>
+<span class="l">  9: </span>
+<span class="l"> 10: </span>
+<span class="l"> 11: </span>
+<span class="l"> 12: </span>
+<span class="l"> 13: </span>
+<span class="l"> 14: </span>
+<span class="l"> 15: </span>
+<span class="l"> 16: </span>
+<span class="l"> 17: </span>
+<span class="l"> 18: </span>
+<span class="l"> 19: </span>
+<span class="l"> 20: </span>
+<span class="l"> 21: </span>
+<span class="l"> 22: </span>
+<span class="l"> 23: </span>
+<span class="l"> 24: </span>
+<span class="l"> 25: </span>
+<span class="l"> 26: </span>
+<span class="l"> 27: </span>
+<span class="l"> 28: </span>
+<span class="l"> 29: </span>
+<span class="l"> 30: </span>
+<span class="l"> 31: </span>
+<span class="l"> 32: </span>
+<span class="l"> 33: </span>
+<span class="l"> 34: </span>
+<span class="l"> 35: </span>
+<span class="l"> 36: </span>
+<span class="l"> 37: </span>
+<span class="l"> 38: </span>
+<span class="l"> 39: </span>
+<span class="l"> 40: </span>
+<span class="l"> 41: </span>
+<span class="l"> 42: </span>
+<span class="l"> 43: </span>
+<span class="l"> 44: </span>
+<span class="l"> 45: </span>
+<span class="l"> 46: </span>
+<span class="l"> 47: </span>
+<span class="l"> 48: </span>
+<span class="l"> 49: </span>
+<span class="l"> 50: </span>
+<span class="l"> 51: </span>
+<span class="l"> 52: </span>
+<span class="l"> 53: </span>
+<span class="l"> 54: </span>
+<span class="l"> 55: </span>
+<span class="l"> 56: </span>
+<span class="l"> 57: </span>
+<span class="l"> 58: </span>
+<span class="l"> 59: </span>
+<span class="l"> 60: </span>
+<span class="l"> 61: </span>
+<span class="l"> 62: </span>
+<span class="l"> 63: </span>
+<span class="l"> 64: </span>
+<span class="l"> 65: </span>
+<span class="l"> 66: </span>
+<span class="l"> 67: </span>
+<span class="l"> 68: </span>
+<span class="l"> 69: </span>
+<span class="l"> 70: </span>
+<span class="l"> 71: </span>
+<span class="l"> 72: </span>
+<span class="l"> 73: </span>
+<span class="l"> 74: </span>
+<span class="l"> 75: </span>
+<span class="l"> 76: </span>
+<span class="l"> 77: </span>
+<span class="l"> 78: </span>
+<span class="l"> 79: </span>
+<span class="l"> 80: </span>
+<span class="l"> 81: </span>
+<span class="l"> 82: </span>
+<span class="l"> 83: </span>
+<span class="l"> 84: </span>
+<span class="l"> 85: </span>
+<span class="l"> 86: </span>
+<span class="l"> 87: </span>
+<span class="l"> 88: </span>
+<span class="l"> 89: </span>
+<span class="l"> 90: </span>
+<span class="l"> 91: </span>
+<span class="l"> 92: </span>
+<span class="l"> 93: </span>
+<span class="l"> 94: </span>
+<span class="l"> 95: </span>
+<span class="l"> 96: </span>
+<span class="l"> 97: </span>
+<span class="l"> 98: </span>
+<span class="l"> 99: </span>
+<span class="l">100: </span>
+<span class="l">101: </span>
+<span class="l">102: </span>
+<span class="l">103: </span>
+<span class="l">104: </span>
+<span class="l">105: </span>
+<span class="l">106: </span>
+<span class="l">107: </span>
+<span class="l">108: </span>
+<span class="l">109: </span>
+<span class="l">110: </span>
+<span class="l">111: </span>
+<span class="l">112: </span>
+<span class="l">113: </span>
+<span class="l">114: </span>
+<span class="l">115: </span>
+<span class="l">116: </span>
+<span class="l">117: </span>
+<span class="l">118: </span>
+<span class="l">119: </span>
+<span class="l">120: </span>
+<span class="l">121: </span>
+<span class="l">122: </span>
+<span class="l">123: </span>
+<span class="l">124: </span>
+<span class="l">125: </span>
+<span class="l">126: </span>
+<span class="l">127: </span>
+<span class="l">128: </span>
+<span class="l">129: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="t">Statistics</span> <span class="o">=</span>
-    <span class="c">/// Returns the median of the sample array.</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="f">medianInplace</span> (<span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="i">a</span><span class="o">:</span>_[]) <span class="o">=</span> <span class="n">1.0</span>
+    <span class="c">/// Returns the median of three input values.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs35', 86)" onmouseover="showTip(event, 'fs35', 86)" class="f">median3</span> <span onmouseout="hideTip(event, 'fs36', 87)" onmouseover="showTip(event, 'fs36', 87)" class="i">a</span> <span onmouseout="hideTip(event, 'fs37', 88)" onmouseover="showTip(event, 'fs37', 88)" class="i">b</span> <span onmouseout="hideTip(event, 'fs38', 89)" onmouseover="showTip(event, 'fs38', 89)" class="i">c</span> <span class="o">=</span>
+        <span class="k">if</span> <span onmouseout="hideTip(event, 'fs36', 90)" onmouseover="showTip(event, 'fs36', 90)" class="i">a</span><span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs37', 91)" onmouseover="showTip(event, 'fs37', 91)" class="i">b</span> <span class="k">then</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs37', 92)" onmouseover="showTip(event, 'fs37', 92)" class="i">b</span><span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs38', 93)" onmouseover="showTip(event, 'fs38', 93)" class="i">c</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs37', 94)" onmouseover="showTip(event, 'fs37', 94)" class="i">b</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs38', 95)" onmouseover="showTip(event, 'fs38', 95)" class="i">c</span><span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs36', 96)" onmouseover="showTip(event, 'fs36', 96)" class="i">a</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs36', 97)" onmouseover="showTip(event, 'fs36', 97)" class="i">a</span>
+            <span class="k">else</span> <span onmouseout="hideTip(event, 'fs38', 98)" onmouseover="showTip(event, 'fs38', 98)" class="i">c</span>
+        <span class="k">else</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs36', 99)" onmouseover="showTip(event, 'fs36', 99)" class="i">a</span><span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs38', 100)" onmouseover="showTip(event, 'fs38', 100)" class="i">c</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs36', 101)" onmouseover="showTip(event, 'fs36', 101)" class="i">a</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs38', 102)" onmouseover="showTip(event, 'fs38', 102)" class="i">c</span><span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs37', 103)" onmouseover="showTip(event, 'fs37', 103)" class="i">b</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs37', 104)" onmouseover="showTip(event, 'fs37', 104)" class="i">b</span>
+            <span class="k">else</span> <span onmouseout="hideTip(event, 'fs38', 105)" onmouseover="showTip(event, 'fs38', 105)" class="i">c</span>
+    <span class="c">/// Returns the minimum value of a subsection of an array.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs39', 106)" onmouseover="showTip(event, 'fs39', 106)" class="f">minSub</span> (<span onmouseout="hideTip(event, 'fs40', 107)" onmouseover="showTip(event, 'fs40', 107)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs41', 108)" onmouseover="showTip(event, 'fs41', 108)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 109)" onmouseover="showTip(event, 'fs42', 109)" class="i">hi</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs43', 110)" onmouseover="showTip(event, 'fs43', 110)" class="v">v</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 111)" onmouseover="showTip(event, 'fs40', 111)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 112)" onmouseover="showTip(event, 'fs41', 112)" class="i">lo</span>]
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs44', 113)" onmouseover="showTip(event, 'fs44', 113)" class="i">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 114)" onmouseover="showTip(event, 'fs41', 114)" class="i">lo</span><span class="o">+</span><span class="n">1</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs42', 115)" onmouseover="showTip(event, 'fs42', 115)" class="i">hi</span> <span class="k">do</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 116)" onmouseover="showTip(event, 'fs45', 116)" class="i">nv</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 117)" onmouseover="showTip(event, 'fs40', 117)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 118)" onmouseover="showTip(event, 'fs44', 118)" class="i">i</span>]
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs45', 119)" onmouseover="showTip(event, 'fs45', 119)" class="i">nv</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs43', 120)" onmouseover="showTip(event, 'fs43', 120)" class="v">v</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs43', 121)" onmouseover="showTip(event, 'fs43', 121)" class="v">v</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs45', 122)" onmouseover="showTip(event, 'fs45', 122)" class="i">nv</span>
+        <span onmouseout="hideTip(event, 'fs43', 123)" onmouseover="showTip(event, 'fs43', 123)" class="v">v</span>
+    <span class="c">/// Returns the maximum value of a subsection of an array.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs46', 124)" onmouseover="showTip(event, 'fs46', 124)" class="f">maxSub</span> (<span onmouseout="hideTip(event, 'fs40', 125)" onmouseover="showTip(event, 'fs40', 125)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs41', 126)" onmouseover="showTip(event, 'fs41', 126)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 127)" onmouseover="showTip(event, 'fs42', 127)" class="i">hi</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs43', 128)" onmouseover="showTip(event, 'fs43', 128)" class="v">v</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 129)" onmouseover="showTip(event, 'fs40', 129)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 130)" onmouseover="showTip(event, 'fs41', 130)" class="i">lo</span>]
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs44', 131)" onmouseover="showTip(event, 'fs44', 131)" class="i">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 132)" onmouseover="showTip(event, 'fs41', 132)" class="i">lo</span><span class="o">+</span><span class="n">1</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs42', 133)" onmouseover="showTip(event, 'fs42', 133)" class="i">hi</span> <span class="k">do</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 134)" onmouseover="showTip(event, 'fs45', 134)" class="i">nv</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 135)" onmouseover="showTip(event, 'fs40', 135)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 136)" onmouseover="showTip(event, 'fs44', 136)" class="i">i</span>]
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs45', 137)" onmouseover="showTip(event, 'fs45', 137)" class="i">nv</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs43', 138)" onmouseover="showTip(event, 'fs43', 138)" class="v">v</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs43', 139)" onmouseover="showTip(event, 'fs43', 139)" class="v">v</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs45', 140)" onmouseover="showTip(event, 'fs45', 140)" class="i">nv</span>
+        <span onmouseout="hideTip(event, 'fs43', 141)" onmouseover="showTip(event, 'fs43', 141)" class="v">v</span>
+    <span class="c">/// Returns the middle point of the two smallest values of a subsection of an array.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs47', 142)" onmouseover="showTip(event, 'fs47', 142)" class="f">min2middleSub</span> (<span onmouseout="hideTip(event, 'fs48', 143)" onmouseover="showTip(event, 'fs48', 143)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs41', 144)" onmouseover="showTip(event, 'fs41', 144)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 145)" onmouseover="showTip(event, 'fs42', 145)" class="i">hi</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs49', 146)" onmouseover="showTip(event, 'fs49', 146)" class="v">v0</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 147)" onmouseover="showTip(event, 'fs48', 147)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 148)" onmouseover="showTip(event, 'fs41', 148)" class="i">lo</span>]
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs50', 149)" onmouseover="showTip(event, 'fs50', 149)" class="v">v1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 150)" onmouseover="showTip(event, 'fs48', 150)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 151)" onmouseover="showTip(event, 'fs41', 151)" class="i">lo</span><span class="o">+</span><span class="n">1</span>]
+        <span class="k">if</span> <span onmouseout="hideTip(event, 'fs50', 152)" onmouseover="showTip(event, 'fs50', 152)" class="v">v1</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs49', 153)" onmouseover="showTip(event, 'fs49', 153)" class="v">v0</span> <span class="k">then</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs51', 154)" onmouseover="showTip(event, 'fs51', 154)" class="i">tmp</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs49', 155)" onmouseover="showTip(event, 'fs49', 155)" class="v">v0</span>
+            <span onmouseout="hideTip(event, 'fs49', 156)" onmouseover="showTip(event, 'fs49', 156)" class="v">v0</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs50', 157)" onmouseover="showTip(event, 'fs50', 157)" class="v">v1</span>
+            <span onmouseout="hideTip(event, 'fs50', 158)" onmouseover="showTip(event, 'fs50', 158)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs51', 159)" onmouseover="showTip(event, 'fs51', 159)" class="i">tmp</span>
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs44', 160)" onmouseover="showTip(event, 'fs44', 160)" class="i">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 161)" onmouseover="showTip(event, 'fs41', 161)" class="i">lo</span><span class="o">+</span><span class="n">2</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs42', 162)" onmouseover="showTip(event, 'fs42', 162)" class="i">hi</span> <span class="k">do</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs52', 163)" onmouseover="showTip(event, 'fs52', 163)" class="i">nv</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 164)" onmouseover="showTip(event, 'fs48', 164)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 165)" onmouseover="showTip(event, 'fs44', 165)" class="i">i</span>]
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs52', 166)" onmouseover="showTip(event, 'fs52', 166)" class="i">nv</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs49', 167)" onmouseover="showTip(event, 'fs49', 167)" class="v">v0</span> <span class="k">then</span>
+                <span onmouseout="hideTip(event, 'fs50', 168)" onmouseover="showTip(event, 'fs50', 168)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs49', 169)" onmouseover="showTip(event, 'fs49', 169)" class="v">v0</span>
+                <span onmouseout="hideTip(event, 'fs49', 170)" onmouseover="showTip(event, 'fs49', 170)" class="v">v0</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs52', 171)" onmouseover="showTip(event, 'fs52', 171)" class="i">nv</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs52', 172)" onmouseover="showTip(event, 'fs52', 172)" class="i">nv</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs50', 173)" onmouseover="showTip(event, 'fs50', 173)" class="v">v1</span> <span class="k">then</span>
+                <span onmouseout="hideTip(event, 'fs50', 174)" onmouseover="showTip(event, 'fs50', 174)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs52', 175)" onmouseover="showTip(event, 'fs52', 175)" class="i">nv</span>
+        <span onmouseout="hideTip(event, 'fs29', 176)" onmouseover="showTip(event, 'fs29', 176)" class="f">middleOrdered</span> <span onmouseout="hideTip(event, 'fs49', 177)" onmouseover="showTip(event, 'fs49', 177)" class="v">v0</span> <span onmouseout="hideTip(event, 'fs50', 178)" onmouseover="showTip(event, 'fs50', 178)" class="v">v1</span>
+    <span class="c">/// Returns the middle point of the two largest values of a subsection of an array.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs53', 179)" onmouseover="showTip(event, 'fs53', 179)" class="f">max2middleSub</span> (<span onmouseout="hideTip(event, 'fs48', 180)" onmouseover="showTip(event, 'fs48', 180)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs41', 181)" onmouseover="showTip(event, 'fs41', 181)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 182)" onmouseover="showTip(event, 'fs42', 182)" class="i">hi</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs49', 183)" onmouseover="showTip(event, 'fs49', 183)" class="v">v0</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 184)" onmouseover="showTip(event, 'fs48', 184)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 185)" onmouseover="showTip(event, 'fs41', 185)" class="i">lo</span>]
+        <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs50', 186)" onmouseover="showTip(event, 'fs50', 186)" class="v">v1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 187)" onmouseover="showTip(event, 'fs48', 187)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 188)" onmouseover="showTip(event, 'fs41', 188)" class="i">lo</span><span class="o">+</span><span class="n">1</span>]
+        <span class="k">if</span> <span onmouseout="hideTip(event, 'fs50', 189)" onmouseover="showTip(event, 'fs50', 189)" class="v">v1</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs49', 190)" onmouseover="showTip(event, 'fs49', 190)" class="v">v0</span> <span class="k">then</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs51', 191)" onmouseover="showTip(event, 'fs51', 191)" class="i">tmp</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs49', 192)" onmouseover="showTip(event, 'fs49', 192)" class="v">v0</span>
+            <span onmouseout="hideTip(event, 'fs49', 193)" onmouseover="showTip(event, 'fs49', 193)" class="v">v0</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs50', 194)" onmouseover="showTip(event, 'fs50', 194)" class="v">v1</span>
+            <span onmouseout="hideTip(event, 'fs50', 195)" onmouseover="showTip(event, 'fs50', 195)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs51', 196)" onmouseover="showTip(event, 'fs51', 196)" class="i">tmp</span>
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs44', 197)" onmouseover="showTip(event, 'fs44', 197)" class="i">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 198)" onmouseover="showTip(event, 'fs41', 198)" class="i">lo</span><span class="o">+</span><span class="n">2</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs42', 199)" onmouseover="showTip(event, 'fs42', 199)" class="i">hi</span> <span class="k">do</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs52', 200)" onmouseover="showTip(event, 'fs52', 200)" class="i">nv</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs48', 201)" onmouseover="showTip(event, 'fs48', 201)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 202)" onmouseover="showTip(event, 'fs44', 202)" class="i">i</span>]
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs52', 203)" onmouseover="showTip(event, 'fs52', 203)" class="i">nv</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs49', 204)" onmouseover="showTip(event, 'fs49', 204)" class="v">v0</span> <span class="k">then</span>
+                <span onmouseout="hideTip(event, 'fs50', 205)" onmouseover="showTip(event, 'fs50', 205)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs49', 206)" onmouseover="showTip(event, 'fs49', 206)" class="v">v0</span>
+                <span onmouseout="hideTip(event, 'fs49', 207)" onmouseover="showTip(event, 'fs49', 207)" class="v">v0</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs52', 208)" onmouseover="showTip(event, 'fs52', 208)" class="i">nv</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs52', 209)" onmouseover="showTip(event, 'fs52', 209)" class="i">nv</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs50', 210)" onmouseover="showTip(event, 'fs50', 210)" class="v">v1</span> <span class="k">then</span>
+                <span onmouseout="hideTip(event, 'fs50', 211)" onmouseover="showTip(event, 'fs50', 211)" class="v">v1</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs52', 212)" onmouseover="showTip(event, 'fs52', 212)" class="i">nv</span>
+        <span onmouseout="hideTip(event, 'fs29', 213)" onmouseover="showTip(event, 'fs29', 213)" class="f">middleOrdered</span> <span onmouseout="hideTip(event, 'fs50', 214)" onmouseover="showTip(event, 'fs50', 214)" class="v">v1</span> <span onmouseout="hideTip(event, 'fs49', 215)" onmouseover="showTip(event, 'fs49', 215)" class="v">v0</span>
+    <span class="c">/// Swap two elements in an array.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs54', 216)" onmouseover="showTip(event, 'fs54', 216)" class="f">swap</span> (<span onmouseout="hideTip(event, 'fs55', 217)" onmouseover="showTip(event, 'fs55', 217)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs44', 218)" onmouseover="showTip(event, 'fs44', 218)" class="i">i</span> <span onmouseout="hideTip(event, 'fs56', 219)" onmouseover="showTip(event, 'fs56', 219)" class="i">j</span> <span class="o">=</span>
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs57', 220)" onmouseover="showTip(event, 'fs57', 220)" class="i">temp</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs55', 221)" onmouseover="showTip(event, 'fs55', 221)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 222)" onmouseover="showTip(event, 'fs44', 222)" class="i">i</span>]
+        <span onmouseout="hideTip(event, 'fs55', 223)" onmouseover="showTip(event, 'fs55', 223)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 224)" onmouseover="showTip(event, 'fs44', 224)" class="i">i</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs55', 225)" onmouseover="showTip(event, 'fs55', 225)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs56', 226)" onmouseover="showTip(event, 'fs56', 226)" class="i">j</span>]
+        <span onmouseout="hideTip(event, 'fs55', 227)" onmouseover="showTip(event, 'fs55', 227)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs56', 228)" onmouseover="showTip(event, 'fs56', 228)" class="i">j</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs57', 229)" onmouseover="showTip(event, 'fs57', 229)" class="i">temp</span>
+    <span class="c">/// Swap two elements in an array if the first is larger than the second.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs58', 230)" onmouseover="showTip(event, 'fs58', 230)" class="f">swapIf</span> (<span onmouseout="hideTip(event, 'fs40', 231)" onmouseover="showTip(event, 'fs40', 231)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs44', 232)" onmouseover="showTip(event, 'fs44', 232)" class="i">i</span> <span onmouseout="hideTip(event, 'fs56', 233)" onmouseover="showTip(event, 'fs56', 233)" class="i">j</span> <span class="o">=</span>
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs59', 234)" onmouseover="showTip(event, 'fs59', 234)" class="i">ai</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 235)" onmouseover="showTip(event, 'fs40', 235)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 236)" onmouseover="showTip(event, 'fs44', 236)" class="i">i</span>]
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs60', 237)" onmouseover="showTip(event, 'fs60', 237)" class="i">aj</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 238)" onmouseover="showTip(event, 'fs40', 238)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs56', 239)" onmouseover="showTip(event, 'fs56', 239)" class="i">j</span>]
+        <span class="k">if</span> <span onmouseout="hideTip(event, 'fs59', 240)" onmouseover="showTip(event, 'fs59', 240)" class="i">ai</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs60', 241)" onmouseover="showTip(event, 'fs60', 241)" class="i">aj</span> <span class="k">then</span>
+            <span onmouseout="hideTip(event, 'fs40', 242)" onmouseover="showTip(event, 'fs40', 242)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 243)" onmouseover="showTip(event, 'fs44', 243)" class="i">i</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs60', 244)" onmouseover="showTip(event, 'fs60', 244)" class="i">aj</span>
+            <span onmouseout="hideTip(event, 'fs40', 245)" onmouseover="showTip(event, 'fs40', 245)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs56', 246)" onmouseover="showTip(event, 'fs56', 246)" class="i">j</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs59', 247)" onmouseover="showTip(event, 'fs59', 247)" class="i">ai</span>
+    <span class="c">/// Returns the kth smallest element in an array and optionally the middle with</span>
+    <span class="c">/// the next largest. Elements will be reordered in place and cannot be equal</span>
+    <span class="c">/// to the max or min value of the generic type.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs61', 248)" onmouseover="showTip(event, 'fs61', 248)" class="f">selectInPlace</span> (<span onmouseout="hideTip(event, 'fs62', 249)" onmouseover="showTip(event, 'fs62', 249)" class="i">a</span><span class="o">:</span>_[]) <span onmouseout="hideTip(event, 'fs63', 250)" onmouseover="showTip(event, 'fs63', 250)" class="i">k</span> <span onmouseout="hideTip(event, 'fs64', 251)" onmouseover="showTip(event, 'fs64', 251)" class="i">middleNext</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs65', 252)" onmouseover="showTip(event, 'fs65', 252)" class="f">outerLoop</span> <span onmouseout="hideTip(event, 'fs41', 253)" onmouseover="showTip(event, 'fs41', 253)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 254)" onmouseover="showTip(event, 'fs42', 254)" class="i">hi</span> <span class="o">=</span>
+            <span onmouseout="hideTip(event, 'fs58', 255)" onmouseover="showTip(event, 'fs58', 255)" class="f">swapIf</span> <span onmouseout="hideTip(event, 'fs62', 256)" onmouseover="showTip(event, 'fs62', 256)" class="i">a</span> <span onmouseout="hideTip(event, 'fs41', 257)" onmouseover="showTip(event, 'fs41', 257)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs63', 258)" onmouseover="showTip(event, 'fs63', 258)" class="i">k</span>
+            <span onmouseout="hideTip(event, 'fs58', 259)" onmouseover="showTip(event, 'fs58', 259)" class="f">swapIf</span> <span onmouseout="hideTip(event, 'fs62', 260)" onmouseover="showTip(event, 'fs62', 260)" class="i">a</span> <span onmouseout="hideTip(event, 'fs41', 261)" onmouseover="showTip(event, 'fs41', 261)" class="i">lo</span> <span onmouseout="hideTip(event, 'fs42', 262)" onmouseover="showTip(event, 'fs42', 262)" class="i">hi</span>
+            <span onmouseout="hideTip(event, 'fs58', 263)" onmouseover="showTip(event, 'fs58', 263)" class="f">swapIf</span> <span onmouseout="hideTip(event, 'fs62', 264)" onmouseover="showTip(event, 'fs62', 264)" class="i">a</span> <span onmouseout="hideTip(event, 'fs63', 265)" onmouseover="showTip(event, 'fs63', 265)" class="i">k</span> <span onmouseout="hideTip(event, 'fs42', 266)" onmouseover="showTip(event, 'fs42', 266)" class="i">hi</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs66', 267)" onmouseover="showTip(event, 'fs66', 267)" class="i">pivot</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs62', 268)" onmouseover="showTip(event, 'fs62', 268)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs63', 269)" onmouseover="showTip(event, 'fs63', 269)" class="i">k</span>]
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs67', 270)" onmouseover="showTip(event, 'fs67', 270)" class="i">resetLo</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs62', 271)" onmouseover="showTip(event, 'fs62', 271)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 272)" onmouseover="showTip(event, 'fs41', 272)" class="i">lo</span>]<span class="o">=</span><span onmouseout="hideTip(event, 'fs66', 273)" onmouseover="showTip(event, 'fs66', 273)" class="i">pivot</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs62', 274)" onmouseover="showTip(event, 'fs62', 274)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 275)" onmouseover="showTip(event, 'fs41', 275)" class="i">lo</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs15', 276)" onmouseover="showTip(event, 'fs15', 276)" class="f">minValue</span>(); <span class="k">true</span> <span class="k">else</span> <span class="k">false</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs68', 277)" onmouseover="showTip(event, 'fs68', 277)" class="i">resetHi</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs62', 278)" onmouseover="showTip(event, 'fs62', 278)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs42', 279)" onmouseover="showTip(event, 'fs42', 279)" class="i">hi</span>]<span class="o">=</span><span onmouseout="hideTip(event, 'fs66', 280)" onmouseover="showTip(event, 'fs66', 280)" class="i">pivot</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs62', 281)" onmouseover="showTip(event, 'fs62', 281)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs42', 282)" onmouseover="showTip(event, 'fs42', 282)" class="i">hi</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs22', 283)" onmouseover="showTip(event, 'fs22', 283)" class="f">maxValue</span>(); <span class="k">true</span> <span class="k">else</span> <span class="k">false</span>
+            <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs69', 284)" onmouseover="showTip(event, 'fs69', 284)" class="v">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 285)" onmouseover="showTip(event, 'fs41', 285)" class="i">lo</span><span class="o">+</span><span class="n">1</span>
+            <span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs70', 286)" onmouseover="showTip(event, 'fs70', 286)" class="v">j</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs42', 287)" onmouseover="showTip(event, 'fs42', 287)" class="i">hi</span><span class="o">-</span><span class="n">1</span>
+            <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 288)" onmouseover="showTip(event, 'fs62', 288)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs69', 289)" onmouseover="showTip(event, 'fs69', 289)" class="v">i</span>]<span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs66', 290)" onmouseover="showTip(event, 'fs66', 290)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs69', 291)" onmouseover="showTip(event, 'fs69', 291)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs69', 292)" onmouseover="showTip(event, 'fs69', 292)" class="v">i</span><span class="o">+</span><span class="n">1</span>
+            <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 293)" onmouseover="showTip(event, 'fs62', 293)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs70', 294)" onmouseover="showTip(event, 'fs70', 294)" class="v">j</span>]<span class="o">&gt;</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs66', 295)" onmouseover="showTip(event, 'fs66', 295)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs70', 296)" onmouseover="showTip(event, 'fs70', 296)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs70', 297)" onmouseover="showTip(event, 'fs70', 297)" class="v">j</span><span class="o">-</span><span class="n">1</span>
+            <span class="k">while</span> <span onmouseout="hideTip(event, 'fs69', 298)" onmouseover="showTip(event, 'fs69', 298)" class="v">i</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs63', 299)" onmouseover="showTip(event, 'fs63', 299)" class="i">k</span> <span class="o">&amp;&amp;</span> <span onmouseout="hideTip(event, 'fs63', 300)" onmouseover="showTip(event, 'fs63', 300)" class="i">k</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs70', 301)" onmouseover="showTip(event, 'fs70', 301)" class="v">j</span> <span class="k">do</span>
+                <span onmouseout="hideTip(event, 'fs54', 302)" onmouseover="showTip(event, 'fs54', 302)" class="f">swap</span> <span onmouseout="hideTip(event, 'fs62', 303)" onmouseover="showTip(event, 'fs62', 303)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 304)" onmouseover="showTip(event, 'fs69', 304)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 305)" onmouseover="showTip(event, 'fs70', 305)" class="v">j</span>
+                <span onmouseout="hideTip(event, 'fs69', 306)" onmouseover="showTip(event, 'fs69', 306)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs69', 307)" onmouseover="showTip(event, 'fs69', 307)" class="v">i</span><span class="o">+</span><span class="n">1</span>
+                <span onmouseout="hideTip(event, 'fs70', 308)" onmouseover="showTip(event, 'fs70', 308)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs70', 309)" onmouseover="showTip(event, 'fs70', 309)" class="v">j</span><span class="o">-</span><span class="n">1</span>
+                <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 310)" onmouseover="showTip(event, 'fs62', 310)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs69', 311)" onmouseover="showTip(event, 'fs69', 311)" class="v">i</span>]<span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs66', 312)" onmouseover="showTip(event, 'fs66', 312)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs69', 313)" onmouseover="showTip(event, 'fs69', 313)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs69', 314)" onmouseover="showTip(event, 'fs69', 314)" class="v">i</span><span class="o">+</span><span class="n">1</span>
+                <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 315)" onmouseover="showTip(event, 'fs62', 315)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs70', 316)" onmouseover="showTip(event, 'fs70', 316)" class="v">j</span>]<span class="o">&gt;</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs66', 317)" onmouseover="showTip(event, 'fs66', 317)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs70', 318)" onmouseover="showTip(event, 'fs70', 318)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs70', 319)" onmouseover="showTip(event, 'fs70', 319)" class="v">j</span><span class="o">-</span><span class="n">1</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs69', 320)" onmouseover="showTip(event, 'fs69', 320)" class="v">i</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs70', 321)" onmouseover="showTip(event, 'fs70', 321)" class="v">j</span> <span class="k">then</span>
+                <span onmouseout="hideTip(event, 'fs54', 322)" onmouseover="showTip(event, 'fs54', 322)" class="f">swap</span> <span onmouseout="hideTip(event, 'fs62', 323)" onmouseover="showTip(event, 'fs62', 323)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 324)" onmouseover="showTip(event, 'fs69', 324)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 325)" onmouseover="showTip(event, 'fs70', 325)" class="v">j</span>
+                <span class="k">if</span> <span onmouseout="hideTip(event, 'fs63', 326)" onmouseover="showTip(event, 'fs63', 326)" class="i">k</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs70', 327)" onmouseover="showTip(event, 'fs70', 327)" class="v">j</span> <span class="k">then</span>
+                    <span onmouseout="hideTip(event, 'fs69', 328)" onmouseover="showTip(event, 'fs69', 328)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs41', 329)" onmouseover="showTip(event, 'fs41', 329)" class="i">lo</span>
+                    <span onmouseout="hideTip(event, 'fs70', 330)" onmouseover="showTip(event, 'fs70', 330)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs70', 331)" onmouseover="showTip(event, 'fs70', 331)" class="v">j</span><span class="o">-</span><span class="n">1</span>
+                    <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 332)" onmouseover="showTip(event, 'fs62', 332)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs70', 333)" onmouseover="showTip(event, 'fs70', 333)" class="v">j</span>]<span class="o">&gt;</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs66', 334)" onmouseover="showTip(event, 'fs66', 334)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs70', 335)" onmouseover="showTip(event, 'fs70', 335)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs70', 336)" onmouseover="showTip(event, 'fs70', 336)" class="v">j</span><span class="o">-</span><span class="n">1</span>
+                <span class="k">else</span>
+                    <span onmouseout="hideTip(event, 'fs70', 337)" onmouseover="showTip(event, 'fs70', 337)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs42', 338)" onmouseover="showTip(event, 'fs42', 338)" class="i">hi</span>
+                    <span onmouseout="hideTip(event, 'fs69', 339)" onmouseover="showTip(event, 'fs69', 339)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs69', 340)" onmouseover="showTip(event, 'fs69', 340)" class="v">i</span><span class="o">+</span><span class="n">1</span>
+                    <span class="k">while</span> <span onmouseout="hideTip(event, 'fs62', 341)" onmouseover="showTip(event, 'fs62', 341)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs69', 342)" onmouseover="showTip(event, 'fs69', 342)" class="v">i</span>]<span class="o">&lt;=</span><span onmouseout="hideTip(event, 'fs66', 343)" onmouseover="showTip(event, 'fs66', 343)" class="i">pivot</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs69', 344)" onmouseover="showTip(event, 'fs69', 344)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs69', 345)" onmouseover="showTip(event, 'fs69', 345)" class="v">i</span><span class="o">+</span><span class="n">1</span>
+            <span class="k">else</span>
+                <span class="k">if</span> <span onmouseout="hideTip(event, 'fs63', 346)" onmouseover="showTip(event, 'fs63', 346)" class="i">k</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs70', 347)" onmouseover="showTip(event, 'fs70', 347)" class="v">j</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs69', 348)" onmouseover="showTip(event, 'fs69', 348)" class="v">i</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs41', 349)" onmouseover="showTip(event, 'fs41', 349)" class="i">lo</span>
+                <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs63', 350)" onmouseover="showTip(event, 'fs63', 350)" class="i">k</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs69', 351)" onmouseover="showTip(event, 'fs69', 351)" class="v">i</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs70', 352)" onmouseover="showTip(event, 'fs70', 352)" class="v">j</span><span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs42', 353)" onmouseover="showTip(event, 'fs42', 353)" class="i">hi</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs67', 354)" onmouseover="showTip(event, 'fs67', 354)" class="i">resetLo</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs62', 355)" onmouseover="showTip(event, 'fs62', 355)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs41', 356)" onmouseover="showTip(event, 'fs41', 356)" class="i">lo</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs66', 357)" onmouseover="showTip(event, 'fs66', 357)" class="i">pivot</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs68', 358)" onmouseover="showTip(event, 'fs68', 358)" class="i">resetHi</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs62', 359)" onmouseover="showTip(event, 'fs62', 359)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs42', 360)" onmouseover="showTip(event, 'fs42', 360)" class="i">hi</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs66', 361)" onmouseover="showTip(event, 'fs66', 361)" class="i">pivot</span>
+            <span class="k">if</span> <span onmouseout="hideTip(event, 'fs69', 362)" onmouseover="showTip(event, 'fs69', 362)" class="v">i</span><span class="o">&gt;</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs70', 363)" onmouseover="showTip(event, 'fs70', 363)" class="v">j</span> <span class="k">then</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs64', 364)" onmouseover="showTip(event, 'fs64', 364)" class="i">middleNext</span> <span class="k">then</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs63', 365)" onmouseover="showTip(event, 'fs63', 365)" class="i">k</span><span class="o">+</span><span class="n">1</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs69', 366)" onmouseover="showTip(event, 'fs69', 366)" class="v">i</span> <span class="k">then</span>
+                                                <span onmouseout="hideTip(event, 'fs39', 367)" onmouseover="showTip(event, 'fs39', 367)" class="f">minSub</span> <span onmouseout="hideTip(event, 'fs62', 368)" onmouseover="showTip(event, 'fs62', 368)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 369)" onmouseover="showTip(event, 'fs69', 369)" class="v">i</span> <span onmouseout="hideTip(event, 'fs42', 370)" onmouseover="showTip(event, 'fs42', 370)" class="i">hi</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 371)" onmouseover="showTip(event, 'fs29', 371)" class="f">middleOrdered</span> <span onmouseout="hideTip(event, 'fs66', 372)" onmouseover="showTip(event, 'fs66', 372)" class="i">pivot</span>
+                                            <span class="k">else</span> <span onmouseout="hideTip(event, 'fs66', 373)" onmouseover="showTip(event, 'fs66', 373)" class="i">pivot</span> 
+                         <span class="k">else</span> <span onmouseout="hideTip(event, 'fs66', 374)" onmouseover="showTip(event, 'fs66', 374)" class="i">pivot</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs63', 375)" onmouseover="showTip(event, 'fs63', 375)" class="i">k</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs69', 376)" onmouseover="showTip(event, 'fs69', 376)" class="v">i</span> <span class="k">then</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs64', 377)" onmouseover="showTip(event, 'fs64', 377)" class="i">middleNext</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs47', 378)" onmouseover="showTip(event, 'fs47', 378)" class="f">min2middleSub</span> <span onmouseout="hideTip(event, 'fs62', 379)" onmouseover="showTip(event, 'fs62', 379)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 380)" onmouseover="showTip(event, 'fs69', 380)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 381)" onmouseover="showTip(event, 'fs70', 381)" class="v">j</span> <span class="k">else</span> <span onmouseout="hideTip(event, 'fs39', 382)" onmouseover="showTip(event, 'fs39', 382)" class="f">minSub</span> <span onmouseout="hideTip(event, 'fs62', 383)" onmouseover="showTip(event, 'fs62', 383)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 384)" onmouseover="showTip(event, 'fs69', 384)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 385)" onmouseover="showTip(event, 'fs70', 385)" class="v">j</span>
+            <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs63', 386)" onmouseover="showTip(event, 'fs63', 386)" class="i">k</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs70', 387)" onmouseover="showTip(event, 'fs70', 387)" class="v">j</span> <span class="k">then</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs64', 388)" onmouseover="showTip(event, 'fs64', 388)" class="i">middleNext</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs53', 389)" onmouseover="showTip(event, 'fs53', 389)" class="f">max2middleSub</span> <span onmouseout="hideTip(event, 'fs62', 390)" onmouseover="showTip(event, 'fs62', 390)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 391)" onmouseover="showTip(event, 'fs69', 391)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 392)" onmouseover="showTip(event, 'fs70', 392)" class="v">j</span> <span class="k">else</span> <span onmouseout="hideTip(event, 'fs46', 393)" onmouseover="showTip(event, 'fs46', 393)" class="f">maxSub</span> <span onmouseout="hideTip(event, 'fs62', 394)" onmouseover="showTip(event, 'fs62', 394)" class="i">a</span> <span onmouseout="hideTip(event, 'fs69', 395)" onmouseover="showTip(event, 'fs69', 395)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 396)" onmouseover="showTip(event, 'fs70', 396)" class="v">j</span>
+            <span class="k">else</span> <span onmouseout="hideTip(event, 'fs65', 397)" onmouseover="showTip(event, 'fs65', 397)" class="f">outerLoop</span> <span onmouseout="hideTip(event, 'fs69', 398)" onmouseover="showTip(event, 'fs69', 398)" class="v">i</span> <span onmouseout="hideTip(event, 'fs70', 399)" onmouseover="showTip(event, 'fs70', 399)" class="v">j</span>
+        <span onmouseout="hideTip(event, 'fs65', 400)" onmouseover="showTip(event, 'fs65', 400)" class="f">outerLoop</span> <span class="n">0</span> (<span onmouseout="hideTip(event, 'fs71', 401)" onmouseover="showTip(event, 'fs71', 401)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs72', 402)" onmouseover="showTip(event, 'fs72', 402)" class="f">length</span> <span onmouseout="hideTip(event, 'fs62', 403)" onmouseover="showTip(event, 'fs62', 403)" class="i">a</span><span class="o">-</span><span class="n">1</span>)
+    <span class="c">/// Returns the median of an array. Elements will be reordered in place and</span>
+    <span class="c">/// cannot be equal to the max or min value of the generic type.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs73', 404)" onmouseover="showTip(event, 'fs73', 404)" class="f">medianInPlace</span> (<span onmouseout="hideTip(event, 'fs74', 405)" onmouseover="showTip(event, 'fs74', 405)" class="i">a</span><span class="o">:</span>_[]) <span class="o">=</span>
+        <span class="k">match</span> <span onmouseout="hideTip(event, 'fs71', 406)" onmouseover="showTip(event, 'fs71', 406)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs72', 407)" onmouseover="showTip(event, 'fs72', 407)" class="f">length</span> <span onmouseout="hideTip(event, 'fs74', 408)" onmouseover="showTip(event, 'fs74', 408)" class="i">a</span><span class="o">-</span><span class="n">1</span> <span class="k">with</span>
+        | <span class="n">0</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs74', 409)" onmouseover="showTip(event, 'fs74', 409)" class="i">a</span><span class="o">.</span>[<span class="n">0</span>]
+        | <span class="n">1</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs32', 410)" onmouseover="showTip(event, 'fs32', 410)" class="f">middle</span> <span onmouseout="hideTip(event, 'fs74', 411)" onmouseover="showTip(event, 'fs74', 411)" class="i">a</span><span class="o">.</span>[<span class="n">0</span>] <span onmouseout="hideTip(event, 'fs74', 412)" onmouseover="showTip(event, 'fs74', 412)" class="i">a</span><span class="o">.</span>[<span class="n">1</span>]
+        | <span class="n">2</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs35', 413)" onmouseover="showTip(event, 'fs35', 413)" class="f">median3</span> <span onmouseout="hideTip(event, 'fs74', 414)" onmouseover="showTip(event, 'fs74', 414)" class="i">a</span><span class="o">.</span>[<span class="n">0</span>] <span onmouseout="hideTip(event, 'fs74', 415)" onmouseover="showTip(event, 'fs74', 415)" class="i">a</span><span class="o">.</span>[<span class="n">1</span>] <span onmouseout="hideTip(event, 'fs74', 416)" onmouseover="showTip(event, 'fs74', 416)" class="i">a</span><span class="o">.</span>[<span class="n">2</span>]
+        | <span onmouseout="hideTip(event, 'fs75', 417)" onmouseover="showTip(event, 'fs75', 417)" class="i">last</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs61', 418)" onmouseover="showTip(event, 'fs61', 418)" class="f">selectInPlace</span> <span onmouseout="hideTip(event, 'fs74', 419)" onmouseover="showTip(event, 'fs74', 419)" class="i">a</span> (<span onmouseout="hideTip(event, 'fs75', 420)" onmouseover="showTip(event, 'fs75', 420)" class="i">last</span><span class="o">/</span><span class="n">2</span>) (<span onmouseout="hideTip(event, 'fs75', 421)" onmouseover="showTip(event, 'fs75', 421)" class="i">last</span><span class="o">%</span><span class="n">2</span><span class="o">=</span><span class="n">1</span>)
+    <span class="c">/// Returns the median and median absolute deviation of an array.</span>
+    <span class="c">/// Elements cannot be equal to the max or min value of the generic type.</span>
+    <span class="k">let</span> <span class="k">inline</span> <span onmouseout="hideTip(event, 'fs76', 422)" onmouseover="showTip(event, 'fs76', 422)" class="f">medianAndMAD</span> (<span onmouseout="hideTip(event, 'fs77', 423)" onmouseover="showTip(event, 'fs77', 423)" class="i">a</span><span class="o">:</span>_[]) <span class="o">=</span>
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs77', 424)" onmouseover="showTip(event, 'fs77', 424)" class="i">a</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs71', 425)" onmouseover="showTip(event, 'fs71', 425)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs78', 426)" onmouseover="showTip(event, 'fs78', 426)" class="f">copy</span> <span onmouseout="hideTip(event, 'fs77', 427)" onmouseover="showTip(event, 'fs77', 427)" class="i">a</span>
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs79', 428)" onmouseover="showTip(event, 'fs79', 428)" class="i">median</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs73', 429)" onmouseover="showTip(event, 'fs73', 429)" class="f">medianInPlace</span> <span onmouseout="hideTip(event, 'fs77', 430)" onmouseover="showTip(event, 'fs77', 430)" class="i">a</span>
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs44', 431)" onmouseover="showTip(event, 'fs44', 431)" class="i">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs71', 432)" onmouseover="showTip(event, 'fs71', 432)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs72', 433)" onmouseover="showTip(event, 'fs72', 433)" class="f">length</span> <span onmouseout="hideTip(event, 'fs77', 434)" onmouseover="showTip(event, 'fs77', 434)" class="i">a</span><span class="o">-</span><span class="n">1</span> <span class="k">do</span>
+            <span onmouseout="hideTip(event, 'fs77', 435)" onmouseover="showTip(event, 'fs77', 435)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 436)" onmouseover="showTip(event, 'fs44', 436)" class="i">i</span>]<span class="o">&lt;-</span><span onmouseout="hideTip(event, 'fs80', 437)" onmouseover="showTip(event, 'fs80', 437)" class="f">abs</span>(<span onmouseout="hideTip(event, 'fs77', 438)" onmouseover="showTip(event, 'fs77', 438)" class="i">a</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs44', 439)" onmouseover="showTip(event, 'fs44', 439)" class="i">i</span>]<span class="o">-</span><span onmouseout="hideTip(event, 'fs79', 440)" onmouseover="showTip(event, 'fs79', 440)" class="i">median</span>)
+        <span onmouseout="hideTip(event, 'fs79', 441)" onmouseover="showTip(event, 'fs79', 441)" class="i">median</span>,<span onmouseout="hideTip(event, 'fs73', 442)" onmouseover="showTip(event, 'fs73', 442)" class="f">medianInPlace</span> <span onmouseout="hideTip(event, 'fs77', 443)" onmouseover="showTip(event, 'fs77', 443)" class="i">a</span>
 </code></pre></td>
 </tr>
 </table>
 <h2>Property and Performance testing</h2>
 <p>I compared the performance against a full sort and the Math.Net C# Quickselect implimentation.
 This uses the performance testing library provided in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><p>Duplication</p></th>
+<th align="center"><p>Sorted</p></th>
+<th align="center"><p>Current</p></th>
+<th align="center"><p>MathNet</p></th>
+<th align="center"><p>FullSort</p></th>
+<th align="center"><p>1.000 =</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><p>Low</p></td>
+<td align="center"><p>No</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.367</p></td>
+<td align="center"><p>6.568</p></td>
+<td align="center"><p>0.1030s</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>Low</p></td>
+<td align="center"><p>Part</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.339</p></td>
+<td align="center"><p>9.227</p></td>
+<td align="center"><p>0.0478s</p></td>
+</tr>
+<tr class="odd">
+<td align="center"><p>Low</p></td>
+<td align="center"><p>Yes</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.536</p></td>
+<td align="center"><p>13.347</p></td>
+<td align="center"><p>0.0105s</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>Medium</p></td>
+<td align="center"><p>No</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.358</p></td>
+<td align="center"><p>6.569</p></td>
+<td align="center"><p>0.1027s</p></td>
+</tr>
+<tr class="odd">
+<td align="center"><p>Medium</p></td>
+<td align="center"><p>Part</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.384</p></td>
+<td align="center"><p>9.425</p></td>
+<td align="center"><p>0.0481s</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>Medium</p></td>
+<td align="center"><p>Yes</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.833</p></td>
+<td align="center"><p>17.559</p></td>
+<td align="center"><p>0.0100s</p></td>
+</tr>
+<tr class="odd">
+<td align="center"><p>High</p></td>
+<td align="center"><p>No</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.340</p></td>
+<td align="center"><p>4.748</p></td>
+<td align="center"><p>0.1062s</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>High</p></td>
+<td align="center"><p>Part</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>1.590</p></td>
+<td align="center"><p>8.021</p></td>
+<td align="center"><p>0.0526s</p></td>
+</tr>
+<tr class="odd">
+<td align="center"><p>High</p></td>
+<td align="center"><p>Yes</p></td>
+<td align="center"><p>1.000</p></td>
+<td align="center"><p>3.176</p></td>
+<td align="center"><p>26.609</p></td>
+<td align="center"><p>0.0087s</p></td>
+</tr>
+</tbody>
+</table>
+
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="t">StatisticsTests</span> <span class="o">=</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span onmouseout="hideTip(event, 'fs81', 444)" onmouseover="showTip(event, 'fs81', 444)" class="t">StatisticsTests</span> <span class="o">=</span>
     <span class="c">/// Returns the median of an array.</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="f">medianInplaceTest</span>() <span class="o">=</span> ()
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs82', 445)" onmouseover="showTip(event, 'fs82', 445)" class="f">medianInplaceTest</span>() <span class="o">=</span> ()
 </code></pre></td>
 </tr>
 </table>
-<p>Table.</p>
 <h2>Conclusion</h2>
 <p>Todo.</p>
 
@@ -53,9 +391,82 @@ This uses the performance testing library provided in a previous <a href="{% pos
 <div class="tip" id="fs1">namespace System</div>
 <div class="tip" id="fs2">namespace System.Diagnostics</div>
 <div class="tip" id="fs3">Multiple items<br />type AutoOpenAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; AutoOpenAttribute<br />&#160;&#160;new : path:string -&gt; AutoOpenAttribute<br />&#160;&#160;member Path : string<br /><br />Full name: Microsoft.FSharp.Core.AutoOpenAttribute<br /><br />--------------------<br />new : unit -&gt; AutoOpenAttribute<br />new : path:string -&gt; AutoOpenAttribute</div>
-<div class="tip" id="fs4">val sqr : x:&#39;a -&gt; &#39;b (requires member ( * ))<br /><br />Full name: Main.Functions.sqr</div>
-<div class="tip" id="fs5">val x : &#39;a (requires member ( * ))</div>
-<div class="tip" id="fs6">val medianInplace : a:&#39;a [] -&gt; float<br /><br />Full name: Main.Statistics.medianInplace<br /><em><br /><br />&#160;Returns the median of the sample array.</em></div>
-<div class="tip" id="fs7">val a : &#39;a []</div>
-<div class="tip" id="fs8">module StatisticsTests<br /><br />from Main</div>
-<div class="tip" id="fs9">val medianInplaceTest : unit -&gt; unit<br /><br />Full name: Main.StatisticsTests.medianInplaceTest<br /><em><br /><br />&#160;Returns the median of an array.</em></div>
+<div class="tip" id="fs4">Multiple items<br />union case MinValueGen.MinValueGen: MinValueGen<br /><br />--------------------<br />type MinValueGen =<br />&#160;&#160;| MinValueGen<br />&#160;&#160;static member ( =&gt; ) : MinValueGen * int -&gt; int<br />&#160;&#160;static member ( =&gt; ) : MinValueGen * int64 -&gt; int64<br />&#160;&#160;static member ( =&gt; ) : MinValueGen * float -&gt; float<br />&#160;&#160;static member ( =&gt; ) : MinValueGen * MinValueGen -&gt; &#39;a<br /><br />Full name: Main.Functions.MinValueGen</div>
+<div class="tip" id="fs5">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs6">type Int32 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : int<br />&#160;&#160;&#160;&#160;static val MinValue : int<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; int + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:int -&gt; bool + 1 overload<br />&#160;&#160;end<br /><br />Full name: System.Int32</div>
+<div class="tip" id="fs7">field int.MinValue = -2147483648</div>
+<div class="tip" id="fs8">Multiple items<br />val int64 : value:&#39;T -&gt; int64 (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int64<br /><br />--------------------<br />type int64 = Int64<br /><br />Full name: Microsoft.FSharp.Core.int64<br /><br />--------------------<br />type int64&lt;&#39;Measure&gt; = int64<br /><br />Full name: Microsoft.FSharp.Core.int64&lt;_&gt;</div>
+<div class="tip" id="fs9">type Int64 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : int64<br />&#160;&#160;&#160;&#160;static val MinValue : int64<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; int64 + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:int64 -&gt; bool + 1 overload<br />&#160;&#160;end<br /><br />Full name: System.Int64</div>
+<div class="tip" id="fs10">field int64.MinValue = -9223372036854775808L</div>
+<div class="tip" id="fs11">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
+<div class="tip" id="fs12">type Double =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MinValue : float<br />&#160;&#160;&#160;&#160;static val MaxValue : float<br />&#160;&#160;&#160;&#160;static val Epsilon : float<br />&#160;&#160;&#160;&#160;static val NegativeInfinity : float<br />&#160;&#160;&#160;&#160;static val PositiveInfinity : float<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.Double</div>
+<div class="tip" id="fs13">field float.MinValue = -1.79769313486e+308</div>
+<div class="tip" id="fs14">val failwith : message:string -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.Operators.failwith</div>
+<div class="tip" id="fs15">val minValue : unit -&gt; &#39;a (requires member get_Zero and member ( =&gt; ))<br /><br />Full name: Main.Functions.minValue<br /><em><br /><br />&#160;Returnd the minimum value for a generic type.</em></div>
+<div class="tip" id="fs16">module LanguagePrimitives<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs17">val GenericZero&lt;&#39;T (requires member get_Zero)&gt; : &#39;T (requires member get_Zero)<br /><br />Full name: Microsoft.FSharp.Core.LanguagePrimitives.GenericZero</div>
+<div class="tip" id="fs18">Multiple items<br />union case MaxValueGen.MaxValueGen: MaxValueGen<br /><br />--------------------<br />type MaxValueGen =<br />&#160;&#160;| MaxValueGen<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * int -&gt; int<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * int64 -&gt; int64<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * float -&gt; float<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * MaxValueGen -&gt; &#39;a<br /><br />Full name: Main.Functions.MaxValueGen</div>
+<div class="tip" id="fs19">field int.MaxValue = 2147483647</div>
+<div class="tip" id="fs20">field int64.MaxValue = 9223372036854775807L</div>
+<div class="tip" id="fs21">field float.MaxValue = 1.79769313486e+308</div>
+<div class="tip" id="fs22">val maxValue : unit -&gt; &#39;a (requires member get_Zero and member ( =&gt; ))<br /><br />Full name: Main.Functions.maxValue<br /><em><br /><br />&#160;Returns the maximum value for a generic type.</em></div>
+<div class="tip" id="fs23">Multiple items<br />union case HalfPositiveGen.HalfPositiveGen: HalfPositiveGen<br /><br />--------------------<br />type HalfPositiveGen =<br />&#160;&#160;| HalfPositiveGen<br />&#160;&#160;static member ( =&gt; ) : HalfPositiveGen * x:int -&gt; int<br />&#160;&#160;static member ( =&gt; ) : HalfPositiveGen * x:int64 -&gt; int64<br />&#160;&#160;static member ( =&gt; ) : HalfPositiveGen * x:float -&gt; float<br />&#160;&#160;static member ( =&gt; ) : HalfPositiveGen * HalfPositiveGen -&gt; &#39;a<br /><br />Full name: Main.Functions.HalfPositiveGen</div>
+<div class="tip" id="fs24">val x : int</div>
+<div class="tip" id="fs25">val x : int64</div>
+<div class="tip" id="fs26">val x : float</div>
+<div class="tip" id="fs27">val halfPositive : x:&#39;a -&gt; &#39;a (requires member ( =&gt; ))<br /><br />Full name: Main.Functions.halfPositive<br /><em><br /><br />&#160;Returns half of the generic input value.</em></div>
+<div class="tip" id="fs28">val x : &#39;a (requires member ( =&gt; ))</div>
+<div class="tip" id="fs29">val middleOrdered : a:&#39;a -&gt; b:&#39;c -&gt; &#39;d (requires member ( + ) and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Functions.middleOrdered<br /><em><br /><br />&#160;Returns the middle point of two ordered input values.</em></div>
+<div class="tip" id="fs30">val a : &#39;a (requires member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs31">val b : &#39;c (requires member ( - ) and member ( + ) and member ( =&gt; ))</div>
+<div class="tip" id="fs32">val middle : a:&#39;a -&gt; b:&#39;a -&gt; &#39;c (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Functions.middle<br /><em><br /><br />&#160;Returns the middle point of two input values.</em></div>
+<div class="tip" id="fs33">val a : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs34">val b : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs35">val median3 : a:&#39;a -&gt; b:&#39;a -&gt; c:&#39;a -&gt; &#39;a (requires comparison)<br /><br />Full name: Main.Statistics.median3<br /><em><br /><br />&#160;Returns the median of three input values.</em></div>
+<div class="tip" id="fs36">val a : &#39;a (requires comparison)</div>
+<div class="tip" id="fs37">val b : &#39;a (requires comparison)</div>
+<div class="tip" id="fs38">val c : &#39;a (requires comparison)</div>
+<div class="tip" id="fs39">val minSub : a:&#39;a [] -&gt; lo:int -&gt; hi:int -&gt; &#39;a (requires comparison)<br /><br />Full name: Main.Statistics.minSub<br /><em><br /><br />&#160;Returns the minimum value of a subsection of an array.</em></div>
+<div class="tip" id="fs40">val a : &#39;a [] (requires comparison)</div>
+<div class="tip" id="fs41">val lo : int</div>
+<div class="tip" id="fs42">val hi : int</div>
+<div class="tip" id="fs43">val mutable v : &#39;a (requires comparison)</div>
+<div class="tip" id="fs44">val i : int</div>
+<div class="tip" id="fs45">val nv : &#39;a (requires comparison)</div>
+<div class="tip" id="fs46">val maxSub : a:&#39;a [] -&gt; lo:int -&gt; hi:int -&gt; &#39;a (requires comparison)<br /><br />Full name: Main.Statistics.maxSub<br /><em><br /><br />&#160;Returns the maximum value of a subsection of an array.</em></div>
+<div class="tip" id="fs47">val min2middleSub : a:&#39;a [] -&gt; lo:int -&gt; hi:int -&gt; &#39;c (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Statistics.min2middleSub<br /><em><br /><br />&#160;Returns the middle point of the two smallest values of a subsection of an array.</em></div>
+<div class="tip" id="fs48">val a : &#39;a [] (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs49">val mutable v0 : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs50">val mutable v1 : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs51">val tmp : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs52">val nv : &#39;a (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs53">val max2middleSub : a:&#39;a [] -&gt; lo:int -&gt; hi:int -&gt; &#39;c (requires comparison and member ( + ) and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Statistics.max2middleSub<br /><em><br /><br />&#160;Returns the middle point of the two largest values of a subsection of an array.</em></div>
+<div class="tip" id="fs54">val swap : a:&#39;a [] -&gt; i:int -&gt; j:int -&gt; unit<br /><br />Full name: Main.Statistics.swap<br /><em><br /><br />&#160;Swap two elements in an array.</em></div>
+<div class="tip" id="fs55">val a : &#39;a []</div>
+<div class="tip" id="fs56">val j : int</div>
+<div class="tip" id="fs57">val temp : &#39;a</div>
+<div class="tip" id="fs58">val swapIf : a:&#39;a [] -&gt; i:int -&gt; j:int -&gt; unit (requires comparison)<br /><br />Full name: Main.Statistics.swapIf<br /><em><br /><br />&#160;Swap two elements in an array if the first is larger than the second.</em></div>
+<div class="tip" id="fs59">val ai : &#39;a (requires comparison)</div>
+<div class="tip" id="fs60">val aj : &#39;a (requires comparison)</div>
+<div class="tip" id="fs61">val selectInPlace : a:&#39;a [] -&gt; k:int -&gt; middleNext:bool -&gt; &#39;a (requires comparison and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( - ) and member ( + ) and member ( =&gt; ))<br /><br />Full name: Main.Statistics.selectInPlace<br /><em><br /><br />&#160;Returns the kth smallest element in an array and optionally the middle with<br />&#160;the next largest. Elements will be reordered in place and cannot be equal<br />&#160;to the max or min value of the generic type.</em></div>
+<div class="tip" id="fs62">val a : &#39;a [] (requires comparison and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( - ) and member ( + ) and member ( =&gt; ))</div>
+<div class="tip" id="fs63">val k : int</div>
+<div class="tip" id="fs64">val middleNext : bool</div>
+<div class="tip" id="fs65">val outerLoop : (int -&gt; int -&gt; &#39;a) (requires comparison and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( - ) and member ( + ) and member ( =&gt; ))</div>
+<div class="tip" id="fs66">val pivot : &#39;a (requires comparison and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( - ) and member ( + ) and member ( =&gt; ))</div>
+<div class="tip" id="fs67">val resetLo : bool</div>
+<div class="tip" id="fs68">val resetHi : bool</div>
+<div class="tip" id="fs69">val mutable i : int</div>
+<div class="tip" id="fs70">val mutable j : int</div>
+<div class="tip" id="fs71">type Array =<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CopyTo : array:Array * index:int -&gt; unit + 1 overload<br />&#160;&#160;member GetEnumerator : unit -&gt; IEnumerator<br />&#160;&#160;member GetLength : dimension:int -&gt; int<br />&#160;&#160;member GetLongLength : dimension:int -&gt; int64<br />&#160;&#160;member GetLowerBound : dimension:int -&gt; int<br />&#160;&#160;member GetUpperBound : dimension:int -&gt; int<br />&#160;&#160;member GetValue : [&lt;ParamArray&gt;] indices:int[] -&gt; obj + 7 overloads<br />&#160;&#160;member Initialize : unit -&gt; unit<br />&#160;&#160;member IsFixedSize : bool<br />&#160;&#160;...<br /><br />Full name: System.Array</div>
+<div class="tip" id="fs72">val length : array:&#39;T [] -&gt; int<br /><br />Full name: Microsoft.FSharp.Collections.Array.length</div>
+<div class="tip" id="fs73">val medianInPlace : a:&#39;a [] -&gt; &#39;a (requires comparison and member ( + ) and member ( - ) and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( =&gt; ))<br /><br />Full name: Main.Statistics.medianInPlace<br /><em><br /><br />&#160;Returns the median of an array. Elements will be reordered in place and<br />&#160;cannot be equal to the max or min value of the generic type.</em></div>
+<div class="tip" id="fs74">val a : &#39;a [] (requires comparison and member ( + ) and member ( - ) and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member ( =&gt; ))</div>
+<div class="tip" id="fs75">val last : int</div>
+<div class="tip" id="fs76">val medianAndMAD : a:&#39;a [] -&gt; &#39;a * &#39;a (requires comparison and member ( + ) and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member Abs and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Statistics.medianAndMAD<br /><em><br /><br />&#160;Returns the median and median absolute deviation of an array.<br />&#160;Elements cannot be equal to the max or min value of the generic type.</em></div>
+<div class="tip" id="fs77">val a : &#39;a [] (requires comparison and member ( + ) and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member Abs and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs78">val copy : array:&#39;T [] -&gt; &#39;T []<br /><br />Full name: Microsoft.FSharp.Collections.Array.copy</div>
+<div class="tip" id="fs79">val median : &#39;a (requires comparison and member ( + ) and member get_Zero and member ( =&gt; ) and member ( =&gt; ) and member Abs and member ( - ) and member ( =&gt; ))</div>
+<div class="tip" id="fs80">val abs : value:&#39;T -&gt; &#39;T (requires member Abs)<br /><br />Full name: Microsoft.FSharp.Core.Operators.abs</div>
+<div class="tip" id="fs81">module StatisticsTests<br /><br />from Main</div>
+<div class="tip" id="fs82">val medianInplaceTest : unit -&gt; unit<br /><br />Full name: Main.StatisticsTests.medianInplaceTest<br /><em><br /><br />&#160;Returns the median of an array.</em></div>
