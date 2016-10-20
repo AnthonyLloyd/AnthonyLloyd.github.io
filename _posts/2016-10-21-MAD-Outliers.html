@@ -19,9 +19,10 @@ The median and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation"
 <p><span class="math">\[\operatorname{MAD} = \operatorname{median}\left(\left|x_i - \operatorname{median}(x_i)\right|\right)\]</span></p>
 <p>Outliers can be identified as points that are outside a fixed multiple of the median absolute deviation from the median. Recommended values for this multiple are 2.5 or 3.</p>
 <h2>Median and MAD code</h2>
-<p>The following median function makes use the <a href="http://dhost.info/zabrodskyvlada/algor.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
-It provides a 20-30% performance improvement over the <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect</a> algorithm.
-In addition I have added features to improve the performance when the data has a high degree of duplication or sorting.</p>
+<p>The following median function makes use of the <a href="http://dhost.info/zabrodskyvlada/algor.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
+It provides a 20-30% performance improvement over the <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect</a> algorithm.</p>
+<p>The inner array while loops allow equality which improves performance when there is duplication and ordering in the data.
+The <code>selectInPlace</code> function has also been extended to optionally return the middle of the kth and the next element.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">  1: </span>
 <span class="l">  2: </span>
 <span class="l">  3: </span>
@@ -285,8 +286,10 @@ In addition I have added features to improve the performance when the data has a
 </tr>
 </table>
 <h2>Property and Performance testing</h2>
-<p>I compared the performance against a full sort and the Math.Net C# Quickselect implimentation.
-This uses the performance testing library provided in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a>.</p>
+<p>A simple FsCheck property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.</p>
+<p>The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
+This uses the performance testing library provided in a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> after extending it to allow sub function measurement.
+This was run from the build script in a Release 64-bit mode.</p>
 <table>
 <thead>
 <tr class="header">
@@ -507,7 +510,10 @@ This uses the performance testing library provided in a previous <a href="{% pos
 </tr>
 </table>
 <h2>Conclusion</h2>
-<p>Todo.</p>
+<p>The post provides optimised generic select, median and median absolute deviation functions.</p>
+<p>The performance results show a good improvement over Quickselect which is already a highly optimised algorithm.
+The performance of the code is also more predictable due to its handling of duplication and partially sorted data.</p>
+<p>The post demonstrates how simple property based testing and a performance testing library can be used together to optimise algorithms.</p>
 
 
 <div class="tip" id="fs1">namespace System</div>
@@ -528,7 +534,7 @@ This uses the performance testing library provided in a previous <a href="{% pos
 <div class="tip" id="fs16">type Double =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MinValue : float<br />&#160;&#160;&#160;&#160;static val MaxValue : float<br />&#160;&#160;&#160;&#160;static val Epsilon : float<br />&#160;&#160;&#160;&#160;static val NegativeInfinity : float<br />&#160;&#160;&#160;&#160;static val PositiveInfinity : float<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.Double</div>
 <div class="tip" id="fs17">field float.MinValue = -1.79769313486e+308</div>
 <div class="tip" id="fs18">val failwith : message:string -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.Operators.failwith</div>
-<div class="tip" id="fs19">val minValue : unit -&gt; &#39;a (requires member get_Zero and member ( =&gt; ))<br /><br />Full name: Main.Functions.minValue<br /><em><br /><br />&#160;Returnd the minimum value for a generic type.</em></div>
+<div class="tip" id="fs19">val minValue : unit -&gt; &#39;a (requires member get_Zero and member ( =&gt; ))<br /><br />Full name: Main.Functions.minValue<br /><em><br /><br />&#160;Returns the minimum value for a generic type.</em></div>
 <div class="tip" id="fs20">module LanguagePrimitives<br /><br />from Microsoft.FSharp.Core</div>
 <div class="tip" id="fs21">val GenericZero&lt;&#39;T (requires member get_Zero)&gt; : &#39;T (requires member get_Zero)<br /><br />Full name: Microsoft.FSharp.Core.LanguagePrimitives.GenericZero</div>
 <div class="tip" id="fs22">Multiple items<br />union case MaxValueGen.MaxValueGen: MaxValueGen<br /><br />--------------------<br />type MaxValueGen =<br />&#160;&#160;| MaxValueGen<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * int -&gt; int<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * int64 -&gt; int64<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * float -&gt; float<br />&#160;&#160;static member ( =&gt; ) : MaxValueGen * MaxValueGen -&gt; &#39;a<br /><br />Full name: Main.Functions.MaxValueGen</div>
@@ -540,7 +546,7 @@ This uses the performance testing library provided in a previous <a href="{% pos
 <div class="tip" id="fs28">val x : int</div>
 <div class="tip" id="fs29">val x : int64</div>
 <div class="tip" id="fs30">val x : float</div>
-<div class="tip" id="fs31">val halfPositive : x:&#39;a -&gt; &#39;a (requires member ( =&gt; ))<br /><br />Full name: Main.Functions.halfPositive<br /><em><br /><br />&#160;Returns half of the generic input value.</em></div>
+<div class="tip" id="fs31">val halfPositive : x:&#39;a -&gt; &#39;a (requires member ( =&gt; ))<br /><br />Full name: Main.Functions.halfPositive<br /><em><br /><br />&#160;Returns half of the positive generic input value.</em></div>
 <div class="tip" id="fs32">val x : &#39;a (requires member ( =&gt; ))</div>
 <div class="tip" id="fs33">val middleOrdered : a:&#39;a -&gt; b:&#39;c -&gt; &#39;d (requires member ( + ) and member ( - ) and member ( =&gt; ))<br /><br />Full name: Main.Functions.middleOrdered<br /><em><br /><br />&#160;Returns the middle point of two ordered input values.</em></div>
 <div class="tip" id="fs34">val a : &#39;a (requires member ( + ) and member ( - ) and member ( =&gt; ))</div>

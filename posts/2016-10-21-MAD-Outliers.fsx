@@ -33,7 +33,7 @@ module Functions =
         static member inline (=>) (_:MinValueGen,_:int64) = Int64.MinValue
         static member inline (=>) (_:MinValueGen,_:float) = Double.MinValue
         static member inline (=>) (_:MinValueGen,_:MinValueGen) = failwith "MinValueGen"
-    /// Returnd the minimum value for a generic type.
+    /// Returns the minimum value for a generic type.
     let inline minValue() : 'a = MinValueGen => LanguagePrimitives.GenericZero<'a>
 
     type MaxValueGen = MaxValueGen with
@@ -49,7 +49,7 @@ module Functions =
         static member inline (=>) (_:HalfPositiveGen,x:int64) = x>>>1
         static member inline (=>) (_:HalfPositiveGen,x:float) = x*0.5
         static member inline (=>) (_:HalfPositiveGen,_:HalfPositiveGen) = failwith "HalfValueGen"
-    /// Returns half of the generic input value.
+    /// Returns half of the positive generic input value.
     let inline halfPositive(x:'a) : 'a = HalfPositiveGen => x
 
     /// Returns the middle point of two ordered input values.
@@ -221,9 +221,11 @@ Outliers can be identified as points that are outside a fixed multiple of the me
 
 ## Median and MAD code
 
-The following median function makes use the [MODIFIND](http://dhost.info/zabrodskyvlada/algor.html) algorithm by Vladimir Zabrodsky.
+The following median function makes use of the [MODIFIND](http://dhost.info/zabrodskyvlada/algor.html) algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the [Quickselect](https://en.wikipedia.org/wiki/Quickselect) algorithm.
-In addition I have added features to improve the performance when the data has a high degree of duplication or sorting.
+
+The inner array while loops allow equality which improves performance when there is duplication and ordering in the data.
+The `selectInPlace` function has also been extended to optionally return the middle of the kth and the next element.
 
 *)
 module Statistics =
@@ -359,8 +361,11 @@ module Statistics =
 
 ## Property and Performance testing
 
-I compared the performance against a full sort and the Math.Net C# Quickselect implimentation.
-This uses the performance testing library provided in a previous [post]({% post_url 2016-05-20-performance-testing %}).
+A simple FsCheck property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.
+
+The performance against a full sort and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
+This uses the performance testing library provided in a previous [post]({% post_url 2016-05-20-performance-testing %}) after extending it to allow sub function measurement.
+This was run from the build script in a Release 64-bit mode.
 
 
 | Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |
@@ -443,6 +448,10 @@ module StatisticsTests =
 (**
 ## Conclusion
 
-Todo.
+The post provides optimised generic select, median and median absolute deviation functions. 
 
+The performance results show a good improvement over Quickselect which is already a highly optimised algorithm.
+The performance of the code is also more predictable due to its handling of duplication and partially sorted data.
+
+The post demonstrates how simple property based testing and a performance testing library can be used together to optimise algorithms. 
 *)

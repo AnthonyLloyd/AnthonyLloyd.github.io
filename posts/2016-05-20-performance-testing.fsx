@@ -222,6 +222,7 @@ Modularity from higher-order functions and lazy evaluation together with a littl
 
 UPDATED (2016-10-21):
 The functions have been extended to be able to measure a sub function of the passed in functions.
+This enables set up to be done without effecting the measurment.
 The sub function can be called multiple times and the metric will be aggregated.
-An example of it's use can be found in the Outliers and MAD [post]({% post_url 2016-10-21-MAD-Outliers %}). 
+An example of its use can be found in the Outliers and MAD [post]({% post_url 2016-10-21-MAD-Outliers %}). 
 *)
