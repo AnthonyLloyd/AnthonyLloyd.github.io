@@ -365,7 +365,7 @@ A simple `FsCheck` property test comparing the result with a full sort version e
 
 The performance versus a full sort algorithm and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
 
-The performance testing library developed in a previous [post]({% post_url 2016-05-20-performance-testing %}) is used after extending it to allow sub function measurement.
+The performance testing library developed in a previous [post]({% post_url 2016-05-20-performance-testing %}) is used after extending it to allow subfunction measurement.
 This is run from the build script in 64-bit Release mode.
 
 
@@ -453,5 +453,5 @@ The post provides optimised generic select, median and median absolute deviation
 The performance results show a good improvement over Quickselect which is already an optimised algorithm.
 The performance of the code is also more predictable due to its handling of duplication and partially sorted data.
 
-The post demonstrates how simple property based testing and a performance testing library can be used together to optimise algorithms. 
+The post demonstrates how property based testing and a performance testing library can be used together to optimise algorithms. 
 *)
