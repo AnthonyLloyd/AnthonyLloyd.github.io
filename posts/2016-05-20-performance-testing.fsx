@@ -137,7 +137,7 @@ module Performance =
 
     /// Create and iterate two statistics sequences until the metric means can be compared.
     let inline private measureCompare (metric,metricTarget) f1 f2 =
-        if f1()<>f2() then failwith "function results are not the same"
+        if f1 id<>f2 id then failwith "function results are not the same"
         let ic = targetIterationCount metric metricTarget f2
         let stats f = Seq.initInfinite (fun _ -> metric ic f)
                       |> sampleStatistics
@@ -148,14 +148,21 @@ module Performance =
             if w.DF>maxDF then Some 0 else match welchTest w with |0->None |c->Some c)
 
     /// Measure the given function for the iteration count using the start and end metric.
-    let private measureMetric startMetric endMetric ic f =
+    let inline private measureMetric startMetric endMetric ic f =
         GC.Collect()
         GC.WaitForPendingFinalizers()
         GC.Collect()
-        let s = startMetric()
-        let rec loop i = if i>0 then f() |> ignore; loop (i-1)
+        let mutable total = LanguagePrimitives.GenericZero
+        let measurer toMeasure =
+            fun args ->
+                let s = startMetric()
+                let ret = toMeasure args
+                let m = endMetric s
+                total<-total+m
+                ret
+        let rec loop i = if i>0 then f measurer |> ignore; loop (i-1)
         loop ic
-        endMetric s
+        total
     
     /// Measure the time metric for the given function and iteration count.
     let private timeMetric ic f = 
@@ -212,4 +219,9 @@ They are also fast since they stop as soon as the given confidence level is achi
 The compare functions could also be extended to test if a function is a given percentage better than another.  
 
 Modularity from higher-order functions and lazy evaluation together with a little maths have produced a simple yet powerful performance testing library.
+
+UPDATED (2016-10-21):
+The functions have been extended to be able to measure a sub function of the passed in functions.
+The sub function can be called multiple times and the metric will be aggregated.
+An example of it's use can be found in the Outliers and MAD [post]({% post_url 2016-10-21-MAD-Outliers %}). 
 *)

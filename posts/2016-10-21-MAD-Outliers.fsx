@@ -8,13 +8,26 @@ keywords: median absolute deviation, MAD, median, outlier, statistics
 \---
 *)
 (*** hide ***)
+#r @"..\packages\MathNet.Numerics\lib\net40\MathNet.Numerics.dll"
+#r @"..\packages\xunit.runner.visualstudio.2.1\build\net20\..\_common\xunit.abstractions.dll"
+#r @"..\packages\xunit.assert\lib\portable-net45+win8+wp8+wpa81\xunit.assert.dll"
+#r @"..\packages\xunit.extensibility.core\lib\portable-net45+win8+wp8+wpa81\xunit.core.dll"
+#r @"..\packages\xunit.extensibility.execution\lib\net45\xunit.execution.desktop.dll"
+#r @"..\packages\FsCheck\lib\net45\FsCheck.dll"
+#r @"..\FsCheck.Xunit\lib\net45\FsCheck.Xunit.dll"
 namespace Main
 
 open System
 open System.Diagnostics
-    
+open Xunit
+open FsCheck
+
+type PropertyAttribute = FactAttribute
+
 [<AutoOpen>]
 module Functions =
+    let inline sqr x = x*x
+
     type MinValueGen = MinValueGen with
         static member inline (=>) (_:MinValueGen,_:int) = Int32.MinValue
         static member inline (=>) (_:MinValueGen,_:int64) = Int64.MinValue
@@ -47,6 +60,139 @@ module Functions =
         if a<=b then middleOrdered a b 
         else middleOrdered b a
     
+type SampleStatistics = {N:int;Mean:float;Variance:float}
+                        member s.StandardDeviation = sqrt s.Variance
+                        member s.MeanStandardError = sqrt(s.Variance/float s.N)
+
+type WelchStatistic = {T:float;DF:int}
+
+module StatisticsPerf =
+    /// Online statistics sequence for a given sample sequence.
+    let inline sampleStatistics s =
+        let calc (n,m,s) x =
+            let m'=m+(x-m)/float(n+1)
+            n+1,m',s+(x-m)*(x-m')
+        Seq.map float s |> Seq.scan calc (0,0.0,0.0) |> Seq.skip 3
+        |> Seq.map (fun (n,m,s) -> {N=n;Mean=m;Variance=s/float(n-1)})
+
+    /// Scale the statistics for a given underlying random variable change of scale.
+    let scale f s = {s with Mean=s.Mean*f;Variance=s.Variance*sqr f}
+
+    /// Single iteration statistics for a given iteration count and total statistics.
+    let singleIteration ic s = {N=s.N*ic;Mean=s.Mean/float ic;Variance=s.Variance/float ic}
+
+    /// Student's t-distribution inverse for 0.1% confidence level by degrees of freedom.
+    let private tInv = 
+        [|636.6;31.60;12.92;8.610;6.869;5.959;5.408;5.041;4.781;4.587;4.437;4.318;4.221;
+          4.140;4.073;4.015;3.965;3.922;3.883;3.850;3.819;3.792;3.768;3.745;3.725;3.707;
+          3.690;3.674;3.659;3.646;3.633;3.622;3.611;3.601;3.591;3.582;3.574;3.566;3.558;
+          3.551;3.544;3.538;3.532;3.526;3.520;3.515;3.510;3.505;3.500;3.496;3.492;3.488;
+          3.484;3.480;3.476;3.473;3.470;3.466;3.463;3.460;3.457;3.454;3.452;3.449;3.447;
+          3.444;3.442;3.439;3.437;3.435;3.433;3.431;3.429;3.427;3.425;3.423;3.421;3.420;
+          3.418;3.416;3.415;3.413;3.412;3.410;3.409;3.407;3.406;3.405;3.403;3.402;3.401;
+          3.399;3.398;3.397;3.396;3.395;3.394;3.393;3.392;3.390|]
+
+    /// Welch's t-test statistic for two given sample statistics.
+    let welchStatistic s1 s2 =
+        let f1 = s1.Variance/float s1.N
+        let f2 = s2.Variance/float s2.N
+        {
+            T = (s1.Mean-s2.Mean)/sqrt(f1+f2)
+            DF= if f1=0.0 && f2=0.0 then 1
+                else sqr(f1+f2)/(sqr f1/float(s1.N-1)+sqr f2/float(s2.N-1)) |> int
+        }
+
+    /// Welch's t-test for a given Welch statistic to a confidence level of 0.1%.
+    let welchTest w =
+        if abs w.T < Array.get tInv (min w.DF (Array.length tInv) - 1) then 0 else sign w.T
+
+open StatisticsPerf
+
+module Performance =
+    /// Find the iteration count to get to at least the metric target.
+    let inline private targetIterationCount metric metricTarget f =
+        let rec find n =
+            let item = metric n f
+            if (item<<<3)>=metricTarget then n*int metricTarget/int item+1
+            else find (n*10)
+        find 1
+        
+    /// Create and iterate a statistics sequence for a metric until the given accuracy.
+    let inline private measureStatistics (metric,metricTarget) relativeError f =
+        let ic = targetIterationCount metric metricTarget f
+        Seq.initInfinite (fun _ -> metric ic f) |> sampleStatistics
+        |> Seq.map (singleIteration ic)
+        |> Seq.find (fun s -> s.MeanStandardError<=relativeError*s.Mean)
+
+    /// Create and iterate two statistics sequences until the metric means can be compared.
+    let inline private measureCompare (metric,metricTarget) f1 f2 =
+        if f1 id<>f2 id then failwith "function results are not the same"
+        let ic = targetIterationCount metric metricTarget f2
+        let stats f = Seq.initInfinite (fun _ -> metric ic f)
+                      |> sampleStatistics
+                      |> Seq.map (singleIteration ic)
+        Seq.map2 welchStatistic (stats f1) (stats f2)
+        |> Seq.pick (fun w ->
+            let maxDF = 10000
+            if w.DF>maxDF then Some 0 else match welchTest w with |0->None |c->Some c)
+
+    /// Measure the given function for the iteration count using the start and end metric.
+    let inline private measureMetric startMetric endMetric ic f =
+        GC.Collect()
+        GC.WaitForPendingFinalizers()
+        GC.Collect()
+        let mutable total = LanguagePrimitives.GenericZero
+        let measurer toMeasure =
+            fun args ->
+                let s = startMetric()
+                let ret = toMeasure args
+                let m = endMetric s
+                total<-total+m
+                ret
+        let rec loop i = if i>0 then f measurer |> ignore; loop (i-1)
+        loop ic
+        total
+    
+    /// Measure the time metric for the given function and iteration count.
+    let private timeMetric ic f = 
+        measureMetric Stopwatch.GetTimestamp (fun t -> Stopwatch.GetTimestamp()-t) ic f
+        
+    /// Measure the memory metric for the given function and iteration count.
+    let private memoryMetric ic f =
+        let inline startMetric() =
+            if GC.TryStartNoGCRegion(1L<<<22) |> not then failwith "TryStartNoGCRegion"
+            GC.GetTotalMemory false
+        let inline endMetric s =
+            let t = GC.GetTotalMemory false - s
+            GC.EndNoGCRegion()
+            t
+        measureMetric startMetric endMetric ic f
+
+    /// Measure the garbage collection metric for the given function and iteration count.
+    let private garbageMetric ic f =
+        let count() = GC.CollectionCount 0 + GC.CollectionCount 1 + GC.CollectionCount 2
+        measureMetric count (fun s -> count()-s) ic f
+
+    /// Measure definitions which are a metric together with a metric target.
+    let private oneMillisecond = Stopwatch.Frequency/1000L
+    let private timeMeasure = timeMetric, oneMillisecond
+    let private memoryMeasure = memoryMetric, 1024L //1KB
+    let private garbageMeasure = garbageMetric, 10
+
+    /// Time statistics for a given function accurate to a mean standard error of 1%.
+    let timeStatistics f =
+        measureStatistics timeMeasure 0.01 f |> scale (1.0/float Stopwatch.Frequency)
+    /// Memory statistics for a given function accurate to a mean standard error of 1%.
+    let memoryStatistics f = measureStatistics memoryMeasure 0.01 f
+    /// GC count statistics for a given function accurate to a mean standard error of 1%.
+    let gcCountStatistics f = measureStatistics garbageMeasure 0.01 f
+    
+    /// Time comparison for two given functions to a confidence level of 0.1%.
+    let timeCompare f1 f2 = measureCompare timeMeasure f1 f2
+    /// Memory comparison for two given functions to a confidence level of 0.1%.
+    let memoryCompare f1 f2 = measureCompare memoryMeasure f1 f2
+    /// GC count comparison for two given functions to a confidence level of 0.1%.
+    let gcCountCompare f1 f2 = measureCompare garbageMeasure f1 f2
 (**
 This post presents a more robust method of detecting outliers in sample data than commonly used.
 The method is based on the median and an optimised F# median function is provided. 
@@ -231,8 +377,69 @@ This uses the performance testing library provided in a previous [post]({% post_
 
 *)
 module StatisticsTests =
-    /// Returns the median of an array.
-    let medianInplaceTest() = ()
+    let inline medianQuickSelect (a:float[]) =
+        MathNet.Numerics.Statistics.ArrayStatistics.MedianInplace a
+
+    let inline medianFullSort a =
+        Array.sortInPlace a
+        let l = Array.length a
+        if l%2=0 then
+            let i = l/2
+            let x = a.[i-1]
+            let y = a.[i]
+            x+(y-x)*0.5
+        else a.[l/2]
+
+    [<Property>]
+    let MedianProp (x:int) (xs:int list) =
+        let l = x::xs |> List.map float
+        let m1 = List.toArray l |> Statistics.medianInPlace
+        let m2 = List.toArray l |> medianFullSort 
+        m1=m2
+
+    type Duplication =
+        | Low | Medium | High
+        member i.ToInt = match i with | Low->500000000 | Medium->5000 | High->50
+        override i.ToString() = match i with | Low->"Low" | Medium->"Medium" | High->"High"
+
+    type Sorted =
+        | No | Part | Yes
+        override i.ToString() = match i with | No->"No" | Part->"Part" | Yes->"Yes"
+
+    let list (duplication:Duplication) (sorted:Sorted) =
+        let r = System.Random 123
+        let next() = r.Next(0,duplication.ToInt) |> float
+        Seq.init 5000 (fun i ->
+            let l = List.init (i+1) (fun _ -> next())
+            match sorted with
+            | No -> l
+            | Yes -> List.sort l
+            | Part ->
+                let a = List.sort l |> List.toArray
+                let len = Array.length a
+                Seq.iter (fun _ -> Statistics.swap a (r.Next len) (r.Next len)) {1..len/4}
+                List.ofArray a
+            )
+
+    [<Fact>]
+    let MedianPerfTest() =
+        printfn
+            "| Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |"
+        printfn
+            "|:-----------:|:----------:|:---------:|:---------:|:----------:|:---------:|"
+        Seq.collect (fun d -> Seq.map (fun s -> (d,s),list d s) [No;Part;Yes])
+            [Low;Medium;High]
+        |> Seq.iter (fun ((d,s),lists) ->
+            let timeStatistics f =
+                Performance.timeStatistics
+                    (fun timer -> Seq.iter (List.toArray >> timer f >> ignore) lists)
+            let p1 = timeStatistics Statistics.medianInPlace
+            let p2 = timeStatistics medianQuickSelect
+            let p3 = timeStatistics medianFullSort
+            printfn
+                "|    %-6s   |    %-4s    |   1.000   |  %6.3f   |   %6.3f   |  %.4fs  |"
+                (string d) (string s) (p2.Mean/p1.Mean) (p3.Mean/p1.Mean) p1.Mean
+        )
 (**
 ## Conclusion
 
