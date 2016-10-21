@@ -224,7 +224,7 @@ Outliers can be identified as points that are outside a fixed multiple of the me
 The following median function makes use of the [MODIFIND](http://dhost.info/zabrodskyvlada/algor.html) algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the [Quickselect](https://en.wikipedia.org/wiki/Quickselect) algorithm.
 
-The inner array while loops allow equality which improves performance when there is duplication and ordering in the data.
+The array while loops allow equality which improves performance when there is duplication and ordering in the data.
 The `selectInPlace` function has also been extended to optionally return the middle of the kth and the k+1 element.
 
 *)
@@ -363,23 +363,11 @@ module Statistics =
 
 A simple `FsCheck` property test comparing the result with a full sort version ensures no mistakes have been made in the implementation.
 
-The performance versus a full sort algorithm and the Math.Net C# Quickselect implementation is compared for different degrees of duplication and sorting.
+The performance versus a full sort algorithm and the Math.Net C# Quickselect implementation are compared for different degrees of duplication and sorting.
 
 The performance testing library developed in a previous [post]({% post_url 2016-05-20-performance-testing %}) is used after extending it to allow subfunction measurement.
 This is run from the build script in 64-bit Release mode.
 
-
-| Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |
-|:-----------:|:----------:|:---------:|:---------:|:----------:|:---------:|
-|    Low      |    No      |   1.000   |   1.369   |    6.582   |  0.1028s  |
-|    Low      |    Part    |   1.000   |   1.350   |    9.269   |  0.0476s  |
-|    Low      |    Yes     |   1.000   |   1.516   |   12.964   |  0.0106s  |
-|    Medium   |    No      |   1.000   |   1.373   |    6.577   |  0.1018s  |
-|    Medium   |    Part    |   1.000   |   1.397   |    9.471   |  0.0478s  |
-|    Medium   |    Yes     |   1.000   |   1.840   |   17.519   |  0.0100s  |
-|    High     |    No      |   1.000   |   1.341   |    4.745   |  0.1059s  |
-|    High     |    Part    |   1.000   |   1.576   |    8.050   |  0.0526s  |
-|    High     |    Yes     |   1.000   |   3.193   |   26.390   |  0.0087s  |
 *)
 module StatisticsTests =
     let inline medianQuickSelect (a:float[]) =
@@ -446,12 +434,25 @@ module StatisticsTests =
                 (string d) (string s) (p2.Mean/p1.Mean) (p3.Mean/p1.Mean) p1.Mean
         )
 (**
+
+| Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |
+|:-----------:|:----------:|:---------:|:---------:|:----------:|:---------:|
+|    Low      |    No      |   1.000   |   1.369   |    6.582   |  0.1028s  |
+|    Low      |    Part    |   1.000   |   1.350   |    9.269   |  0.0476s  |
+|    Low      |    Yes     |   1.000   |   1.516   |   12.964   |  0.0106s  |
+|    Medium   |    No      |   1.000   |   1.373   |    6.577   |  0.1018s  |
+|    Medium   |    Part    |   1.000   |   1.397   |    9.471   |  0.0478s  |
+|    Medium   |    Yes     |   1.000   |   1.840   |   17.519   |  0.0100s  |
+|    High     |    No      |   1.000   |   1.341   |    4.745   |  0.1059s  |
+|    High     |    Part    |   1.000   |   1.576   |    8.050   |  0.0526s  |
+|    High     |    Yes     |   1.000   |   3.193   |   26.390   |  0.0087s  |
+
 ## Conclusion
 
-The post provides optimised generic select, median and median absolute deviation functions. 
+Optimised generic select, median and median absolute deviation functions have been developed. 
 
 The performance results show a good improvement over Quickselect which is already an optimised algorithm.
 The performance of the code is also more predictable due to its handling of duplication and partially sorted data.
 
-The post demonstrates how property based testing and a performance testing library can be used together to optimise algorithms. 
+This is also a demonstration of how property based testing and a performance testing library can be used together to optimise algorithms. 
 *)
