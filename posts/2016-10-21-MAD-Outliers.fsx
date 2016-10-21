@@ -454,5 +454,5 @@ Optimised generic select, median and median absolute deviation functions have be
 The performance results show a good improvement over Quickselect which is already an optimised algorithm.
 The performance of the code is also more predictable due to its handling of duplication and partially sorted data.
 
-This is also a demonstration of how property based testing and a performance testing library can be used together to optimise algorithms. 
+This also demonstrates how property based testing and a performance testing library can be used together to optimise algorithms. 
 *)
