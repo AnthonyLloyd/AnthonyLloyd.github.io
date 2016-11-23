@@ -1,0 +1,22 @@
+---
+layout: post
+title: "Functional Event Sourcing meets the Elm Architecture"
+tags: [elm,event,sourcing]
+description: ""
+keywords: event sourcing, elm
+---
+<p>One of the highlights of the year for me was the <a href="http://elm-lang.org/blog/farewell-to-frp">farewell to frp</a> post by Evan Czaplicki.
+For a long time I've been looking for a simple functional alternative to the MVC UI models.
+There were a number of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> alternatives but they all had limitations.
+They heavily used Signals and many had inherent memory leak issues.
+Evan removed this simplifying the model dramatically.
+It resulted in something truly beautiful.
+A simple and composible way of building UIs.</p>
+<h2>Event Sourcing</h2>
+<p>Event - something that happens at a specific point (of space and time)
+type Event = EventID * 'agg list</p>
+<p>what does Agg ID mean? for transaction is it when transaction occured, for others it when created</p>
+
+
+<div class="tip" id="fs1">module Hidden<br /><br />from 2016-11-27-event-sourcing</div>
+<div class="tip" id="fs2">val x : int<br /><br />Full name: 2016-11-27-event-sourcing.Hidden.x</div>
