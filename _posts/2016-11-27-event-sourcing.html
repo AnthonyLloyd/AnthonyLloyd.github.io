@@ -5,18 +5,133 @@ tags: [elm,event,sourcing]
 description: ""
 keywords: event sourcing, elm
 ---
-<p>One of the highlights of the year for me was the <a href="http://elm-lang.org/blog/farewell-to-frp">farewell to frp</a> post by Evan Czaplicki.
-For a long time I've been looking for a simple functional alternative to the MVC UI models.
-There were a number of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> alternatives but they all had limitations.
-They heavily used Signals and many had inherent memory leak issues.
-Evan removed this simplifying the model dramatically.
-It resulted in something truly beautiful.
-A simple and composible way of building UIs.</p>
-<h2>Event Sourcing</h2>
-<p>Event - something that happens at a specific point (of space and time)
-type Event = EventID * 'agg list</p>
-<p>what does Agg ID mean? for transaction is it when transaction occured, for others it when created</p>
+<p>One of the highlights of the year for me was the <a href="http://elm-lang.org/blog/farewell-to-frp">a farewell to FRP</a> post by Evan Czaplicki.
+For a long time I've been looking for a simple functional alternative to the MVC UI models.</p>
+<p>There were a number of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> alternatives but they all had limitations.
+They heavily used signals and many had inherent memory leak issues.</p>
+<p>Evan removed this simplifying the model dramatically. It resulted in something truly beautiful. A simple and composible way of building UIs.</p>
+<p>Functional Event Sourcing is also a compelling pattern. In some domains like finance it is a game changer.</p>
+<p>This post explores how Functional Event Sourcing fits with <a href="http://guide.elm-lang.org/architecture/index.html">the Elm Architecture</a>.
+A combined festive example application is developed. The source can be found <a href="https://github.com/AnthonyLloyd/Event">here</a>.</p>
+<h2>Functional Event Sourcing</h2>
+<h3>Event - something that happens at a specific point (of space and time)</h3>
+<p>Event ID is just time and user / location enough to make it unique.
+As well as being a unique identifier of the the event the <code>EventID</code> also satisfies all the data required for audit.</p>
+<h3>Store</h3>
+<ul>
+<li>Can be memory, database or disconected</li>
+<li>Different concurrency model, linear event sourcing, optimistic concurrency. CRDTs</li>
+</ul>
+<h3>Features</h3>
+<ul>
+<li>the only model that does not lose data</li>
+<li>preserves history, questions not yet asked</li>
+<li>view any previously generated report</li>
+<li>built in audit log</li>
+<li>temporal querying</li>
+<li>easier testing - time travel, regression</li>
+</ul>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs9', 9)" onmouseover="showTip(event, 'fs9', 9)" class="t">EventID</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 10)" onmouseover="showTip(event, 'fs9', 10)" class="p">EventID</span> <span class="k">of</span> <span class="i">time</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs10', 11)" onmouseover="showTip(event, 'fs10', 11)" class="t">DateTime</span> <span class="o">*</span> <span class="i">user</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="t">UserID</span>
+
+<span class="k">type</span> <span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="t">ID</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs12', 14)" onmouseover="showTip(event, 'fs12', 14)" class="p">Created</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="t">EventID</span>
+
+<span class="k">type</span> <span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs13', 16)" onmouseover="showTip(event, 'fs13', 16)" class="t">Events</span> <span class="o">=</span> (<span onmouseout="hideTip(event, 'fs9', 17)" onmouseover="showTip(event, 'fs9', 17)" class="t">EventID</span> <span class="o">*</span> <span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs3', 18)" onmouseover="showTip(event, 'fs3', 18)" class="t">list1</span>) <span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="t">list1</span>
+
+<span class="k">type</span> <span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs14', 20)" onmouseover="showTip(event, 'fs14', 20)" class="t">Stream</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs15', 21)" onmouseover="showTip(event, 'fs15', 21)" class="t">IObservable</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs11', 22)" onmouseover="showTip(event, 'fs11', 22)" class="t">ID</span> <span class="o">*</span> <span class="o">&#39;</span><span class="i">Aggregate</span> <span onmouseout="hideTip(event, 'fs13', 23)" onmouseover="showTip(event, 'fs13', 23)" class="t">Events</span><span class="o">&gt;</span>
+</code></pre></td>
+</tr>
+</table>
+<h2>Demo Application</h2>
+<h3>Model</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs16', 24)" onmouseover="showTip(event, 'fs16', 24)" class="t">Work</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 25)" onmouseover="showTip(event, 'fs17', 25)" class="t">uint16</span>
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs18', 26)" onmouseover="showTip(event, 'fs18', 26)" class="t">Age</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs19', 27)" onmouseover="showTip(event, 'fs19', 27)" class="t">byte</span>
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs20', 28)" onmouseover="showTip(event, 'fs20', 28)" class="t">Behaviour</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs21', 29)" onmouseover="showTip(event, 'fs21', 29)" class="p">Good</span> | <span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="p">Mixed</span> | <span onmouseout="hideTip(event, 'fs23', 31)" onmouseover="showTip(event, 'fs23', 31)" class="p">Bad</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs24', 32)" onmouseover="showTip(event, 'fs24', 32)" class="t">Toy</span> <span class="o">=</span>
+    | <span onmouseout="hideTip(event, 'fs25', 33)" onmouseover="showTip(event, 'fs25', 33)" class="p">Name</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs26', 34)" onmouseover="showTip(event, 'fs26', 34)" class="t">string</span>
+    | <span onmouseout="hideTip(event, 'fs27', 35)" onmouseover="showTip(event, 'fs27', 35)" class="p">AgeRange</span> <span class="k">of</span> <span class="i">lo</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs18', 36)" onmouseover="showTip(event, 'fs18', 36)" class="t">Age</span> <span class="o">*</span> <span class="i">hi</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs18', 37)" onmouseover="showTip(event, 'fs18', 37)" class="t">Age</span>
+    | <span onmouseout="hideTip(event, 'fs28', 38)" onmouseover="showTip(event, 'fs28', 38)" class="p">WorkRequired</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs16', 39)" onmouseover="showTip(event, 'fs16', 39)" class="t">Work</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs29', 40)" onmouseover="showTip(event, 'fs29', 40)" class="t">Elf</span> <span class="o">=</span>
+    | <span onmouseout="hideTip(event, 'fs30', 41)" onmouseover="showTip(event, 'fs30', 41)" class="p">Name</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs26', 42)" onmouseover="showTip(event, 'fs26', 42)" class="t">string</span>
+    | <span onmouseout="hideTip(event, 'fs31', 43)" onmouseover="showTip(event, 'fs31', 43)" class="p">WorkRate</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs16', 44)" onmouseover="showTip(event, 'fs16', 44)" class="t">Work</span>
+    | <span onmouseout="hideTip(event, 'fs32', 45)" onmouseover="showTip(event, 'fs32', 45)" class="p">Making</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs24', 46)" onmouseover="showTip(event, 'fs24', 46)" class="t">Toy</span> <span onmouseout="hideTip(event, 'fs11', 47)" onmouseover="showTip(event, 'fs11', 47)" class="t">ID</span> <span onmouseout="hideTip(event, 'fs33', 48)" onmouseover="showTip(event, 'fs33', 48)" class="t">option</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs34', 49)" onmouseover="showTip(event, 'fs34', 49)" class="t">Kid</span> <span class="o">=</span>
+    | <span onmouseout="hideTip(event, 'fs35', 50)" onmouseover="showTip(event, 'fs35', 50)" class="p">Name</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs26', 51)" onmouseover="showTip(event, 'fs26', 51)" class="t">string</span>
+    | <span onmouseout="hideTip(event, 'fs36', 52)" onmouseover="showTip(event, 'fs36', 52)" class="p">Age</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs36', 53)" onmouseover="showTip(event, 'fs36', 53)" class="t">Age</span>
+    | <span onmouseout="hideTip(event, 'fs37', 54)" onmouseover="showTip(event, 'fs37', 54)" class="p">Behaviour</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs37', 55)" onmouseover="showTip(event, 'fs37', 55)" class="t">Behaviour</span>
+    | <span onmouseout="hideTip(event, 'fs38', 56)" onmouseover="showTip(event, 'fs38', 56)" class="p">WishList</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs24', 57)" onmouseover="showTip(event, 'fs24', 57)" class="i">Toy</span> <span onmouseout="hideTip(event, 'fs11', 58)" onmouseover="showTip(event, 'fs11', 58)" class="i">ID</span> <span class="i">SetEvent</span>
+</code></pre></td>
+</tr>
+</table>
+<h2>Conclusion</h2>
+<p><a href="https://www.infoq.com/news/2016/04/event-sourcing-anti-pattern">https://www.infoq.com/news/2016/04/event-sourcing-anti-pattern</a></p>
 
 
-<div class="tip" id="fs1">module Hidden<br /><br />from 2016-11-27-event-sourcing</div>
-<div class="tip" id="fs2">val x : int<br /><br />Full name: 2016-11-27-event-sourcing.Hidden.x</div>
+<div class="tip" id="fs1">namespace System</div>
+<div class="tip" id="fs2">namespace Microsoft.FSharp.Core</div>
+<div class="tip" id="fs3">type &#39;a list1 = | List1 of &#39;a list<br /><br />Full name: Main.list1&lt;_&gt;<br /><em><br /><br />&#160;A non-empty list</em></div>
+<div class="tip" id="fs4">union case list1.List1: &#39;a list -&gt; &#39;a list1</div>
+<div class="tip" id="fs5">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
+<div class="tip" id="fs6">type UserID = | User of int<br /><br />Full name: Main.UserID</div>
+<div class="tip" id="fs7">union case UserID.User: int -&gt; UserID</div>
+<div class="tip" id="fs8">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs9">Multiple items<br />union case EventID.EventID: time: DateTime * user: UserID -&gt; EventID<br /><br />--------------------<br />type EventID = | EventID of time: DateTime * user: UserID<br /><br />Full name: Main.EventID</div>
+<div class="tip" id="fs10">Multiple items<br />type DateTime =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : ticks:int64 -&gt; DateTime + 10 overloads<br />&#160;&#160;&#160;&#160;member Add : value:TimeSpan -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddDays : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddHours : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMilliseconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMinutes : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMonths : months:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddSeconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddTicks : value:int64 -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddYears : value:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.DateTime<br /><br />--------------------<br />DateTime()<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(ticks: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(ticks: int64, kind: DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, calendar: Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, kind: DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, calendar: Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int, kind: DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs11">type &#39;Aggregate ID = | Created of EventID<br /><br />Full name: Main.ID&lt;_&gt;</div>
+<div class="tip" id="fs12">union case ID.Created: EventID -&gt; &#39;Aggregate ID</div>
+<div class="tip" id="fs13">type &#39;Aggregate Events = (EventID * &#39;Aggregate list1) list1<br /><br />Full name: Main.Events&lt;_&gt;</div>
+<div class="tip" id="fs14">type &#39;Aggregate Stream = IObservable&lt;&#39;Aggregate ID * &#39;Aggregate Events&gt;<br /><br />Full name: Main.Stream&lt;_&gt;</div>
+<div class="tip" id="fs15">type IObservable&lt;&#39;T&gt; =<br />&#160;&#160;member Subscribe : observer:IObserver&lt;&#39;T&gt; -&gt; IDisposable<br /><br />Full name: System.IObservable&lt;_&gt;</div>
+<div class="tip" id="fs16">type Work = uint16<br /><br />Full name: Main.Work</div>
+<div class="tip" id="fs17">Multiple items<br />val uint16 : value:&#39;T -&gt; uint16 (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.uint16<br /><br />--------------------<br />type uint16 = UInt16<br /><br />Full name: Microsoft.FSharp.Core.uint16</div>
+<div class="tip" id="fs18">type Age = byte<br /><br />Full name: Main.Age</div>
+<div class="tip" id="fs19">Multiple items<br />val byte : value:&#39;T -&gt; byte (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.byte<br /><br />--------------------<br />type byte = Byte<br /><br />Full name: Microsoft.FSharp.Core.byte</div>
+<div class="tip" id="fs20">type Behaviour =<br />&#160;&#160;| Good<br />&#160;&#160;| Mixed<br />&#160;&#160;| Bad<br /><br />Full name: Main.Behaviour</div>
+<div class="tip" id="fs21">union case Behaviour.Good: Behaviour</div>
+<div class="tip" id="fs22">union case Behaviour.Mixed: Behaviour</div>
+<div class="tip" id="fs23">union case Behaviour.Bad: Behaviour</div>
+<div class="tip" id="fs24">type Toy =<br />&#160;&#160;| Name of string<br />&#160;&#160;| AgeRange of lo: Age * hi: Age<br />&#160;&#160;| WorkRequired of Work<br /><br />Full name: Main.Toy</div>
+<div class="tip" id="fs25">union case Toy.Name: string -&gt; Toy</div>
+<div class="tip" id="fs26">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs27">union case Toy.AgeRange: lo: Age * hi: Age -&gt; Toy</div>
+<div class="tip" id="fs28">union case Toy.WorkRequired: Work -&gt; Toy</div>
+<div class="tip" id="fs29">type Elf =<br />&#160;&#160;| Name of string<br />&#160;&#160;| WorkRate of Work<br />&#160;&#160;| Making of Toy ID option<br /><br />Full name: Main.Elf</div>
+<div class="tip" id="fs30">union case Elf.Name: string -&gt; Elf</div>
+<div class="tip" id="fs31">union case Elf.WorkRate: Work -&gt; Elf</div>
+<div class="tip" id="fs32">union case Elf.Making: Toy ID option -&gt; Elf</div>
+<div class="tip" id="fs33">type &#39;T option = Option&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.option&lt;_&gt;</div>
+<div class="tip" id="fs34">type Kid =<br />&#160;&#160;| Name of string<br />&#160;&#160;| Age of Age<br />&#160;&#160;| Behaviour of Behaviour<br />&#160;&#160;| WishList of obj<br /><br />Full name: Main.Kid</div>
+<div class="tip" id="fs35">union case Kid.Name: string -&gt; Kid</div>
+<div class="tip" id="fs36">Multiple items<br />union case Kid.Age: Age -&gt; Kid<br /><br />--------------------<br />type Age = byte<br /><br />Full name: Main.Age</div>
+<div class="tip" id="fs37">Multiple items<br />union case Kid.Behaviour: Behaviour -&gt; Kid<br /><br />--------------------<br />type Behaviour =<br />&#160;&#160;| Good<br />&#160;&#160;| Mixed<br />&#160;&#160;| Bad<br /><br />Full name: Main.Behaviour</div>
+<div class="tip" id="fs38">union case Kid.WishList: obj -&gt; Kid</div>
