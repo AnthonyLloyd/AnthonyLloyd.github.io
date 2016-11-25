@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "Functional Event Sourcing meets the Elm Architecture"
+title: "Functional Event Sourcing meets The Elm Architecture"
 tags: [elm,event,sourcing]
 description: ""
 keywords: event sourcing, elm
@@ -29,7 +29,7 @@ They heavily used signals and many had inherent memory leak issues.
 
 Evan removed this simplifying the model dramatically. It resulted in something truly beautiful. A simple and composible way of building UIs.
 
-Functional Event Sourcing is also a compelling pattern. In some domains like accounting it is a perfect fit.
+Event Sourcing is also a compelling pattern. In some domains like accounting it is a perfect fit.
 
 This post explores how Functional Event Sourcing fits with [the Elm Architecture](http://guide.elm-lang.org/architecture/index.html).
 A combined festive application is developed to streamline Santa's workload. The application can be found [here](https://github.com/AnthonyLloyd/Event).
@@ -150,6 +150,10 @@ All the screens update in realtime and changes can be made to any of the entitie
 This turns out to be quite a complicated problem we have solved.
 I would be interested to see a more traditional solution to this problem in OO and a relational data model.
 I can only imagine that both the domain model and codebase would become much more complicated.
+
+Editor reused across fields
+Full validation
+expand elm for commands and subscriptions
 
 ## Conclusion
 
