@@ -124,7 +124,7 @@ More fine grained concurrency is possible and `Making` on `Elf` would be a good 
 Advanced concurrency models are also possible with event sourcing where events are designed to commute such as [CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
 These enable disconnected systems. Git is an example of a successful disconnected system.
 
-### Benefits of event sourcing
+### Benefits of functional event sourcing
 
 - The only model that does not lose data
 - Built in audit log
@@ -170,7 +170,7 @@ It is possible to express two phase commits explicitly in the domain model.
 Being explicit about these may also tease out the correct business requirements and lead to a better solution.
 
 Functional Event Sourcing fits naturally with the subscription and command model in Elm.
-Time travel debug and easy regression analysis is a feature of both patterns and work well together.
+Time travel debug and easy regression are features of both patterns and work well together.
 Together the patterns result in a highly type safe and testable system.
 
 I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement. 

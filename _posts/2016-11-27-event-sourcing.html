@@ -119,7 +119,7 @@ In the example application we have linear event sourcing with optimistic concurr
 <p>More fine grained concurrency is possible and <code>Making</code> on <code>Elf</code> would be a good candidate as only the Santa process changes this.
 Advanced concurrency models are also possible with event sourcing where events are designed to commute such as <a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">CRDTs</a>.
 These enable disconnected systems. Git is an example of a successful disconnected system.</p>
-<h3>Benefits of event sourcing</h3>
+<h3>Benefits of functional event sourcing</h3>
 <ul>
 <li>The only model that does not lose data</li>
 <li>Built in audit log</li>
@@ -156,7 +156,7 @@ This may take a little thinking to become comfortable with.
 It is possible to express two phase commits explicitly in the domain model.
 Being explicit about these may also tease out the correct business requirements and lead to a better solution.</p>
 <p>Functional Event Sourcing fits naturally with the subscription and command model in Elm.
-Time travel debug and easy regression analysis is a feature of both patterns and work well together.
+Time travel debug and easy regression are features of both patterns and work well together.
 Together the patterns result in a highly type safe and testable system.</p>
 <p>I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement.
 Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.</p>
