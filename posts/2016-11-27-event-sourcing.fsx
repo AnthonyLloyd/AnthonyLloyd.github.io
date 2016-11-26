@@ -21,17 +21,17 @@ type 'a SetEvent =
     | SetRemove of 'a
 
 (**
-One of the highlights of the year for me was the [a farewell to FRP](http://elm-lang.org/blog/farewell-to-frp) post by Evan Czaplicki.
-For a long time I've been looking for a simple functional alternative to the MVC UI models.
+One of the highlights of the year for me was the [farewell to FRP](http://elm-lang.org/blog/farewell-to-frp) post by Evan Czaplicki.
+For a long time, I've been looking for a simple functional alternative to the MVC UI models.
 
-There were a number of [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) alternatives but they all had limitations.
+There are a number of [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming) alternatives but they all had limitations.
 They heavily used signals and many had inherent memory leak issues.
 
-Evan removed this simplifying the model dramatically. It resulted in something truly beautiful. A simple and composible way of building UIs.
+Evan removed signals simplifying the model dramatically. It resulted in something truly beautiful. A simple and composable way of building UIs.
 
-Event Sourcing is also a compelling pattern. In some domains like accounting it is a perfect fit.
+Event Sourcing is also a compelling pattern I have found very useful. In some domains like accounting it is a perfect fit.
 
-This post explores how Functional Event Sourcing fits with [the Elm Architecture](http://guide.elm-lang.org/architecture/index.html).
+This post explores how Functional Event Sourcing fits with [the Elm Architecture](https://guide.elm-lang.org/architecture/index.html) covered in a previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}).
 A combined festive application is developed to streamline Santa's workload. The application can be found [here](https://github.com/AnthonyLloyd/Event).
 
 ## Functional Event Sourcing
@@ -49,7 +49,11 @@ In event sourcing the point is a unique identifier of the event.
 In most systems this can just be the time and user who created the event.
 This `EventID` can also include additional data required to make it unique.
 
-As well as being a unique identifier of the the event the `EventID` also satisfies all the data requirement for audit.
+The example application uses `Stopwatch` to increase the precision of `DateTime`.
+The application also ensures each 'EventID' time is unique.
+NTP servers could also be used to calibrate the application if a comparison of time between different machines is required.  
+
+As well as being a unique identifier of the event the `EventID` also satisfies all the data requirement for audit.
 
 ### Aggregate
 
@@ -66,7 +70,7 @@ An aggregate is a unit of consistency that has atomicity and autonomy.
 In the example application we have the following domain model.
 Each case represents a possible change to the aggregate.
 
-Most of the events are simple field changes but we can also have events such as `Recalled` for `Toy` for example.
+Most of the events are simple field changes but events such as `Recalled` for `Toy` are possible.
 
 *)
 
@@ -98,7 +102,7 @@ The rules for domain model schema migration and data serialization are
 - Cases can be renamed.
 - Cases can be added. Legacy code will ignore these. 
 
-FsPickler can be configured to comply with these rules making it easy to serialize events.
+[FsPickler](http://mbraceproject.github.io/FsPickler/) can be configured to comply with these rules making it easy to serialize events.
 
 ### Store
 
@@ -110,32 +114,39 @@ type 'Aggregate MemoryStore =
     }
 (**
 
-Stores are the database of event sourcing.
+Stores are the databases of event sourcing.
 They can be in memory, remote or disconnected for example.
 
 Many different concurrency models are possible.
 In the example application we have linear event sourcing with optimistic concurrency which is the simplest and corresponds to most relational database applications.
 
-More fine grained concurrency is possible and `Making` on `Elf` would be a good candidate as only the santa process changes this.
+More fine grained concurrency is possible and `Making` on `Elf` would be a good candidate as only the Santa process changes this.
 Advanced concurrency models are also possible with event sourcing where events are designed to commute such as [CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type).
-These enable disconnected systems. Git is a good example of a successful disconnected system.
+These enable disconnected systems. Git is an example of a successful disconnected system.
 
 ### Benefits of event sourcing
 
 - the only model that does not lose data
-- view any previously generated report
 - built in audit log
+- view any previously generated report
 - temporal querying
 - preserves history, questions not yet asked
-- well defined, simple schema migration
+- well defined and simple schema migration
+- zero non-generic data persistence code, no ORM problem
 - easier testing - regression, time travel debug
 
 ## Example Application
 
 The application has two background processes running continuously.
 The first is the kids process that adds and removes toys to the kids Christmas wishlists.
-The second is the santa process that assigns free elfs to make toys in the priority order of kid behaviour and request time.
-All the screens update in realtime and changes can be made to any of the entities in the domain.
+The second is the Santa process that assigns free elfs to make toys in the priority order of kid behaviour and request time.
+
+All the screens update in realtime and any of the entities in the domain can be edited.
+All the entity edit screens have validation at both the field and aggregate level.
+Field editor Elm apps were reused across all these fields.
+
+The previous F# Elm implementation was extended to include subscriptions and commands.
+Minimal UI styling functionality was also added.
 
 ![Santa's Summary]({{site.baseurl}}public/event/Santa.png "Santa's Summary")
 
@@ -147,25 +158,21 @@ All the screens update in realtime and changes can be made to any of the entitie
 	</tr>
 </table>
 
-This turns out to be quite a complicated problem we have solved.
-I would be interested to see a more traditional solution to this problem in OO and a relational data model.
-I can only imagine that both the domain model and codebase would become much more complicated.
-
-Editor reused across fields
-Full validation
-expand elm for commands and subscriptions
-
 ## Conclusion
 
-event sourcing fits naturally with the subscirpiton model in elm.
+This turns out to be quite a complicated problem we have solved.
+I would be interested to see a more traditional solution in OO and a relational data model.
+I can only imagine that both the domain model and code would become much more complicated.
 
-time travel debug is a feature of both and work well together.
+Functional Event Sourcing fits naturally with the subscription and command model in Elm.
+Time travel debug and easy regression analysis is a feature of both patterns and work well together.
+Together the patterns result in a highly type safe and testable system.
 
-type safe and testible system.
+I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement. 
+Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.
 
-leads me to the conclusion that below is wrong.
-
-https://www.infoq.com/news/2016/04/event-sourcing-anti-pattern
-
-
+One caveat would be that cross aggregate transactions are not possible.
+This may take a little thinking to become comfortable with.
+It is possible to express two phase commits explicitly in the domain model.
+Being explicit about these may also tease out the correct business requirements and lead to a better model.
 *)
