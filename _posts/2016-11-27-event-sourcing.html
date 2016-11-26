@@ -7,12 +7,12 @@ keywords: event sourcing, elm
 ---
 <p>One of the highlights of the year for me was the <a href="http://elm-lang.org/blog/farewell-to-frp">farewell to FRP</a> post by Evan Czaplicki.
 For a long time, I've been looking for a simple functional alternative to the MVC UI models.</p>
-<p>There are a number of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> alternatives but they all had limitations.
-They heavily used signals and many had inherent memory leak issues.</p>
-<p>Evan removed signals simplifying the model dramatically. It resulted in something truly beautiful. A simple and composable way of building UIs.</p>
+<p>There are a number of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> alternatives but they all have limitations.
+They use signals heavily and many have inherent memory leak issues.</p>
+<p>Czaplicki removed signals, simplifying the model dramatically. It resulted in something truly beautiful. A simple and composable way of building UIs.</p>
 <p>Event Sourcing is also a compelling pattern I have found very useful. In some domains like accounting it is a perfect fit.</p>
 <p>This post explores how Functional Event Sourcing fits with <a href="https://guide.elm-lang.org/architecture/index.html">the Elm Architecture</a> covered in a previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a>.
-A combined festive application is developed to streamline Santa's workload. The application can be found <a href="https://github.com/AnthonyLloyd/Event">here</a>.</p>
+A combined festive WPF application is developed to streamline Santa's workload. The application code can be found <a href="https://github.com/AnthonyLloyd/Event">here</a>.</p>
 <h2>Functional Event Sourcing</h2>
 <h3>Event</h3>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
@@ -27,7 +27,7 @@ In event sourcing the point is a unique identifier of the event.</p>
 <p>In most systems this can just be the time and user who created the event.
 This <code>EventID</code> can also include additional data required to make it unique.</p>
 <p>The example application uses <code>Stopwatch</code> to increase the precision of <code>DateTime</code>.
-The application also ensures each 'EventID' time is unique.
+The application also ensures each <code>EventID</code> time is unique.
 NTP servers could also be used to calibrate the application if a comparison of time between different machines is required.</p>
 <p>As well as being a unique identifier of the event the <code>EventID</code> also satisfies all the data requirement for audit.</p>
 <h3>Aggregate</h3>
@@ -46,7 +46,6 @@ External entities can only hold a reference to the root entity identifier.
 An aggregate is a unit of consistency that has atomicity and autonomy.</p>
 <p>In the example application we have the following domain model.
 Each case represents a possible change to the aggregate.</p>
-<p>Most of the events are simple field changes but events such as <code>Recalled</code> for <code>Toy</code> are possible.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -89,14 +88,15 @@ Each case represents a possible change to the aggregate.</p>
 </code></pre></td>
 </tr>
 </table>
+<p>Most of the events are simple field changes but events such as <code>Recalled</code> for <code>Toy</code> are possible.</p>
 <p>The rules for domain model schema migration and data serialization are</p>
 <ul>
-<li>Cases cannot be removed or their data type changed.</li>
-<li>Cases cannot be reordered.</li>
-<li>Cases can be renamed.</li>
-<li>Cases can be added. Legacy code will ignore these.</li>
+<li>Cases cannot be removed or their data type changed</li>
+<li>Cases cannot be reordered</li>
+<li>Cases can be renamed</li>
+<li>Cases can be added (legacy code needs to ignore these)</li>
 </ul>
-<p><a href="http://mbraceproject.github.io/FsPickler/">FsPickler</a> can be configured to comply with these rules making it easy to serialize events.</p>
+<p><a href="http://mbraceproject.github.io/FsPickler/">FsPickler</a> can be configured to comply with these rules, making it easy to serialize events.</p>
 <h3>Store</h3>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
@@ -121,22 +121,22 @@ Advanced concurrency models are also possible with event sourcing where events a
 These enable disconnected systems. Git is an example of a successful disconnected system.</p>
 <h3>Benefits of event sourcing</h3>
 <ul>
-<li>the only model that does not lose data</li>
-<li>built in audit log</li>
-<li>view any previously generated report</li>
-<li>temporal querying</li>
-<li>preserves history, questions not yet asked</li>
-<li>well defined and simple schema migration</li>
-<li>zero non-generic data persistence code, no ORM problem</li>
-<li>easier testing - regression, time travel debug</li>
+<li>The only model that does not lose data</li>
+<li>Built in audit log</li>
+<li>View any previously generated report</li>
+<li>Temporal querying</li>
+<li>Preserves history, questions not yet asked</li>
+<li>Well defined and simple schema migration</li>
+<li>Zero data persistence code, no ORM problem</li>
+<li>Easier testing - regression, time travel debug</li>
 </ul>
 <h2>Example Application</h2>
 <p>The application has two background processes running continuously.
-The first is the kids process that adds and removes toys to the kids Christmas wishlists.
+The first is the kids process that randomly adds and removes toys to the kids' Christmas wishlists.
 The second is the Santa process that assigns free elfs to make toys in the priority order of kid behaviour and request time.</p>
 <p>All the screens update in realtime and any of the entities in the domain can be edited.
 All the entity edit screens have validation at both the field and aggregate level.
-Field editor Elm apps were reused across all these fields.</p>
+A field editor Elm app was reused across all these fields.</p>
 <p>The previous F# Elm implementation was extended to include subscriptions and commands.
 Minimal UI styling functionality was also added.</p>
 <p><img src="{{site.baseurl}}public/event/Santa.png" alt="Santa's Summary" title="Santa's Summary" /></p>
@@ -149,17 +149,17 @@ Minimal UI styling functionality was also added.</p>
 </table>
 <h2>Conclusion</h2>
 <p>This turns out to be quite a complicated problem we have solved.
-I would be interested to see a more traditional solution in OO and a relational data model.
-I can only imagine that both the domain model and code would become much more complicated.</p>
+It would be interesting to see a more traditional solution in OO and a relational data model.
+I can only imagine that both the domain model and code would be much more complicated.</p>
+<p>One caveat with event sourcing would be that cross aggregate transactions are not possible.
+This may take a little thinking to become comfortable with.
+It is possible to express two phase commits explicitly in the domain model.
+Being explicit about these may also tease out the correct business requirements and lead to a better solution.</p>
 <p>Functional Event Sourcing fits naturally with the subscription and command model in Elm.
 Time travel debug and easy regression analysis is a feature of both patterns and work well together.
 Together the patterns result in a highly type safe and testable system.</p>
 <p>I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement.
 Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.</p>
-<p>One caveat would be that cross aggregate transactions are not possible.
-This may take a little thinking to become comfortable with.
-It is possible to express two phase commits explicitly in the domain model.
-Being explicit about these may also tease out the correct business requirements and lead to a better model.</p>
 
 
 <div class="tip" id="fs1">namespace System</div>
