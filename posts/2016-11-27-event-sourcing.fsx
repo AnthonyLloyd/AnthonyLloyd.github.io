@@ -173,10 +173,10 @@ Being explicit about these may also tease out the correct business requirements 
 
 Functional Event Sourcing fits naturally with the subscription and command model in Elm.
 Time travel debug and easy regression are features of both patterns and work well together.
-Together the patterns result in a highly type safe and testable system.
+The patterns result in a highly type safe and testable system.
 
 I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement. 
 Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.
 
-Hopefully F# will get Santa's present delivery project. Happy holidays!
+Hopefully F# will get Santa's next present delivery project. Happy holidays!
 *)
