@@ -21,6 +21,8 @@ type 'a SetEvent =
     | SetRemove of 'a
 
 (**
+This post is part of the [F# Advent Calendar 2016](https://sergeytihon.wordpress.com/2016/10/23/f-advent-calendar-in-english-2016/) series.
+
 One of the highlights of the year for me was the [farewell to FRP](http://elm-lang.org/blog/farewell-to-frp) post by Evan Czaplicki.
 For a long time, I've been looking for a simple functional alternative to the MVC UI models.
 
@@ -175,4 +177,6 @@ Together the patterns result in a highly type safe and testable system.
 
 I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement. 
 Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.
+
+Hopefully F# will get Santa's present delivery project. Happy holidays!
 *)
