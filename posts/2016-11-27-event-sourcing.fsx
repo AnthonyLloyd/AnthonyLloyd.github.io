@@ -101,8 +101,8 @@ The rules for domain model schema migration and data serialization are
 
 - Cases cannot be removed or their data type changed
 - Cases cannot be reordered
-- Cases can be renamed
-- Cases can be added (legacy code needs to ignore these) 
+- Cases can be added (legacy code needs to ignore these)
+- Cases can be renamed 
 
 [FsPickler](http://mbraceproject.github.io/FsPickler/) can be configured to comply with these rules, making it easy to serialize events.
 
@@ -178,5 +178,5 @@ The patterns result in a highly type safe and testable system.
 I would recommend functional event sourcing in any application where strong audit or schema evolution are a requirement. 
 Linear event sourcing, optimistic concurrency and persisting each type to a single database table would be a natural starting point.
 
-Hopefully F# will get Santa's next present delivery project. Happy holidays!
+Hopefully F# will get Santa's follow up present delivery project. Happy holidays!
 *)
