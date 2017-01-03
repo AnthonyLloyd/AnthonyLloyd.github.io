@@ -225,4 +225,7 @@ The functions have been extended to be able to measure a subfunction of the pass
 This enables set up to be done without effecting the measurement.
 The subfunction can be called multiple times and the metric will be aggregated.
 An example of its use can be found in the Outliers and MAD [post]({% post_url 2016-10-21-MAD-Outliers %}). 
+
+UPDATED (2017-01-03):
+Performance testing functionality has been added to the F# testing library [Expecto](https://github.com/haf/expecto) using the code in this post.
 *)

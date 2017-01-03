@@ -88,7 +88,7 @@ Functional programming is simple-first programming.
 Why is functional programming so simple? Because it comes from mathematics as the simplest possible programming construct.
 You don't have to understand category theory to benefit from this.
 
-> Functional languages were discovered, not invented. Many of you work in languages that were invented. And it shows.  
+> Functional languages were [discovered](https://www.youtube.com/watch?v=IOiZatlZtGU&t=27m52s), not invented. Many of you work in languages that were invented. And it shows.  
 > <cite>Prof Philip Wadler</cite>
 
 Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever.
