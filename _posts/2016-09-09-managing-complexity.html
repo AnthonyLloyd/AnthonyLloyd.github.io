@@ -52,12 +52,17 @@ Are you sure that will always be the case?</p>
 These don't reduce complexity; they dramatically increase it.
 Distributed systems are harder to reason about and change. Doing this to be able to scale out can make sense but it has to be done with great skill.</p>
 <h3>Short term gain, long term pain</h3>
+<blockquote>
+<p>Simplicity is prerequisite for reliability
+<cite>Edsger W Dijkstra</cite></p>
+</blockquote>
 <p>Rich Hickey has a brilliant <a href="https://www.infoq.com/presentations/Simple-Made-Easy">presentation</a> explaining the difference between simple and easy in software development.
+Every software developer should watch this all the way through.
 Short term development speed gains from picking the easy option pale in comparison in the long term to aiming for simplicity.</p>
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 <h3>Performance of low vs high level languages</h3>
-<p>Let's say C can be 20%-50% faster than F# for a given algorithm. In my experience, getting to the best algorithm can produce an order of magnitude (or more) increase in performance.
-I've seen systems that have become so complex that even though a better algorithm is known it can't be used because it would require a large rewrite.
+<p>Let's say C can be 20%-50% faster than F# for a given algorithm. In my experience, getting to the best algorithm can produce an order of magnitude or more increase in performance.
+I've seen systems that have become so complicated that even though a better algorithm is known it can't be used because it would require a large rewrite.
 The complexity limit had been reached. This is particularly true of many C++ quant libraries.
 Using a high level language provides simplicity to explore better algorithms and use generic performance techniques such as asynchronous programming and memoization.</p>
 <p>Performance is complicated. It is often more about the movement of data than the calculation itself.
