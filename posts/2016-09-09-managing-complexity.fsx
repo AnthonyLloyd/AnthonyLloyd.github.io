@@ -67,12 +67,19 @@ Distributed systems are harder to reason about and change. Doing this to be able
 
 ### Short term gain, long term pain
 
-> Simplicity is prerequisite for reliability
+> Simplicity is prerequisite for reliability.  
 > <cite>Edsger W Dijkstra</cite>
 
 Rich Hickey has a brilliant [presentation](https://www.infoq.com/presentations/Simple-Made-Easy) explaining the difference between simple and easy in software development.
-Every software developer should watch this all the way through.
-Short term development speed gains from picking the easy option pale in comparison in the long term to aiming for simplicity.
+Every software developer needs to watch this. It is also very entertaining.
+
+Some key takeaways are:
+
+- Simplicity is a choice.
+- Information is simple. Don't ruin it by hiding it behind a micro-language.
+- Ignoring complexity will slow you down over the long term. On throwaway or trivial projects, nothing much matters.
+- Guard rail programming, i.e. tests instead of types, is not simple. It does not help you get to where you want to go.
+- Ability to reason about your program is critical.
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 
