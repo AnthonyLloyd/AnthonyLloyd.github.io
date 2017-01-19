@@ -53,7 +53,7 @@ The more I use a functional language the longer the list of frameworks and patte
 - Null
 - Exceptions
 - Circular dependencies
-- Tests instead of types
+- Tests rather than types
 - Object relational mapping
 - Dependency injection
 - Dynamic or weak type systems
@@ -80,7 +80,7 @@ Some key takeaways are:
 - Ignoring complexity will slow you down over the long term. On throwaway or trivial projects, nothing much matters.
 - Information is simple. Don't ruin it by hiding it behind a micro-language.
 - Ability to reason about your program is critical.
-- Guard rail programming, i.e. tests instead of types, is not simple. It does not help you get to where you want to go.  
+- Guard rail programming, i.e. tests rather than types, is not simple. It does not help you get to where you want to go.  
 
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
