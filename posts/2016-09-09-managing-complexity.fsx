@@ -74,8 +74,10 @@ Short term development speed gains from picking the easy option pale in comparis
 
 ### Performance of low vs high level languages 
 
-Let's say C can be 20% faster than F# for a given algorithm. In my experience, getting to the best algorithm produces an order of magnitude (or more) increase in performance.
-Using a high level language provides simplicity to explore these and use generic performance techniques such as asynchronous programming and memoization.  
+Let's say C can be 20%-50% faster than F# for a given algorithm. In my experience, getting to the best algorithm can produce an order of magnitude (or more) increase in performance.
+I've seen systems that have become so complex that even though a better algorithm is known it can't be used because it would require a large rewrite.
+The complexity limit had been reached. This is particularly true of many C++ quant libraries.
+Using a high level language provides simplicity to explore better algorithms and use generic performance techniques such as asynchronous programming and memoization.  
 
 Performance is complicated. It is often more about the movement of data than the calculation itself.
 I prefer to start in the highest level language (F#) and move an algorithm to the lowest level language (C) as a last resort.
