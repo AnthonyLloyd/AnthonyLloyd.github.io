@@ -8,17 +8,18 @@ keywords: f#, fsharp, simplicity, easy
 <p>This is a short post on a few recent events that are examples of a common idea.</p>
 <h3>Expecto - testing library vs testing framework</h3>
 <p><a href="https://github.com/haf/expecto">Expecto</a> is a new testing library that has chosen a different approach to existing testing frameworks.
-It is designed as a library to be used in a testing exe project instead of code written to run inside a framework.
+It's designed as a library to be used in a testing exe project instead of code written to run inside a framework.
 Tomas Petricek hits the nail on head with his <a href="http://tomasp.net/blog/2015/library-frameworks/">post</a> on why frameworks are limited compared to libraries.</p>
 <p>In <a href="https://github.com/haf/expecto">Expecto</a>, tests are constructed as values, so normal code is used to filter, parameterise, reuse and compose them.
-By backing up and choosing a simpler evolutionary path its hoped the library can go further than current testing frameworks.
-This was not the easy option and several components like the Visual Studio Plugin and Visual Studio Code integration have had to be built.</p>
+By backing up and choosing a simpler evolutionary path it's hoped the library can go further than current testing frameworks.
+This was not the easy option and several components like the Visual Studio Plugin and Visual Studio Code integration have had to be built.
+There has also been some scepticism that there are any advantanges.</p>
 <p>Because of its simplicity <a href="https://github.com/haf/expecto">Expecto</a> already has some unique features:
 The library itself is easy to test since it can be run inside tests.
 Structuring tests in lists and trees enables more flexible configuration.
 Most tests can be run in parallel, some may need to be globally sequential, and some only need to be sequential in small groups.
-Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.
-Fast statistical relative performance tests can be run as part of normal testing.</p>
+Fast statistical relative performance tests can be run as part of normal testing.
+Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.</p>
 <h3>Serialization - library vs hand coding</h3>
 <p>On one of my own event sourcing projects I've taken the decision to hand code the serialization and not use a library.</p>
 <p>You've done what? You are crazy.</p>
@@ -52,11 +53,11 @@ I also have specific serialization compression I want to make use of e.g. <a hre
 <p>Monads can be made for <code>SerializePut</code> and <code>SerializeGet</code>.
 This makes composing a type serializer from more primitive serializers very easy.
 Essentially after the basic primitives it takes only two lines of simple code per field.</p>
-<p>Using a great testing library (&lt;-see what I did there) serialization is surprisingly easy to test thoroughly.
+<p>Using a great testing library (see what I did there) serialization is surprisingly easy to test thoroughly.
 Property based testing is used to ensure all serialization roundtrips correctly.
 This includes tests to cover schema migration and backward compatibility.</p>
 <p>For the cost of a little extra code on schema change a simple serialization library can be built.
-It has the advantage of not needing any code generation or reflection code.
+It has the advantage of not needing any reflection or code generation.
 Also because of being bespoke it's expected to have great performance and produce smaller messages.</p>
 <h3>Support for type classes and HKTs in F#</h3>
 <p>Don Syme recently <a href="https://github.com/fsharp/fslang-suggestions/issues/243#issuecomment-282455245">commented</a> on adding type classes and HKTs to F#.</p>
@@ -64,10 +65,11 @@ Also because of being bespoke it's expected to have great performance and produc
 From what I can see language design has a greater proportion of irreversible decisions than other areas of software engineering.
 It's well know that people spend too much time on reversible decisions and too little on irreversible ones.</p>
 <p>Sometimes you have to simmer an idea down and add it at the right point to get the tastiest result.</p>
-<p>There is a little pressure from the community to get something in after it was announced that C# was exploring adding type classes.</p>
-<p>The decision to hold off can't be an easy one.
-Personally I'm happy to wait if it ensures F# is kept as simple and coherent as possible.</p>
+<p>There is some pressure from the community to get something in after it was announced that C# was exploring adding type classes.
+The decision to hold off can't be an easy one.</p>
+<p>Personally I'm happy to wait if it ensures F# is kept as simple and coherent as possible.</p>
 <h2>Conclusion</h2>
+<p>Simple solutions are easy to understand, generalise more natuarally, and are more amenable to change.</p>
 <p>Simplicity is not the easy option but it is worth fighting for.</p>
 
 
