@@ -23,12 +23,12 @@ Tomas Petricek hits the nail on head with his [post](http://tomasp.net/blog/2015
 In [Expecto](https://github.com/haf/expecto), tests are constructed as values, so normal code is used to filter, parameterise, reuse and compose them.
 By backing up and choosing a simpler evolutionary path it's hoped the library can go further than current testing frameworks.
 This was not the easy option and several components like the Visual Studio Plugin and Visual Studio Code integration have had to be built.
-There has also been some scepticism that there are any advantanges.
+There has also been some scepticism that a new approach is needed.
 
 Because of its simplicity [Expecto](https://github.com/haf/expecto) already has some unique features:
 The library itself is easy to test since it can be run inside tests.
 Structuring tests in lists and trees enables more flexible configuration.
-Most tests can be run in parallel, some may need to be globally sequential, and some only need to be sequential in small groups.
+Most tests can be run in parallel, some may need to be globally sequential, and some may need to be sequential in small groups.
 Fast statistical relative performance tests can be run as part of normal testing.
 Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.
 
@@ -60,7 +60,7 @@ type 'a Serialize =
 
 Monads can be made for `SerializePut` and `SerializeGet`.
 This makes composing a type serializer from more primitive serializers very easy.
-Essentially after the basic primitives it takes only two lines of simple code per field. 
+Essentially after the primitives are have been built it takes only two lines of simple code per field. 
 
 Using a great testing library (see what I did there) serialization is surprisingly easy to test thoroughly.
 Property based testing is used to ensure all serialization roundtrips correctly. 
@@ -68,7 +68,7 @@ This includes tests to cover schema migration and backward compatibility.
 
 For the cost of a little extra code on schema change a simple serialization library can be built.
 It has the advantage of not needing any reflection or code generation.
-Also because of being bespoke it's expected to have great performance and produce smaller messages. 
+Also, because it is bespoke it should have great performance and produce smaller messages. 
 
 ### Support for type classes and HKTs in F#
 
@@ -78,16 +78,16 @@ Like many others I've never designed a programming language but that is not goin
 From what I can see language design has a greater proportion of irreversible decisions than other areas of software engineering.
 It's well know that people spend too much time on reversible decisions and too little on irreversible ones.
 
-Sometimes you have to simmer an idea down and add it at the right point to get the tastiest result.
+Sometimes you need to simmer an idea down and add it at the right point to get the tastiest result.
 
 There is some pressure from the community to get something in after it was announced that C# was exploring adding type classes.
 The decision to hold off can't be an easy one.
 
-Personally I'm happy to wait if it ensures F# is kept as simple and coherent as possible.
+Personally, I'm happy to wait if it ensures F# is kept as simple and coherent as possible.
 
 ## Conclusion
 
-Simple solutions are easy to understand, generalise more natuarally, and are more amenable to change.
+Simple solutions are easier to understand, generalise more naturally, and are more amenable to change.
 
 Simplicity is not the easy option but it is worth fighting for.
 
