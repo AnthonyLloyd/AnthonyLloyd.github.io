@@ -26,11 +26,11 @@ This was not the easy option and several components like the Visual Studio Plugi
 There has also been some scepticism that a new approach is needed.
 
 Because of its simplicity [Expecto](https://github.com/haf/expecto) already has some unique features:
-The library itself is easy to test since it can be run inside tests.
-Structuring tests in lists and trees enables more flexible configuration.
-Most tests can be run in parallel, some may need to be globally sequential, and some may need to be sequential in small groups.
-Fast statistical relative performance tests can be run as part of normal testing.
-Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.
+- The library itself is easy to test since it can be run inside tests.
+- Structuring tests in lists and trees enables more flexible configuration.
+- Most tests can be run in parallel, some may need to be globally sequential, and some may need to be sequential in small groups.
+- Fast statistical relative performance tests can be run as part of normal testing.
+- Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.
 
 ### Serialization - library vs hand coding
 

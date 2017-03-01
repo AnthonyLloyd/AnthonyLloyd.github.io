@@ -45,7 +45,7 @@ Are you sure that will always be the case?
 
 ## Accidental Complexity
 
-The more I use a functional language the longer the list of frameworks and patterns I consider to have excessive accidental complexity:
+The more I use a functional language the longer the list of patterns I consider to have excessive accidental complexity:
 
 - Object oriented programming
 - GOF patterns
@@ -58,6 +58,7 @@ The more I use a functional language the longer the list of frameworks and patte
 - Dependency injection
 - Dynamic or weak type systems
 - Mutable domain model
+- Framework rather than library
 - Databinding & MVVM (since learning the [Elm Architecture]({% post_url 2016-06-20-fsharp-elm-part1 %}))
 
 <img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
