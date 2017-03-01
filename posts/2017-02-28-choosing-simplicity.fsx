@@ -61,7 +61,7 @@ type 'a Serialize =
 
 Monads can be made for `SerializePut` and `SerializeGet`.
 This makes composing a type serializer from more primitive serializers very easy.
-Essentially after the primitives are have been built it takes only two lines of simple code per field. 
+Essentially after the primitives have been built it takes only two lines of simple code per field. 
 
 Using a great testing library (see what I did there) serialization is surprisingly easy to test thoroughly.
 Property based testing is used to ensure all serialization roundtrips correctly. 
