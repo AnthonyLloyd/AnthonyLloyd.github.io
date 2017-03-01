@@ -29,7 +29,7 @@ Because of its simplicity [Expecto](https://github.com/haf/expecto) already has 
 
 - The library itself is easy to test since it can be run inside tests.
 - Structuring tests in lists and trees enables more flexible configuration.
-- Most tests can be run in parallel, some may need to be globally sequential, and some may need to be sequential in small groups.
+- Tests can be run in parallel, some can be globally sequential, and some can be sequential in small groups.
 - Fast statistical relative performance tests can be run as part of normal testing.
 - Stress testing can be used to randomly run a test suite in parallel for a long period to catch rare bugs and memory leaks.
 
