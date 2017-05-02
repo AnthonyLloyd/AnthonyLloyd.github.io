@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: "Kicking the Debugger"
+title: "Kicking the Debugger habit"
 tags: [debugger,debugging,bugs]
 description: "How to kick the step through debugging habit"
 keywords: f#, fsharp, debugger, debugging, bugs
@@ -22,16 +22,16 @@ The public API on the other hand is very simple: given this portfolio return the
 
 A bug report is more likely to be this risk number looks a little odd rather than an exception was thrown and here is the stack trace.
 This means I can't really agree with the idea that you should only unit test your public APIs.
-For me this should be: you definitely need to unit test your public APIs but if your domain is sufficiantly complex you also need to unit test internal modules.
+For me this should be: you need to unit test your public APIs but if your domain is sufficiently complex you also need to unit test internal modules.
 The key is if a bug report comes in that queries an API result how quickly could you investigate and resolve any possible issue.
 
 ### What's wrong with debugging?
 
-For the areas I work on:
+For areas I work on:
 
-- Its just not scalable - for larger code paths setting break points and stepping through is just not feasable. Its like finding a needle in a haystack.
-- Its limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
-- Its time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
+- It's just not scalable - for larger code paths setting break points and stepping through is just not feasible. It's like finding a needle in a haystack.
+- It's limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
+- It's time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
 
 ### What's the alternative?
 
@@ -50,7 +50,7 @@ I've just found using a set of commands I've built up in FAKE to be more flexibl
 I've applied this idea to debugging. I have a debug module in the core of my codebase that is conditional on the debug configuration.
 I can annotate code with validation and some debug output.
 The command line records a history of the test results and validation output.
-Once complete compiling in release ensures all of this diagnostic code is completely removed.
+Once complete compiling in release ensures all this diagnostic code is completely removed.
 
 This started out as simple functions to `printfn` data being sequenced and piped but expanded into functions to count calls, check for NaNs globally, serialize function inputs and outputs, test convergence of numbers etc.
 This is normal code and there is huge scope for adding conditional logic.
@@ -60,8 +60,8 @@ This is normal code and there is huge scope for adding conditional logic.
 For me kicking the debugger habit has been a productivity boost.
 It forces me to think more logically about how I validate and break down a problem.
 
-It reduces the complexity of my tooling to just normal code.
-Finding and fixing bugs feels more like coding and unit testings.
+It reduces the complexity of my tooling.
+Finding and fixing bugs feels more like coding and unit testing.
 I can use a simpler code editor plus the command line.
 
 The result is I now have more confidence that once I've created the initial failing unit test I will be able to resolve it quickly.
