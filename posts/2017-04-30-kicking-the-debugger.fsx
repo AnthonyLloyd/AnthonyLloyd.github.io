@@ -29,12 +29,9 @@ The key is if a bug report comes in that queries an API result how quickly could
 
 For the areas I work on:
 
-- Its just not scalable
-    For larger code paths setting break points and stepping through is just not feasable. Its like finding a needle in a haystack.
-- Its limited in power
-    Even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
-- Its time consuming
-    Many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
+- Its just not scalable - for larger code paths setting break points and stepping through is just not feasable. Its like finding a needle in a haystack.
+- Its limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
+- Its time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
 
 ### What's the alternative?
 
@@ -48,14 +45,15 @@ I've just found using a set of commands I've built up in FAKE to be more flexibl
     test 64 debug --stress 2
 (**
 
-[Expecto](https://github.com/haf/expecto) encourages using normal code for organisation, setup & teardown and parameterisation of tests instead of a limited framework of attribute coding.  
+[Expecto](https://github.com/haf/expecto) encourages using normal code for organisation, setup & teardown and parameterisation of tests instead of a limited framework of attribute coding.
+
 I've applied this idea to debugging. I have a debug module in the core of my codebase that is conditional on the debug configuration.
 I can annotate code with validation and some debug output.
 The command line records a history of the test results and validation output.
 Once complete compiling in release ensures all of this diagnostic code is completely removed.
 
 This started out as simple functions to `printfn` data being sequenced and piped but expanded into functions to count calls, check for NaNs globally, serialize function inputs and outputs, test convergence of numbers etc.
-This is normal code and there is huge scope for adding conditional logic to help validate and break down the problem.
+This is normal code and there is huge scope for adding conditional logic.
 
 ### Conclusion
 
