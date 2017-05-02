@@ -12,16 +12,16 @@ keywords: f#, fsharp, debugger, debugging, bugs
 module Main
 
 (**
-This post covers my experience of giving up break point and step through debugging.
+This post covers my experience of giving up breakpoint and step-through debugging.
 
 ### My Domain
 
-There are some interesting features of the domain I work in that have lead me here.
+There are some interesting features of the domain I work in that have led me here.
 Financial analytics tends to compose many algorithms such as curve fitting, statistics, monte carlo and optimisation.
 The public API on the other hand is very simple: given this portfolio return the risks associated.
 
-A bug report is more likely to be this risk number looks a little odd rather than an exception was thrown and here is the stack trace.
-This means I can't agree with the idea that you should only unit test your public APIs.
+A bug report is more likely to be 'this risk number looks a little odd' rather than 'an exception was thrown and here is the stack trace'.
+I can't agree with the idea that you should only unit test your public APIs.
 For me this should be: you need to unit test your public APIs but if your domain is sufficiently complex you also need to unit test internal modules.
 The key is if a bug report comes in that queries an API result how quickly could you investigate and resolve any possible issue.
 
@@ -29,7 +29,7 @@ The key is if a bug report comes in that queries an API result how quickly could
 
 For areas I work on:
 
-- It's just not scalable - for larger code paths setting break points and stepping through is just not feasible. It's like finding a needle in a haystack.
+- It's not scalable - for larger code paths setting break points and stepping through is just not feasible. It's like finding a needle in a haystack.
 - It's limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
 - It's time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
 
