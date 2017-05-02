@@ -71,8 +71,10 @@ The result is I now have more confidence that once I've created the initial bug 
 
 ### Appendix
 
-I've been asked for some example code from the debug module.
-The code below should hopefully start to give an idea of what can be done:
+I've been asked for some sample code from the debug module.
+The code below should hopefully start to give an idea of what can be done.  
+
+
 *)
 
 //#if DEBUG
