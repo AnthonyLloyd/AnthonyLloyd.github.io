@@ -75,7 +75,7 @@ I've been asked for some example code from the debug module.
 The code below should hopefully start to give an idea of what can be done:
 *)
 
-#if DEBUG
+#if DEBUGG
 [<AutoOpen>]
 module OverflowAndNaNCheck =
     open Checked
