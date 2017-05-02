@@ -17,11 +17,11 @@ This post covers my experience of giving up break point and step through debuggi
 ### My Domain
 
 There are some interesting features of the domain I work in that have lead me here.
-Financial analytics tends to compose a number of algorithms such as curve fitting, statistics, monte carlo and optimisation.
+Financial analytics tends to compose many algorithms such as curve fitting, statistics, monte carlo and optimisation.
 The public API on the other hand is very simple: given this portfolio return the risks associated.
 
 A bug report is more likely to be this risk number looks a little odd rather than an exception was thrown and here is the stack trace.
-This means I can't really agree with the idea that you should only unit test your public APIs.
+This means I can't agree with the idea that you should only unit test your public APIs.
 For me this should be: you need to unit test your public APIs but if your domain is sufficiently complex you also need to unit test internal modules.
 The key is if a bug report comes in that queries an API result how quickly could you investigate and resolve any possible issue.
 
@@ -64,5 +64,5 @@ It reduces the complexity of my tooling.
 Finding and fixing bugs feels more like coding and unit testing.
 I can use a simpler code editor plus the command line.
 
-The result is I now have more confidence that once I've created the initial failing unit test I will be able to resolve it quickly.
+The result is I now have more confidence that once I've created the initial unit test I will be able to resolve it quickly.
 *)
