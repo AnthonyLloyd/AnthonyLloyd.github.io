@@ -75,7 +75,7 @@ I've been asked for some example code from the debug module.
 The code below should hopefully start to give an idea of what can be done:
 *)
 
-#if DEBUGG
+//#if DEBUG
 [<AutoOpen>]
 module OverflowAndNaNCheck =
     open Checked
@@ -142,7 +142,7 @@ module Dbg =
     let mutable private functionMap = Map.empty
     let addFun (key:string) (fn:unit->unit) = functionMap <- Map.add key fn functionMap
     let runFun (key:string) = Map.find key functionMap ()
-#endif
+//#endif
 
 (**
 *)
