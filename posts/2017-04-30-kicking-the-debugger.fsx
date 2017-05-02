@@ -64,5 +64,5 @@ It reduces the complexity of my tooling.
 Finding and fixing bugs feels more like coding and unit testing.
 I can use a simpler code editor plus the command line.
 
-The result is I now have more confidence that once I've created the initial unit test I will be able to resolve it quickly.
+The result is I now have more confidence that once I've created the initial bug unit test I will be able to resolve it quickly.
 *)
