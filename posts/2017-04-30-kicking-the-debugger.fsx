@@ -36,7 +36,7 @@ For areas I work on:
 ### What's the alternative?
 
 Since starting to use [Expecto](https://github.com/haf/expecto) I've been using the command line to run unit tests.
-[Expecto](https://github.com/haf/expecto) does integrate with visual studio and can even do live unit testing.
+[Expecto](https://github.com/haf/expecto) does integrate with Visual Studio and can even do live unit testing in VS Code.
 I've just found using a set of commands I've built up in FAKE to be more flexible and productive e.g.
 
 *)
@@ -50,7 +50,7 @@ I've just found using a set of commands I've built up in FAKE to be more flexibl
 I've applied this idea to debugging. I have a debug module in the core of my codebase that is conditional on the debug configuration.
 I can annotate code with validation and some debug output.
 The command line records a history of the test results and validation output.
-Once complete compiling in release ensures all this diagnostic code is completely removed.
+Once complete compiling in release ensures I remove all this diagnostic code.
 
 This started out as simple functions to `printfn` data being sequenced and piped but expanded into functions to count calls, check for NaNs globally, serialize function inputs and outputs, test convergence of numbers etc.
 This is normal code and there is huge scope for adding conditional logic.
