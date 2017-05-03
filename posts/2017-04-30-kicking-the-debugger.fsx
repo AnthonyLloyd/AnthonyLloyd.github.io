@@ -36,6 +36,8 @@ In my field:
 - It's limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
 - It's time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
 
+<img style="border:1px solid black" src="{{site.baseurl}}public/twitter/debugging.png" title="debugging"/>
+
 ### What's the alternative?
 
 Since starting to use [Expecto](https://github.com/haf/expecto), I've been using the command line to run unit tests.
