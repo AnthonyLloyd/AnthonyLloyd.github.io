@@ -61,7 +61,7 @@ The more I use a functional language the longer the list of patterns I consider 
 - Framework rather than library
 - Databinding & MVVM (since learning the [Elm Architecture]({% post_url 2016-06-20-fsharp-elm-part1 %}))
 
-<img style="border:1px solid black" src="{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/NoDI.png" title="No DI"/>
 
 In an attempt to reduce complexity, there is a trend of building systems out of batches of data transformation scripts or moving to microservices.
 These don't reduce complexity; they dramatically increase it.
@@ -84,7 +84,7 @@ Some key takeaways are:
 - Guard rail programming, i.e. tests rather than types, is not simple. It does not help you get to where you want to go.  
 
 
-<img style="border:1px solid black" src="{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
 
 ### Performance of low vs high level languages 
 
@@ -119,7 +119,7 @@ Pure functions are simple. They always give the same output for the same input. 
 Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to reason about. Testing is painful.
 Software developers have to become familiar with the codebase and hold a large model of the system in their head. Don't let them go on holiday.   
 
-<img style="border:1px solid black" src="{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
 
 ### Choose immutability over the mutant
 

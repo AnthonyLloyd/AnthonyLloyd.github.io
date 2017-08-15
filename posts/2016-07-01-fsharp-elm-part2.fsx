@@ -315,12 +315,12 @@ The example [source](https://github.com/AnthonyLloyd/Elm) produces the following
 
 <table style="border:0px">
 	<tr>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinPhone80.png" title="Mobile Application" width="340px" height="500px"/></td>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinWPF.png" title="WPF Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/elm/WinPhone80.png" title="Mobile Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/elm/WinWPF.png" title="WPF Application" width="340px" height="500px"/></td>
 	</tr>
 	<tr>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinApp.png" title="Metro Application" width="340px" height="500px"/></td>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/elm/WinUWP.png" title="UWP Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/elm/WinApp.png" title="Metro Application" width="340px" height="500px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/elm/WinUWP.png" title="UWP Application" width="340px" height="500px"/></td>
 	</tr>
 </table>
 

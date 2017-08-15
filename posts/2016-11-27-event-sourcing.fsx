@@ -150,13 +150,13 @@ A field editor Elm app was reused across all these fields.
 The previous F# Elm implementation was extended to include subscriptions and commands.
 Minimal UI styling functionality was also added.
 
-![Santa's Summary]({{site.baseurl}}public/event/Santa.png "Santa's Summary")
+![Santa's Summary](/{{site.baseurl}}public/event/Santa.png "Santa's Summary")
 
 <table style="border:0px">
 	<tr>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/event/Kid.png" title="Kid Screen" width="340px" height="434px"/></td>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/event/Toy.png" title="Toy Screen" width="340px" height="434px"/></td>
-		<td style="background-color:white;border:0px"><img src="{{site.baseurl}}public/event/Elf.png" title="Elf Screen" width="340px" height="434px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/event/Kid.png" title="Kid Screen" width="340px" height="434px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/event/Toy.png" title="Toy Screen" width="340px" height="434px"/></td>
+		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/event/Elf.png" title="Elf Screen" width="340px" height="434px"/></td>
 	</tr>
 </table>
 
