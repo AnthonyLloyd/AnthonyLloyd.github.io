@@ -10,7 +10,7 @@ keywords: C#, F#, dotnetcore, java, performance, benchmarks
 
 (*** hide ***)
 module Main
-
+    let x = 1
 (**
 Over the past few weeks I've been submitting improvements to some of the C# programs in the [Benchmarks Game](http://benchmarksgame.alioth.debian.org/).
 
