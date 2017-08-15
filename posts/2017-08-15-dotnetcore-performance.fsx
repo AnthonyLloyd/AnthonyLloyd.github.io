@@ -99,6 +99,6 @@ So now the score is .Net Core 2.0 **6** - Java **4**.
 My overall impression is that .Net Core 2.0 and Java perform about the same.
 Java possibly has a small edge on some calculations and array manipulation and .Net having better parallel libraries.
 
-So now I am out of ideas on how to improve these further.  If you have any questions or ideas, feel to get in touch.
+So now I am out of ideas on how to improve these further.  If you have any questions or ideas, feel free to get in touch.
 
 *)
