@@ -58,9 +58,9 @@ New Result: C# 14.98s - Java 13.74s
 
 Old Result: C# 13.76s - Java 07.93s  
 
-Java code cheats and has a very bespoke dictionary from an obscure lib.  
+Java code cheats in that they have managed to find a very specific dictionary from an obscure library.  
 
-The dictionary count can be done in parallel but I think the bespoke Java dictionary wins here.  
+The dictionary count can be done in parallel but I think the Java dictionary wins it here.  
 
 Changes made: More efficient byte array memory use and parallel processing.   
 
