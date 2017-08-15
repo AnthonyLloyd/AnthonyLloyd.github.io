@@ -9,12 +9,12 @@ keywords: C#, F#, dotnetcore, java, performance, benchmarks
 
 Over the past few weeks I've been submitting improvements to some of the C# programs in the [Benchmarks Game](http://benchmarksgame.alioth.debian.org/).
 
-When I first saw the [C# .Net Core vs Java](http://benchmarksgame.alioth.debian.org/u64q/csharp.html) benchmarks the score was **.Net Core 2.0 4** - **Java 6**.
+When I first saw the [C# .Net Core vs Java](http://benchmarksgame.alioth.debian.org/u64q/csharp.html) benchmarks the score was .Net Core 2.0 **4** - Java **6**.
 This surprised me as I was under the impression .Net Core 2.0 performance would be very good.
 
-I have concentrated on the 6 programs where Java was faster and not looked at the other 4 (binary-trees, spectral-norm, fasta, pidigits).
+I have concentrated on the 6 programs where Java was the fastest and not looked at the other 4 (binary-trees, spectral-norm, fasta, pidigits).
 
-Below are some notes on each of these programs and some caveated conclusions. 
+Below are some notes on each of these programs and some conclusions. 
 
 ### reverse-complement
 
@@ -46,7 +46,7 @@ Some I submitted can be found [here](https://alioth.debian.org/tracker/index.php
 
 Old Result: C# 18.80s - Java 13.74s  
 
-I think Java must have some advantage in small int array manipulation.  
+I think Java has some advantage in small int array manipulation.  
 
 I tried splitting up into more parallel blocks but the overhead outways the better CPU use.  
 
@@ -60,7 +60,7 @@ Old Result: C# 13.76s - Java 07.93s
 
 Java code cheats and has a very bespoke dictionary from an obscure lib.  
 
-The dictionary count is done in parallel but I think the bespoke Java dictionary wins here.  
+The dictionary count can be done in parallel but I think the bespoke Java dictionary wins here.  
 
 Change mades: More efficient byte array memory use and parallel processing.   
 
@@ -70,7 +70,7 @@ New Result: C# 12.37s - Java 07.93s
 
 Old Result: C# 32.02s - Java 12.31s  
 
-Regex is not good in .Net. I don't think its even compiled on .Net Core.  
+Regex is not great in .Net. I don't think its even compiled on .Net Core.  
 
 Change mades: Reordered the tasks to run longest to shortest.  
 
@@ -78,15 +78,25 @@ New Result: C# 31.19s - Java 12.31s
 
 ## Conclusion
 
+First some caveats.
+
+The test machine is a single 64-bit quad core machine. This may not represent current servers.
+I found optimising for performance on a different machine to be very intersting.
+I tended to over optimise algorithm constants and have to look for more universal performance optimisations.  
+
+The performance benchmark testing process seems to be robust. There could be some bias in the configurations but I was not aware of any.  
+
 I found the [Benchmarks Game](http://benchmarksgame.alioth.debian.org/) to be a very good set of benchmarks.
-The benchmarks are well thought through and cover classic single thread calculations to multi threaded IO data processing.
-Obviously areas such as network performance are not as easy to test in this kind of game.
+The benchmarks are well thought through and cover classic single thread calculations through to multi threaded IO data processing.
+Obviously areas such as network performance are not as easy to test in this kind of benchmark game.
 The orgainisers are tough but fair and the rules make a lot of sense.
 The site is efficiently run and overnight was updated to .Net Core 2.0 RTM.
 
-So now the score is **.Net Core 2.0 6** - **Java 4**.
-My overall impression is that .Net Core 2.0 and Java have similar performance with Java maybe having a small edge on calculations and are manipulation and .Net having better parallel libraries.
+So now the score is .Net Core 2.0 **6** - Java **4**.  
 
-So now I am out of ideas on how to improve these further.  If you have any ideas or questions feel to get in touch.
+My overall impression is that .Net Core 2.0 and Java perform about the same.
+Java may have a small edge on some calculations and array manipulation and .Net having better parallel libraries.
+
+So now I am out of ideas on how to improve these further.  If you have any questions or ideas feel to get in touch.
 
 *)
