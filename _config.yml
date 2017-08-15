@@ -6,7 +6,7 @@ title:            'Anthony Lloyd'
 tagline:          'Functional thoughts'
 description:      'Personal blog on F# and maybe a little maths'
 url:              http://anthonylloyd.github.io
-baseurl:          /
+baseurl:          
 author:
   name:           'Anthony Lloyd'
   url:            http://anthonylloyd.github.io

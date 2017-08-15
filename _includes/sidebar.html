@@ -2,7 +2,7 @@
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
       <h2>
-        <a href="http://anthonylloyd.github.io">
+        <a href="{{ site.baseurl }}">
           {{ site.title }}
         </a>
       </h2>
@@ -10,7 +10,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="http://anthonylloyd.github.io">Home</a>
+      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
 
       {% comment %}
         The code below dynamically generates a sidebar nav of pages with
@@ -30,14 +30,14 @@
     
     <div>
       <a href="https://github.com/AnthonyLloyd" style="text-decoration:none">
-          <img src="http://anthonylloyd.github.io/public/GitHub-Mark-Light-32px.png" style="display:inline" />
+          <img src="{{ site.baseurl }}public/GitHub-Mark-Light-32px.png" style="display:inline" />
       </a>
       <a href="https://twitter.com/AnthonyLloyd123" style="text-decoration:none">
-          <img src="http://anthonylloyd.github.io/public/Twitter_logo_white_32.png" style="display:inline" />
+          <img src="{{ site.baseurl }}public/Twitter_logo_white_32.png" style="display:inline" />
       </a>
       
       <a href="https://www.linkedin.com/in/anthony-lloyd" style="text-decoration:none">
-          <img src="http://anthonylloyd.github.io/public/linkedin.png" style="display:inline" />
+          <img src="{{ site.baseurl }}public/linkedin.png" style="display:inline" />
       </a>
     </div>
 
