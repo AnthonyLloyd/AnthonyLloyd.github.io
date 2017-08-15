@@ -48,7 +48,7 @@ Old Result: C# 18.80s - Java 13.74s
 
 I think Java has some advantage in int array manipulation.  
 
-I tried splitting up into more parallel blocks but the overhead out ways the better CPU use.  
+I tried splitting up into more parallel blocks but the overhead outweighs the better CPU use.  
 
 Changes made: Small array optimisations and more efficient parallel processing.  
 
