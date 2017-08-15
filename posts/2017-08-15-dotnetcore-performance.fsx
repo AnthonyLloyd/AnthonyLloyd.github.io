@@ -36,7 +36,7 @@ New Result: C# 6.78s - Java 7.10s
 
 Old Result: C# 21.71s - Java 21.54s  
 
-I made many failed attempts to try to improve this result e.g. low level parallel, SMD.
+I made many failed attempts to try to improve this result e.g. low level parallel, SIMD.
 
 Dissapointing as it looks like Java has a small edge on these single thread numeric calculations.  
 
@@ -46,11 +46,11 @@ Some I submitted can be found [here](https://alioth.debian.org/tracker/index.php
 
 Old Result: C# 18.80s - Java 13.74s  
 
-I think Java has some advantage in small int array manipulation.  
+I think Java has some advantage in int array manipulation.  
 
-I tried splitting up into more parallel blocks but the overhead outways the better CPU use.  
+I tried splitting up into more parallel blocks but the overhead out ways the better CPU use.  
 
-Change mades: Small array optimisations and more efficient parallel processing.  
+Changes made: Small array optimisations and more efficient parallel processing.  
 
 New Result: C# 14.98s - Java 13.74s  
 
@@ -62,7 +62,7 @@ Java code cheats and has a very bespoke dictionary from an obscure lib.
 
 The dictionary count can be done in parallel but I think the bespoke Java dictionary wins here.  
 
-Change mades: More efficient byte array memory use and parallel processing.   
+Changes made: More efficient byte array memory use and parallel processing.   
 
 New Result: C# 12.37s - Java 07.93s  
 
@@ -70,9 +70,9 @@ New Result: C# 12.37s - Java 07.93s
 
 Old Result: C# 32.02s - Java 12.31s  
 
-Regex is not great in .Net. I don't think its even compiled on .Net Core.  
+Regex is not great in .Net. I don't think it's even compiled on .Net Core.  
 
-Change mades: Reordered the tasks to run longest to shortest.  
+Changes made: Reordered the tasks to run longest to shortest.  
 
 New Result: C# 31.19s - Java 12.31s  
 
@@ -81,22 +81,24 @@ New Result: C# 31.19s - Java 12.31s
 First some caveats.
 
 The test machine is a single 64-bit quad core machine. This may not represent current servers.
-I found optimising for performance on a different machine to be very intersting.
-I tended to over optimise algorithm constants and have to look for more universal performance optimisations.  
+I found optimising for performance on a different machine to be very interesting.
+I tended to over optimise algorithm constants and need to look for more universal performance optimisations.  
 
 The performance benchmark testing process seems to be robust. There could be some bias in the configurations but I was not aware of any.  
 
+No toy benchmarks truly represent the performance of a large application. These benchmarks do look to solve larger real world problems than most I have seen. 
+
 I found the [Benchmarks Game](http://benchmarksgame.alioth.debian.org/) to be a very good set of benchmarks.
-The benchmarks are well thought through and cover classic single thread calculations through to multi threaded IO data processing.
-Obviously areas such as network performance are not as easy to test in this kind of benchmark game.
-The orgainisers are tough but fair and the rules make a lot of sense.
+The benchmarks are well thought through and cover classic single thread calculations through to multi-threaded IO data processing.
+Obviously, areas such as network performance are not as easy to test in this kind of benchmark game.
+The organisers are tough but fair and the rules make a lot of sense.
 The site is efficiently run and overnight was updated to .Net Core 2.0 RTM.
 
 So now the score is .Net Core 2.0 **6** - Java **4**.  
 
 My overall impression is that .Net Core 2.0 and Java perform about the same.
-Java may have a small edge on some calculations and array manipulation and .Net having better parallel libraries.
+Java possibly has a small edge on some calculations and array manipulation and .Net having better parallel libraries.
 
-So now I am out of ideas on how to improve these further.  If you have any questions or ideas feel to get in touch.
+So now I am out of ideas on how to improve these further.  If you have any questions or ideas, feel to get in touch.
 
 *)

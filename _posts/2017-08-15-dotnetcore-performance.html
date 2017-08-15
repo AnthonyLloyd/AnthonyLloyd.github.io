@@ -20,40 +20,41 @@ This surprised me as I was under the impression .Net Core 2.0 performance would 
 <p>New Result: C# 6.78s - Java 7.10s</p>
 <h3>n-body</h3>
 <p>Old Result: C# 21.71s - Java 21.54s</p>
-<p>I made many failed attempts to try to improve this result e.g. low level parallel, SMD.</p>
+<p>I made many failed attempts to try to improve this result e.g. low level parallel, SIMD.</p>
 <p>Dissapointing as it looks like Java has a small edge on these single thread numeric calculations.</p>
 <p>Some I submitted can be found <a href="https://alioth.debian.org/tracker/index.php?group_id=100815&amp;atid=413122">here</a>.</p>
 <h3>fannkuch-redux</h3>
 <p>Old Result: C# 18.80s - Java 13.74s</p>
-<p>I think Java has some advantage in small int array manipulation.</p>
-<p>I tried splitting up into more parallel blocks but the overhead outways the better CPU use.</p>
-<p>Change mades: Small array optimisations and more efficient parallel processing.</p>
+<p>I think Java has some advantage in int array manipulation.</p>
+<p>I tried splitting up into more parallel blocks but the overhead out ways the better CPU use.</p>
+<p>Changes made: Small array optimisations and more efficient parallel processing.</p>
 <p>New Result: C# 14.98s - Java 13.74s</p>
 <h3>k-nucleotide</h3>
 <p>Old Result: C# 13.76s - Java 07.93s</p>
 <p>Java code cheats and has a very bespoke dictionary from an obscure lib.</p>
 <p>The dictionary count can be done in parallel but I think the bespoke Java dictionary wins here.</p>
-<p>Change mades: More efficient byte array memory use and parallel processing.</p>
+<p>Changes made: More efficient byte array memory use and parallel processing.</p>
 <p>New Result: C# 12.37s - Java 07.93s</p>
 <h3>regex-redux</h3>
 <p>Old Result: C# 32.02s - Java 12.31s</p>
-<p>Regex is not great in .Net. I don't think its even compiled on .Net Core.</p>
-<p>Change mades: Reordered the tasks to run longest to shortest.</p>
+<p>Regex is not great in .Net. I don't think it's even compiled on .Net Core.</p>
+<p>Changes made: Reordered the tasks to run longest to shortest.</p>
 <p>New Result: C# 31.19s - Java 12.31s</p>
 <h2>Conclusion</h2>
 <p>First some caveats.</p>
 <p>The test machine is a single 64-bit quad core machine. This may not represent current servers.
-I found optimising for performance on a different machine to be very intersting.
-I tended to over optimise algorithm constants and have to look for more universal performance optimisations.</p>
+I found optimising for performance on a different machine to be very interesting.
+I tended to over optimise algorithm constants and need to look for more universal performance optimisations.</p>
 <p>The performance benchmark testing process seems to be robust. There could be some bias in the configurations but I was not aware of any.</p>
+<p>No toy benchmarks truly represent the performance of a large application. These benchmarks do look to solve larger real world problems than most I have seen.</p>
 <p>I found the <a href="http://benchmarksgame.alioth.debian.org/">Benchmarks Game</a> to be a very good set of benchmarks.
-The benchmarks are well thought through and cover classic single thread calculations through to multi threaded IO data processing.
-Obviously areas such as network performance are not as easy to test in this kind of benchmark game.
-The orgainisers are tough but fair and the rules make a lot of sense.
+The benchmarks are well thought through and cover classic single thread calculations through to multi-threaded IO data processing.
+Obviously, areas such as network performance are not as easy to test in this kind of benchmark game.
+The organisers are tough but fair and the rules make a lot of sense.
 The site is efficiently run and overnight was updated to .Net Core 2.0 RTM.</p>
 <p>So now the score is .Net Core 2.0 <strong>6</strong> - Java <strong>4</strong>.</p>
 <p>My overall impression is that .Net Core 2.0 and Java perform about the same.
-Java may have a small edge on some calculations and array manipulation and .Net having better parallel libraries.</p>
-<p>So now I am out of ideas on how to improve these further.  If you have any questions or ideas feel to get in touch.</p>
+Java possibly has a small edge on some calculations and array manipulation and .Net having better parallel libraries.</p>
+<p>So now I am out of ideas on how to improve these further.  If you have any questions or ideas, feel to get in touch.</p>
 
 
