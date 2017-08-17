@@ -280,5 +280,10 @@ module CounterList =
 
 [The Elm Architecture](http://guide.elm-lang.org/architecture/index.html) pattern is very promising.
 It produces type safe UIs that are highly composable.
-Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.
+Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.  
+
+UPDATED:  
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png" title="Aw shucks"/>
+
 *)

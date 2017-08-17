@@ -335,4 +335,8 @@ So far, styling has not been considered, but this single place should make it ea
 This has the benefit of making the UI more testable and at the same time making migration of the native UI easier.
 
 These benefits, combined with the type safety and composability outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}), make this pattern compelling.  
+
+UPDATED:  
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png" title="Aw shucks"/>
 *)
