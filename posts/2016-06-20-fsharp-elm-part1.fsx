@@ -282,7 +282,7 @@ module CounterList =
 It produces type safe UIs that are highly composable.
 Performance should be great even for large UIs while at the same time being able to target multiple UI frameworks.  
 
-UPDATED:  
+UPDATED (Aw shucks):  
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png" title="Aw shucks"/>
 
