@@ -77,7 +77,7 @@ Don Syme recently [commented](https://github.com/fsharp/fslang-suggestions/issue
 
 Like many others I've never designed a programming language but that is not going to stop me commenting on its evolution.
 From what I can see language design has a greater proportion of irreversible decisions than other areas of software engineering.
-It's well know that people spend too much time on reversible decisions and too little on irreversible ones.
+It's well known that people spend too much time on reversible decisions and too little on irreversible ones.
 
 Sometimes you need to simmer an idea down and add it at the right point to get the tastiest result.
 

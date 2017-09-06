@@ -52,7 +52,7 @@ I tried splitting up into more parallel blocks but the overhead outweighs the be
 
 Changes made: Small array optimisations and more efficient parallel processing.  
 
-New Result: C# 14.98s - Java 13.74s  
+New Result: C# 14.45s - Java 13.74s  
 
 ### k-nucleotide
 
