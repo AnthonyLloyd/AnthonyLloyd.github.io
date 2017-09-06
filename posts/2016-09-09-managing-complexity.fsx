@@ -116,7 +116,7 @@ Data is simple. This is especially true in a strong type system that supports un
 
 Pure functions are simple. They always give the same output for the same input. They are easy to reason about and test.  
 
-Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to reason about. Testing is painful.
+Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to [reason about](https://fsharpforfunandprofit.com/posts/is-your-language-unreasonable/). Testing is painful.
 Software developers have to become familiar with the codebase and hold a large model of the system in their head. Don't let them go on holiday.   
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
