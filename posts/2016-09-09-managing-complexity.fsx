@@ -141,6 +141,8 @@ In fact, I didn't understand the full power of code reuse until I started progra
 Object orientated programming has a poorer method of assembling systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
 This helps but results in systems that are harder to reason about and increases complexity.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/OOP.png" title="OOP"/>
+
 ## Conclusion
 
 We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
