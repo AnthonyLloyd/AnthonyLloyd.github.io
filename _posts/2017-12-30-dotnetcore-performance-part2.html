@@ -17,9 +17,9 @@ For <code>fasta</code> and <code>k-nucleotide</code> further optimisations were 
 <code>ArrayPool</code> is very useful in the case of <code>fasta</code>.
 For <code>k-nucleotide</code> the largest dictionary can be constructed more efficiently in four parallel parts.</p>
 <p>Another tempting optimisation was in F# there is a one to one replacement to use native pointers for array access e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
-This actually only provided a small improvement in most cases and wasn't always done.</p>
+This only actually provided a small improvement in most cases and wasn't always done.</p>
 <p>I feel I have to plug <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a> in Expecto.
-It's a quick way of checking that one implementation is truely faster than another and has proven invaluable.</p>
+It's a quick way of checking that one implementation is truly faster than another and has proven invaluable.</p>
 <p><img src="/{{site.baseurl}}public/perf/half-is-faster.png" alt="isFasterThan" /></p>
 <h2>Results</h2>
 <p><a href="http://benchmarksgame.alioth.debian.org/u64q/csharp.html">C# vs Java</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=csharpcore">F# vs C#</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=java">F# vs Java</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=ghc">F# vs Haskell</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/fsharp.html">F# vs OCaml</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=python3">F# vs Python</a></p>
@@ -130,13 +130,13 @@ It's a quick way of checking that one implementation is truely faster than anoth
 </table>
 
 <h2>Conclusion</h2>
-<p>As said in the previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a> there are many caveats to these results.
+<p>As mentioned in the previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a> there are some caveats to these results.
 They represent the current state of a set of programs on a specific test machine.
-That being said, I think there is enough evidence for some general conclusions.</p>
-<p>First of all, the overall results for .Net Core 2.0 are very impressive compared to other managed platforms.</p>
+However, there is enough evidence for some general conclusions.</p>
+<p>The overall results for .Net Core 2.0 are very impressive compared to other managed platforms.</p>
 <p>F# performance in the worst case is only 15% behind C#. F# is a higher level language that results in simpler and shorter code.
 It's good that even in the extreme of a low-level performance benchmark it is not too far behind C#.</p>
-<p>F# in fact shows very good performance against Java resulting in a 5 all draw.
+<p>F# in fact shows very good performance against Java resulting in a five all draw.
 This means F# would be expected to perform better than Scala or Kotlin if they were to participate in the benchmarks.</p>
 <p>F# looks to have the best performance among the functional languages.
 This is due to the efficiency of .Net Core 2.0 and being able to write F# in a functional-first style.</p>
