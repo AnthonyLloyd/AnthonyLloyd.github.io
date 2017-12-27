@@ -1,7 +1,7 @@
 (**
 \---
 layout: post
-title: ".Net Core 2.0 vs Java - Performance Notes"
+title: ".Net Core 2.0 vs Java Performance Notes"
 tags: [dotnetcore,java,performance,benchmarks]
 description: "Benchmarks Game C# .Net Core 2.0 vs Java Performance Notes"
 keywords: C#, F#, dotnetcore, java, performance, benchmarks

@@ -20,12 +20,20 @@ For `k-nucleotide` Java makes use of a dictionary well suited to the program not
 
 Most of the submissions to the F# programs were ports of the C# code that had recently been optimised.
 For `fasta` and `k-nucleotide` further optimisations were discovered.
-`ArrayPool` is very useful in the case of `fasta` and for 'k-nucleotide` the largest dictionary can be constructed more efficiently in 4 parallel parts.
+`ArrayPool` is very useful in the case of `fasta`.
+For `k-nucleotide` the largest dictionary can be constructed more efficiently in four parallel parts.
 
 Another tempting optimisation was that in F# there is a one to one replacement to use native pointers for array access e.g. `Array.get a i` becomes `NativePtr.get a i`.
 This actually only provided a small improvement in most cases.
 
 ## Results
+
+[C# vs Java](http://benchmarksgame.alioth.debian.org/u64q/csharp.html)
+[F# vs C#](http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&lang2=csharpcore)
+[F# vs Java](http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&lang2=java)
+[F# vs Haskell](http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&lang2=ghc)
+[F# vs OCaml](http://benchmarksgame.alioth.debian.org/u64q/fsharp.html)
+[F# vs Python](http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&lang2=python3)
 
 | Program            |   F#    |   C#    |  Java   | Haskell |  OCaml  | Python  |
 |:-------------------|--------:|--------:|--------:|--------:|--------:|--------:|
@@ -42,6 +50,6 @@ This actually only provided a small improvement in most cases.
 
 ## Conclusion
 
-![isFasterThan]({{site.baseurl}}public/perf/half-is-faster.png)
+![isFasterThan](/{{site.baseurl}}public/perf/half-is-faster.png)
 
 *)
