@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: ".Net Core 2.0 F# Performance Notes"
+title: ".Net Core 2.0 Performance Notes Revisited"
 tags: [dotnetcore,dotnet,fsharp,performance,benchmarks]
-description: "Benchmarks Game F# .Net Core 2.0 Performance Notes"
+description: "Benchmarks Game .Net Core 2.0 Performance Notes Revisited"
 keywords: C#, F#, dotnet, dotnetcore, performance, benchmarks
 \---
 
@@ -12,11 +12,20 @@ Many thanks to Sergey Tihon for organizing this.
 
 Over the past few weeks I've been submitting improvements to some of the F# programs in the [Benchmarks Game](http://benchmarksgame.alioth.debian.org/).
 
-In a previous [post]({% post_url 2017-08-15-dotnetcore-performance %}) I did this for the C# programs.
-Since that post things have moved on a bit and C# is currently faster than Java for 8 out of 10 of the programs.
-Java is faster for regex-redux as .Net Core doesn't have a fast compiled regex implementation.
-For k-nucleotide Java makes use of a dictionary well suited to this program that is not available to C#.
+In a previous [post]({% post_url 2017-08-15-dotnetcore-performance %}) I did this for the C# programs.  
 
+Since that post things have moved on and C# is currently faster than Java for 8 out of 10 of the programs.
+Java is faster for `regex-redux` as .Net Core doesn't yet have a compiled regex implementation.
+For `k-nucleotide` Java makes use of a dictionary well suited to the program not available to C#.
+
+Most of the submissions to the F# programs were ports of the C# code that had recently been optimised.
+For `fasta` and `k-nucleotide` further optimisations were discovered.
+`ArrayPool` is very useful in the case of `fasta` and for 'k-nucleotide` the largest dictionary can be constructed more efficiently in 4 parallel parts.
+
+Another tempting optimisation was that in F# there is a one to one replacement to use native pointers for array access e.g. `Array.get a i` becomes `NativePtr.get a i`.
+This actually only provided a small improvement in most cases.
+
+## Results
 
 | Program            |   F#    |   C#    |  Java   | Haskell |  OCaml  | Python  |
 |:-------------------|--------:|--------:|--------:|--------:|--------:|--------:|
@@ -27,11 +36,12 @@ For k-nucleotide Java makes use of a dictionary well suited to this program that
 | mandelbrot         |   6.66  |   **5.83**  |   6.04  |  11.69  |  55.18  | 225.24  |
 | fannkuch-redux     |  16.65  |  **14.44**  |  17.26  |  15.40  |  16.12  | 565.97  |
 | binary-trees       |   8.54  |   **8.26**  |   8.34  |  23.66  |  10.03  |  93.55  |
-| spectral-norm      |   4.22  |   4.07  |   4.23  |   **4.04**  |   4.31  | 180.97  |
 | k-nucleotide       |  10.43  |  11.47  |   **8.70**  |  35.01  |  21.63  |  77.65  |
 | regex-redux        |  31.02  |  30.74  |  **10.34**  |  Error  |  24.66  |  15.22  |
+| spectral-norm      |   4.22  |   4.07  |   4.23  |   **4.04**  |   4.31  | 180.97  |
 
 ## Conclusion
 
+![isFasterThan]({{site.baseurl}}public/perf/half-is-faster.png)
 
 *)
