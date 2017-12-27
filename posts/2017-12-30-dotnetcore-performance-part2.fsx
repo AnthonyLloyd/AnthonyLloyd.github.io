@@ -22,7 +22,7 @@ For `fasta` and `k-nucleotide` further optimisations were discovered.
 `ArrayPool` is very useful in the case of `fasta`.
 For `k-nucleotide` the largest dictionary can be constructed more efficiently in four parallel parts.
 
-Another tempting optimisation was in F# there is a one to one replacement to use native pointers for array access e.g. `Array.get a i` becomes `NativePtr.get a i`.
+Another tempting optimisation was there is a one to one replacement in F# to use native pointers for arrays e.g. `Array.get a i` becomes `NativePtr.get a i`.
 This only actually provided a small improvement in most cases and wasn't always done.
 
 I feel I have to plug Expecto's [Expect.isFasterThan](https://github.com/haf/expecto#performance-module).

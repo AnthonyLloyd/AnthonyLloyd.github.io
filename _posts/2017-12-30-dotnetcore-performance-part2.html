@@ -16,7 +16,7 @@ For <code>k-nucleotide</code> Java makes use of a dictionary well suited to the 
 For <code>fasta</code> and <code>k-nucleotide</code> further optimisations were discovered.
 <code>ArrayPool</code> is very useful in the case of <code>fasta</code>.
 For <code>k-nucleotide</code> the largest dictionary can be constructed more efficiently in four parallel parts.</p>
-<p>Another tempting optimisation was in F# there is a one to one replacement to use native pointers for array access e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
+<p>Another tempting optimisation was there is a one to one replacement in F# to use native pointers for arrays e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
 This only actually provided a small improvement in most cases and wasn't always done.</p>
 <p>I feel I have to plug Expecto's <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a>.
 It's a quick way of checking that one implementation is truly faster than another and has proven invaluable.</p>
