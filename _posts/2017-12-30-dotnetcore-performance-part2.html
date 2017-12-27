@@ -18,6 +18,9 @@ For <code>fasta</code> and <code>k-nucleotide</code> further optimisations were 
 For <code>k-nucleotide</code> the largest dictionary can be constructed more efficiently in four parallel parts.</p>
 <p>Another tempting optimisation was in F# there is a one to one replacement to use native pointers for array access e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
 This actually only provided a small improvement in most cases.</p>
+<p>I feel I have to plug <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a> in Expecto.
+It has proved to be a quick way of checking that one implementation is truely faster than another.</p>
+<p><img src="/{{site.baseurl}}public/perf/half-is-faster.png" alt="isFasterThan" /></p>
 <h2>Results</h2>
 <p><a href="http://benchmarksgame.alioth.debian.org/u64q/csharp.html">C# vs Java</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=csharpcore">F# vs C#</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=java">F# vs Java</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=ghc">F# vs Haskell</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/fsharp.html">F# vs OCaml</a>, <a href="http://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=fsharpcore&amp;lang2=python3">F# vs Python</a></p>
 <table>
@@ -33,27 +36,109 @@ This actually only provided a small improvement in most cases.</p>
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td align="left"><p>pidigits</p></td>
+<td align="right"><p><strong>3.03</strong></p></td>
+<td align="right"><p>3.05</p></td>
+<td align="right"><p>3.12</p></td>
+<td align="right"><p>Error</p></td>
+<td align="right"><p>Error</p></td>
+<td align="right"><p>3.43</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>reverse-complement</p></td>
+<td align="right"><p><strong>0.78</strong></p></td>
+<td align="right"><p>0.82</p></td>
+<td align="right"><p>1.03</p></td>
+<td align="right"><p>1.40</p></td>
+<td align="right"><p>0.79</p></td>
+<td align="right"><p>3.26</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>fannkuch-redux</p></td>
+<td align="right"><p><strong>14.44</strong></p></td>
+<td align="right"><p>16.65</p></td>
+<td align="right"><p>17.26</p></td>
+<td align="right"><p>15.40</p></td>
+<td align="right"><p>16.12</p></td>
+<td align="right"><p>565.97</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>binary-trees</p></td>
+<td align="right"><p><strong>8.26</strong></p></td>
+<td align="right"><p>8.54</p></td>
+<td align="right"><p>8.34</p></td>
+<td align="right"><p>23.66</p></td>
+<td align="right"><p>10.03</p></td>
+<td align="right"><p>93.55</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>n-body</p></td>
+<td align="right"><p><strong>21.37</strong></p></td>
+<td align="right"><p>22.86</p></td>
+<td align="right"><p>22.10</p></td>
+<td align="right"><p>21.43</p></td>
+<td align="right"><p>21.67</p></td>
+<td align="right"><p>838.39</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>mandelbrot</p></td>
+<td align="right"><p><strong>5.83</strong></p></td>
+<td align="right"><p>6.66</p></td>
+<td align="right"><p>6.04</p></td>
+<td align="right"><p>11.69</p></td>
+<td align="right"><p>55.18</p></td>
+<td align="right"><p>225.24</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>fasta</p></td>
+<td align="right"><p>2.09</p></td>
+<td align="right"><p><strong>1.67</strong></p></td>
+<td align="right"><p>2.33</p></td>
+<td align="right"><p>9.36</p></td>
+<td align="right"><p>6.00</p></td>
+<td align="right"><p>59.47</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>k-nucleotide</p></td>
+<td align="right"><p>11.47</p></td>
+<td align="right"><p>10.43</p></td>
+<td align="right"><p><strong>8.70</strong></p></td>
+<td align="right"><p>35.01</p></td>
+<td align="right"><p>21.63</p></td>
+<td align="right"><p>77.65</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>regex-redux</p></td>
+<td align="right"><p>30.74</p></td>
+<td align="right"><p>31.02</p></td>
+<td align="right"><p><strong>10.34</strong></p></td>
+<td align="right"><p>Error</p></td>
+<td align="right"><p>24.66</p></td>
+<td align="right"><p>15.22</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>spectral-norm</p></td>
+<td align="right"><p>4.07</p></td>
+<td align="right"><p>4.22</p></td>
+<td align="right"><p>4.23</p></td>
+<td align="right"><p><strong>4.04</strong></p></td>
+<td align="right"><p>4.31</p></td>
+<td align="right"><p>180.97</p></td>
+</tr>
 </tbody>
 </table>
 
-<p>| pidigits           |   <strong>3.03</strong>  |   3.05  |   3.12  |  Error  |  Error  |   3.43  |
-| reverse-complement |   <strong>0.78</strong>  |   0.82  |   1.03  |   1.40  |   0.79  |   3.26  |
-| n-body             |  <strong>21.37</strong>  |  22.86  |  22.10  |  21.43  |  21.67  | 838.39  |
-| mandelbrot         |   <strong>5.83</strong>  |   6.66  |   6.04  |  11.69  |  55.18  | 225.24  |
-| fannkuch-redux     |  <strong>14.44</strong>  |  16.65  |  17.26  |  15.40  |  16.12  | 565.97  |
-| binary-trees       |   <strong>8.26</strong>  |   8.54  |   8.34  |  23.66  |  10.03  |  93.55  |
-| fasta              |   2.09  |   <strong>1.67</strong>  |   2.33  |   9.36  |   6.00  |  59.47  |
-| k-nucleotide       |  11.47  |  10.43  |   <strong>8.70</strong>  |  35.01  |  21.63  |  77.65  |
-| regex-redux        |  30.74  |  31.02  |  <strong>10.34</strong>  |  Error  |  24.66  |  15.22  |
-| spectral-norm      |   4.07  |   4.22  |   4.23  |   <strong>4.04</strong>  |   4.31  | 180.97  |</p>
 <h2>Conclusion</h2>
-<p>Usual caveats of current state.</p>
-<p>vs C# 15% C# is very good
-vs Java good 5/5 means vs Scala would be v good.
-vs other functional v good.
-.Net Core stunning perf.</p>
-<p>I feel I have to plug <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a> in Expecto.
-It has proved to be a quick way of checking that one implementation is truely faster than another.</p>
-<p><img src="/{{site.baseurl}}public/perf/half-is-faster.png" alt="isFasterThan" /></p>
+<p>As said in the previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a> there are many caveats to these results.
+They represent the current state of a set of programs on a specific test machine.
+That being said I think there is enough evidence for some general conclusions.</p>
+<p>First of all the overall results for .Net Core 2.0 are very impressive compared to other managed languages.</p>
+<p>F# performance in the worse case is only 15% behind C#. F# is a higher level langauge that results in simpler and shorter code.
+It is good that even in the extreme of a low level performance benchmark it is not too far behind C#.</p>
+<p>F# in fact shows very good performance against Java resulting in a 5 all draw.
+This means F# would be expected to perform better than Scala or Kotlin if they were to participate in the benchmarks.</p>
+<p>F# looks to have the best perfomance across all mainstream functional languages.
+This is due to the efficiency of .Net Core 2.0 and F# being able to be written in a functional-first style.</p>
 
 
