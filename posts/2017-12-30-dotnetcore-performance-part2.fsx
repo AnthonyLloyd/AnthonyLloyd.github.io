@@ -64,6 +64,6 @@ This means F# would be expected to perform better than Scala or Kotlin if they w
 F# looks to have the best performance across mainstream functional languages.
 This is due to the efficiency of .Net Core 2.0 and being able to write F# in a functional-first style.
 
-Hopefully we will see continued adoption of .Net Core 2.0 and F# in 2018.
+Hopefully 2018 will see continued adoption of .Net Core 2.0 and F#.
 
 *)
