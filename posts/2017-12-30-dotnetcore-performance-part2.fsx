@@ -23,10 +23,10 @@ For `fasta` and `k-nucleotide` further optimisations were discovered.
 For `k-nucleotide` the largest dictionary can be constructed more efficiently in four parallel parts.
 
 Another tempting optimisation was in F# there is a one to one replacement to use native pointers for array access e.g. `Array.get a i` becomes `NativePtr.get a i`.
-This actually only provided a small improvement in most cases.
+This actually only provided a small improvement in most cases and wasn't always done.
 
 I feel I have to plug [Expect.isFasterThan](https://github.com/haf/expecto#performance-module) in Expecto.
-It is a quick way of checking that one implementation is truely faster than another and has proven to be invaluable.
+It's a quick way of checking that one implementation is truely faster than another and has proven invaluable.
 
 ![isFasterThan](/{{site.baseurl}}public/perf/half-is-faster.png)
 
@@ -61,7 +61,7 @@ It is good that even in the extreme of a low-level performance benchmark it is n
 F# in fact shows very good performance against Java resulting in a 5 all draw.
 This means F# would be expected to perform better than Scala or Kotlin if they were to participate in the benchmarks.
 
-F# looks to have the best performance across mainstream functional languages.
+F# looks to have the best performance among the functional languages.
 This is due to the efficiency of .Net Core 2.0 and being able to write F# in a functional-first style.
 
 Hopefully 2018 will see continued adoption of .Net Core 2.0 and F#.
