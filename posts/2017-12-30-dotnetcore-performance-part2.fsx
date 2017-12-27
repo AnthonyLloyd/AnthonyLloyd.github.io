@@ -56,7 +56,7 @@ That being said, I think there is enough evidence for some general conclusions.
 First of all, the overall results for .Net Core 2.0 are very impressive compared to other managed platforms.
 
 F# performance in the worst case is only 15% behind C#. F# is a higher level language that results in simpler and shorter code.
-It is good that even in the extreme of a low-level performance benchmark it is not too far behind C#.
+It's good that even in the extreme of a low-level performance benchmark it is not too far behind C#.
 
 F# in fact shows very good performance against Java resulting in a 5 all draw.
 This means F# would be expected to perform better than Scala or Kotlin if they were to participate in the benchmarks.
@@ -64,6 +64,6 @@ This means F# would be expected to perform better than Scala or Kotlin if they w
 F# looks to have the best performance among the functional languages.
 This is due to the efficiency of .Net Core 2.0 and being able to write F# in a functional-first style.
 
-Hopefully 2018 will see continued adoption of .Net Core 2.0 and F#.
+Hopefully 2018 will see continued adoption of .Net Core 2.0 and F#. Happy new year!
 
 *)
