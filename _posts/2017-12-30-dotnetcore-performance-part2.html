@@ -1,14 +1,17 @@
 ---
 layout: post
-title: ".Net Core 2.0 F# - Performance Notes"
+title: ".Net Core 2.0 F# Performance Notes"
 tags: [dotnetcore,dotnet,fsharp,performance,benchmarks]
 description: "Benchmarks Game F# .Net Core 2.0 Performance Notes"
 keywords: C#, F#, dotnet, dotnetcore, performance, benchmarks
 ---
 <p>This post is part of the <a href="https://sergeytihon.com/2017/10/22/f-advent-calendar-in-english-2017/">F# Advent Calendar 2017</a> series.
 Many thanks to Sergey Tihon for organizing this.</p>
-<p>Over the past few weeks I've been submitting improvements to some of the F# programs in the <a href="http://benchmarksgame.alioth.debian.org/">Benchmarks Game</a>.
-In a previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a> I did this for the C# programs.</p>
+<p>Over the past few weeks I've been submitting improvements to some of the F# programs in the <a href="http://benchmarksgame.alioth.debian.org/">Benchmarks Game</a>.</p>
+<p>In a previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a> I did this for the C# programs.
+Since that post things have moved on a bit and C# is currently faster than Java for 8 out of 10 of the programs.
+Java is faster for regex-redux as .Net Core doesn't have a fast compiled regex implementation.
+For k-nucleotide Java makes use of a dictionary well suited to this program that is not available to C#.</p>
 <table>
 <thead>
 <tr class="header">
@@ -32,15 +35,6 @@ In a previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a
 <td align="right"><p>59.47</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>k-nucleotide</p></td>
-<td align="right"><p>10.43</p></td>
-<td align="right"><p>11.47</p></td>
-<td align="right"><p><strong>8.70</strong></p></td>
-<td align="right"><p>35.01</p></td>
-<td align="right"><p>21.63</p></td>
-<td align="right"><p>77.65</p></td>
-</tr>
-<tr class="odd">
 <td align="left"><p>pidigits</p></td>
 <td align="right"><p>3.05</p></td>
 <td align="right"><p><strong>3.03</strong></p></td>
@@ -48,33 +42,6 @@ In a previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a
 <td align="right"><p>Error</p></td>
 <td align="right"><p>Error</p></td>
 <td align="right"><p>3.43</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>regex-redux</p></td>
-<td align="right"><p>31.02</p></td>
-<td align="right"><p>30.74</p></td>
-<td align="right"><p><strong>10.34</strong></p></td>
-<td align="right"><p>Error</p></td>
-<td align="right"><p>24.66</p></td>
-<td align="right"><p>15.22</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>binary-trees</p></td>
-<td align="right"><p>8.54</p></td>
-<td align="right"><p><strong>8.26</strong></p></td>
-<td align="right"><p>8.34</p></td>
-<td align="right"><p>23.66</p></td>
-<td align="right"><p>10.03</p></td>
-<td align="right"><p>93.55</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>spectral-norm</p></td>
-<td align="right"><p>4.22</p></td>
-<td align="right"><p>4.07</p></td>
-<td align="right"><p>4.23</p></td>
-<td align="right"><p><strong>4.04</strong></p></td>
-<td align="right"><p>4.31</p></td>
-<td align="right"><p>180.97</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>reverse-complement</p></td>
@@ -111,6 +78,42 @@ In a previous <a href="{% post_url 2017-08-15-dotnetcore-performance %}">post</a
 <td align="right"><p>15.40</p></td>
 <td align="right"><p>16.12</p></td>
 <td align="right"><p>565.97</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>binary-trees</p></td>
+<td align="right"><p>8.54</p></td>
+<td align="right"><p><strong>8.26</strong></p></td>
+<td align="right"><p>8.34</p></td>
+<td align="right"><p>23.66</p></td>
+<td align="right"><p>10.03</p></td>
+<td align="right"><p>93.55</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>spectral-norm</p></td>
+<td align="right"><p>4.22</p></td>
+<td align="right"><p>4.07</p></td>
+<td align="right"><p>4.23</p></td>
+<td align="right"><p><strong>4.04</strong></p></td>
+<td align="right"><p>4.31</p></td>
+<td align="right"><p>180.97</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>k-nucleotide</p></td>
+<td align="right"><p>10.43</p></td>
+<td align="right"><p>11.47</p></td>
+<td align="right"><p><strong>8.70</strong></p></td>
+<td align="right"><p>35.01</p></td>
+<td align="right"><p>21.63</p></td>
+<td align="right"><p>77.65</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>regex-redux</p></td>
+<td align="right"><p>31.02</p></td>
+<td align="right"><p>30.74</p></td>
+<td align="right"><p><strong>10.34</strong></p></td>
+<td align="right"><p>Error</p></td>
+<td align="right"><p>24.66</p></td>
+<td align="right"><p>15.22</p></td>
 </tr>
 </tbody>
 </table>
