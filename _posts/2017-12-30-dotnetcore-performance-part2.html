@@ -16,9 +16,9 @@ For <code>k-nucleotide</code> Java makes use of a dictionary well suited to the 
 For <code>fasta</code> and <code>k-nucleotide</code> further optimisations were discovered.
 <code>ArrayPool</code> is very useful in the case of <code>fasta</code>.
 For <code>k-nucleotide</code> the largest dictionary can be constructed more efficiently in four parallel parts.</p>
-<p>Another tempting optimisation was there is a one to one replacement in F# to use native pointers for arrays e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
+<p>Another tempting optimisation was there being a one to one replacement in F# to use native pointers for arrays e.g. <code>Array.get a i</code> becomes <code>NativePtr.get a i</code>.
 This only actually provided a small improvement in most cases and wasn't always done.</p>
-<p>I feel I have to plug Expecto's <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a>.
+<p>I feel I must plug Expecto's <a href="https://github.com/haf/expecto#performance-module">Expect.isFasterThan</a>.
 It's a quick way of checking that one implementation is truly faster than another and has proven invaluable.</p>
 <p><img src="/{{site.baseurl}}public/perf/half-is-faster.png" alt="isFasterThan" /></p>
 <h2>Results</h2>
@@ -134,7 +134,7 @@ It's a quick way of checking that one implementation is truly faster than anothe
 They represent the current state of a set of programs on a specific test machine.
 However, there is enough evidence for some general conclusions.</p>
 <p>The overall results for .Net Core 2.0 are very impressive compared to other managed platforms.</p>
-<p>F# performance in the worst case is only 15% behind C#. F# is a higher level language that results in simpler and shorter code.
+<p>F# performance in the worst case is only 15% behind C#. F# is a high-level language that results in simpler and shorter code.
 It's good that even in the extreme of a low-level performance benchmark it is not too far behind C#.</p>
 <p>F# in fact shows very good performance against Java resulting in a five all draw.
 This means F# would be expected to perform better than Scala or Kotlin if they were to participate in the benchmarks.</p>
