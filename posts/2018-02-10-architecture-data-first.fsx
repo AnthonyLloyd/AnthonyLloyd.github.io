@@ -1,17 +1,22 @@
 (**
 \---
 layout: post
-title: "System Architecture - Data First"
+title: "Data-First Architecture - Asset Management Case Study"
 tags: [functional,architecture,data]
-description: "System Architecture - Data First"
+description: "Data-First Architecture - Asset Management Case Study"
 keywords: functional, architecture, data
 \---
 
-Its about the data stupid
+I recently had a light bulb moment while read a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
+It helped bring together some ideas I've had for a while on software architecture.
 
-FP-oriented architecture
+Data shape should dictate...
+First thing you should do is estimate size.
 
-## Results
+Funtional programming really helps with this mindset. In FP we keep the data and functions separate. We do this because data is simple and pure functions are simple.
+
+I'm going to make the case with an example from my industry. I will argue most asset management systems store and use the wrong data. This limits the functionality and increases the complexity of these systems.
+
 
 ## Case Study - Asset Management Systems
 
@@ -36,5 +41,12 @@ Exactly, also need to upfront estimate the size of data worst case. Infinitely s
 
 It is interesting. I'm definitely going to blog about this. My case study is asset management systems. Almost all get the data wrong. They think the data is positions and p&l. It bloats them and limits functionality.
 
+## Conclusion
+
+Can't find any description of this apart from the gaming industry.
+
+In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.
+
+Most articles titled architecture jump straight in to some feature of the codebase.
 
 *)
