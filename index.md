@@ -5,9 +5,8 @@ title: Home
 
 ## Posts
 
-{% for post in site.posts %}
-  {% if post.date | date: "%Y" != '2018' %}
-    {{ post.date | date: "%d %b %Y" }}
-    [ {{ post.title }} ]({{ post.url }})
-  {% endif %}
+{% assign posts = site.posts | where_exp: "title", "title != 'Data-First Architecture - Asset Management Case Study'" %}
+{% for post in posts %}
+  {{ post.date | date: "%d %b %Y" }}
+  [ {{ post.title }} ]({{ post.url }})
 {% endfor %}
