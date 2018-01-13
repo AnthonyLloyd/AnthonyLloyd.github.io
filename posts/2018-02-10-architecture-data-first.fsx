@@ -1,53 +1,65 @@
 (**
 \---
 layout: post
-title: "Data-First Architecture - Asset Management Case Study"
+title: "Data-First Architecture - Asset Management"
 tags: [functional,architecture,data]
-description: "Data-First Architecture - Asset Management Case Study"
+description: "Data-First Architecture - Asset Management"
 keywords: functional, architecture, data
-excludeme: true
+exclude: true
 \---
 
-I recently had a light bulb moment while read a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
+I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
 It helped bring together some ideas I've had for a while on software architecture.
 
-Data shape should dictate...
-First thing you should do is estimate size.
+> Data characteristics excluding system functionality should dictate the architecture of the system.
 
-Funtional programming really helps with this mindset. In FP we keep the data and functions separate. We do this because data is simple and pure functions are simple.
+First thing you should do is estimate the size (and rate of change).
+Then pure functions complete the picture.
 
-I'm going to make the case with an example from my industry. I will argue most asset management systems store and use the wrong data. This limits the functionality and increases the complexity of these systems.
+Funtional programming encourages this mindset.
+In FP we keep the data and functions separate.
+We do this because data is simple and pure functions are simple.
+Combining them leads to needless complexity.
 
+I'm going to make the case with an example from my industry.
+I will argue most asset management systems store and use the wrong data.
+This limits functionality and increases the complexity of these systems.
 
-## Case Study - Asset Management Systems
+## Traditional Approach
 
 Asset management systems what is the data?
+They think the data is positions and p&l. It bloats them and limits functionality.
 
-
-## Ideas
-
-This is v important and FP encourages it. I have a good example in finance that I'm considering blogging in the new year. #fsharp
-
-basically the data without behaviour should dictate the architecture of the system. Then pure functions complete the picture.
-
-To wrap up: think about the actual problem and the data it needs. Then write functions to manage that data. Don't think about classes and interfaces and closures and reflection and RAII and exceptions and polymorphism and who knows what else.
-
-This philosophy is called data-oriented design, by the way. For those interested, here are some videos!
-
+## Data-First Approach
 
 Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
 In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.
 
 Exactly, also need to upfront estimate the size of data worst case. Infinitely scalable by default leads to bad perf + complexity.
 
-It is interesting. I'm definitely going to blog about this. My case study is asset management systems. Almost all get the data wrong. They think the data is positions and p&l. It bloats them and limits functionality.
+Cache by fund simple. Ask any question simple code.
+
+Hierarchy of funds to look at things from whole asset manager.
+
+We can keep a cache of the data (encryped of course) on the client to further save cloud cost. Append only.
+
 
 ## Conclusion
 
-Can't find any description of this apart from the gaming industry.
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.
 
 Most articles titled architecture jump straight in to some feature of the codebase.
+
+So we can build a system that is simpler, more flexible, faster and cheaper because we first fully understood the data.
+
+
+## Todo
+
+To wrap up: think about the actual problem and the data it needs. Then write functions to manage that data. Don't think about classes and interfaces and closures and reflection and RAII and exceptions and polymorphism and who knows what else.
+
+Can't find any description of this apart from the gaming industry.
+This philosophy is called data-oriented design, by the way. For those interested, here are some videos!
 
 *)
