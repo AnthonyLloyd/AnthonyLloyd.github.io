@@ -11,18 +11,24 @@ exclude: true
 I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
 It helped bring together some ideas I've had for a while on software architecture.
 
-> Data characteristics excluding system functionality should dictate the architecture of the system.
+> Data characteristics excluding software functionality should dictate the system architecture.
 
+The shape, size and rate of change of the data is the most important factor when starting to architect a system.
+The very first thing that needs to be done is to estimate these characteristsics of the data.
+
+
+The real data!
 First thing you should do is estimate the size (and rate of change).
-Then pure functions complete the picture.
 
-Funtional programming encourages this mindset.
-In FP we keep the data and functions separate.
-We do this because data is simple and pure functions are simple.
+Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
+
+Functional programming encourages this mindset.
+In functional programming the data and functions are kept separate.
+This is done because data is simple and pure functions are simple.
 Combining them leads to needless complexity.
 
-I'm going to make the case with an example from my industry.
-I will argue most asset management systems store and use the wrong data.
+I'm going to make the case with an example from asset management.
+I will argue that most systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
 
 ## Traditional Approach
