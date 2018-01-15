@@ -14,7 +14,8 @@ This surprised me as I was under the impression .Net Core 2.0 performance would 
 
 I have concentrated on the 6 programs where Java was the fastest and not looked at the other 4 (binary-trees, spectral-norm, fasta, pidigits).
 
-Below are some notes on each of these programs and some conclusions. 
+Below are some notes on each of these programs and some conclusions.
+A follow up [post]({% post_url 2017-12-30-dotnetcore-performance-part2 %}) give the latest results and covers F# also.
 
 ### reverse-complement
 

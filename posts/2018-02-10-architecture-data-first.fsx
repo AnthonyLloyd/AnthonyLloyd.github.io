@@ -36,9 +36,6 @@ Worse than this other data processes are built on the top of this position data 
 
 ## Data-First Approach
 
-Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
-In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.
-
 Exactly, also need to upfront estimate the size of data worst case. Infinitely scalable by default leads to bad perf + complexity.
 
 Cache by fund simple. Ask any question simple code.
@@ -60,6 +57,9 @@ So we can build a system that is simpler, more flexible, faster and cheaper beca
 
 
 ## Todo
+
+Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
+In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.
 
 Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
 
