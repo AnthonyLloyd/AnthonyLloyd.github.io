@@ -34,6 +34,8 @@ What is being saved is essentially a chosen set of calculation results.
 
 What's worse is that other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.
 
+I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
+
 ## Data-First Approach
 
 Exactly, also need to upfront estimate the size of data worst case. Infinitely scalable by default leads to bad perf + complexity.
@@ -43,7 +45,6 @@ Cache by fund simple. Ask any question simple code.
 Hierarchy of funds to look at things from whole asset manager.
 
 We can keep a cache of the data (encryped of course) on the client to further save cloud cost. Append only.
-
 
 ## Conclusion
 
@@ -55,8 +56,9 @@ Most articles titled architecture jump straight in to some feature of the codeba
 
 So we can build a system that is simpler, more flexible, faster and cheaper because we first fully understood the data.
 
-
 ## Todo
+
+People are suprised when I say you can just hold this data in memory.
 
 Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
 In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.
@@ -74,7 +76,7 @@ This philosophy is called data-oriented design, by the way. For those interested
 
 [The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)  
 [Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)  
-[Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 [Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)  
+[Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
 *)

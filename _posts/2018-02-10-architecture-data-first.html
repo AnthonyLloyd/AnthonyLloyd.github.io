@@ -25,6 +25,7 @@ You can see this as they normally have an overnight batch process that generates
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
 <p>What's worse is that other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.</p>
+<p>I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
 <h2>Data-First Approach</h2>
 <p>Exactly, also need to upfront estimate the size of data worst case. Infinitely scalable by default leads to bad perf + complexity.</p>
 <p>Cache by fund simple. Ask any question simple code.</p>
@@ -36,6 +37,7 @@ What is being saved is essentially a chosen set of calculation results.</p>
 <p>Most articles titled architecture jump straight in to some feature of the codebase.</p>
 <p>So we can build a system that is simpler, more flexible, faster and cheaper because we first fully understood the data.</p>
 <h2>Todo</h2>
+<p>People are suprised when I say you can just hold this data in memory.</p>
 <p>Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
 In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.</p>
 <p>Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.</p>
@@ -46,7 +48,7 @@ This philosophy is called data-oriented design, by the way. For those interested
 <h2>References</h2>
 <p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">The One Weird Trick: data first, not code first - Even Todd</a><br />
 <a href="https://news.ycombinator.com/item?id=10291688">Data first, not code first - Hacker News</a><br />
-<a href="https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy">Queues and their lack of mechanical sympathy - Martin Fowler</a><br />
-<a href="http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf">Practical Examples in Data Oriented Design - Niklas Frykholm</a></p>
+<a href="http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf">Practical Examples in Data Oriented Design - Niklas Frykholm</a><br />
+<a href="https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy">Queues and their lack of mechanical sympathy - Martin Fowler</a></p>
 
 
