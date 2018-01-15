@@ -19,8 +19,8 @@ The first thing that needs to be done is estimate these characteristics in avera
 Functional programming encourages this mindset since the data and functions are kept separate.
 Data is simple and pure functions are simple. Combining them leads to needless complexity.
 
-I'm going to make the case with an example from asset management.
-I will argue that most systems store and use the wrong data.
+I'm going to make the case with an example.
+I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
 
 ## Traditional Approach
@@ -32,7 +32,7 @@ This produces an enormous amount of duplicated data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
-Worse than this other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.
+What's worse is that other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.
 
 ## Data-First Approach
 
@@ -72,9 +72,9 @@ This philosophy is called data-oriented design, by the way. For those interested
 
 ## References
 
-[The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)
-[Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)
-[Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)
-[Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)
+[The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)  
+[Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)  
+[Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
+[Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)  
 
 *)
