@@ -14,18 +14,10 @@ It helped bring together some ideas I've had for a while on software architectur
 > Data characteristics excluding software functionality should dictate the system architecture.
 
 The shape, size and rate of change of the data is the most important factor when starting to architect a system.
-The very first thing that needs to be done is to estimate these characteristsics of the data.
+The first thing that needs to be done is estimate these characteristics in average and extreme cases.
 
-
-The real data!
-First thing you should do is estimate the size (and rate of change).
-
-Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
-
-Functional programming encourages this mindset.
-In functional programming the data and functions are kept separate.
-This is done because data is simple and pure functions are simple.
-Combining them leads to needless complexity.
+Functional programming encourages this mindset since the data and functions are kept separate.
+Data is simple and pure functions are simple. Combining them leads to needless complexity.
 
 I'm going to make the case with an example from asset management.
 I will argue that most systems store and use the wrong data.
@@ -33,8 +25,14 @@ This limits functionality and increases the complexity of these systems.
 
 ## Traditional Approach
 
-Asset management systems what is the data?
-They think the data is positions and p&l. It bloats them and limits functionality.
+Most asset management systems consider positions, profit and returns to be their main data.
+You can see this as they normally have an overnight batch process that generates and saves positions for the next day.
+
+This produces an enormous amount of duplicated data.
+Databases are large and grow rapidly.
+What is being saved is essentially a chosen set of calculation results.
+
+Worse than this other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.
 
 ## Data-First Approach
 
@@ -63,9 +61,20 @@ So we can build a system that is simpler, more flexible, faster and cheaper beca
 
 ## Todo
 
+Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
+
+We are not google, our extreme cases will be easier to estimate.
+
 To wrap up: think about the actual problem and the data it needs. Then write functions to manage that data. Don't think about classes and interfaces and closures and reflection and RAII and exceptions and polymorphism and who knows what else.
 
 Can't find any description of this apart from the gaming industry.
 This philosophy is called data-oriented design, by the way. For those interested, here are some videos!
+
+## References
+
+[The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)
+[Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)
+[Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)
+[Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)
 
 *)
