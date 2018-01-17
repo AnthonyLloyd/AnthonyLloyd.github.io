@@ -8,6 +8,8 @@ keywords: functional, architecture, data
 exclude: true
 \---
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
+
 I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
 It helped bring together some ideas I've had for a while on software architecture.
 
@@ -22,8 +24,6 @@ Data is simple and pure functions are simple. Combining them leads to needless c
 I'm going to make the case with an example.
 I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
-
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
 ## Traditional Approach
 
@@ -62,7 +62,7 @@ Fund for 10 years 2.4 MB
 
 Now we have a feel for the data we can start to make some decisions about the architecture.
 
-Given the size we can decide to load and cache by whole fund.
+Given the size we can decide to load and cache by whole fund history.
 This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
 The majority of these calculations are ideally done as a single pass through the ordered trades.
 It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.
@@ -70,9 +70,12 @@ It turns out with in memory data this is a negligable processing cost and can ju
 We can also look at a hierarchy of funds and perform the calculations at a parent level.
 Since most of the data is append only we can keep a cache saved (encryped of course) on the client to further save cloud costs.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
+
 ## Conclusion
 
 People are suprised when I say you can just hold this data in memory.
+We are not google, our extreme cases will be easier to estimate.
 Infinitely scalable by default leads to bad perf + complexity.
 
 In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.
@@ -80,16 +83,6 @@ In the days of cloud computing where architectural costs are more obvious right 
 Most articles titled architecture jump straight in to some feature of the codebase.
 
 So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.
-
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
-
-## Todo
-
-Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
-
-We are not google, our extreme cases will be easier to estimate.
-
-To wrap up: think about the actual problem and the data it needs. Then write functions to manage that data. Don't think about classes and interfaces and closures and reflection and RAII and exceptions and polymorphism and who knows what else.
 
 ## References
 
