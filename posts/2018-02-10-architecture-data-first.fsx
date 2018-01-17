@@ -36,38 +36,44 @@ What's worse is that other data processes are built on the top of this position 
 
 I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
+
 ## Data-First Approach
 
-1. The primary data is `trades`, asset `terms` and `time series`.
-2. `Positions`, `profit` and `returns` are just calculations based the primary data. We can ignore these for now and consider caching of results at a later stage.
-3. `Terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and changing schema.
-4. `Time series` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
-5. `Trades` data is a simple list of asset quantity movements from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
-6. We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
-7. Downloading these funds over a period of time and analysing the data gives us some useful statistics.
-8. 280 funds, 100-1000 positions per fund, 1000 trades per year per fund.
-9. Data size for a trade is 50 bytes * 5 flows = 256 bytes
+The primary data is `trades`, asset `terms` and `time series`.
+`Positions`, `profit` and `returns` are just calculations based the primary data.
+We can ignore these for now and consider caching of results at a later stage.
 
-fund for 1 year 250 KB
-fund for 10 years 2.4 MB
+`Terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
+`Time series` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
+`Trades` data is a simple list of asset quantities from one entity to another.
+The data is effectively all numeric and fixed size.
+An append only ledger style structure works well here.
+
+We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
+Downloading these funds over a period of time and analysing the data gives us some useful statistics.
+
+280 funds, 100-1000 positions per fund, 1000 trades per year per fund. Per day?
+from 4, to 4, instrument 4, quantity 4, flow type 2, trade date 8, settle days 2, trade id 8, usertime 8 ~ 50 bytes
+Data size for a trade is 50 bytes * 5 flows = 256 bytes.
+Fund for 1 year 250 KB
+Fund for 10 years 2.4 MB
 280 funds for 10 years 700 MB
 
+Now we have a feel for the data we can start to make some decisions about the architecture.
 
-from 4, to 4, instrument 4, quantity 4, flow type 2, trade date 8, settle days 2, trade id 8, usertime 8 ~ 50 bytes
+Given the size of data we can decide to load and cache by whole fund.
+This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
+The majority of these calculations are ideally done as a single pass through the ordered trades.
+It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.
 
-
-
-Cache by fund simple. Ask any question simple code.
-
-Hierarchy of funds to look at things from whole asset manager.
-
-We can keep a cache of the data (encryped of course) on the client to further save cloud cost.
+We can also look at a hierarchy of funds and perform the calculations at a parent fund level.
+Since most of the data is append only we can keep a cache saved (encryped of course) on the client to further save cloud costs.
 
 ## Conclusion
 
+People are suprised when I say you can just hold this data in memory.
 Infinitely scalable by default leads to bad perf + complexity.
-
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.
 
@@ -77,19 +83,11 @@ So we can build a system that is simpler, faster, more flexible and cheaper to r
 
 ## Todo
 
-People are suprised when I say you can just hold this data in memory.
-
-Premature micro-optimization is wasteful. Yet this waste is utterly insignificant compared to implementing algorithms with non-viable complexity.
-In this specific case, you aren't gonna need YAGNI—complexity analysis matters, even in the very first version you write.
-
 Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.
 
 We are not google, our extreme cases will be easier to estimate.
 
 To wrap up: think about the actual problem and the data it needs. Then write functions to manage that data. Don't think about classes and interfaces and closures and reflection and RAII and exceptions and polymorphism and who knows what else.
-
-Can't find any description of this apart from the gaming industry.
-This philosophy is called data-oriented design, by the way. For those interested, here are some videos!
 
 ## References
 
