@@ -18,6 +18,7 @@ Data is simple and pure functions are simple. Combining them leads to needless c
 <p>I'm going to make the case with an example.
 I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 <h2>Traditional Approach</h2>
 <p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their main data.
 You can see this as they normally have an overnight batch process that generates and saves <code>positions</code> for the next day.</p>
@@ -26,10 +27,9 @@ Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
 <p>What's worse is that other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.</p>
 <p>I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 <h2>Data-First Approach</h2>
-<p>The primary data is <code>trades</code>, asset <code>terms</code> and <code>time series</code>.
-<code>Positions</code>, <code>profit</code> and <code>returns</code> are just calculations based the primary data.
+<p>The primary data for asset management is <code>trades</code>, asset <code>terms</code> and <code>time series</code>.
+All other data is just calculations based these.
 We can ignore these for now and consider caching of results at a later stage.</p>
 <p><code>Terms</code> data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
 <code>Time series</code> data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
@@ -45,11 +45,11 @@ Fund for 1 year 250 KB
 Fund for 10 years 2.4 MB
 280 funds for 10 years 700 MB</p>
 <p>Now we have a feel for the data we can start to make some decisions about the architecture.</p>
-<p>Given the size of data we can decide to load and cache by whole fund.
+<p>Given the size we can decide to load and cache by whole fund.
 This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
 The majority of these calculations are ideally done as a single pass through the ordered trades.
 It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.</p>
-<p>We can also look at a hierarchy of funds and perform the calculations at a parent fund level.
+<p>We can also look at a hierarchy of funds and perform the calculations at a parent level.
 Since most of the data is append only we can keep a cache saved (encryped of course) on the client to further save cloud costs.</p>
 <h2>Conclusion</h2>
 <p>People are suprised when I say you can just hold this data in memory.
@@ -57,6 +57,7 @@ Infinitely scalable by default leads to bad perf + complexity.</p>
 <p>In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.</p>
 <p>Most articles titled architecture jump straight in to some feature of the codebase.</p>
 <p>So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 <h2>Todo</h2>
 <p>Because data cost many powers of 10 more time to retrieve. And also data shape is a constant in the system. Code changes.</p>
 <p>We are not google, our extreme cases will be easier to estimate.</p>

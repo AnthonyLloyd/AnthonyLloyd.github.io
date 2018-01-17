@@ -23,6 +23,8 @@ I'm going to make the case with an example.
 I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
+
 ## Traditional Approach
 
 Most asset management systems consider `positions`, `profit` and `returns` to be their main data.
@@ -36,12 +38,10 @@ What's worse is that other data processes are built on the top of this position 
 
 I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
-
 ## Data-First Approach
 
-The primary data is `trades`, asset `terms` and `time series`.
-`Positions`, `profit` and `returns` are just calculations based the primary data.
+The primary data for asset management is `trades`, asset `terms` and `time series`.
+All other data is just calculations based these.
 We can ignore these for now and consider caching of results at a later stage.
 
 `Terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
@@ -62,12 +62,12 @@ Fund for 10 years 2.4 MB
 
 Now we have a feel for the data we can start to make some decisions about the architecture.
 
-Given the size of data we can decide to load and cache by whole fund.
+Given the size we can decide to load and cache by whole fund.
 This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
 The majority of these calculations are ideally done as a single pass through the ordered trades.
 It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.
 
-We can also look at a hierarchy of funds and perform the calculations at a parent fund level.
+We can also look at a hierarchy of funds and perform the calculations at a parent level.
 Since most of the data is append only we can keep a cache saved (encryped of course) on the client to further save cloud costs.
 
 ## Conclusion
@@ -80,6 +80,8 @@ In the days of cloud computing where architectural costs are more obvious right 
 Most articles titled architecture jump straight in to some feature of the codebase.
 
 So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 ## Todo
 
