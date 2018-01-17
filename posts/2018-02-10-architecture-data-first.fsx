@@ -62,25 +62,25 @@ Now we have a good feel for the data we can start to make some decisions about t
 
 Given the size we can decide to load and cache by whole fund history.
 This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
-The majority of these calculations are ideally done as a single pass through the ordered trades.
-It turns out with in memory data this is a negligable processing cost and can just be done as the screen refreshes.
+The majority of these calculations are ideally performed as a single pass through the ordered trades.
+It turns out with in memory data this is negligable processing cost and can just be done as the screen refreshes.
 
 We can also look at a hierarchy of funds and perform calculations at a parent level.
 Since the data is append only we can just download latest additions to the client and save cloud costs.
-Also as the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for the change in a result.
+Also as the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a result.
 
 ## Conclusion
 
-So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.
+We can build a system that is simpler, faster, more flexible and cheaper to host because we first understood the data.
 
-People are often suprised when I say full fund history can be held in memory.
+People are often suprised that full fund history can be held in memory.
 Software developers cannot always answer questions on the size of their systems data. It's been abstracted away from them.
 
 We are not google.
 Infinitely scalable by default leads to complexity and bad performance.
 Our extreme cases will be easier to estimate.
 
-In the current time of cloud computing where architectural costs are more obvious, right sizing is all the more important.
+In the current time of cloud computing, where architectural costs are obvious, right sizing is all the more important.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
