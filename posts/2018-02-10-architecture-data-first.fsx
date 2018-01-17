@@ -40,15 +40,13 @@ I think this architecture comes from not investigating the characteristics of th
 
 ## Data-First Approach
 
-The primary data for asset management is `trades`, asset `terms` and `time series`.
-All other data is just calculations based these.
-We can ignore these for now and consider caching of results at a later stage.
+The primary data for asset management is asset `terms`, price `time series` and `trades`.
+All other position data are just calculations based these.
+We can ignore these for now and consider caching of calculations at a later stage.
 
-`Terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
-`Time series` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
-`Trades` data is a simple list of asset quantities from one entity to another.
-The data is effectively all numeric and fixed size.
-An append only ledger style structure works well here.
+- `terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
+- `time series` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
+- `trades` data is a simple list of asset quantities from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
 
 We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
 Downloading these funds over a period of time and analysing the data gives us some useful statistics.
@@ -67,18 +65,20 @@ This will simplify the code and give us greater flexibilty on the various types 
 The majority of these calculations are ideally done as a single pass through the ordered trades.
 It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.
 
-We can also look at a hierarchy of funds and perform the calculations at a parent level.
-Since most of the data is append only we can keep a cache saved (encryped of course) on the client to further save cloud costs.
+We can also look at a hierarchy of funds and perform calculations at a parent level.
+Since most of the data is append only we can just download latest additions to the client and save cloud costs.
+As the data is bitemporal we can look at any previous time and easily ask questions such as what was responsible for the change in a result.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 ## Conclusion
 
-People are suprised when I say you can just hold this data in memory.
-We are not google, our extreme cases will be easier to estimate.
-Infinitely scalable by default leads to bad perf + complexity.
+People are often suprised when I say full fund history can be just held in memory.
 
-In the days of cloud computing where architectural costs are more obvious right sizing the architecture to the data is more important.
+We are not google. Our extreme cases will be easier to estimate.
+Infinitely scalable by default leads to complexity and bad performance.
+
+In the current time of cloud computing where architectural costs are more obvious, right sizing the architecture is all the more important.
 
 Most articles titled architecture jump straight in to some feature of the codebase.
 
