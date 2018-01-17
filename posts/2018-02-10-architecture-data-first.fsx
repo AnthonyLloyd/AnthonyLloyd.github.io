@@ -25,8 +25,8 @@ This limits functionality and increases the complexity of these systems.
 
 ## Traditional Approach
 
-Most asset management systems consider positions, profit and returns to be their main data.
-You can see this as they normally have an overnight batch process that generates and saves positions for the next day.
+Most asset management systems consider `positions`, `profit` and `returns` to be their main data.
+You can see this as they normally have an overnight batch process that generates and saves `positions` for the next day.
 
 This produces an enormous amount of duplicated data.
 Databases are large and grow rapidly.
@@ -38,15 +38,34 @@ I think this architecture comes from not investigating the characteristics of th
 
 ## Data-First Approach
 
-Exactly, also need to upfront estimate the size of data worst case. Infinitely scalable by default leads to bad perf + complexity.
+1. The primary data is `trades`, asset `terms` and `time series`.
+2. `Positions`, `profit` and `returns` are just calculations based the primary data. We can ignore these for now and consider caching of results at a later stage.
+3. `Terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and changing schema.
+4. `Time series` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
+5. `Trades` data is a simple list of asset quantity movements from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
+6. We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
+7. Downloading these funds over a period of time and analysing the data gives us some useful statistics.
+8. 280 funds, 100-1000 positions per fund, 1000 trades per year per fund.
+9. Data size for a trade is 50 bytes * 5 flows = 256 bytes
+
+fund for 1 year 250 KB
+fund for 10 years 2.4 MB
+280 funds for 10 years 700 MB
+
+
+from 4, to 4, instrument 4, quantity 4, flow type 2, trade date 8, settle days 2, trade id 8, usertime 8 ~ 50 bytes
+
+
 
 Cache by fund simple. Ask any question simple code.
 
 Hierarchy of funds to look at things from whole asset manager.
 
-We can keep a cache of the data (encryped of course) on the client to further save cloud cost. Append only.
+We can keep a cache of the data (encryped of course) on the client to further save cloud cost.
 
 ## Conclusion
+
+Infinitely scalable by default leads to bad perf + complexity.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
@@ -54,7 +73,7 @@ In the days of cloud computing where architectural costs are more obvious right 
 
 Most articles titled architecture jump straight in to some feature of the codebase.
 
-So we can build a system that is simpler, more flexible, faster and cheaper because we first fully understood the data.
+So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.
 
 ## Todo
 
