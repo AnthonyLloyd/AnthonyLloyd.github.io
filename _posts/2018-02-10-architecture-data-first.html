@@ -6,7 +6,6 @@ description: "Data-First Architecture - Asset Management"
 keywords: functional, architecture, data
 exclude: true
 ---
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 <p>I recently had a light bulb moment when I saw a <a href="https://twitter.com/etodd_/status/936587511580844032">tweet</a> from Evan Todd.
 It helped bring together some ideas I've had for a while on software architecture.</p>
 <blockquote>
@@ -19,21 +18,22 @@ Data is simple and pure functions are simple. Combining them leads to needless c
 <p>I'm going to make the case with an example.
 I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 <h2>Traditional Approach</h2>
-<p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their main data.
+<p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their primary data.
 You can see this as they normally have an overnight batch process that generates and saves <code>positions</code> for the next day.</p>
 <p>This produces an enormous amount of duplicated data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
-<p>What's worse is that other data processes are built on the top of this position data such as adjustments, lock-down and fund aggregation.</p>
-<p>I think this architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
+<p>What's worse is that other data processes are built on the top of this position data such as adjustments, lock down and fund aggregation.</p>
+<p>This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
 <h2>Data-First Approach</h2>
-<p>The primary data for asset management is asset <code>terms</code>, price <code>time series</code> and <code>trades</code>.
-All other position data are just calculations based these.
+<p>The primary data for asset management is asset <code>terms</code>, price <code>timeseries</code> and <code>trades</code>.
+All other position data are just calculations based on these.
 We can ignore these for now and consider caching of calculations at a later stage.</p>
 <ul>
 <li><code>terms</code> data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.</li>
-<li><code>time series</code> data is simple in structure and can be efficiently compressed down to 10-20% of its original size.</li>
+<li><code>timeseries</code> data is simple in structure and can be efficiently compressed down to 10-20% of its original size.</li>
 <li><code>trades</code> data is a simple list of asset quantities from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.</li>
 </ul>
 <p>We can use the <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a> fund range as a fairly extreme example.
@@ -44,22 +44,23 @@ Data size for a trade is 50 bytes * 5 flows = 256 bytes.
 Fund for 1 year 250 KB
 Fund for 10 years 2.4 MB
 280 funds for 10 years 700 MB</p>
-<p>Now we have a feel for the data we can start to make some decisions about the architecture.</p>
+<p>Now we have a good feel for the data we can start to make some decisions about the architecture.</p>
 <p>Given the size we can decide to load and cache by whole fund history.
 This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
 The majority of these calculations are ideally done as a single pass through the ordered trades.
-It turns out with in memory data this is a negligable processing cost and can just be done on screen refresh.</p>
+It turns out with in memory data this is a negligable processing cost and can just be done as the screen refreshes.</p>
 <p>We can also look at a hierarchy of funds and perform calculations at a parent level.
-Since most of the data is append only we can just download latest additions to the client and save cloud costs.
-As the data is bitemporal we can look at any previous time and easily ask questions such as what was responsible for the change in a result.</p>
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
+Since the data is append only we can just download latest additions to the client and save cloud costs.
+Also as the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for the change in a result.</p>
 <h2>Conclusion</h2>
-<p>People are often suprised when I say full fund history can be just held in memory.</p>
-<p>We are not google. Our extreme cases will be easier to estimate.
-Infinitely scalable by default leads to complexity and bad performance.</p>
-<p>In the current time of cloud computing where architectural costs are more obvious, right sizing the architecture is all the more important.</p>
-<p>Most articles titled architecture jump straight in to some feature of the codebase.</p>
 <p>So we can build a system that is simpler, faster, more flexible and cheaper to run because we first understood the data.</p>
+<p>People are often suprised when I say full fund history can be held in memory.
+Software developers cannot always answer questions on the size of their systems data. It's been abstracted away from them.</p>
+<p>We are not google.
+Infinitely scalable by default leads to complexity and bad performance.
+Our extreme cases will be easier to estimate.</p>
+<p>In the current time of cloud computing where architectural costs are more obvious, right sizing is all the more important.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 <h2>References</h2>
 <p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">The One Weird Trick: data first, not code first - Even Todd</a><br />
 <a href="https://news.ycombinator.com/item?id=10291688">Data first, not code first - Hacker News</a><br />
