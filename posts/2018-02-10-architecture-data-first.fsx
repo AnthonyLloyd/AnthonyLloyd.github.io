@@ -44,26 +44,26 @@ The primary data for asset management is asset `terms`, price `timeseries` and `
 All other position data are just calculations based on these.
 We can ignore these for now and consider caching of calculations at a later stage.
 
-- `terms` data is complex in structure but relatively small in size and changes infrequently. Event sourcing works well here for audit and a changing schema.
+- `terms` data is complex in structure but relatively small and changes infrequently. Event sourcing works well here for audit and a changing schema.
 - `timeseries` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
 - `trades` data is a simple list of asset quantities from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
 
 We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
-Downloading these funds over a period of time and analysing the data gives us some useful statistics.
+Downloading these funds over a period and analysing the data gives us some useful statistics.
 
 280 funds, 100-1000 positions per fund, 1000 trades per year per fund. Per day?
-from 4, to 4, instrument 4, quantity 4, flow type 2, trade date 8, settle days 2, trade id 8, usertime 8 ~ 50 bytes
-Data size for a trade is 50 bytes * 5 flows = 256 bytes.
-Fund for 1 year 250 KB
-Fund for 10 years 2.4 MB
-280 funds for 10 years 700 MB
+{From:ID<int> 4;To:ID<int> 4;Asset:ID<int> 4;Quantity:int 4} list * TradeID 8 * UserTime 8 => 16 * 5 + 16 = 96 (lets say 128 bytes)
+TradeID : UserTime
+Fund for 1 year 125 KB
+Fund for 10 years 1.3 MB
+280 funds for 10 years 350 MB
 
 Now we have a good feel for the data we can start to make some decisions about the architecture.
 
 Given the size we can decide to load and cache by whole fund history.
-This will simplify the code and give us greater flexibilty on the various types of profit and return measures we can offer.
-The majority of these calculations are ideally performed as a single pass through the ordered trades.
-It turns out with in memory data this is negligable processing cost and can just be done as the screen refreshes.
+This will simplify the code and give us greater flexibility on the various types of profit and return measures we can offer.
+Most of these calculations are ideally performed as a single pass through the ordered trades.
+It turns out with in memory data this is negligible processing cost and can just be done as the screen refreshes.
 
 We can also look at a hierarchy of funds and perform calculations at a parent level.
 Since the data is append only we can just download latest additions to the client and save cloud costs.
@@ -71,16 +71,16 @@ Also as the data is bitemporal we can easily look at any previous time and ask q
 
 ## Conclusion
 
-We can build a system that is simpler, faster, more flexible and cheaper to host because we first understood the data.
+So, we can build a system that is simpler, faster, more flexible and cheaper to host because we first understood the data.
 
-People are often suprised that full fund history can be held in memory.
+People are often surprised that full fund history can be held in memory.
 Software developers cannot always answer questions on the size of their systems data. It's been abstracted away from them.
 
 We are not google.
 Infinitely scalable by default leads to complexity and bad performance.
 Our extreme cases will be easier to estimate.
 
-In the current time of cloud computing, where architectural costs are obvious, right sizing is all the more important.
+In the current time of cloud computing, where architectural costs are obvious, right sizing is more important.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
