@@ -23,7 +23,7 @@ I'm going to make the case with an example.
 I will argue that most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 ## Traditional Approach
 
@@ -46,17 +46,18 @@ We can ignore these for now and consider caching of calculations at a later stag
 
 - `terms` data is complex in structure but relatively small and changes infrequently. Event sourcing works well here for audit and a changing schema.
 - `timeseries` data is simple in structure and can be efficiently compressed down to 10-20% of its original size.
-- `trades` data is a simple list of asset quantities from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
+- `trades` data is a simple list of asset quantity flows from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.
 
 We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as a fairly extreme example.
 Downloading these funds over a period and analysing the data gives us some useful statistics.
 
-280 funds, 100-1000 positions per fund, 1000 trades per year per fund. Per day?
-{From:ID<int> 4;To:ID<int> 4;Asset:ID<int> 4;Quantity:int 4} list * TradeID 8 * UserTime 8 => 16 * 5 + 16 = 96 (lets say 128 bytes)
-TradeID : UserTime
-Fund for 1 year 125 KB
-Fund for 10 years 1.3 MB
-280 funds for 10 years 350 MB
+- 280 funds.
+- 50-5000 positions per fund.
+- Average 50 trade per day per fund.
+- {From:ID<int> 4;To:ID<int> 4;Asset:ID<int> 4;Quantity:int 4} list * TradeID 8 * UserTime 8 => 16 * 5 + 16 = 96 (lets say 128 bytes)
+- A fund for 1 year is 1.5 MB
+- A fund for 10 years is 15 MB
+- 280 funds for 10 years is 4 GB
 
 Now we have a good feel for the data we can start to make some decisions about the architecture.
 
@@ -82,7 +83,7 @@ Our extreme cases will be easier to estimate.
 
 In the current time of cloud computing, where architectural costs are obvious, right sizing is more important.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
 ## References
 
