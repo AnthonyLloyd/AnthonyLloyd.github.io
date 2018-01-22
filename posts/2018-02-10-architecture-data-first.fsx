@@ -34,7 +34,7 @@ This produces an enormous amount of duplicated data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
-What's worse is that other data processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
+What's worse is that other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
@@ -64,13 +64,13 @@ Downloading these funds over a period and focusing on the trade data gives us so
 Now we have a good feel for the data we can start to make some decisions about the architecture.
 
 Given the sizes we can decide to load and cache by whole fund history, or we could look at a smaller time period over many funds.
-This will simplify the code and give us greater flexibility on the various types of profit and return measures we can offer.
-Most of these calculations are ideally performed as a single pass through the ordered trades stored in a sensible way.
+This will simplify the code (especially in the data access layer) and give a greater number of profit and return measures that can be offered.
+Most of these calculations are ideally performed as a single pass through the ordered trades stored in a sensible structure.
 It turns out with in memory data this is negligible processing cost and can just be done as the screen refreshes.
 
-We can offer more advanced functionality, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
+More advanced functionality can be offered, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
 As the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a calculation result.
-Since the data is append only we can just update for latest additions to the client and save cloud data costs.
+Since the data is append only we can just update for latest additions and save cloud data costs.
 
 ## Conclusion
 
@@ -82,7 +82,7 @@ People are often surprised that full fund history can be held in memory.
 We are not google. Our extreme cases will be easier to estimate.
 Infinitely scalable by default leads to complexity and bad performance.
 
-In the current time of cloud computing, where architectural costs are obvious, right sizing is important.
+With cloud computing, where architectural costs are obvious, right sizing is important.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
