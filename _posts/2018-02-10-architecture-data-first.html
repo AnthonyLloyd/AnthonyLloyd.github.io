@@ -21,7 +21,7 @@ This limits functionality and increases the complexity of these systems.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 <h2>Traditional Approach</h2>
 <p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their primary data.
-You can see this as they normally have an overnight batch process that generates and saves <code>positions</code> for the next day.</p>
+You can see this as they normally have overnight batch processes that generates and saves <code>positions</code> for the next day.</p>
 <p>This produces an enormous amount of duplicated data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
@@ -34,35 +34,35 @@ We can ignore these for now and consider caching of calculations at a later stag
 <ul>
 <li><code>terms</code> data is complex in structure but relatively small and changes infrequently. Event sourcing works well here for audit and a changing schema.</li>
 <li><code>timeseries</code> data is simple in structure and can be efficiently compressed down to 10-20% of its original size.</li>
-<li><code>trades</code> data is a simple list of asset quantity flows from one entity to another. The data is effectively all numeric and fixed size. An append only ledger style structure works well here.</li>
+<li><code>trades</code> data is a simple list of asset quantity flows from one entity to another. The data is effectively all numeric and fixed size. A ledger style append only structure works well here.</li>
 </ul>
-<p>We can use the <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a> fund range as a fairly extreme example.
-Downloading these funds over a period and analysing the data gives us some useful statistics.</p>
+<p>We can use the <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a> fund range as an extreme example.
+They have a large number of funds and they trade far more frequently than most asset managers.</p>
+<p>Downloading these funds over a period and focusing on the trade data gives us some useful statistics:</p>
 <ul>
-<li>280 funds.</li>
-<li>50-5000 positions per fund.</li>
-<li>Average 50 trade per day per fund.</li>
-<li>{From:ID<int> 4;To:ID<int> 4;Asset:ID<int> 4;Quantity:int 4} list <em> TradeID 8 </em> UserTime 8 =&gt; 16 * 5 + 16 = 96 (lets say 128 bytes)</li>
-<li>A fund for 1 year is 1.5 MB</li>
-<li>A fund for 10 years is 15 MB</li>
-<li>280 funds for 10 years is 4 GB</li>
+<li>Total of 280 funds.</li>
+<li>Ranging from 50 to 5000 positions per fund.</li>
+<li>An average of 57 trades per day per fund.</li>
+<li>The average trade can be stored in less than 128 bytes.</li>
+<li>A fund for 1 year would be around 1.7 MB.</li>
+<li>A fund for 10 years would be around 17 MB.</li>
+<li>280 funds for 10 years would be around 5 GB.</li>
 </ul>
 <p>Now we have a good feel for the data we can start to make some decisions about the architecture.</p>
-<p>Given the size we can decide to load and cache by whole fund history.
+<p>Given the sizes we can decide to load and cache by whole fund history, or we could look at a smaller time period over many funds.
 This will simplify the code and give us greater flexibility on the various types of profit and return measures we can offer.
-Most of these calculations are ideally performed as a single pass through the ordered trades.
+Most of these calculations are ideally performed as a single pass through the ordered trades stored in a sensible way.
 It turns out with in memory data this is negligible processing cost and can just be done as the screen refreshes.</p>
-<p>We can also look at a hierarchy of funds and perform calculations at a parent level.
-Since the data is append only we can just download latest additions to the client and save cloud costs.
-Also as the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a result.</p>
+<p>We can offer more advanced functionality, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
+As the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a calculation result.
+Since the data is append only we can just update for latest additions to the client and save cloud data costs.</p>
 <h2>Conclusion</h2>
-<p>So, we can build a system that is simpler, faster, more flexible and cheaper to host because we first understood the data.</p>
-<p>People are often surprised that full fund history can be held in memory.
-Software developers cannot always answer questions on the size of their systems data. It's been abstracted away from them.</p>
-<p>We are not google.
-Infinitely scalable by default leads to complexity and bad performance.
-Our extreme cases will be easier to estimate.</p>
-<p>In the current time of cloud computing, where architectural costs are obvious, right sizing is more important.</p>
+<p>So, because we first understood the data, we can build a system that is simpler, faster, more flexible and cheaper to host.</p>
+<p>Software developers cannot always answer questions on the size of their system's data. It's been abstracted away from them.
+People are often surprised that full fund history can be held in memory.</p>
+<p>We are not google. Our extreme cases will be easier to estimate.
+Infinitely scalable by default leads to complexity and bad performance.</p>
+<p>In the current time of cloud computing, where architectural costs are obvious, right sizing is important.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 <h2>References</h2>
 <p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">The One Weird Trick: data first, not code first - Even Todd</a><br />
