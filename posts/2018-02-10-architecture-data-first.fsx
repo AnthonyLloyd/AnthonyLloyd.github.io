@@ -74,7 +74,7 @@ Since the data is append only we can just update for latest additions and save c
 
 ## Conclusion
 
-By first understooding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
+By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
 
 Software developers cannot always answer questions on the size of their system's data. It's been abstracted away from them.
 People are often surprised that the full fund history can be held in memory.
