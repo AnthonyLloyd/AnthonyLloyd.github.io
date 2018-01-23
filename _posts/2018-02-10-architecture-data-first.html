@@ -11,7 +11,7 @@ It helped bring together some ideas I've had for a while on software architectur
 <blockquote>
 <p>Data characteristics excluding software functionality should dictate the system architecture.</p>
 </blockquote>
-<p>The shape, size and rate of change of the data is the most important factor when starting to architect a system.
+<p>The shape, size and rate of change of the data are the most important factors when starting to architect a system.
 The first thing that needs to be done is estimate these characteristics in average and extreme cases.</p>
 <p>Functional programming encourages this mindset since the data and functions are kept separate.
 Data is simple and pure functions are simple. Combining them leads to needless complexity.</p>
@@ -22,7 +22,7 @@ This limits functionality and increases the complexity of these systems.</p>
 <h2>Traditional Approach</h2>
 <p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their primary data.
 You can see this as they normally have overnight batch processes that generates and saves <code>positions</code> for the next day.</p>
-<p>This produces an enormous amount of duplicated data.
+<p>This produces an enormous amount of duplicate data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
 <p>What's worse is that other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.</p>

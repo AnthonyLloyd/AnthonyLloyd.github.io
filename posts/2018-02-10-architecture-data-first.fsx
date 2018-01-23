@@ -13,7 +13,7 @@ It helped bring together some ideas I've had for a while on software architectur
 
 > Data characteristics excluding software functionality should dictate the system architecture.
 
-The shape, size and rate of change of the data is the most important factor when starting to architect a system.
+The shape, size and rate of change of the data are the most important factors when starting to architect a system.
 The first thing that needs to be done is estimate these characteristics in average and extreme cases.
 
 Functional programming encourages this mindset since the data and functions are kept separate.
@@ -30,7 +30,7 @@ This limits functionality and increases the complexity of these systems.
 Most asset management systems consider `positions`, `profit` and `returns` to be their primary data.
 You can see this as they normally have overnight batch processes that generates and saves `positions` for the next day.
 
-This produces an enormous amount of duplicated data.
+This produces an enormous amount of duplicate data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
@@ -91,7 +91,7 @@ With cloud computing, where architectural costs are obvious, right sizing is ess
 [The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)  
 [Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)  
 [Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)  
-[Data-Oriented Design](http://gamesfromwithin.com/data-oriented-design)
+[Data-Oriented Design](http://gamesfromwithin.com/data-oriented-design)  
 [Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
 *)
