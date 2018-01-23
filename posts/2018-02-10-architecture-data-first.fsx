@@ -56,7 +56,7 @@ Downloading these funds over a period and focusing on the trade data gives us so
 - Total of 280 funds.
 - Ranging from 50 to 5000 positions per fund.
 - An average of 57 trades per day per fund.
-- The average trade can be stored in less than 128 bytes.
+- The average trade values can be stored in less than 128 bytes.
 - A fund for 1 year would be around 1.7 MB.
 - A fund for 10 years would be around 17 MB.
 - 280 funds for 10 years would be around 5 GB.
