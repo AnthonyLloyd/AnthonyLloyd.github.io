@@ -49,7 +49,7 @@ We can ignore these for now and consider caching of calculations at a later stag
 - `trades` data is a simple list of asset quantity flows from one entity to another. The data is effectively all numeric and fixed size. A ledger style append only structure works well here.
 
 We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as an extreme example.
-They have a large number of funds and they trade far more frequently than most asset managers.
+They have many funds and trade far more frequently than most asset managers.
 
 Downloading these funds over a period and focusing on the trade data gives us some useful statistics:
 
@@ -63,8 +63,8 @@ Downloading these funds over a period and focusing on the trade data gives us so
 
 Now we have a good feel for the data we can start to make some decisions about the architecture.
 
-Given the sizes we can decide to load and cache by whole fund history, or we could look at a smaller time period over many funds.
-This will simplify the code (especially in the data access layer) and give a greater number of profit and return measures that can be offered.
+Given the sizes we can decide to load and cache by whole fund history, or we could look at a smaller period over many funds.
+This will simplify the code, especially in the data access layer, and give a greater number of profit and return measures that can be offered.
 Most of these calculations are ideally performed as a single pass through the ordered trades stored in a sensible structure.
 It turns out with in memory data this is negligible processing cost and can just be done as the screen refreshes.
 
@@ -74,15 +74,15 @@ Since the data is append only we can just update for latest additions and save c
 
 ## Conclusion
 
-So, because we first understood the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
+By first understooding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
 
 Software developers cannot always answer questions on the size of their system's data. It's been abstracted away from them.
-People are often surprised that full fund history can be held in memory.
+People are often surprised that the full fund history can be held in memory.
 
 We are not google. Our extreme cases will be easier to estimate.
 Infinitely scalable by default leads to complexity and bad performance.
 
-With cloud computing, where architectural costs are obvious, right sizing is important.
+With cloud computing, where architectural costs are obvious, right sizing is essential.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
@@ -91,6 +91,7 @@ With cloud computing, where architectural costs are obvious, right sizing is imp
 [The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)  
 [Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)  
 [Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)  
+[Data-Oriented Design](http://gamesfromwithin.com/data-oriented-design)
 [Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
 *)
