@@ -63,7 +63,7 @@ Downloading these funds over a period and focusing on the trade data gives us so
 
 Now we have a good feel for the data we can start to make some decisions about the architecture.
 
-Given the sizes we can decide to load and cache by whole fund history, or we could look at a smaller period over many funds.
+Given the sizes we can decide to load and cache by whole fund history.
 This will simplify the code, especially in the data access layer, and give a greater number of profit and return measures that can be offered.
 Most of these calculations are ideally performed as a single pass through the ordered trades stored in a sensible structure.
 It turns out with in memory data this is negligible processing cost and can just be done as the screen refreshes.
