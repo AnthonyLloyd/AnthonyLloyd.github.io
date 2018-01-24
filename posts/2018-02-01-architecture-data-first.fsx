@@ -77,7 +77,7 @@ Since the data is append only we can just update for latest additions and save c
 By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
 
 Software developers cannot always answer questions on the size of their system's data. It's been abstracted away from them.
-People are often surprised that the full fund history can be held in memory.
+People are often surprised the full fund history can be held in memory.
 
 We are not google. Our extreme cases will be easier to estimate.
 Infinitely scalable by default leads to complexity and poor performance.
