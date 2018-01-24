@@ -20,7 +20,7 @@ Functional programming encourages this mindset since the data and functions are 
 Data is simple and pure functions are simple. Combining them leads to needless complexity.
 
 I'm going to make the case with an example.
-I will argue that most asset management systems store and use the wrong data.
+I will argue most asset management systems store and use the wrong data.
 This limits functionality and increases the complexity of these systems.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
@@ -34,7 +34,7 @@ This produces an enormous amount of duplicate data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
-What's worse is that other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
+What's worse is other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
@@ -70,7 +70,7 @@ It turns out with in memory data this is negligible processing cost and can just
 
 More advanced functionality can be offered, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
 As the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a calculation result.
-Since the data is append only we can just update for latest additions and save cloud data costs.
+Since the data is append only we can just update for latest additions and save cloud costs.
 
 ## Conclusion
 
@@ -80,7 +80,7 @@ Software developers cannot always answer questions on the size of their system's
 People are often surprised that the full fund history can be held in memory.
 
 We are not google. Our extreme cases will be easier to estimate.
-Infinitely scalable by default leads to complexity and bad performance.
+Infinitely scalable by default leads to complexity and poor performance.
 
 With cloud computing, where architectural costs are obvious, right sizing is essential.
 
