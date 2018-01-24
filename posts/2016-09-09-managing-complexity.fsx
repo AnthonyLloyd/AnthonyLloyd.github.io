@@ -130,6 +130,8 @@ What you have created is a bug paradise. They will get cosy and settle in for th
 In the domain I work in a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
 How would you do this in a mutable domain model? Locking and transactions? Clone the world? Visitor pattern? I've been there and wouldn't wish it on anyone.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/testable.png" title="Testable"/>
+
 ### Choose linear composition over spaghetti
 
 There is something missing between perfect data, pure functions and beautiful systems.
@@ -150,9 +152,9 @@ We need to talk about object oriented programming. We have patterns to work arou
 Every release of Java and C# add more functional features. Unfortunately, this will not ultimately fix these languages, it just increases their complexity.
 As an industry we need to decide how we should move on.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/testable.png" title="Testable"/>
-
 For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
 
 For long term critical systems that evolve over time the focus must be on simplicity. The programming language and tools need to help us do this. This is why I code in F#.
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/complexity_ship.png" title="Complexity Ship"/>
 *)
