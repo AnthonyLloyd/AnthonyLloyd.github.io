@@ -72,6 +72,8 @@ More advanced functionality can be offered, such as looking at a hierarchy of fu
 As the data is bitemporal we can easily look at any previous time and ask questions such as what was responsible for a change in a calculation result.
 Since the data is append only we can just update for latest additions and save cloud costs.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/fig_data.png" title="Fig data"/>
+
 ## Conclusion
 
 By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
@@ -83,6 +85,9 @@ We are not google. Our extreme cases will be easier to estimate.
 Infinitely scalable by default leads to complexity and poor performance.
 
 With cloud computing, where architectural costs are obvious, right sizing is essential.
+
+Most of the references I could find come from the games industry.
+I would be interested to hear about any other examples or counterexamples.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
