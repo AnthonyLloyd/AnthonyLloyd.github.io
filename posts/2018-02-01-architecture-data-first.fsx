@@ -14,14 +14,14 @@ It helped bring together some ideas I've had for a while on software architectur
 > Data characteristics excluding software functionality should dictate the system architecture.
 
 The shape, size and rate of change of the data are the most important factors when starting to architect a system.
-The first thing that needs to be done is estimate these characteristics in average and extreme cases.
+The first thing to do is estimate these characteristics in average and extreme cases.
 
 Functional programming encourages this mindset since the data and functions are kept separate.
 Data is simple and pure functions are simple. Combining them leads to needless complexity.
 
 I'm going to make the case with an example.
 I will argue most asset management systems store and use the wrong data.
-This limits functionality and increases the complexity of these systems.
+This limits functionality and increases system complexity.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
@@ -49,7 +49,7 @@ We can ignore these for now and consider caching of calculations at a later stag
 - `trades` data is a simple list of asset quantity flows from one entity to another. The data is effectively all numeric and fixed size. A ledger style append only structure works well here.
 
 We can use the [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list) fund range as an extreme example.
-They have many funds and trade far more frequently than most asset managers.
+They have many funds and trade far more often than most asset managers.
 
 Downloading these funds over a period and focusing on the trade data gives us some useful statistics:
 
@@ -86,10 +86,10 @@ Infinitely scalable by default leads to complexity and poor performance.
 
 With cloud computing, where architectural costs are obvious, right sizing is essential.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
+
 Most of the references I could find come from the games industry.
 I would be interested to hear about any other examples or counterexamples.
-
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/to_sum_up.png" title="To sum up"/>
 
 ## References
 
