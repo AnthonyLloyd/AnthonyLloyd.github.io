@@ -34,7 +34,7 @@ This produces an enormous amount of duplicate data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
-Worse is that other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
+Worse is that other processes are built on top of this position data such as adjustments, lock down and fund aggregation.
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
