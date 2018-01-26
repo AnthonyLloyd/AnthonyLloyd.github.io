@@ -9,7 +9,7 @@ exclude: true
 \---
 
 I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
-It helped bring together some ideas I've had for a while on software architecture.
+It helped bring together some ideas I have had for a while on software architecture.
 
 > Data characteristics excluding software functionality should dictate the system architecture.
 
@@ -17,9 +17,9 @@ The shape, size and rate of change of the data are the most important factors wh
 The first thing to do is estimate these characteristics in average and extreme cases.
 
 Functional programming encourages this mindset since the data and functions are kept separate.
-Data is simple and pure functions are simple. Combining them leads to needless complexity.
+Data is simple and pure functions are simple, combining them leads to needless complexity.
 
-I'm going to make the case with an example.
+I am going to make the case with an example.
 I will argue most asset management systems store and use the wrong data.
 This limits functionality and increases system complexity.
 
@@ -28,13 +28,13 @@ This limits functionality and increases system complexity.
 ## Traditional Approach
 
 Most asset management systems consider `positions`, `profit` and `returns` to be their primary data.
-You can see this as they normally have overnight batch processes that generates and saves `positions` for the next day.
+You can see this as they normally have overnight batch processes that generate and save `positions` for the next day.
 
 This produces an enormous amount of duplicate data.
 Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.
 
-What's worse is other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
+Worse is that other processes are built on the top of this position data such as adjustments, lock down and fund aggregation.
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
@@ -78,7 +78,7 @@ Since the data is append only we can just update for latest additions and save c
 
 By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
 
-Software developers cannot always answer questions on the size of their system's data. It's been abstracted away from them.
+Software developers cannot always answer questions on the size of their system's data. It has been abstracted away from them.
 People are often surprised that full fund history can be held in memory and queried.
 
 We are not google. Our extreme cases will be easier to estimate.
