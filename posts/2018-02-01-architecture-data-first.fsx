@@ -69,7 +69,7 @@ Most of these calculations are ideally performed as a single pass through the or
 It turns out with in memory data this requires negligible processing time and can just be done as the screen refreshes.
 
 More advanced functionality can be offered, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
-As the data is bitemporal we can easily ask questions such as 'what did this report look like previously?' or 'what was responsible for a change in a calculation result?'.
+As the data is bitemporal we can easily ask questions such as "what did this report look like previously?" or even "what was responsible for a change in a calculation result?".
 Since the data is append only we can just update for latest additions and save cloud costs.
 
 ## Conclusion
