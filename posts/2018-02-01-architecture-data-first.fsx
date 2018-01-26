@@ -96,7 +96,7 @@ I would be interested to hear about any other examples or counterexamples.
 [The One Weird Trick: data first, not code first - Even Todd](http://etodd.io/2015/09/28/one-weird-trick-better-code/)  
 [Data first, not code first - Hacker News](https://news.ycombinator.com/item?id=10291688)  
 [Practical Examples in Data Oriented Design - Niklas Frykholm](http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf)  
-[Data-Oriented Design](http://gamesfromwithin.com/data-oriented-design)  
+[Data-Oriented Design - Noel Llopis](http://gamesfromwithin.com/data-oriented-design)  
 [Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
 *)
