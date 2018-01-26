@@ -78,7 +78,7 @@ Since the data is append only we can just update for latest additions and save c
 
 By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.
 
-Software developers cannot always answer questions on the size of their system's data. It has been abstracted away from them.
+Software developers cannot always answer questions on the size and characteristics of their system's data. It has been abstracted away from them.
 People are often surprised that full fund history can be held in memory and queried.
 
 We are not google. Our extreme cases will be easier to estimate.
