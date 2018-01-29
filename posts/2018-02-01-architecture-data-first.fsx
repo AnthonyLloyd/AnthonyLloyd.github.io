@@ -5,7 +5,6 @@ title: "Data-First Architecture - Asset Management"
 tags: [functional,architecture,data]
 description: "Data-First Architecture - Asset Management"
 keywords: functional, architecture, data
-exclude: true
 \---
 
 I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
