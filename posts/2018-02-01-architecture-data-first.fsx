@@ -17,7 +17,7 @@ The shape, size and rate of change of the data are the most important factors wh
 The first thing to do is estimate these characteristics in average and extreme cases.
 
 Functional programming encourages this mindset since the data and functions are kept separate.
-Data is simple and pure functions are simple, combining them leads to needless complexity.
+F# has particular strengths in data-oriented programming.
 
 I am going to make the case with an example.
 I will argue most asset management systems store and use the wrong data.
