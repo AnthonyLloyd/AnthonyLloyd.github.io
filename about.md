@@ -3,8 +3,6 @@ layout: page
 title: About
 ---
 
-Anthony Lloyd
-
 Quantitative financial software developer in F#, C# and C.
 
 Built a number of systems for order and asset management, risk and performance, trading strategies and portfolio optimisation.
