@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Data-First Architecture - Asset Management"
+title: "Data-First Architecture"
 tags: [functional,architecture,data]
-description: "Data-First Architecture - Asset Management"
+description: "Data-First Architecture"
 keywords: functional, architecture, data
 \---
 
