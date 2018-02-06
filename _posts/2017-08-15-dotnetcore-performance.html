@@ -9,8 +9,8 @@ keywords: C#, F#, dotnetcore, java, performance, benchmarks
 <p>When I first saw the <a href="http://benchmarksgame.alioth.debian.org/u64q/csharp.html">C# .Net Core vs Java</a> benchmarks the score was .Net Core 2.0 <strong>4</strong> - Java <strong>6</strong>.
 This surprised me as I was under the impression .Net Core 2.0 performance would be very good.</p>
 <p>I have concentrated on the 6 programs where Java was the fastest and not looked at the other 4 (binary-trees, spectral-norm, fasta, pidigits).</p>
-<p>Below are some notes on each of these programs and some conclusions.
-A follow up <a href="{% post_url 2017-12-30-dotnetcore-performance-part2 %}">post</a> give the latest results and covers F# also.</p>
+<p>Below are some notes on each of these programs and some conclusions.</p>
+<p>A follow up <a href="{% post_url 2017-12-30-dotnetcore-performance-part2 %}">post</a> gives the latest results and covers F# also.</p>
 <h3>reverse-complement</h3>
 <p>Old Result: C# 1.39s - Java 1.10s</p>
 <p>Changes made: Reversing in place and more efficient parallel processing.</p>
