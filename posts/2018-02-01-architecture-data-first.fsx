@@ -2,9 +2,9 @@
 \---
 layout: post
 title: "Data-First Architecture"
-tags: [functional,architecture,data]
+tags: [functional,architecture,data,data-oriented,design]
 description: "Data-First Architecture"
-keywords: functional, architecture, data
+keywords: functional, architecture, data, data-oriented, design
 \---
 
 I recently had a light bulb moment when I saw a [tweet](https://twitter.com/etodd_/status/936587511580844032) from Evan Todd.
