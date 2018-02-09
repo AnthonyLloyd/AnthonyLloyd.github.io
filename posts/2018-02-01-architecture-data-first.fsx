@@ -37,7 +37,7 @@ Worse is that other processes are built on top of this position data such as adj
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
-<img style="border:1px solid gray;padding: 10px 20px" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
+<img style="border:1px solid black;padding: 10px 20px" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
 
 ## Data-First Approach
 
