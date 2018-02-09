@@ -22,7 +22,7 @@ I am going to make the case with an example.
 I will argue most asset management systems store and use the wrong data.
 This limits functionality and increases system complexity.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
 
 ## Traditional Approach
 
@@ -37,7 +37,7 @@ Worse is that other processes are built on top of this position data such as adj
 
 This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/fig_data.png" title="Fig data"/>
+<img style="border:1px solid gray" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
 
 ## Data-First Approach
 
