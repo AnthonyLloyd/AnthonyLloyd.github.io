@@ -26,7 +26,7 @@ Databases are large and grow rapidly.
 What is being saved is essentially a chosen set of calculation results.</p>
 <p>Worse is that other processes are built on top of this position data such as adjustments, lock down and fund aggregation.</p>
 <p>This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
-<img style="border:1px solid gray" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
+<img style="border:1px solid gray;padding: 10px 20px" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
 <h2>Data-First Approach</h2>
 <p>The primary data for asset management is asset <code>terms</code>, price <code>timeseries</code> and <code>trades</code>.
 All other position data are just calculations based on these.
