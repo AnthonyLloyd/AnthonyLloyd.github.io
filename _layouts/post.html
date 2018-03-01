@@ -8,15 +8,14 @@ layout: default
   <h1 class="post-title">{{ page.title }}</h1>
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
-</div>
-
-<div style="font-size: 14px;display:block;width:auto;overflow:hidden" class="PageNavigation">
-  {% if page.previous.url %}
-    <a style="display:block;width:50%;float:left;margin:1em 0" class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a style="display:block;width:50%;float:left;margin:1em 0;text-align:right" class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
-  {% endif %}
+  <div style="font-size: 14px;display:block;width:auto;overflow:hidden" class="PageNavigation">
+    {% if page.previous.url %}
+      <a style="display:block;width:50%;float:left;margin:1em 0" class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
+    {% endif %}
+    {% if page.next.url %}
+      <a style="display:block;width:50%;float:left;margin:1em 0;text-align:right" class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
+    {% endif %}
+  </div>
 </div>
 
 {% include disqus.html %}
