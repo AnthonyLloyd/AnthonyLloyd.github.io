@@ -8,7 +8,7 @@ layout: default
   <h1 class="post-title">{{ page.title }}</h1>
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
-  <div style="font-size: 14px;display:block;width:auto;overflow:hidden" class="PageNavigation">
+  <div style="font-size: 16px;display:block;width:auto;overflow:hidden" class="PageNavigation">
     {% if page.previous.url %}
       <a style="display:block;width:50%;float:left;margin:1em 0" class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
     {% endif %}
