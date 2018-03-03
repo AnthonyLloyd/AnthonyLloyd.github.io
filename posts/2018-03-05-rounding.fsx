@@ -2,9 +2,9 @@
 \---
 layout: post
 title: "Rounding"
-tags: [rounding]
+tags: [rounding,testing,property-based]
 description: "Rounding"
-keywords: f#, rounding
+keywords: f#, rounding, testing, property-based
 \---
 *)
 
@@ -16,8 +16,22 @@ open Expecto
 open FsCheck
 
 (**
-Steffen Forkmann recently posted a [blog](http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/) about rounding in a twitter poll and how coding a rounding strategy can be difficult.
+Steffen Forkmann recently posted a [blog](http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/) about incorrect rounding in a twitter poll, and how coding a rounding strategy is a hard problem.
 
+In these type of problems it is important to look to what properties the algorithm should hold.
+Property-based testing is the ideal tool for this.
+
+I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of funds.
+The buy and sell orders have a number of partial fills, but in the end everything needs to add up and be consistent across the funds.
+
+The key property required for a fair rounding algorithm is that rounded numbers increase with the weights.
+It doesn't make sense for a lower weight to have a greater rounded value.
+Symmetry in the results for negative weights and negative integer to be round are also important but can easily be achieved by mapping to the positive values.
+
+Forkmann proposes adjusting the largest weight, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
+For negative adjustments the smallest weight would need to be adjusted.
+
+## Error minimisation algorithm
 *)
 /// Distribute integer n over an array of weights
 let distribute n weights =
@@ -64,9 +78,7 @@ let testProp name = testPropertyWithConfig config name
 let ptestProp name = ptestPropertyWithConfig config name
 let ftestProp stdgen name = ftestPropertyWithConfig stdgen config name
 (**
-
-The tests
-
+## Tests
 *)
 let roundingTests =
     testList "rounding" [
@@ -86,7 +98,7 @@ let roundingTests =
             let r = distribute -100 [|406.0;348.0;246.0;0.0|]
             Expect.equal r (Some [|-40;-35;-25;0|]) "-40 etc"
         }
-        test "twitter ws negative" {
+        test "twitter weights negative" {
             let r = distribute 100 [|-406.0;-348.0;-246.0;-0.0|]
             Expect.equal r (Some [|40;35;25;0|]) "40 etc"
         }
@@ -104,24 +116,24 @@ let roundingTests =
             let r2 = distribute -42 [|1.5;1.0;39.5;-1.0;1.0|]
             Expect.equal r2 (Some [|-2;-1;-39;1;-1|]) "-2 etc"
         }
-        testProp "n total correctly" (fun n w ->
-            Gen.rationalFloats w
+        testProp "ni total correctly" (fun n ws ->
+            Gen.rationalFloats ws
             |> distribute n
             |> Option.iter (fun ns -> Expect.equal (Array.sum ns) n "sum ns = n")
         )
-        testProp "negative n returns negative of positive n" (fun n w ->
-            let w = Gen.rationalFloats w
-            let r1 = distribute -n w |> Option.map (Array.map (~-))
-            let r2 = distribute n w
+        testProp "negative n returns opposite of positive n" (fun n ws ->
+            let ws = Gen.rationalFloats ws
+            let r1 = distribute -n ws |> Option.map (Array.map (~-))
+            let r2 = distribute n ws
             Expect.equal r1 r2 "r1 = r2"
         )
-        testProp "increase with weight" (fun n w ->
-            let w = Gen.rationalFloats w
-            let d = if Seq.sum w > 0.0 <> (n>0) then -1 else 1
-            distribute n w
+        testProp "increase with weight" (fun n ws ->
+            let ws = Gen.rationalFloats ws
+            let d = if Seq.sum ws > 0.0 <> (n>0) then -1 else 1
+            distribute n ws
             |> Option.iter (
                    Seq.map ((*)d)
-                >> Seq.zip w
+                >> Seq.zip ws
                 >> Seq.sort
                 >> Seq.pairwise
                 >> Seq.iter (fun (ni1,ni2) ->
