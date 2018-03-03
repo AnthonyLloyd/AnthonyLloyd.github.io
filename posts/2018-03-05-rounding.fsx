@@ -50,6 +50,9 @@ module Rounding =
                 ns.[i] <- ns.[i] + sign d
             Some ns
 
+(**
+*)
+
 module Gen =
     type RationalFloat = RationalFloat of float
     let rationalFloat =
@@ -57,16 +60,21 @@ module Gen =
         Gen.map3 fraction Arb.generate Arb.generate Arb.generate
         |> Arb.fromGen
         |> Arb.convert RationalFloat (fun (RationalFloat f) -> f)
-    let addToConfig config = {
-        config with
-            arbitrary = typeof<RationalFloat>.DeclaringType::config.arbitrary
-    }
-let private config = Gen.addToConfig FsCheckConfig.defaultConfig
+    let rationalFloats (w:_ NonEmptyArray) =
+        Array.map (fun (RationalFloat f) -> f) w.Get
+let private config = {
+    FsCheckConfig.defaultConfig with
+        arbitrary = typeof<Gen.RationalFloat>.DeclaringType::FsCheckConfig.defaultConfig.arbitrary
+}
 let testProp name = testPropertyWithConfig config name
 let ptestProp name = ptestPropertyWithConfig config name
 let ftestProp stdgen name = ftestPropertyWithConfig stdgen config name
-let inline toWeights (w:_ NonEmptyArray) =
-    Array.map (fun (Gen.RationalFloat f) -> f) w.Get
+
+(**
+
+The tests
+
+*)
 let roundingTests =
     testList "rounding" [
         test "empty" {
@@ -104,18 +112,18 @@ let roundingTests =
             Expect.equal r2 (Some [|-2;-1;-39;1;-1|]) "-2 etc"
         }
         testProp "n total correctly" (fun n w ->
-            toWeights w
+            Gen.rationalFloats w
             |> Rounding.distribute n
             |> Option.iter (fun ns -> Expect.equal (Array.sum ns) n "sum ns = n")
         )
         testProp "negative n returns negative of positive n" (fun n w ->
-            let w = toWeights w
+            let w = Gen.rationalFloats w
             let r1 = Rounding.distribute -n w |> Option.map (Array.map (~-))
             let r2 = Rounding.distribute n w
             Expect.equal r1 r2 "r1 = r2"
         )
         testProp "increase with weight" (fun n w ->
-            let w = toWeights w
+            let w = Gen.rationalFloats w
             let d = if Seq.sum w > 0.0 <> (n>0) then -1 else 1
             Rounding.distribute n w
             |> Option.iter (
@@ -129,6 +137,7 @@ let roundingTests =
         )
     ]
 
-[<EntryPoint>]
-let main args =
-    runTestsWithArgs defaultConfig args roundingTests
+(**
+## Conclusion
+
+*)
