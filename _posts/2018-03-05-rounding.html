@@ -5,9 +5,7 @@ tags: [rounding]
 description: "Rounding"
 keywords: f#, rounding
 ---
-<p>This is ...</p>
-<h2>Background</h2>
-<p>Hello</p>
+<p>Steffen Forkmann recently posted a <a href="http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/">blog</a> about rounding in a twitter poll and how coding a rounding strategy can be difficult.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -32,8 +30,10 @@ keywords: f#, rounding
 <span class="l">22: </span>
 <span class="l">23: </span>
 <span class="l">24: </span>
+<span class="l">25: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="f">distribute</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">n</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="i">weights</span> <span class="o">=</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Distribute integer n over an array of weights</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="f">distribute</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">n</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="i">weights</span> <span class="o">=</span>
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">wt</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="f">sum</span> <span onmouseout="hideTip(event, 'fs5', 9)" onmouseover="showTip(event, 'fs5', 9)" class="i">weights</span>
     <span class="k">if</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="t">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="f">isEmpty</span> <span onmouseout="hideTip(event, 'fs5', 12)" onmouseover="showTip(event, 'fs5', 12)" class="i">weights</span>
         <span class="o">||</span> <span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="f">maxBy</span> <span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="f">abs</span> <span onmouseout="hideTip(event, 'fs5', 16)" onmouseover="showTip(event, 'fs5', 16)" class="i">weights</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="f">float</span>(<span onmouseout="hideTip(event, 'fs12', 18)" onmouseover="showTip(event, 'fs12', 18)" class="f">abs</span> <span onmouseout="hideTip(event, 'fs4', 19)" onmouseover="showTip(event, 'fs4', 19)" class="i">n</span><span class="o">+</span><span class="n">1</span>) <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs12', 20)" onmouseover="showTip(event, 'fs12', 20)" class="f">abs</span>
@@ -192,7 +192,7 @@ keywords: f#, rounding
 
 <div class="tip" id="fs1">module Rounding</div>
 <div class="tip" id="fs2">namespace System</div>
-<div class="tip" id="fs3">val distribute : n:int -&gt; weights:float [] -&gt; int [] option<br /><br />Full name: Rounding.distribute</div>
+<div class="tip" id="fs3">val distribute : n:int -&gt; weights:float [] -&gt; int [] option<br /><br />Full name: Rounding.distribute<br /><em><br /><br />&#160;Distribute integer n over an array of weights</em></div>
 <div class="tip" id="fs4">val n : int</div>
 <div class="tip" id="fs5">val weights : float []</div>
 <div class="tip" id="fs6">val wt : float</div>

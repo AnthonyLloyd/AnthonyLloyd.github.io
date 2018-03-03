@@ -16,13 +16,10 @@ open Expecto
 open FsCheck
 
 (**
-This is ...
-
-## Background
-
-Hello
+Steffen Forkmann recently posted a [blog](http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/) about rounding in a twitter poll and how coding a rounding strategy can be difficult.
 
 *)
+/// Distribute integer n over an array of weights
 let distribute n weights =
     let wt = Array.sum weights
     if Array.isEmpty weights
