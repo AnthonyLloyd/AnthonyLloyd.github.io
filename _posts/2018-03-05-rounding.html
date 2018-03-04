@@ -17,9 +17,9 @@ Symmetry in the results for negative weights and negative value to be rounded ar
 <p>In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
 For negative adjustments the smallest weight would need to be adjusted.
 It may also be unfair to adjust these values if they already round exactly.</p>
+<h2>Error minimisation algorithm</h2>
 <p>The best rounding algorithm I have found that satisfies sensible properties is to minimise the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.</p>
-<h2>Error minimisation algorithm</h2>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>

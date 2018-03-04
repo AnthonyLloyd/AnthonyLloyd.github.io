@@ -33,10 +33,10 @@ In the blog it was proposed that adjusting the largest weight would work, but in
 For negative adjustments the smallest weight would need to be adjusted.
 It may also be unfair to adjust these values if they already round exactly.
 
+## Error minimisation algorithm
+
 The best rounding algorithm I have found that satisfies sensible properties is to minimise the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.
-
-## Error minimisation algorithm
 *)
 /// Distribute integer n over an array of weights
 let distribute n weights =
@@ -156,5 +156,4 @@ let roundingTests =
 ## Conclusion
 
 This is an example of how property based testing can actually help in algorithm design.
-
 *)
