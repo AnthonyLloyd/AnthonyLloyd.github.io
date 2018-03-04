@@ -28,12 +28,12 @@ Symmetry in the results for negative weights and negative value to be distribute
 This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.
 
 In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
-For negative adjustments the smallest non zero weight would need to be adjusted.
+For negative adjustments the smallest non-zero weight would need to be adjusted.
 It may also be unfair to adjust these values if they already have a large rounding error.
 
 ## Error minimisation algorithm
 
-The algorithm minimises the absolute and relative rounding errors.
+This algorithm minimises the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.
 *)
 /// Distribute integer n over an array of weights
@@ -118,8 +118,8 @@ let roundingTests =
             Expect.equal r (Some [|-40;-35;-25;0|]) "-40 etc"
         }
         test "twitter tricky" {
-            let r = distribute 100 [|404.0;397.0;47.0;47.0;47.0;58.0|]
-            Expect.equal r (Some [|40;39;5;5;5;6|]) "o no"
+            let r = distribute 100 [|404.0;397.0;57.0;57.0;57.0;28.0|]
+            Expect.equal r (Some [|40;39;6;6;6;3|]) "o no"
         }
         test "negative example" {
             let r1 = distribute 42 [|1.5;1.0;39.5;-1.0;1.0|]
@@ -180,7 +180,8 @@ It gives example failing cases that can steer you to a better solution.
 I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.
 
-The error minimisation algorithm is the best rounding algorithm I have found.
+Error minimisation is the best rounding algorithm I have found.
 By construction it is also the one with the smallest total rounding error.
+
 I don't think there is any other general purpose algorithm that can satisfy these properties as well.
 *)

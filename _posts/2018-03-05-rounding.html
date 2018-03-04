@@ -14,10 +14,10 @@ It doesn't make sense for a lower weight to have a greater rounded value.
 Symmetry in the results for negative weights and negative value to be distributed are also important.
 This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.</p>
 <p>In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
-For negative adjustments the smallest non zero weight would need to be adjusted.
+For negative adjustments the smallest non-zero weight would need to be adjusted.
 It may also be unfair to adjust these values if they already have a large rounding error.</p>
 <h2>Error minimisation algorithm</h2>
-<p>The algorithm minimises the absolute and relative rounding errors.
+<p>This algorithm minimises the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -187,8 +187,8 @@ This directs how the error function needs to calculate.</p>
             <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 158)" onmouseover="showTip(event, 'fs39', 158)" class="i">Some</span> [|<span class="o">-</span><span class="n">40</span>;<span class="o">-</span><span class="n">35</span>;<span class="o">-</span><span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;-40 etc&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter tricky&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 159)" onmouseover="showTip(event, 'fs3', 159)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">404.0</span>;<span class="n">397.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">58.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 160)" onmouseover="showTip(event, 'fs39', 160)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">39</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">6</span>|]) <span class="s">&quot;o no&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 159)" onmouseover="showTip(event, 'fs3', 159)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">404.0</span>;<span class="n">397.0</span>;<span class="n">57.0</span>;<span class="n">57.0</span>;<span class="n">57.0</span>;<span class="n">28.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 160)" onmouseover="showTip(event, 'fs39', 160)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">39</span>;<span class="n">6</span>;<span class="n">6</span>;<span class="n">6</span>;<span class="n">3</span>|]) <span class="s">&quot;o no&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;negative example&quot;</span> {
             <span class="k">let</span> <span class="i">r1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 161)" onmouseover="showTip(event, 'fs3', 161)" class="i">distribute</span> <span class="n">42</span> [|<span class="n">1.5</span>;<span class="n">1.0</span>;<span class="n">39.5</span>;<span class="o">-</span><span class="n">1.0</span>;<span class="n">1.0</span>|]
@@ -247,9 +247,9 @@ This directs how the error function needs to calculate.</p>
 It gives example failing cases that can steer you to a better solution.</p>
 <p>I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.</p>
-<p>The error minimisation algorithm is the best rounding algorithm I have found.
-By construction it is also the one with the smallest total rounding error.
-I don't think there is any other general purpose algorithm that can satisfy these properties as well.</p>
+<p>Error minimisation is the best rounding algorithm I have found.
+By construction it is also the one with the smallest total rounding error.</p>
+<p>I don't think there is any other general purpose algorithm that can satisfy these properties as well.</p>
 
 
 <div class="tip" id="fs1">module Rounding</div>
