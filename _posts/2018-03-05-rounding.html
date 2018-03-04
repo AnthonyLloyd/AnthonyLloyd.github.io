@@ -78,6 +78,8 @@ I normally apply absolute then relative but the reverse order also works and may
 It is not clear which values should be adjusted down.
 Neither the largest or smallest weights look like good candidates.
 The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.</p>
+<p>Testing also shows the algorithm is sensitive to weights that are close together and machine precision.
+This directs how the error functions need to calculate.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -209,7 +211,7 @@ The error minimisation algorithm sensibly selects the second largest weight and 
 It gives example failing cases that can steer you to a better solution.</p>
 <p>I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.</p>
-<p>The error minimisation algorithm is the only one I have found that works.
+<p>The error minimisation algorithm is the only one I have found that works well.
 I would be interested in hearing of any others.</p>
 
 
