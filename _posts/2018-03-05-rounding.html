@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Rounding algorithm - property based"
+title: "Rounding - property based"
 tags: [rounding,testing,property,based]
-description: "Rounding algorithm - property based"
+description: "Rounding - property based"
 keywords: f#, rounding, testing, property, based
 ---
 <p>Steffen Forkmann recently posted a <a href="http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/">blog</a> about incorrect rounding in a twitter poll, and how coding a rounding strategy is a hard problem.
@@ -11,13 +11,13 @@ This got me thinking about how many correct rounding algorithms there were.</p>
 Property based testing is a great tool when doing this.</p>
 <p>The key property required for a fair rounding algorithm is that rounded values increase with the weights.
 It doesn't make sense for a lower weight to have a greater rounded value.
-Symmetry in the results for negative weights and negative integer to be distributed are also important.
+Symmetry in the results for negative weights and negative value to be distributed are also important.
 This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.</p>
 <p>In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
-For negative adjustments the smallest weight would need to be adjusted.
+For negative adjustments the smallest non zero weight would need to be adjusted.
 It may also be unfair to adjust these values if they already have a large rounding error.</p>
 <h2>Error minimisation algorithm</h2>
-<p>The best rounding algorithm I have found that satisfies these properties is to minimise the absolute and relative rounding errors.
+<p>The algorithm minimises the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -78,8 +78,8 @@ I normally apply absolute then relative but the reverse order also works and may
 It is not clear which values should be adjusted down.
 Neither the largest or smallest weights look like good candidates.
 The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.</p>
-<p>Testing also shows the algorithm is sensitive to weights that are close together and machine precision.
-This directs how the error functions need to calculate.</p>
+<p>Testing also shows the algorithm is sensitive to weights that are close together and issues with machine precision.
+This directs how the error function needs to calculate.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -141,66 +141,102 @@ This directs how the error functions need to calculate.</p>
 <span class="l">59: </span>
 <span class="l">60: </span>
 <span class="l">61: </span>
+<span class="l">62: </span>
+<span class="l">63: </span>
+<span class="l">64: </span>
+<span class="l">65: </span>
+<span class="l">66: </span>
+<span class="l">67: </span>
+<span class="l">68: </span>
+<span class="l">69: </span>
+<span class="l">70: </span>
+<span class="l">71: </span>
+<span class="l">72: </span>
+<span class="l">73: </span>
+<span class="l">74: </span>
+<span class="l">75: </span>
+<span class="l">76: </span>
+<span class="l">77: </span>
+<span class="l">78: </span>
+<span class="l">79: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs58', 154)" onmouseover="showTip(event, 'fs58', 154)" class="i">roundingTests</span> <span class="o">=</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs56', 146)" onmouseover="showTip(event, 'fs56', 146)" class="i">roundingTests</span> <span class="o">=</span>
     <span class="i">testList</span> <span class="s">&quot;rounding&quot;</span> [
         <span class="i">test</span> <span class="s">&quot;empty&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 155)" onmouseover="showTip(event, 'fs3', 155)" class="i">distribute</span> <span class="n">1</span> [||]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> <span onmouseout="hideTip(event, 'fs16', 156)" onmouseover="showTip(event, 'fs16', 156)" class="i">None</span> <span class="s">&quot;empty&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 147)" onmouseover="showTip(event, 'fs3', 147)" class="i">distribute</span> <span class="n">1</span> [||]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> <span onmouseout="hideTip(event, 'fs16', 148)" onmouseover="showTip(event, 'fs16', 148)" class="i">None</span> <span class="s">&quot;empty&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;n zero&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 157)" onmouseover="showTip(event, 'fs3', 157)" class="i">distribute</span> <span class="n">0</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 158)" onmouseover="showTip(event, 'fs39', 158)" class="i">Some</span> [|<span class="n">0</span>;<span class="n">0</span>;<span class="n">0</span>;<span class="n">0</span>|]) <span class="s">&quot;zero&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 149)" onmouseover="showTip(event, 'fs3', 149)" class="i">distribute</span> <span class="n">0</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 150)" onmouseover="showTip(event, 'fs39', 150)" class="i">Some</span> [|<span class="n">0</span>;<span class="n">0</span>;<span class="n">0</span>;<span class="n">0</span>|]) <span class="s">&quot;zero&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 159)" onmouseover="showTip(event, 'fs3', 159)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 160)" onmouseover="showTip(event, 'fs39', 160)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">35</span>;<span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;40 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 151)" onmouseover="showTip(event, 'fs3', 151)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 152)" onmouseover="showTip(event, 'fs39', 152)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">35</span>;<span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;40 etc&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter n negative&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 161)" onmouseover="showTip(event, 'fs3', 161)" class="i">distribute</span> <span class="o">-</span><span class="n">100</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 162)" onmouseover="showTip(event, 'fs39', 162)" class="i">Some</span> [|<span class="o">-</span><span class="n">40</span>;<span class="o">-</span><span class="n">35</span>;<span class="o">-</span><span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;-40 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 153)" onmouseover="showTip(event, 'fs3', 153)" class="i">distribute</span> <span class="o">-</span><span class="n">100</span> [|<span class="n">406.0</span>;<span class="n">348.0</span>;<span class="n">246.0</span>;<span class="n">0.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 154)" onmouseover="showTip(event, 'fs39', 154)" class="i">Some</span> [|<span class="o">-</span><span class="n">40</span>;<span class="o">-</span><span class="n">35</span>;<span class="o">-</span><span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;-40 etc&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter weights negative&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 163)" onmouseover="showTip(event, 'fs3', 163)" class="i">distribute</span> <span class="n">100</span> [|<span class="o">-</span><span class="n">406.0</span>;<span class="o">-</span><span class="n">348.0</span>;<span class="o">-</span><span class="n">246.0</span>;<span class="o">-</span><span class="n">0.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 164)" onmouseover="showTip(event, 'fs39', 164)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">35</span>;<span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;40 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 155)" onmouseover="showTip(event, 'fs3', 155)" class="i">distribute</span> <span class="n">100</span> [|<span class="o">-</span><span class="n">406.0</span>;<span class="o">-</span><span class="n">348.0</span>;<span class="o">-</span><span class="n">246.0</span>;<span class="o">-</span><span class="n">0.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 156)" onmouseover="showTip(event, 'fs39', 156)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">35</span>;<span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;40 etc&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter both negative&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 165)" onmouseover="showTip(event, 'fs3', 165)" class="i">distribute</span> <span class="o">-</span><span class="n">100</span> [|<span class="o">-</span><span class="n">406.0</span>;<span class="o">-</span><span class="n">348.0</span>;<span class="o">-</span><span class="n">246.0</span>;<span class="o">-</span><span class="n">0.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 166)" onmouseover="showTip(event, 'fs39', 166)" class="i">Some</span> [|<span class="o">-</span><span class="n">40</span>;<span class="o">-</span><span class="n">35</span>;<span class="o">-</span><span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;-40 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 157)" onmouseover="showTip(event, 'fs3', 157)" class="i">distribute</span> <span class="o">-</span><span class="n">100</span> [|<span class="o">-</span><span class="n">406.0</span>;<span class="o">-</span><span class="n">348.0</span>;<span class="o">-</span><span class="n">246.0</span>;<span class="o">-</span><span class="n">0.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 158)" onmouseover="showTip(event, 'fs39', 158)" class="i">Some</span> [|<span class="o">-</span><span class="n">40</span>;<span class="o">-</span><span class="n">35</span>;<span class="o">-</span><span class="n">25</span>;<span class="n">0</span>|]) <span class="s">&quot;-40 etc&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;twitter tricky&quot;</span> {
-            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 167)" onmouseover="showTip(event, 'fs3', 167)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">404.0</span>;<span class="n">397.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">58.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 168)" onmouseover="showTip(event, 'fs39', 168)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">39</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">6</span>|]) <span class="s">&quot;o no&quot;</span>
+            <span class="k">let</span> <span class="i">r</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 159)" onmouseover="showTip(event, 'fs3', 159)" class="i">distribute</span> <span class="n">100</span> [|<span class="n">404.0</span>;<span class="n">397.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">47.0</span>;<span class="n">58.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r</span> (<span onmouseout="hideTip(event, 'fs39', 160)" onmouseover="showTip(event, 'fs39', 160)" class="i">Some</span> [|<span class="n">40</span>;<span class="n">39</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">5</span>;<span class="n">6</span>|]) <span class="s">&quot;o no&quot;</span>
         }
         <span class="i">test</span> <span class="s">&quot;negative example&quot;</span> {
-            <span class="k">let</span> <span class="i">r1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 169)" onmouseover="showTip(event, 'fs3', 169)" class="i">distribute</span> <span class="n">42</span> [|<span class="n">1.5</span>;<span class="n">1.0</span>;<span class="n">39.5</span>;<span class="o">-</span><span class="n">1.0</span>;<span class="n">1.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r1</span> (<span onmouseout="hideTip(event, 'fs39', 170)" onmouseover="showTip(event, 'fs39', 170)" class="i">Some</span> [|<span class="n">2</span>;<span class="n">1</span>;<span class="n">39</span>;<span class="o">-</span><span class="n">1</span>;<span class="n">1</span>|]) <span class="s">&quot;2 etc&quot;</span>
-            <span class="k">let</span> <span class="i">r2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 171)" onmouseover="showTip(event, 'fs3', 171)" class="i">distribute</span> <span class="o">-</span><span class="n">42</span> [|<span class="n">1.5</span>;<span class="n">1.0</span>;<span class="n">39.5</span>;<span class="o">-</span><span class="n">1.0</span>;<span class="n">1.0</span>|]
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r2</span> (<span onmouseout="hideTip(event, 'fs39', 172)" onmouseover="showTip(event, 'fs39', 172)" class="i">Some</span> [|<span class="o">-</span><span class="n">2</span>;<span class="o">-</span><span class="n">1</span>;<span class="o">-</span><span class="n">39</span>;<span class="n">1</span>;<span class="o">-</span><span class="n">1</span>|]) <span class="s">&quot;-2 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 161)" onmouseover="showTip(event, 'fs3', 161)" class="i">distribute</span> <span class="n">42</span> [|<span class="n">1.5</span>;<span class="n">1.0</span>;<span class="n">39.5</span>;<span class="o">-</span><span class="n">1.0</span>;<span class="n">1.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r1</span> (<span onmouseout="hideTip(event, 'fs39', 162)" onmouseover="showTip(event, 'fs39', 162)" class="i">Some</span> [|<span class="n">2</span>;<span class="n">1</span>;<span class="n">39</span>;<span class="o">-</span><span class="n">1</span>;<span class="n">1</span>|]) <span class="s">&quot;2 etc&quot;</span>
+            <span class="k">let</span> <span class="i">r2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 163)" onmouseover="showTip(event, 'fs3', 163)" class="i">distribute</span> <span class="o">-</span><span class="n">42</span> [|<span class="n">1.5</span>;<span class="n">1.0</span>;<span class="n">39.5</span>;<span class="o">-</span><span class="n">1.0</span>;<span class="n">1.0</span>|]
+            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r2</span> (<span onmouseout="hideTip(event, 'fs39', 164)" onmouseover="showTip(event, 'fs39', 164)" class="i">Some</span> [|<span class="o">-</span><span class="n">2</span>;<span class="o">-</span><span class="n">1</span>;<span class="o">-</span><span class="n">39</span>;<span class="n">1</span>;<span class="o">-</span><span class="n">1</span>|]) <span class="s">&quot;-2 etc&quot;</span>
         }
-        <span onmouseout="hideTip(event, 'fs52', 173)" onmouseover="showTip(event, 'fs52', 173)" class="i">testProp</span> <span class="s">&quot;ni total correctly&quot;</span> (<span class="k">fun</span> <span class="i">n</span> <span class="i">ws</span> <span class="k">-&gt;</span>
-            <span onmouseout="hideTip(event, 'fs50', 174)" onmouseover="showTip(event, 'fs50', 174)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 175)" onmouseover="showTip(event, 'fs46', 175)" class="i">rationalFloats</span> <span class="i">ws</span>
-            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs3', 176)" onmouseover="showTip(event, 'fs3', 176)" class="i">distribute</span> <span class="i">n</span>
-            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs59', 177)" onmouseover="showTip(event, 'fs59', 177)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs60', 178)" onmouseover="showTip(event, 'fs60', 178)" class="i">iter</span> (<span class="k">fun</span> <span class="i">ns</span> <span class="k">-&gt;</span> <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> (<span onmouseout="hideTip(event, 'fs7', 179)" onmouseover="showTip(event, 'fs7', 179)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs8', 180)" onmouseover="showTip(event, 'fs8', 180)" class="i">sum</span> <span class="i">ns</span>) <span class="i">n</span> <span class="s">&quot;sum ns = n&quot;</span>)
+        <span onmouseout="hideTip(event, 'fs50', 165)" onmouseover="showTip(event, 'fs50', 165)" class="i">testProp</span> <span class="s">&quot;ni total correctly&quot;</span> (<span class="k">fun</span> <span class="i">n</span> (<span onmouseout="hideTip(event, 'fs48', 166)" onmouseover="showTip(event, 'fs48', 166)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs49', 167)" onmouseover="showTip(event, 'fs49', 167)" class="i">RationalFloats</span> <span class="i">ws</span>) <span class="k">-&gt;</span>
+            <span onmouseout="hideTip(event, 'fs3', 168)" onmouseover="showTip(event, 'fs3', 168)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
+            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs57', 169)" onmouseover="showTip(event, 'fs57', 169)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs58', 170)" onmouseover="showTip(event, 'fs58', 170)" class="i">iter</span> (<span class="k">fun</span> <span class="i">ns</span> <span class="k">-&gt;</span> <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> (<span onmouseout="hideTip(event, 'fs7', 171)" onmouseover="showTip(event, 'fs7', 171)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs8', 172)" onmouseover="showTip(event, 'fs8', 172)" class="i">sum</span> <span class="i">ns</span>) <span class="i">n</span> <span class="s">&quot;sum ns = n&quot;</span>)
         )
-        <span onmouseout="hideTip(event, 'fs52', 181)" onmouseover="showTip(event, 'fs52', 181)" class="i">testProp</span> <span class="s">&quot;negative n returns opposite of positive n&quot;</span> (<span class="k">fun</span> <span class="i">n</span> <span class="i">ws</span> <span class="k">-&gt;</span>
-            <span class="k">let</span> <span class="i">ws</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs50', 182)" onmouseover="showTip(event, 'fs50', 182)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 183)" onmouseover="showTip(event, 'fs46', 183)" class="i">rationalFloats</span> <span class="i">ws</span>
-            <span class="k">let</span> <span class="i">r1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 184)" onmouseover="showTip(event, 'fs3', 184)" class="i">distribute</span> <span class="o">-</span><span class="i">n</span> <span class="i">ws</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs59', 185)" onmouseover="showTip(event, 'fs59', 185)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs61', 186)" onmouseover="showTip(event, 'fs61', 186)" class="i">map</span> (<span onmouseout="hideTip(event, 'fs7', 187)" onmouseover="showTip(event, 'fs7', 187)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 188)" onmouseover="showTip(event, 'fs20', 188)" class="i">map</span> (<span class="o">~-</span>))
-            <span class="k">let</span> <span class="i">r2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 189)" onmouseover="showTip(event, 'fs3', 189)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
-            <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r1</span> <span class="i">r2</span> <span class="s">&quot;r1 = r2&quot;</span>
+        <span onmouseout="hideTip(event, 'fs50', 173)" onmouseover="showTip(event, 'fs50', 173)" class="i">testProp</span> <span class="s">&quot;negative n returns opposite of positive n&quot;</span> (
+            <span class="k">fun</span> <span class="i">n</span> (<span onmouseout="hideTip(event, 'fs48', 174)" onmouseover="showTip(event, 'fs48', 174)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs49', 175)" onmouseover="showTip(event, 'fs49', 175)" class="i">RationalFloats</span> <span class="i">ws</span>) <span class="k">-&gt;</span>
+                <span class="k">let</span> <span class="i">r1</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 176)" onmouseover="showTip(event, 'fs3', 176)" class="i">distribute</span> <span class="o">-</span><span class="i">n</span> <span class="i">ws</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs57', 177)" onmouseover="showTip(event, 'fs57', 177)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs59', 178)" onmouseover="showTip(event, 'fs59', 178)" class="i">map</span> (<span onmouseout="hideTip(event, 'fs7', 179)" onmouseover="showTip(event, 'fs7', 179)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 180)" onmouseover="showTip(event, 'fs20', 180)" class="i">map</span> (<span class="o">~-</span>))
+                <span class="k">let</span> <span class="i">r2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 181)" onmouseover="showTip(event, 'fs3', 181)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
+                <span class="i">Expect</span><span class="o">.</span><span class="i">equal</span> <span class="i">r1</span> <span class="i">r2</span> <span class="s">&quot;r1 = r2&quot;</span>
         )
-        <span onmouseout="hideTip(event, 'fs52', 190)" onmouseover="showTip(event, 'fs52', 190)" class="i">testProp</span> <span class="s">&quot;increase with weight&quot;</span> (<span class="k">fun</span> <span class="i">n</span> <span class="i">ws</span> <span class="k">-&gt;</span>
-            <span class="k">let</span> <span class="i">ws</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs50', 191)" onmouseover="showTip(event, 'fs50', 191)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 192)" onmouseover="showTip(event, 'fs46', 192)" class="i">rationalFloats</span> <span class="i">ws</span>
-            <span class="k">let</span> <span class="i">d</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs10', 193)" onmouseover="showTip(event, 'fs10', 193)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs62', 194)" onmouseover="showTip(event, 'fs62', 194)" class="i">sum</span> <span class="i">ws</span> <span class="o">&gt;</span> <span class="n">0.0</span> <span class="o">&lt;&gt;</span> (<span class="i">n</span><span class="o">&gt;</span><span class="n">0</span>) <span class="k">then</span> <span class="o">-</span><span class="n">1</span> <span class="k">else</span> <span class="n">1</span>
-            <span onmouseout="hideTip(event, 'fs3', 195)" onmouseover="showTip(event, 'fs3', 195)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
-            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs59', 196)" onmouseover="showTip(event, 'fs59', 196)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs60', 197)" onmouseover="showTip(event, 'fs60', 197)" class="i">iter</span> (
-                   <span onmouseout="hideTip(event, 'fs10', 198)" onmouseover="showTip(event, 'fs10', 198)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs63', 199)" onmouseover="showTip(event, 'fs63', 199)" class="i">map</span> (<span class="o">(*)</span><span class="i">d</span>)
-                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 200)" onmouseover="showTip(event, 'fs10', 200)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs64', 201)" onmouseover="showTip(event, 'fs64', 201)" class="i">zip</span> <span class="i">ws</span>
-                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 202)" onmouseover="showTip(event, 'fs10', 202)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs65', 203)" onmouseover="showTip(event, 'fs65', 203)" class="i">sort</span>
-                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 204)" onmouseover="showTip(event, 'fs10', 204)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs66', 205)" onmouseover="showTip(event, 'fs66', 205)" class="i">pairwise</span>
-                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 206)" onmouseover="showTip(event, 'fs10', 206)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs67', 207)" onmouseover="showTip(event, 'fs67', 207)" class="i">iter</span> (<span class="k">fun</span> (<span class="i">ni1</span>,<span class="i">ni2</span>) <span class="k">-&gt;</span>
+        <span onmouseout="hideTip(event, 'fs50', 182)" onmouseover="showTip(event, 'fs50', 182)" class="i">testProp</span> <span class="s">&quot;increase with weight&quot;</span> (<span class="k">fun</span> <span class="i">n</span> (<span onmouseout="hideTip(event, 'fs48', 183)" onmouseover="showTip(event, 'fs48', 183)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs49', 184)" onmouseover="showTip(event, 'fs49', 184)" class="i">RationalFloats</span> <span class="i">ws</span>) <span class="k">-&gt;</span>
+            <span class="k">let</span> <span class="i">d</span> <span class="o">=</span> <span class="k">if</span> <span onmouseout="hideTip(event, 'fs10', 185)" onmouseover="showTip(event, 'fs10', 185)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs60', 186)" onmouseover="showTip(event, 'fs60', 186)" class="i">sum</span> <span class="i">ws</span> <span class="o">&gt;</span> <span class="n">0.0</span> <span class="o">&lt;&gt;</span> (<span class="i">n</span><span class="o">&gt;</span><span class="n">0</span>) <span class="k">then</span> <span class="o">-</span><span class="n">1</span> <span class="k">else</span> <span class="n">1</span>
+            <span onmouseout="hideTip(event, 'fs3', 187)" onmouseover="showTip(event, 'fs3', 187)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
+            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs57', 188)" onmouseover="showTip(event, 'fs57', 188)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs58', 189)" onmouseover="showTip(event, 'fs58', 189)" class="i">iter</span> (
+                   <span onmouseout="hideTip(event, 'fs10', 190)" onmouseover="showTip(event, 'fs10', 190)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs61', 191)" onmouseover="showTip(event, 'fs61', 191)" class="i">map</span> (<span class="o">(*)</span><span class="i">d</span>)
+                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 192)" onmouseover="showTip(event, 'fs10', 192)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs62', 193)" onmouseover="showTip(event, 'fs62', 193)" class="i">zip</span> <span class="i">ws</span>
+                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 194)" onmouseover="showTip(event, 'fs10', 194)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs63', 195)" onmouseover="showTip(event, 'fs63', 195)" class="i">sort</span>
+                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 196)" onmouseover="showTip(event, 'fs10', 196)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs64', 197)" onmouseover="showTip(event, 'fs64', 197)" class="i">pairwise</span>
+                <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs10', 198)" onmouseover="showTip(event, 'fs10', 198)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs65', 199)" onmouseover="showTip(event, 'fs65', 199)" class="i">iter</span> (<span class="k">fun</span> (<span class="i">ni1</span>,<span class="i">ni2</span>) <span class="k">-&gt;</span>
                     <span class="i">Expect</span><span class="o">.</span><span class="i">isLessThanOrEqual</span> <span class="i">ni1</span> <span class="i">ni2</span> <span class="s">&quot;ni1 &lt;= ni2&quot;</span>)
             )
+        )
+        <span onmouseout="hideTip(event, 'fs50', 200)" onmouseover="showTip(event, 'fs50', 200)" class="i">testProp</span> <span class="s">&quot;smallest error&quot;</span> (<span class="k">fun</span> <span class="i">n</span> (<span onmouseout="hideTip(event, 'fs48', 201)" onmouseover="showTip(event, 'fs48', 201)" class="i">Gen</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs49', 202)" onmouseover="showTip(event, 'fs49', 202)" class="i">RationalFloats</span> <span class="i">ws</span>) <span class="i">changes</span> <span class="k">-&gt;</span>
+            <span onmouseout="hideTip(event, 'fs3', 203)" onmouseover="showTip(event, 'fs3', 203)" class="i">distribute</span> <span class="i">n</span> <span class="i">ws</span>
+            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs57', 204)" onmouseover="showTip(event, 'fs57', 204)" class="i">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs58', 205)" onmouseover="showTip(event, 'fs58', 205)" class="i">iter</span> (<span class="k">fun</span> <span class="i">ns</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span class="i">totalError</span> <span class="i">ns</span> <span class="o">=</span>
+                    <span class="k">let</span> <span class="i">wt</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 206)" onmouseover="showTip(event, 'fs10', 206)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs60', 207)" onmouseover="showTip(event, 'fs60', 207)" class="i">sum</span> <span class="i">ws</span>
+                    <span onmouseout="hideTip(event, 'fs10', 208)" onmouseover="showTip(event, 'fs10', 208)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs66', 209)" onmouseover="showTip(event, 'fs66', 209)" class="i">map2</span> (<span class="k">fun</span> <span class="i">ni</span> <span class="i">wi</span> <span class="k">-&gt;</span>
+                        <span onmouseout="hideTip(event, 'fs13', 210)" onmouseover="showTip(event, 'fs13', 210)" class="i">float</span> <span class="i">ni</span> <span class="o">*</span> <span class="i">wt</span> <span class="o">/</span> <span onmouseout="hideTip(event, 'fs13', 211)" onmouseover="showTip(event, 'fs13', 211)" class="i">float</span> <span class="i">n</span> <span class="o">-</span> <span class="i">wi</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs12', 212)" onmouseover="showTip(event, 'fs12', 212)" class="i">abs</span>
+                    ) <span class="i">ns</span> <span class="i">ws</span>
+                    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 213)" onmouseover="showTip(event, 'fs10', 213)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs60', 214)" onmouseover="showTip(event, 'fs60', 214)" class="i">sum</span>
+                <span class="k">let</span> <span class="i">err1</span> <span class="o">=</span> <span class="i">totalError</span> <span class="i">ns</span>
+                <span class="k">let</span> <span class="i">l</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 215)" onmouseover="showTip(event, 'fs7', 215)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs67', 216)" onmouseover="showTip(event, 'fs67', 216)" class="i">length</span> <span class="i">ns</span>
+                <span onmouseout="hideTip(event, 'fs68', 217)" onmouseover="showTip(event, 'fs68', 217)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs69', 218)" onmouseover="showTip(event, 'fs69', 218)" class="i">iter</span> (<span class="k">fun</span> (<span class="i">i</span>,<span class="i">j</span>) <span class="k">-&gt;</span>
+                    <span class="i">ns</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs12', 219)" onmouseover="showTip(event, 'fs12', 219)" class="i">abs</span> <span class="i">i</span> <span class="o">%</span> <span class="i">l</span>] <span class="o">&lt;-</span> <span class="i">ns</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs12', 220)" onmouseover="showTip(event, 'fs12', 220)" class="i">abs</span> <span class="i">i</span> <span class="o">%</span> <span class="i">l</span>] <span class="o">-</span> <span class="n">1</span>
+                    <span class="i">ns</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs12', 221)" onmouseover="showTip(event, 'fs12', 221)" class="i">abs</span> <span class="i">j</span> <span class="o">%</span> <span class="i">l</span>] <span class="o">&lt;-</span> <span class="i">ns</span><span class="o">.</span>[<span onmouseout="hideTip(event, 'fs12', 222)" onmouseover="showTip(event, 'fs12', 222)" class="i">abs</span> <span class="i">j</span> <span class="o">%</span> <span class="i">l</span>] <span class="o">+</span> <span class="n">1</span>
+                ) <span class="i">changes</span>
+                <span class="k">let</span> <span class="i">err2</span> <span class="o">=</span> <span class="i">totalError</span> <span class="i">ns</span>
+                <span class="i">Expect</span><span class="o">.</span><span class="i">floatLessThanOrClose</span>
+                    <span class="i">Accuracy</span><span class="o">.</span><span class="i">veryHigh</span> <span class="i">err1</span> <span class="i">err2</span> <span class="s">&quot;err1 &lt;= err2&quot;</span>
+                )
         )
     ]
 </code></pre></td>
@@ -211,8 +247,9 @@ This directs how the error functions need to calculate.</p>
 It gives example failing cases that can steer you to a better solution.</p>
 <p>I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.</p>
-<p>The error minimisation algorithm is the only one I have found that works well.
-I would be interested in hearing of any others.</p>
+<p>The error minimisation algorithm is the best rounding algorithm I have found.
+By construction it is also the one with the smallest total rounding error.
+I don't think there is any other general purpose algorithm that can satisfy these properties as well.</p>
 
 
 <div class="tip" id="fs1">module Rounding</div>
@@ -254,31 +291,33 @@ I would be interested in hearing of any others.</p>
 <div class="tip" id="fs37">val weight : float</div>
 <div class="tip" id="fs38">val min : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires comparison)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.min</div>
 <div class="tip" id="fs39">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs40">Multiple items<br />union case RationalFloat.RationalFloat: float -&gt; RationalFloat<br /><br />--------------------<br />type RationalFloat = | RationalFloat of float<br /><br />Full name: Rounding.Gen.RationalFloat</div>
-<div class="tip" id="fs41">val rationalFloat : obj<br /><br />Full name: Rounding.Gen.rationalFloat</div>
+<div class="tip" id="fs40">Multiple items<br />union case RationalFloats.RationalFloats: float [] -&gt; RationalFloats<br /><br />--------------------<br />type RationalFloats = | RationalFloats of float []<br /><br />Full name: Rounding.Gen.RationalFloats</div>
+<div class="tip" id="fs41">val rationalFloats : obj<br /><br />Full name: Rounding.Gen.rationalFloats</div>
 <div class="tip" id="fs42">val fraction : (int -&gt; int -&gt; int -&gt; float)</div>
 <div class="tip" id="fs43">val a : int</div>
 <div class="tip" id="fs44">val b : int</div>
 <div class="tip" id="fs45">val c : int</div>
-<div class="tip" id="fs46">val rationalFloats : w:&#39;a -&gt; float []<br /><br />Full name: Rounding.Gen.rationalFloats</div>
-<div class="tip" id="fs47">val w : &#39;a</div>
-<div class="tip" id="fs48">val private config : obj<br /><br />Full name: Rounding.config</div>
-<div class="tip" id="fs49">val typeof&lt;&#39;T&gt; : Type<br /><br />Full name: Microsoft.FSharp.Core.Operators.typeof</div>
-<div class="tip" id="fs50">module Gen<br /><br />from Rounding</div>
-<div class="tip" id="fs51">Multiple items<br />union case Gen.RationalFloat.RationalFloat: float -&gt; Gen.RationalFloat<br /><br />--------------------<br />type RationalFloat = | RationalFloat of float<br /><br />Full name: Rounding.Gen.RationalFloat</div>
-<div class="tip" id="fs52">val testProp : name:&#39;a -&gt; &#39;b<br /><br />Full name: Rounding.testProp</div>
-<div class="tip" id="fs53">val name : &#39;a</div>
-<div class="tip" id="fs54">val ptestProp : name:&#39;a -&gt; &#39;b<br /><br />Full name: Rounding.ptestProp</div>
-<div class="tip" id="fs55">val ftestProp : stdgen:&#39;a -&gt; name:&#39;b -&gt; &#39;c<br /><br />Full name: Rounding.ftestProp</div>
-<div class="tip" id="fs56">val stdgen : &#39;a</div>
-<div class="tip" id="fs57">val name : &#39;b</div>
-<div class="tip" id="fs58">val roundingTests : obj<br /><br />Full name: Rounding.roundingTests</div>
-<div class="tip" id="fs59">module Option<br /><br />from Microsoft.FSharp.Core</div>
-<div class="tip" id="fs60">val iter : action:(&#39;T -&gt; unit) -&gt; option:&#39;T option -&gt; unit<br /><br />Full name: Microsoft.FSharp.Core.Option.iter</div>
-<div class="tip" id="fs61">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; option:&#39;T option -&gt; &#39;U option<br /><br />Full name: Microsoft.FSharp.Core.Option.map</div>
-<div class="tip" id="fs62">val sum : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires member ( + ) and member get_Zero)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.sum</div>
-<div class="tip" id="fs63">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.map</div>
-<div class="tip" id="fs64">val zip : source1:seq&lt;&#39;T1&gt; -&gt; source2:seq&lt;&#39;T2&gt; -&gt; seq&lt;&#39;T1 * &#39;T2&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.zip</div>
-<div class="tip" id="fs65">val sort : source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.sort</div>
-<div class="tip" id="fs66">val pairwise : source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T * &#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.pairwise</div>
-<div class="tip" id="fs67">val iter : action:(&#39;T -&gt; unit) -&gt; source:seq&lt;&#39;T&gt; -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.Seq.iter</div>
+<div class="tip" id="fs46">val private config : obj<br /><br />Full name: Rounding.config</div>
+<div class="tip" id="fs47">val typeof&lt;&#39;T&gt; : Type<br /><br />Full name: Microsoft.FSharp.Core.Operators.typeof</div>
+<div class="tip" id="fs48">module Gen<br /><br />from Rounding</div>
+<div class="tip" id="fs49">Multiple items<br />union case Gen.RationalFloats.RationalFloats: float [] -&gt; Gen.RationalFloats<br /><br />--------------------<br />type RationalFloats = | RationalFloats of float []<br /><br />Full name: Rounding.Gen.RationalFloats</div>
+<div class="tip" id="fs50">val testProp : name:&#39;a -&gt; &#39;b<br /><br />Full name: Rounding.testProp</div>
+<div class="tip" id="fs51">val name : &#39;a</div>
+<div class="tip" id="fs52">val ptestProp : name:&#39;a -&gt; &#39;b<br /><br />Full name: Rounding.ptestProp</div>
+<div class="tip" id="fs53">val ftestProp : stdgen:&#39;a -&gt; name:&#39;b -&gt; &#39;c<br /><br />Full name: Rounding.ftestProp</div>
+<div class="tip" id="fs54">val stdgen : &#39;a</div>
+<div class="tip" id="fs55">val name : &#39;b</div>
+<div class="tip" id="fs56">val roundingTests : obj<br /><br />Full name: Rounding.roundingTests</div>
+<div class="tip" id="fs57">module Option<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs58">val iter : action:(&#39;T -&gt; unit) -&gt; option:&#39;T option -&gt; unit<br /><br />Full name: Microsoft.FSharp.Core.Option.iter</div>
+<div class="tip" id="fs59">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; option:&#39;T option -&gt; &#39;U option<br /><br />Full name: Microsoft.FSharp.Core.Option.map</div>
+<div class="tip" id="fs60">val sum : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires member ( + ) and member get_Zero)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.sum</div>
+<div class="tip" id="fs61">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.map</div>
+<div class="tip" id="fs62">val zip : source1:seq&lt;&#39;T1&gt; -&gt; source2:seq&lt;&#39;T2&gt; -&gt; seq&lt;&#39;T1 * &#39;T2&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.zip</div>
+<div class="tip" id="fs63">val sort : source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.sort</div>
+<div class="tip" id="fs64">val pairwise : source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T * &#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.pairwise</div>
+<div class="tip" id="fs65">val iter : action:(&#39;T -&gt; unit) -&gt; source:seq&lt;&#39;T&gt; -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.Seq.iter</div>
+<div class="tip" id="fs66">val map2 : mapping:(&#39;T1 -&gt; &#39;T2 -&gt; &#39;U) -&gt; source1:seq&lt;&#39;T1&gt; -&gt; source2:seq&lt;&#39;T2&gt; -&gt; seq&lt;&#39;U&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.map2</div>
+<div class="tip" id="fs67">val length : array:&#39;T [] -&gt; int<br /><br />Full name: Microsoft.FSharp.Collections.Array.length</div>
+<div class="tip" id="fs68">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs69">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.List.iter</div>

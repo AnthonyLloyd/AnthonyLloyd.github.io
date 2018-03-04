@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Rounding algorithm - property based"
+title: "Rounding - property based"
 tags: [rounding,testing,property,based]
-description: "Rounding algorithm - property based"
+description: "Rounding - property based"
 keywords: f#, rounding, testing, property, based
 \---
 *)
@@ -24,16 +24,16 @@ Property based testing is a great tool when doing this.
 
 The key property required for a fair rounding algorithm is that rounded values increase with the weights.
 It doesn't make sense for a lower weight to have a greater rounded value.
-Symmetry in the results for negative weights and negative integer to be distributed are also important.
+Symmetry in the results for negative weights and negative value to be distributed are also important.
 This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.
 
 In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
-For negative adjustments the smallest weight would need to be adjusted.
+For negative adjustments the smallest non zero weight would need to be adjusted.
 It may also be unfair to adjust these values if they already have a large rounding error.
 
 ## Error minimisation algorithm
 
-The best rounding algorithm I have found that satisfies these properties is to minimise the absolute and relative rounding errors.
+The algorithm minimises the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.
 *)
 /// Distribute integer n over an array of weights
@@ -65,17 +65,17 @@ let distribute n weights =
 *)
 (*** hide ***)
 module Gen =
-    type RationalFloat = RationalFloat of float
-    let rationalFloat =
+    type RationalFloats = RationalFloats of float[]
+    let rationalFloats =
         let fraction a b c = float a + float b / (abs (float c) + 1.0)
         Gen.map3 fraction Arb.generate Arb.generate Arb.generate
+        |> Gen.arrayOf
         |> Arb.fromGen
-        |> Arb.convert RationalFloat (fun (RationalFloat f) -> f)
-    let rationalFloats (w:_ NonEmptyArray) =
-        Array.map (fun (RationalFloat f) -> f) w.Get
+        |> Arb.convert RationalFloats (fun (RationalFloats f) -> f)
+
 let private config = {
     FsCheckConfig.defaultConfig with
-        arbitrary = typeof<Gen.RationalFloat>.DeclaringType::FsCheckConfig.defaultConfig.arbitrary
+        arbitrary = typeof<Gen.RationalFloats>.DeclaringType::FsCheckConfig.defaultConfig.arbitrary
 }
 let testProp name = testPropertyWithConfig config name
 let ptestProp name = ptestPropertyWithConfig config name
@@ -88,8 +88,8 @@ It is not clear which values should be adjusted down.
 Neither the largest or smallest weights look like good candidates.
 The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.
 
-Testing also shows the algorithm is sensitive to weights that are close together and machine precision.
-This directs how the error functions need to calculate.
+Testing also shows the algorithm is sensitive to weights that are close together and issues with machine precision.
+This directs how the error function needs to calculate.
 *)
 let roundingTests =
     testList "rounding" [
@@ -127,19 +127,17 @@ let roundingTests =
             let r2 = distribute -42 [|1.5;1.0;39.5;-1.0;1.0|]
             Expect.equal r2 (Some [|-2;-1;-39;1;-1|]) "-2 etc"
         }
-        testProp "ni total correctly" (fun n ws ->
-            Gen.rationalFloats ws
-            |> distribute n
+        testProp "ni total correctly" (fun n (Gen.RationalFloats ws) ->
+            distribute n ws
             |> Option.iter (fun ns -> Expect.equal (Array.sum ns) n "sum ns = n")
         )
-        testProp "negative n returns opposite of positive n" (fun n ws ->
-            let ws = Gen.rationalFloats ws
-            let r1 = distribute -n ws |> Option.map (Array.map (~-))
-            let r2 = distribute n ws
-            Expect.equal r1 r2 "r1 = r2"
+        testProp "negative n returns opposite of positive n" (
+            fun n (Gen.RationalFloats ws) ->
+                let r1 = distribute -n ws |> Option.map (Array.map (~-))
+                let r2 = distribute n ws
+                Expect.equal r1 r2 "r1 = r2"
         )
-        testProp "increase with weight" (fun n ws ->
-            let ws = Gen.rationalFloats ws
+        testProp "increase with weight" (fun n (Gen.RationalFloats ws) ->
             let d = if Seq.sum ws > 0.0 <> (n>0) then -1 else 1
             distribute n ws
             |> Option.iter (
@@ -150,6 +148,26 @@ let roundingTests =
                 >> Seq.iter (fun (ni1,ni2) ->
                     Expect.isLessThanOrEqual ni1 ni2 "ni1 <= ni2")
             )
+        )
+        testProp "smallest error" (fun n (Gen.RationalFloats ws) changes ->
+            distribute n ws
+            |> Option.iter (fun ns ->
+                let totalError ns =
+                    let wt = Seq.sum ws
+                    Seq.map2 (fun ni wi ->
+                        float ni * wt / float n - wi |> abs
+                    ) ns ws
+                    |> Seq.sum
+                let err1 = totalError ns
+                let l = Array.length ns
+                List.iter (fun (i,j) ->
+                    ns.[abs i % l] <- ns.[abs i % l] - 1
+                    ns.[abs j % l] <- ns.[abs j % l] + 1
+                ) changes
+                let err2 = totalError ns
+                Expect.floatLessThanOrClose
+                    Accuracy.veryHigh err1 err2 "err1 <= err2"
+                )
         )
     ]
 
@@ -162,6 +180,7 @@ It gives example failing cases that can steer you to a better solution.
 I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.
 
-The error minimisation algorithm is the only one I have found that works well.
-I would be interested in hearing of any others.
+The error minimisation algorithm is the best rounding algorithm I have found.
+By construction it is also the one with the smallest total rounding error.
+I don't think there is any other general purpose algorithm that can satisfy these properties as well.
 *)
