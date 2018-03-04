@@ -17,19 +17,24 @@ open FsCheck
 
 (**
 Steffen Forkmann recently posted a [blog](http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/) about incorrect rounding in a twitter poll, and how coding a rounding strategy is a hard problem.
+This got me thinking about how many correct rounding algorithms there were.
 
-In these type of problems it is important to look to what properties the algorithm should hold.
-Property-based testing is the ideal tool for this.
+In these type of problems it is important to look at what properties the algorithm should have.
+Property based testing is a great tool when doing this.
 
 I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of funds.
 The buy and sell orders have a number of partial fills, but in the end everything needs to add up and be consistent across the funds.
 
-The key property required for a fair rounding algorithm is that rounded numbers increase with the weights.
+The key property required for a fair rounding algorithm is that rounded values increase with the weights.
 It doesn't make sense for a lower weight to have a greater rounded value.
-Symmetry in the results for negative weights and negative integer to be round are also important but can easily be achieved by mapping to the positive values.
+Symmetry in the results for negative weights and negative value to be rounded are also important, but can easily be achieved by mapping to the positive values.
 
-Forkmann proposes adjusting the largest weight, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
+In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
 For negative adjustments the smallest weight would need to be adjusted.
+It may also be unfair to adjust these values if they already round exactly.
+
+The best rounding algorithm I have found that satisfies sensible properties is to minimise the absolute and relative rounding errors.
+I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.
 
 ## Error minimisation algorithm
 *)
@@ -144,5 +149,12 @@ let roundingTests =
 
 (**
 ## Conclusion
+
+Twitter tricky above shows an intersting example.
+It's not clear which values should be adjusted down.
+Neither the largest and or smallest weights look like good candidates.
+The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.
+
+This is an example of how property based testing can actually help in algorithm design.
 
 *)
