@@ -17,7 +17,7 @@ open FsCheck
 
 (**
 Steffen Forkmann recently posted a [blog](http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/) about incorrect rounding in a twitter poll, and how coding a rounding strategy is a hard problem.
-This got me thinking about how many correct rounding algorithms there were.
+This got me thinking about how many correct rounding algorithms there are.
 
 In these type of problems it is important to look at what properties the algorithm should have.
 Property based testing is a great tool when doing this.
@@ -25,7 +25,7 @@ Property based testing is a great tool when doing this.
 The key property required for a fair rounding algorithm is that rounded values increase with the weights.
 It doesn't make sense for a lower weight to have a greater rounded value.
 Symmetry in the results for negative weights and negative value to be distributed are also important.
-This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.
+This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to do this.
 
 In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
 For negative adjustments the smallest non-zero weight would need to be adjusted.
@@ -178,7 +178,7 @@ This is an example of how property based testing can actually help in algorithm 
 It gives example failing cases that can steer you to a better solution.
 
 I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
-The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.
+The buy and sell orders have a number of partial fills, but ultimately everything needs to add up in a consistent and robust way.
 
 Error minimisation is the best rounding algorithm I have found.
 By construction it is also the one with the smallest total rounding error.
