@@ -3,7 +3,7 @@
 layout: post
 title: "Rounding algorithm - property based"
 tags: [rounding,testing,property,based]
-description: "Rounding"
+description: "Rounding algorithm - property based"
 keywords: f#, rounding, testing, property, based
 \---
 *)
@@ -22,20 +22,18 @@ This got me thinking about how many correct rounding algorithms there were.
 In these type of problems it is important to look at what properties the algorithm should have.
 Property based testing is a great tool when doing this.
 
-I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of funds.
-The buy and sell orders have a number of partial fills, but in the end everything needs to add up and be consistent across the funds.
-
 The key property required for a fair rounding algorithm is that rounded values increase with the weights.
 It doesn't make sense for a lower weight to have a greater rounded value.
-Symmetry in the results for negative weights and negative value to be rounded are also important, but can easily be achieved by mapping to the positive values.
+Symmetry in the results for negative weights and negative integer to be distributed are also important.
+This can easily be achieved by mapping from the positive results, but a robust algorithm shouldn't need to resort to this.
 
 In the blog it was proposed that adjusting the largest weight would work, but in general this can only work when the rounding needs a positive adjustment due to the increasing with weight property.
 For negative adjustments the smallest weight would need to be adjusted.
-It may also be unfair to adjust these values if they already round exactly.
+It may also be unfair to adjust these values if they already have a large rounding error.
 
 ## Error minimisation algorithm
 
-The best rounding algorithm I have found that satisfies sensible properties is to minimise the absolute and relative rounding errors.
+The best rounding algorithm I have found that satisfies these properties is to minimise the absolute and relative rounding errors.
 I normally apply absolute then relative but the reverse order also works and may be more correct for certain problems.
 *)
 /// Distribute integer n over an array of weights
@@ -83,10 +81,10 @@ let testProp name = testPropertyWithConfig config name
 let ptestProp name = ptestPropertyWithConfig config name
 let ftestProp stdgen name = ftestPropertyWithConfig stdgen config name
 (**
-## Tests
+## Testing
 
 The `twitter tricky` test below is interesting.
-It's not clear which values should be adjusted down.
+It is not clear which values should be adjusted down.
 Neither the largest or smallest weights look like good candidates.
 The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.
 *)
@@ -156,4 +154,11 @@ let roundingTests =
 ## Conclusion
 
 This is an example of how property based testing can actually help in algorithm design.
+It gives example failing cases that can steer you to a better solution.
+
+I have seen this problem in order management systems where orders for a number of shares are to be allocated across a number of portfolios.
+The buy and sell orders have a number of partial fills, but in the end everything needs to add up in a consistent and robust way.
+
+The error minimisation algorithm is the only one I have found that works.
+I would be interested in hearing of any others.
 *)
