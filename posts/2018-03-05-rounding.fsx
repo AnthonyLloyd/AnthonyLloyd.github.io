@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Rounding - property based"
+title: "Rounding Algorithms from Property Based Testing"
 tags: [rounding,testing,property,based]
-description: "Rounding - property based"
+description: "Rounding Algorithms from Property Based Testing"
 keywords: f#, rounding, testing, property, based
 \---
 *)
