@@ -1,10 +1,10 @@
 (**
 \---
 layout: post
-title: "Rounding"
-tags: [rounding,testing,property-based]
+title: "Rounding algorithm - property based"
+tags: [rounding,testing,property,based]
 description: "Rounding"
-keywords: f#, rounding, testing, property-based
+keywords: f#, rounding, testing, property, based
 \---
 *)
 
@@ -84,6 +84,11 @@ let ptestProp name = ptestPropertyWithConfig config name
 let ftestProp stdgen name = ftestPropertyWithConfig stdgen config name
 (**
 ## Tests
+
+The `twitter tricky` test below is interesting.
+It's not clear which values should be adjusted down.
+Neither the largest or smallest weights look like good candidates.
+The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.
 *)
 let roundingTests =
     testList "rounding" [
@@ -149,11 +154,6 @@ let roundingTests =
 
 (**
 ## Conclusion
-
-Twitter tricky above shows an intersting example.
-It's not clear which values should be adjusted down.
-Neither the largest and or smallest weights look like good candidates.
-The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.
 
 This is an example of how property based testing can actually help in algorithm design.
 

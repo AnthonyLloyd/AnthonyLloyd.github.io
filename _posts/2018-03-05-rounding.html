@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Rounding"
-tags: [rounding,testing,property-based]
+title: "Rounding algorithm - property based"
+tags: [rounding,testing,property,based]
 description: "Rounding"
-keywords: f#, rounding, testing, property-based
+keywords: f#, rounding, testing, property, based
 ---
 <p>Steffen Forkmann recently posted a <a href="http://www.navision-blog.de/blog/2018/02/21/rounding-is-a-bitch/">blog</a> about incorrect rounding in a twitter poll, and how coding a rounding strategy is a hard problem.
 This got me thinking about how many correct rounding algorithms there were.</p>
@@ -75,6 +75,10 @@ I normally apply absolute then relative but the reverse order also works and may
 </tr>
 </table>
 <h2>Tests</h2>
+<p>The <code>twitter tricky</code> test below is interesting.
+It's not clear which values should be adjusted down.
+Neither the largest or smallest weights look like good candidates.
+The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -202,10 +206,6 @@ I normally apply absolute then relative but the reverse order also works and may
 </tr>
 </table>
 <h2>Conclusion</h2>
-<p>Twitter tricky above shows an intersting example.
-It's not clear which values should be adjusted down.
-Neither the largest and or smallest weights look like good candidates.
-The error minimisation algorithm sensibly selects the second largest weight and keeps the correct order.</p>
 <p>This is an example of how property based testing can actually help in algorithm design.</p>
 
 
