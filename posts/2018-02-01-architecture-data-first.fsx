@@ -98,7 +98,7 @@ I would be interested to hear about any other examples or counterexamples.
 [Data-Oriented Design - Noel Llopis](http://gamesfromwithin.com/data-oriented-design)  
 [Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
-## FAQ - some questions I've been asked on this approach
+## FAQ - some questions I've been asked
 
 1. How do you deal with previously reported values and make sure they will be the same in the future?
 
