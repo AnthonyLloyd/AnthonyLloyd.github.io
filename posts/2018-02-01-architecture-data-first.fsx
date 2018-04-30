@@ -98,4 +98,18 @@ I would be interested to hear about any other examples or counterexamples.
 [Data-Oriented Design - Noel Llopis](http://gamesfromwithin.com/data-oriented-design)  
 [Queues and their lack of mechanical sympathy - Martin Fowler](https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy)  
 
+## FAQ - some questions I've been asked on this approach
+
+1. How do you deal with previously reported values and make sure they will be the same in the future?
+
+    The data model is bitemporal so we can request any reporting data as at any prior time.
+    Lockdown process design becomes simply storing a timestamp for a reporting period.
+    Reporting can make use of lockdown timestamps to produce a complete view of prior period adjustments with full details.
+    Without a bitemporal data model this often becomes a reconciliation process, leading to further manual steps.
+
+2. What about reported values changing due to code changes?
+
+    Reporting data can be saved when key reports are generated and used in regression testing.
+    Regression testing of all reports using the old and new code can also be automated.
+    This is very good practice for high quality systems and is not very difficult to implement.
 *)
