@@ -9,7 +9,7 @@ keywords: f#, dag, immutable, spreadsheet, cell
 *)
 
 (*** hide ***)
-module DagBlog
+namespace DagBlog
 
 open System
 open System.Threading.Tasks
@@ -172,16 +172,19 @@ Blah Blah
 *)
 let tests =
     testList "dag tests" [
+
         testAsync "one cell" {
             let dag, cell1 = Dag.addInput 7 Dag.empty
             Expect.equal 7 (Dag.getValue cell1 dag) "one cell"
         }
+
         testAsync "two cell" {
             let dag, cell1 = Dag.addInput 8 Dag.empty
             let dag, cell2 = Dag.addInput 9 dag
             Expect.equal 8 (Dag.getValue cell1 dag) "first 8"
             Expect.equal 9 (Dag.getValue cell2 dag) "second 9"
         }
+
         testAsync "one function" {
             let dag, cell1 = Dag.addInput 42 Dag.empty
             let dag, cell2 =
@@ -191,6 +194,7 @@ let tests =
             let! result = Dag.getValueTask cell2 dag |> Async.AwaitTask
             Expect.equal 420 result "42 * 10 = 420"
         }
+
         testAsync "one function with set" {
             let dag, cell1 = Dag.addInput 13 Dag.empty
             let dag, cell2 =
@@ -201,6 +205,7 @@ let tests =
             let! result = Dag.getValueTask cell2 dag |> Async.AwaitTask
             Expect.equal 430 result "43 * 10 = 430"
         }
+
         testAsync "one function with set twice" {
             let dag, cell1 = Dag.addInput 15 Dag.empty
             let dag, cell2 =
@@ -212,16 +217,19 @@ let tests =
             let! result = Dag.getValueTask cell2 dag |> Async.AwaitTask
             Expect.equal 440 result "44 * 10 = 440"
         }
+
         testAsync "not changed input" {
             let dagBefore, cell1 = Dag.addInput 42 Dag.empty
             let dagAfter,_ = Dag.addInput 45 dagBefore
             Expect.isFalse (Dag.changed cell1 dagBefore dagAfter) "no change"
         }
+
         testAsync "changed input" {
             let dagBefore, cell1 = Dag.addInput 42 Dag.empty
             let dagAfter = Dag.setInput cell1 45 dagBefore
             Expect.isTrue (Dag.changed cell1 dagBefore dagAfter) "changed"
         }
+
         testAsync "not changed function" {
             let dag, cell1 = Dag.addInput 42 Dag.empty
             let dagBefore, cell2 =
@@ -231,6 +239,7 @@ let tests =
             let dagAfter,_ = Dag.addInput 45 dagBefore
             Expect.isFalse (Dag.changed cell2 dagBefore dagAfter) "no change"
         }
+
         testAsync "changed function" {
             let dag, cell1 = Dag.addInput 17 Dag.empty
             let dagBefore, cell2 =
@@ -244,6 +253,7 @@ let tests =
             let! result = Dag.getValueTask cell2 dagBefore |> Async.AwaitTask
             Expect.equal 170 result "17 * 10 = 170"
         }
+
         testAsync "chained functions" {
             let dag, cell1 = Dag.addInput 18 Dag.empty
             let dag, cell2 =
@@ -260,6 +270,7 @@ let tests =
             let! result = Dag.getValueTask cell3 dagBefore |> Async.AwaitTask
             Expect.equal 181 result "181"
         }
+
         testAsync "two function" {
             let dag, cell1 = Dag.addInput "z" Dag.empty
             let dag, cell2 = Dag.addInput 7 dag
@@ -271,6 +282,7 @@ let tests =
             let! result = Dag.getValueTask cell3 dag |> Async.AwaitTask
             Expect.equal "z7" result "z7"
         }
+
         testAsync "three function with set" {
             let dag, cell1 = Dag.addInput "f" Dag.empty
             let dag, cell2 = Dag.addInput 8 dag
@@ -288,6 +300,7 @@ let tests =
             let! result = Dag.getValueTask cell4 dag |> Async.AwaitTask
             Expect.equal "w8-1.5" result "w8-1.5"
         }
+        
         testAsync "chained functions multi" {
             let dag, cell1 = Dag.addInput "a" Dag.empty
             let dag, cell2 = Dag.addInput 1 dag
