@@ -5,10 +5,16 @@ tags: [dag,immutable,spreadsheet,cell]
 description: "DAG - An Immutable Spreadsheet Data Structure"
 keywords: f#, dag, immutable, spreadsheet, cell
 ---
-<p>Description of what a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">DAG</a> is.</p>
+<p>In finance data grids can be be defined as a set of input fields and function fields that take other fields as parameters.
+Spreadsheets are often used to do this, but they have a number of <a href="https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html">limitations</a>.</p>
+<p>Recently I've been working on ways of describing calculations so they can just as easily be viewed in a desktop application, web report or spreadsheet.</p>
+<p>One of the components required to do this is a functional calculation graph much like how a spreadsheet works.
+This blog aims to construct a functional <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">directed acyclic graph (DAG)</a> calculation data structure.</p>
 <h2>DAG code</h2>
-<p>How the API can make cycles impossible.
-Immutable.</p>
+<p>How the API can make cycles impossible.<br />
+Immutable.<br />
+Type safe.<br />
+Applicative.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">  1: </span>
 <span class="l">  2: </span>
 <span class="l">  3: </span>

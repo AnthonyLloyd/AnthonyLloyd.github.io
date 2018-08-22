@@ -17,12 +17,21 @@ open Expecto
 
 (**
 
-Description of what a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) is.
+In finance data grids can be be defined as a set of input fields and function fields that take other fields as parameters.
+Spreadsheets are often used to do this, but they have a number of [limitations](https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html).
+
+Recently I've been working on ways of describing calculations so they can just as easily be viewed in a desktop application, web report or spreadsheet.
+
+One of the components required to do this is a functional calculation graph much like how a spreadsheet works.
+This blog aims to construct a functional [directed acyclic graph (DAG)](https://en.wikipedia.org/wiki/Directed_acyclic_graph) calculation data structure.
 
 ## DAG code
 
-How the API can make cycles impossible.
-Immutable.
+How the API can make cycles impossible.  
+Immutable.  
+Type safe.  
+Applicative.  
+
 
 *)
 
