@@ -27,11 +27,14 @@ This blog aims to construct a functional [directed acyclic graph (DAG)](https://
 
 ## DAG code
 
-How the API can make cycles impossible.  
-Immutable.  
-Type safe.  
-Applicative.  
+We don't have to work very hard to ensure the graph is not circular, or keep the cells in topological order.
+We can design the API such that it is only possible to add function cells when the parameter cells are already in the DAG.
+All tasks can be performed with a single pass of the cells in the order they were added.
 
+The DAG data structure is made immutable by cloning any internal arrays when they need to be changed.
+Grids can keep their old versions of the calculations or compare and switch to the new version when needed.
+
+The DAG is fully type safe by its use of an applicative functor builder in constructing the function cells.
 
 *)
 
