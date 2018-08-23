@@ -17,8 +17,8 @@ open Expecto
 
 (**
 
-In finance data grids can be be defined as a set of input fields and function fields that take other field values as parameters.
-Spreadsheets are often used to do this, but they have a number of [limitations](https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html).
+In finance data grids can be defined as a set of input fields and function fields that take other field values as parameters.
+Spreadsheets are often used to do this, but they have several [limitations](https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html).
 
 Recently I've been working on ways of describing calculations, so they can just as easily be viewed in a desktop application, web report or spreadsheet.
 
@@ -36,8 +36,10 @@ Grids can keep the old version of the calculations or compare and switch to the 
 
 The DAG is fully type safe by use of an applicative functor builder in constructing function cells.
 
-Cells are evaluated as `lazy` `Task` so calulations run in the most parallel way possible.
+Cells are evaluated as `lazy` `Task` so calculations run in the most parallel way possible.
 Calculations are run only once, and results are reused even after further updates to the DAG.
+
+The code can be download [here](https://github.com/AnthonyLloyd/Dag).
 
 *)
 
