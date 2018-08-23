@@ -359,9 +359,9 @@ let tests =
 ## Conclusion
 
 This has been a very successful experiment.
-The DAG has some nice features as well as keeping type safety.
+The DAG has some nice features while keeping type safety.
 
-The way the immutability has been implemented means it is probably not best suited to fast realtime updates or very fine-grained calculations.
+The way immutability has been implemented means it is probably not best suited to fast realtime updates or very fine-grained calculations.
 For more coarse-grained calculations like grids of dependent fields, where each cell represents a column of values and summaries, I think it could be ideal.
 
 *)
