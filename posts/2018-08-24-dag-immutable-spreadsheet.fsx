@@ -20,21 +20,24 @@ open Expecto
 In finance data grids can be be defined as a set of input fields and function fields that take other fields as parameters.
 Spreadsheets are often used to do this, but they have a number of [limitations](https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html).
 
-Recently I've been working on ways of describing calculations so they can just as easily be viewed in a desktop application, web report or spreadsheet.
+Recently I've been working on ways of describing calculations, so they can just as easily be viewed in a desktop application, web report or spreadsheet.
 
 One of the components required to do this is a functional calculation graph much like how a spreadsheet works.
 This blog aims to construct a functional [directed acyclic graph (DAG)](https://en.wikipedia.org/wiki/Directed_acyclic_graph) calculation data structure.
 
 ## DAG code
 
-We don't have to work very hard to ensure the graph is not circular, or keep the cells in topological order.
-We can design the API such that it is only possible to add function cells when the parameter cells are already in the DAG.
+We don't have to work very hard to ensure the graph is not circular or keep the cells in topological order.
+We can design the API such that it is only possible to add function cells when the parameter cells already exist in the DAG.
 All tasks can be performed with a single pass of the cells in the order they were added.
 
 The DAG data structure is made immutable by cloning any internal arrays when they need to be changed.
-Grids can keep their old versions of the calculations or compare and switch to the new version when needed.
+Grids can keep the old version of the calculations or compare and switch to the new version when needed.
 
-The DAG is fully type safe by its use of an applicative functor builder in constructing the function cells.
+The DAG is fully type safe by use of an applicative functor builder in constructing function cells.
+
+Cells are evaluated as `lazy` `Task`s so calulations run in the most parallel way possible.
+Calculations are run only once, and results are reused even after further updates to the DAG.
 
 *)
 
@@ -180,7 +183,7 @@ module Gen =
 (**
 ## Testing
 
-Blah Blah
+The following tests demonstrate use of the DAG.
 *)
 let tests =
     testList "dag tests" [
@@ -353,7 +356,10 @@ let tests =
 (**
 ## Conclusion
 
-Only for bigger calcs.
-Vectors of values.
+This has been a very successful experiment.
+The DAG has some nice features as well as keeping type safety.
+
+The way the immutability has been implemented means it is probably not best suited to fast realtime updates or very fine-grained calculations.
+For more coarse-grained calculations like grids of dependent fields I think it could be ideal.
 
 *)
