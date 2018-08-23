@@ -36,7 +36,7 @@ Grids can keep the old version of the calculations or compare and switch to the 
 
 The DAG is fully type safe by use of an applicative functor builder in constructing function cells.
 
-Cells are evaluated as `lazy` `Task`s so calulations run in the most parallel way possible.
+Cells are evaluated as `lazy` `Task` so calulations run in the most parallel way possible.
 Calculations are run only once, and results are reused even after further updates to the DAG.
 
 *)
@@ -360,6 +360,6 @@ This has been a very successful experiment.
 The DAG has some nice features as well as keeping type safety.
 
 The way the immutability has been implemented means it is probably not best suited to fast realtime updates or very fine-grained calculations.
-For more coarse-grained calculations like grids of dependent fields I think it could be ideal.
+For more coarse-grained calculations like grids of dependent fields where each cell is a column of values and summaries I think it could be ideal.
 
 *)
