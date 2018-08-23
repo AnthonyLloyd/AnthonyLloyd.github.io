@@ -17,10 +17,10 @@ open Expecto
 
 (**
 
-In finance data grids can be defined as a set of input fields and function fields that take other field values as parameters.
+In finance, data grids can be defined as a set of input fields and function fields that take other field values as parameters.
 Spreadsheets are often used to do this, but they have several [limitations](https://www.cio.com/article/2438188/enterprise-software/eight-of-the-worst-spreadsheet-blunders.html).
 
-Recently I've been working on ways of describing calculations, so they can just as easily be viewed in a desktop application, web report or spreadsheet.
+Recently, I've been working on ways of describing calculations, so they can just as easily be viewed in a desktop application, web report or spreadsheet.
 
 One of the components required to do this is a functional calculation graph much like how a spreadsheet works.
 This blog aims to construct a functional [directed acyclic graph (DAG)](https://en.wikipedia.org/wiki/Directed_acyclic_graph) calculation data structure.
@@ -36,10 +36,10 @@ Grids can keep the old version of the calculations or compare and switch to the 
 
 The DAG is fully type safe by use of an applicative functor builder in constructing function cells.
 
-Cells are evaluated as `lazy` `Task` so calculations run in the most parallel way possible.
+Cells are evaluated as `lazy` `Task` so calculations run as parallel as possible.
 Calculations are run only once, and results are reused even after further updates to the DAG.
 
-The code can be download [here](https://github.com/AnthonyLloyd/Dag).
+The code can be downloaded [here](https://github.com/AnthonyLloyd/Dag).
 
 *)
 
@@ -362,6 +362,6 @@ This has been a very successful experiment.
 The DAG has some nice features while keeping type safety.
 
 The way immutability has been implemented means it is probably not best suited to fast realtime updates or very fine-grained calculations.
-For more coarse-grained calculations like grids of dependent fields, where each cell represents a column of values and summaries, I think it could be ideal.
+For more coarse-grained calculations like grids of dependent fields, where each cell represents a column of values and summaries, it could be ideal.
 
 *)
