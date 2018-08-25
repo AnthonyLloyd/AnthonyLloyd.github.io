@@ -73,10 +73,9 @@ module Dag =
     }
 
     let addInput (v:'a) (d:Dag) : Dag * Cell<'a, Input> =
-        let key = d.InputValues.Length
         { d with
             InputValues = box v |> append d.InputValues
-        }, Cell key
+        }, Cell d.InputValues.Length
 
     let getValue (Cell key:Cell<'a,Input>) (d:Dag) : 'a =
         downcast d.InputValues.[key]
@@ -152,7 +151,6 @@ module Dag =
         }
 
     let addFunction ({Dag=dag;Inputs=ips;Function=fn}:'a Builder) =
-        let key = dag.FunctionValues.Length
         let calc = fn >> taskMap box
         let d = {
             dag with
@@ -161,7 +159,7 @@ module Dag =
                 FunctionValues = append dag.FunctionValues null
         }
         d.FunctionValues.[d.FunctionValues.Length-1] <- lazy calc d
-        let cell : Cell<'a,Function> = Cell key
+        let cell : Cell<'a,Function> = Cell dag.FunctionValues.Length
         d, cell
 (**
 *)
