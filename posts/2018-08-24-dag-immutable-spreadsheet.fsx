@@ -46,8 +46,8 @@ The code can be downloaded [here](https://github.com/AnthonyLloyd/Dag).
 type Dag = private {
     InputValues : obj array
     FunctionInputs : (Set<int> * Set<int>) array
-    FunctionFunctions : (Dag -> Task<obj>) array
-    FunctionValues : Lazy<Task<obj>> array
+    FunctionFunctions : (Dag -> obj) array //obj is Task<'a>
+    FunctionValues : Lazy<obj> array //obj is Task<'a>
 }
 
 module Dag =
@@ -56,9 +56,6 @@ module Dag =
         Array.Resize(&a, Array.length a + 1)
         a.[Array.length a - 1] <- v
         a
-
-    let inline private taskMap f (t:Task<_>) =
-        t.ContinueWith(fun (r:Task<_>) -> f r.Result)
 
     type Input = private | CellInput
     type Function = private | CellFunction
@@ -77,15 +74,15 @@ module Dag =
             InputValues = box v |> append d.InputValues
         }, Cell d.InputValues.Length
 
-    let getValue (Cell key:Cell<'a,Input>) (d:Dag) : 'a =
-        downcast d.InputValues.[key]
+    let getValue (Cell i:Cell<'a,Input>) (d:Dag) : 'a =
+        downcast d.InputValues.[i]
 
-    let setInput (Cell key:Cell<'a,Input>) (a:'a) (d:Dag) : Dag =
-        if downcast d.InputValues.[key] = a then d
+    let setInput (Cell i:Cell<'a,Input>) (a:'a) (d:Dag) : Dag =
+        if downcast d.InputValues.[i] = a then d
         else
             let dirtyCalcs =
                 Seq.fold (fun (j,s) (inputs,calcInputs) ->
-                    if Set.contains key inputs ||
+                    if Set.contains i inputs ||
                        Set.intersect s calcInputs |> Set.isEmpty |> not then
                         j+1, Set.add j s
                     else
@@ -94,7 +91,7 @@ module Dag =
                 |> snd
 
             let inputValues = Array.copy d.InputValues
-            inputValues.[key] <- box a
+            inputValues.[i] <- box a
 
             if Set.isEmpty dirtyCalcs then { d with InputValues = inputValues }
             else
@@ -109,14 +106,14 @@ module Dag =
                 ) dirtyCalcs
                 dag
 
-    let getValueTask (Cell key:Cell<'a,Function>) (d:Dag) : Task<'a> =
-        d.FunctionValues.[key].Value |> taskMap (fun o -> downcast o)
+    let getValueTask (Cell i:Cell<'a,Function>) (d:Dag) : Task<'a> =
+        downcast d.FunctionValues.[i].Value
 
-    let changed (Cell key:Cell<'a,'t>) (before:Dag) (after:Dag) : bool =
+    let changed (Cell i:Cell<'a,'t>) (before:Dag) (after:Dag) : bool =
         if typeof<'t> = typeof<Function> then
-            before.FunctionValues.[key] <> after.FunctionValues.[key]
+            before.FunctionValues.[i] <> after.FunctionValues.[i]
         else
-            downcast before.InputValues.[key] <> downcast after.InputValues.[key]
+            downcast before.InputValues.[i] <> downcast after.InputValues.[i]
 
     type 'a Builder = private {
         Dag : Dag
@@ -130,28 +127,32 @@ module Dag =
         Function = fun _ -> Task.FromResult f
     }
 
-    let applyCell (Cell key:Cell<'a,'t>) {Dag=dag;Inputs=inI,inC;Function=bFn} =
+    let applyCell (Cell i:Cell<'a,'t>) {Dag=dag;Inputs=inI,inC;Function=bFn} =
+
+        let inline taskMap f (t:Task<_>) =
+            t.ContinueWith(fun (r:Task<_>) -> f r.Result)
+
         let isFunctionCell = typeof<'t> = typeof<Function>
         {
             Dag = dag
             Inputs =
-                if isFunctionCell then inI, Set.add key inC
-                                  else Set.add key inI, inC
+                if isFunctionCell then inI, Set.add i inC
+                                  else Set.add i inI, inC
             Function =
                 if isFunctionCell then
                     fun d ->
                         let fTask = bFn d
-                        ( d.FunctionValues.[key].Value |> taskMap (fun o ->
-                            taskMap (fun f -> downcast o |> f) fTask  )
+                        ( downcast d.FunctionValues.[i].Value
+                          |> taskMap (fun a -> taskMap (fun f -> f a) fTask)
                         ).Unwrap()
                 else
                     fun d ->
                         bFn d |> taskMap (fun f ->
-                            downcast d.InputValues.[key] |> f  )
+                            downcast d.InputValues.[i] |> f  )
         }
 
     let addFunction ({Dag=dag;Inputs=ips;Function=fn}:'a Builder) =
-        let calc = fn >> taskMap box
+        let calc = fn >> box
         let d = {
             dag with
                 FunctionInputs = append dag.FunctionInputs ips
