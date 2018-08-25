@@ -136,7 +136,7 @@ module Dag =
             Dag = dag
             Inputs =
                 if isFunctionCell then inI, Set.add key inC
-                              else Set.add key inI, inC
+                                  else Set.add key inI, inC
             Function =
                 if isFunctionCell then
                     fun d ->
