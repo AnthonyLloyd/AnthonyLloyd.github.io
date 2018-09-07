@@ -32,7 +32,7 @@ What is key is if a bug report queries an API result how quickly could you inves
 
 In my field:
 
-- It's not scalable - for larger code paths setting breakpoints and stepping through is just not feasible. It's like finding a needle in a haystack.
+- It's not scalable - for larger code paths or multiple threads setting breakpoints and stepping through is just not feasible. It's like finding a needle in a haystack.
 - It's limited in power - even mature debugging frameworks such as in Visual Studio are limited in the kind of conditional logic you can use while debugging.  
 - It's time consuming - many a good hour can be spent pressing F5/F10/F11 in a zombie like state only to restart and try again.
 
