@@ -32,7 +32,8 @@ For the in memory version the value `DataSeries` are stored in a `Dictionary<Ent
 Each immutable `DataSeries` can be atomically replaced.
 All queries are executed up to a given time/transaction id.
 This simplifies the locking model as entries can be updated at the same time as a number of consistent reads are being made.
-The problem is that a `ReaderWriterLock` would still need to be used on a `Dictionary` for the read and write side.
+
+The problem is that a `ReaderWriterLock` would still need to be used on the Dictionary for the read and write side.
 By creating lock free for read collections the database can be simplified to fully lock free for read access.
 
 ## MapSlim at al
@@ -41,20 +42,20 @@ Entry updates and collection resize can be made atomic.
 
 [MapSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)  
 [SetSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)  
-[ListSlim]([MapSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs)  
+[ListSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs)  
 
 ## Testing
 
 Here's a recent example of the kind of thing you can do in less than 250 lines of code.
 It includes unit tests, property tests, performance tests and threading stress tests.
 
-PIC - stress
+![mapslim_perf](/{{site.baseurl}}public/mapslim/mapslim_perf.png)
 
 [MapSlimTests](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs)  
 [SetSlimTests](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs)  
 [ListSlimTests](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/ListSlimTests.fs)  
 
-PIC - performance
+![mapslim_stress](/{{site.baseurl}}public/mapslim/mapslim_stress.png)
 
 ## Conclusion
 

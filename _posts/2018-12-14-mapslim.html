@@ -21,22 +21,22 @@ The idea is that functional techniques can be used to translate unstructured dat
 <p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute, DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
 All queries are executed up to a given time/transaction id.
-This simplifies the locking model as entries can be updated at the same time as a number of consistent reads are being made.
-The problem is that a <code>ReaderWriterLock</code> would still need to be used on a <code>Dictionary</code> for the read and write side.
+This simplifies the locking model as entries can be updated at the same time as a number of consistent reads are being made.</p>
+<p>The problem is that a <code>ReaderWriterLock</code> would still need to be used on the Dictionary for the read and write side.
 By creating lock free for read collections the database can be simplified to fully lock free for read access.</p>
 <h2>MapSlim at al</h2>
 <p>Entry updates and collection resize can be made atomic.</p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a><br />
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs">SetSlim</a><br />
-[ListSlim](<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">MapSlim</a></p>
+<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">ListSlim</a></p>
 <h2>Testing</h2>
 <p>Here's a recent example of the kind of thing you can do in less than 250 lines of code.
 It includes unit tests, property tests, performance tests and threading stress tests.</p>
-<p>PIC - stress</p>
+<p><img src="/{{site.baseurl}}public/mapslim/mapslim_perf.png" alt="mapslim_perf" /></p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs">MapSlimTests</a><br />
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs">SetSlimTests</a><br />
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/ListSlimTests.fs">ListSlimTests</a></p>
-<p>PIC - performance</p>
+<p><img src="/{{site.baseurl}}public/mapslim/mapslim_stress.png" alt="mapslim_stress" /></p>
 <h2>Conclusion</h2>
 <p>Mix of immutable (DataSeries), lock free, and normal collections.</p>
 <h2>References</h2>
