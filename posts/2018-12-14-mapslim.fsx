@@ -31,14 +31,21 @@ The idea is that functional techniques can be used to translate unstructured dat
 For the in memory version the value `DataSeries` are stored in a `Dictionary<EntityAttribute, DataSeries>` collection.
 Each immutable `DataSeries` can be atomically replaced.
 All queries are executed up to a given time/transaction id.
-This simplifies the locking model as entries can be updated at the same time as a number of consistent reads are being made.
+This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.
 
 The problem is that a `ReaderWriterLock` would still need to be used on the Dictionary for the read and write side.
 By creating lock free for read collections the database can be simplified to fully lock free for read access.
 
 ## MapSlim at al
 
-Entry updates and collection resize can be made atomic.
+Three new collections MapSlim, SetSlim and ListSlim have been created.
+
+Pros:
+- Lock free read for reference or atomic updated types.
+- Similar performance to `DictionarySlim`.
+
+Cons:
+- Can't remove items.
 
 [MapSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)  
 [SetSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)  
@@ -66,7 +73,7 @@ The Fsion database makes use of immutable (`DataSeries`), lock free read collect
 
 [Data-First Architecture](http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first)  
 [Datomic](https://www.datomic.com/)  
-[Datomic: Event Sourcing without the hassle](https://vvvvalvalval.github.io/posts/2018-11-12-datomic-event-sourcing-without-the-hassle.html#disqus_thread)  
+[Datomic: Event Sourcing without the hassle](https://vvvvalvalval.github.io/posts/2018-11-12-datomic-event-sourcing-without-the-hassle.html)  
 [FASTER](https://github.com/Microsoft/FASTER)
 
 *)

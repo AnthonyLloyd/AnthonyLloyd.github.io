@@ -21,11 +21,16 @@ The idea is that functional techniques can be used to translate unstructured dat
 <p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute, DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
 All queries are executed up to a given time/transaction id.
-This simplifies the locking model as entries can be updated at the same time as a number of consistent reads are being made.</p>
+This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.</p>
 <p>The problem is that a <code>ReaderWriterLock</code> would still need to be used on the Dictionary for the read and write side.
 By creating lock free for read collections the database can be simplified to fully lock free for read access.</p>
 <h2>MapSlim at al</h2>
-<p>Entry updates and collection resize can be made atomic.</p>
+<p>Three new collections MapSlim, SetSlim and ListSlim have been created.</p>
+<p>Pros:
+- Lock free read for reference or atomic updated types.
+- Similar performance to <code>DictionarySlim</code>.</p>
+<p>Cons:
+- Can't remove items.</p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a><br />
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs">SetSlim</a><br />
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">ListSlim</a></p>
@@ -42,7 +47,7 @@ It includes unit tests, property tests, performance tests and threading stress t
 <h2>References</h2>
 <p><a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a><br />
 <a href="https://www.datomic.com/">Datomic</a><br />
-<a href="https://vvvvalvalval.github.io/posts/2018-11-12-datomic-event-sourcing-without-the-hassle.html#disqus_thread">Datomic: Event Sourcing without the hassle</a><br />
+<a href="https://vvvvalvalval.github.io/posts/2018-11-12-datomic-event-sourcing-without-the-hassle.html">Datomic: Event Sourcing without the hassle</a><br />
 <a href="https://github.com/Microsoft/FASTER">FASTER</a></p>
 
 
