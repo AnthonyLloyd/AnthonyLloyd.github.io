@@ -19,7 +19,7 @@ and [Fsion](https://github.com/AnthonyLloyd/Fsion) I realised it was possible to
 
 [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
 is `Dictionary` replacement that can be up to 2.5 times faster for the common `TryGetValue` & `Add` pattern.
-To do this it returns `ref` values and has a more efficient way of using hash values. It came from ideas used in the
+To do this it returns `ref` values and has a more efficient way of using hash codes. It came from ideas used in the
 [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html).
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is a new [WIP](https://dictionary.cambridge.org/dictionary/english/wip) bi-temporal database for F#.
@@ -59,7 +59,8 @@ It includes unit tests, property tests, performance tests and threading stress t
 
 ## Conclusion
 
-Mix of immutable (DataSeries), lock free, and normal collections.
+The Fsion database makes use of immutable (`DataSeries`), lock free read collections (`MapSlim`), and version concurrency model.
+
 
 ## References
 
