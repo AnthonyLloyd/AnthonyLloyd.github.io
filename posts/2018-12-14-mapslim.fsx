@@ -18,14 +18,14 @@ Recently while working on [DictionarySlim](https://github.com/dotnet/corefxlab/b
 and [Fsion](https://github.com/AnthonyLloyd/Fsion) it became clear it is possible to create useful lock-free for read collections.
 
 [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
-is `Dictionary` replacement that can be up to 2.5 times faster for the common `TryGetValue` & `Add` pattern.
+is a `Dictionary` replacement that can be up to 2.5 times faster for the common `TryGetValue` & `Add` pattern.
 To do this it returns `ref` values and also has a more efficient way of using hash codes. It came from ideas used in the
 [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html).
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is a [[WIP]](https://dictionary.cambridge.org/dictionary/english/wip) bi-temporal database for F#.
-It stores a compressed set of historic values with audit for each entity-attribute.
+It stores a compressed set of historic values (with audit) for each entity-attribute.
 The idea is that functional techniques can be used to translate unstructured data to fully type safe representations.
-Compression and using attribute functions like Excel aims to keep database sizes minimal and possibly completely in memory.
+Compression and using attribute functions like Excel aims to keep database sizes minimal and possibly in memory.
 
 ## Fsion locking model
 
@@ -45,6 +45,8 @@ and [ListSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.
 
 The collections are lock-free for read for immutable reference types or types that can be updated atomically.
 They are based on and show similar performance to `DictionarySlim`.
+Internally care has to be taken to add to and resize the collection atomically.
+`List` would actually only require a small change for this to be true.
 
 The limitation is the API for these collections is slimmed down and has no `Remove` or `Clear`.
 One benefit that comes from this is that the collection entries can also be indexed into.
