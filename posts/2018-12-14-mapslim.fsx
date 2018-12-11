@@ -14,8 +14,8 @@ exclude: true
 This post is part of the [F# Advent Calendar 2018](https://sergeytihon.com/2018/10/22/f-advent-calendar-in-english-2018/) series.
 Many thanks to Sergey Tihon for organizing these.
 
-Recently while working on [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
-and [Fsion](https://github.com/AnthonyLloyd/Fsion) I realised it was possible to create useful lock free for read collections.
+While working on [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
+and [Fsion](https://github.com/AnthonyLloyd/Fsion) it became clear it was possible to create useful lock free for read collections.
 
 [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
 is `Dictionary` replacement that can be up to 2.5 times faster for the common `TryGetValue` & `Add` pattern.
@@ -28,7 +28,7 @@ The idea is that functional techniques can be used to translate unstructured dat
 
 ## Fsion locking model
 
-For the in memory version the value `DataSeries` are stored in a `Dictionary<EntityAttribute, DataSeries>` collection.
+For the in memory version the value `DataSeries` are stored in a `Dictionary<EntityAttribute,DataSeries>` collection.
 Each immutable `DataSeries` can be atomically replaced.
 All queries are executed up to a given time/transaction id.
 This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.
@@ -66,8 +66,13 @@ It includes unit tests, property tests, performance tests and threading stress t
 
 ## Conclusion
 
-The Fsion database makes use of immutable (`DataSeries`), lock free read collections (`MapSlim`), and version concurrency model.
+Fsion makes use of an immutable `DataSeries` and lock free read collections like `MapSlim`
+to create a row versioning style concurrency model.
 
+The collections provide a middle ground between immutable and mutable (which requiring complex locking).
+
+In future posts I hope to demonstrate that combining all of these from a functional language leads to a
+simple yet high performance database and server.
 
 ## References
 

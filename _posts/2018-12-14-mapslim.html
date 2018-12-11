@@ -8,8 +8,8 @@ exclude: true
 ---
 <p>This post is part of the <a href="https://sergeytihon.com/2018/10/22/f-advent-calendar-in-english-2018/">F# Advent Calendar 2018</a> series.
 Many thanks to Sergey Tihon for organizing these.</p>
-<p>Recently while working on <a href="https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">DictionarySlim</a>
-and <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> I realised it was possible to create useful lock free for read collections.</p>
+<p>While working on <a href="https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">DictionarySlim</a>
+and <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> it became clear it was possible to create useful lock free for read collections.</p>
 <p><a href="https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">DictionarySlim</a>
 is <code>Dictionary</code> replacement that can be up to 2.5 times faster for the common <code>TryGetValue</code> &amp; <code>Add</code> pattern.
 To do this it returns <code>ref</code> values and has a more efficient way of using hash codes. It came from ideas used in the
@@ -18,7 +18,7 @@ To do this it returns <code>ref</code> values and has a more efficient way of us
 It stores a compressed set of historic values with audit for each entity-attribute.
 The idea is that functional techniques can be used to translate unstructured data to a fully type safe representation.</p>
 <h2>Fsion locking model</h2>
-<p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute, DataSeries&gt;</code> collection.
+<p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute,DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
 All queries are executed up to a given time/transaction id.
 This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.</p>
@@ -43,7 +43,11 @@ It includes unit tests, property tests, performance tests and threading stress t
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/ListSlimTests.fs">ListSlimTests</a></p>
 <p><img src="/{{site.baseurl}}public/mapslim/mapslim_stress.png" alt="mapslim_stress" /></p>
 <h2>Conclusion</h2>
-<p>The Fsion database makes use of immutable (<code>DataSeries</code>), lock free read collections (<code>MapSlim</code>), and version concurrency model.</p>
+<p>Fsion makes use of an immutable <code>DataSeries</code> and lock free read collections like <code>MapSlim</code>
+to create a row versioning style concurrency model.</p>
+<p>The collections provide a middle ground between immutable and mutable (which requiring complex locking).</p>
+<p>In future posts I hope to demonstrate that combining all of these from a functional language leads to a
+simple yet high performance database and server.</p>
 <h2>References</h2>
 <p><a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a><br />
 <a href="https://www.datomic.com/">Datomic</a><br />
