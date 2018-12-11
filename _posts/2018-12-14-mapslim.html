@@ -32,26 +32,27 @@ and <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs
 <p>The collections are lock-free for read for immutable reference types or types that can be updated atomically.
 They are based on and show similar performance to <code>DictionarySlim</code>.</p>
 <p>The limitation is the API for these collections is slimmed down and has no <code>Remove</code> or <code>Clear</code>.
-One benefit that comes from this is that all the collections entries can also be indexed into.</p>
-<p>Calling the possibly updating <code>GetRef</code> method must be done using an exclusive lock eternally while manipulating the <code>ref</code>.</p>
+One benefit that comes from this is that the collection entries can also be indexed into.</p>
+<p>Calling the possibly updating <code>GetRef</code> method must be done using an exclusive lock externally while manipulating the <code>ref</code>.</p>
 <p>These collections have great potential for caches and functionality such as memoize.
 The threading model becomes much simpler and eliminates the need to consider switching to concurrent collections.</p>
 <h2>Testing</h2>
 <p>Performance and multithreading testing provides a good demonstration of <a href="https://github.com/haf/expecto">Expecto's</a> abilities.</p>
 <p>In under 250 lines of code the <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs">MapSlimTests</a>
-test file has unit tests, property tests, performance tests and threading stress tests.</p>
+have unit tests, property tests, performance tests and threading stress tests.</p>
 <p><img src="/{{site.baseurl}}public/mapslim/mapslim_stress.png" alt="mapslim_stress" /></p>
-<p>The other collection test files are <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs">SetSlimTests</a> and
+<p>The other collections tests are <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs">SetSlimTests</a> and
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/ListSlimTests.fs">ListSlimTests</a></p>
 <p><img src="/{{site.baseurl}}public/mapslim/mapslim_perf.png" alt="mapslim_perf" /></p>
 <p>The tests show large performance improvements over equivalent mutable collections.
 In multithreading situations such as server caches this difference will be even greater.</p>
 <h2>Conclusion</h2>
-<p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> makes use of immutable <code>DataSeries</code> and lock-free read collections like <code>MapSlim</code>
-to create a row versioning style concurrency model.</p>
+<p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> makes use of immutable <code>DataSeries</code> and lock-free read collections like
+<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a>
+to create a lock-free row versioning style concurrency model.</p>
 <p>This produces an interesting hybrid approach possible in a functional-first language.
 It simplifies often complex and error prone locking required in server caches.</p>
-<p>In future posts I hope to demonstrate combining all of this can lead to a
+<p>In future posts I hope to demonstrate how combining all of this can lead to a
 simple yet high performance database and server.</p>
 <p>Happy holidays!</p>
 <h2>References</h2>
