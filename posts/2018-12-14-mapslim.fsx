@@ -24,8 +24,8 @@ To do this it returns `ref` values and also has a more efficient way of using ha
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is a [[WIP]](https://dictionary.cambridge.org/dictionary/english/wip) bi-temporal database for F#.
 It stores a compressed set of historic values with audit for each entity-attribute.
-The idea is that functional techniques can be used to translate unstructured data to a fully type safe representation.
-Compression and using attribute functions functionality like Excel aims to keep database sizes minimal.
+The idea is that functional techniques can be used to translate unstructured data to fully type safe representations.
+Compression and using attribute functions like Excel aims to keep database sizes minimal and possibly completely in memory.
 
 ## Fsion locking model
 
@@ -43,13 +43,13 @@ Three new collections [MapSlim](https://github.com/AnthonyLloyd/Fsion/blob/maste
 [SetSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)
 and [ListSlim](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs) have been created in F#.
 
-The collections are lock-free for read for immutable reference types or types that be updated atomically.
+The collections are lock-free for read for immutable reference types or types that can be updated atomically.
 They are based on and show similar performance to `DictionarySlim`.
 
 The limitation is the API for these collections is slimmed down and has no `Remove` or `Clear`.
-One other benefit that comes from this is that all the collections entries can also be indexed into.
+One benefit that comes from this is that all the collections entries can also be indexed into.
 
-Calling the possibly updating `GetRef` methods must be done using an exclusive lock eternally while the `ref` is being used.
+Calling the possibly updating `GetRef` method must be done using an exclusive lock eternally while manipulating the `ref`.
 
 These collections have great potential for caches and functionality such as memoize.
 The threading model becomes much simpler and eliminates the need to consider switching to concurrent collections.
@@ -79,7 +79,7 @@ to create a row versioning style concurrency model.
 This produces an interesting hybrid approach possible in a functional-first language.
 It simplifies often complex and error prone locking required in server caches.
 
-In future posts I hope to demonstrate combining all of this from a functional language can lead to a
+In future posts I hope to demonstrate combining all of this can lead to a
 simple yet high performance database and server.
 
 Happy holidays!

@@ -16,8 +16,8 @@ To do this it returns <code>ref</code> values and also has a more efficient way 
 <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html">Benchmarks Game</a>.</p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> is a <a href="https://dictionary.cambridge.org/dictionary/english/wip">[WIP]</a> bi-temporal database for F#.
 It stores a compressed set of historic values with audit for each entity-attribute.
-The idea is that functional techniques can be used to translate unstructured data to a fully type safe representation.
-Compression and using attribute functions functionality like Excel aims to keep database sizes minimal.</p>
+The idea is that functional techniques can be used to translate unstructured data to fully type safe representations.
+Compression and using attribute functions like Excel aims to keep database sizes minimal and possibly completely in memory.</p>
 <h2>Fsion locking model</h2>
 <p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute,DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
@@ -29,11 +29,11 @@ By creating lock-free for read collections the database can be simplified to ful
 <p>Three new collections <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a>,
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs">SetSlim</a>
 and <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">ListSlim</a> have been created in F#.</p>
-<p>The collections are lock-free for read for immutable reference types or types that be updated atomically.
+<p>The collections are lock-free for read for immutable reference types or types that can be updated atomically.
 They are based on and show similar performance to <code>DictionarySlim</code>.</p>
 <p>The limitation is the API for these collections is slimmed down and has no <code>Remove</code> or <code>Clear</code>.
-One other benefit that comes from this is that all the collections entries can also be indexed into.</p>
-<p>Calling the possibly updating <code>GetRef</code> methods must be done using an exclusive lock eternally while the <code>ref</code> is being used.</p>
+One benefit that comes from this is that all the collections entries can also be indexed into.</p>
+<p>Calling the possibly updating <code>GetRef</code> method must be done using an exclusive lock eternally while manipulating the <code>ref</code>.</p>
 <p>These collections have great potential for caches and functionality such as memoize.
 The threading model becomes much simpler and eliminates the need to consider switching to concurrent collections.</p>
 <h2>Testing</h2>
@@ -51,7 +51,7 @@ In multithreading situations such as server caches this difference will be even 
 to create a row versioning style concurrency model.</p>
 <p>This produces an interesting hybrid approach possible in a functional-first language.
 It simplifies often complex and error prone locking required in server caches.</p>
-<p>In future posts I hope to demonstrate combining all of this from a functional language can lead to a
+<p>In future posts I hope to demonstrate combining all of this can lead to a
 simple yet high performance database and server.</p>
 <p>Happy holidays!</p>
 <h2>References</h2>
