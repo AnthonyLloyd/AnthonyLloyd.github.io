@@ -12,7 +12,7 @@ Many thanks again to Sergey Tihon for organizing these.</p>
 and <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> it became clear it is possible to create useful lock-free for read collections.</p>
 <p><a href="https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs">DictionarySlim</a>
 is a <code>Dictionary</code> replacement that can be up to 2.5 times faster for the common <code>TryGetValue</code> &amp; <code>Add</code> pattern.
-To do this it returns <code>ref</code> values and also has a more efficient way of using hash codes. It came from ideas used in the
+To do this it returns <code>ref</code> values and has a more efficient way of using hash codes. It came from ideas used in the
 <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html">Benchmarks Game</a>.</p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> is a <a href="https://dictionary.cambridge.org/dictionary/english/wip">[WIP]</a> bi-temporal database for F#.
 It stores a compressed set of historic values (with audit) for each entity-attribute.
@@ -31,8 +31,8 @@ By creating lock-free for read collections the database can be simplified to ful
 and <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">ListSlim</a> have been created in F#.</p>
 <p>The collections are lock-free for read for immutable reference types or types that can be updated atomically.
 They are based on and show similar performance to <code>DictionarySlim</code>.
-Internally care has to be taken to add to and resize the collection atomically.
-<code>List</code> would actually only require a small change for this to be true.</p>
+Internally care must be taken to add to and resize the collection atomically.
+<code>List</code> would only require a small change for this to be true.</p>
 <p>The limitation is the API for these collections is slimmed down and has no <code>Remove</code> or <code>Clear</code>.
 One benefit that comes from this is that the collection entries can also be indexed into.</p>
 <p>Calling the possibly updating <code>GetRef</code> method must be done using an exclusive lock externally while manipulating the <code>ref</code>.</p>
