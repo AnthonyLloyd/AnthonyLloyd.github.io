@@ -22,7 +22,7 @@ Compression and using attribute functions like Excel aims to keep database sizes
 <p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute,DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
 All queries are executed up to a given transaction id or time.
-This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.</p>
+This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are made.</p>
 <p>The problem is that a <code>ReaderWriterLock</code> would still need to be used on the <code>Dictionary</code> for the read and write side.
 By creating lock-free for read collections the database can be simplified to fully lock-free for read access.</p>
 <h2>MapSlim, SetSlim and ListSlim</h2>
@@ -35,9 +35,9 @@ Internally care must be taken to add to and resize the collection atomically.
 <code>List</code> would only require a small change for this to be true.</p>
 <p>The limitation is the API for these collections is slimmed down and has no <code>Remove</code> or <code>Clear</code>.
 One benefit that comes from this is that the collection entries can also be indexed into.</p>
-<p>Calling the possibly updating <code>GetRef</code> method must be done using an exclusive lock externally while manipulating the <code>ref</code>.</p>
+<p>Calling the possibly updating <code>GetRef</code> method must be done using a lock while manipulating the <code>ref</code> value.</p>
 <p>These collections have great potential for caches and functionality such as memoize.
-The threading model becomes much simpler and eliminates the need to consider switching to concurrent collections.</p>
+The threading model becomes much simpler and eliminates the need to switch to concurrent collections.</p>
 <h2>Testing</h2>
 <p>Performance and multithreading testing provides a good demonstration of <a href="https://github.com/haf/expecto">Expecto's</a> abilities.</p>
 <p>In under 250 lines of code the <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs">MapSlimTests</a>

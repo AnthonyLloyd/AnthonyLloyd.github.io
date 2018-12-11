@@ -32,7 +32,7 @@ Compression and using attribute functions like Excel aims to keep database sizes
 For the in memory version the value `DataSeries` are stored in a `Dictionary<EntityAttribute,DataSeries>` collection.
 Each immutable `DataSeries` can be atomically replaced.
 All queries are executed up to a given transaction id or time.
-This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are being made.
+This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are made.
 
 The problem is that a `ReaderWriterLock` would still need to be used on the `Dictionary` for the read and write side.
 By creating lock-free for read collections the database can be simplified to fully lock-free for read access.
@@ -51,10 +51,10 @@ Internally care must be taken to add to and resize the collection atomically.
 The limitation is the API for these collections is slimmed down and has no `Remove` or `Clear`.
 One benefit that comes from this is that the collection entries can also be indexed into.
 
-Calling the possibly updating `GetRef` method must be done using an exclusive lock externally while manipulating the `ref`.
+Calling the possibly updating `GetRef` method must be done using a lock while manipulating the `ref` value.
 
 These collections have great potential for caches and functionality such as memoize.
-The threading model becomes much simpler and eliminates the need to consider switching to concurrent collections.
+The threading model becomes much simpler and eliminates the need to switch to concurrent collections.
 
 ## Testing
 
