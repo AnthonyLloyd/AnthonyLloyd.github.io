@@ -19,8 +19,9 @@ and [Fsion](https://github.com/AnthonyLloyd/Fsion) it became clear it is possibl
 
 [DictionarySlim](https://github.com/dotnet/corefxlab/blob/master/src/Microsoft.Experimental.Collections/Microsoft/Collections/Extensions/DictionarySlim.cs)
 is a `Dictionary` replacement that can be up to 2.5 times faster for the common `TryGetValue` & `Add` pattern.
-To do this it returns `ref` values and has a more efficient way of using hash codes. It came from ideas used in the
-[Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html).
+To do this it returns `ref` values.
+It is also more efficient with hash codes using `&` instead of the more costly `%`.
+It came from ideas used in the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/knucleotide-csharpcore-9.html).
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is a [[WIP]](https://dictionary.cambridge.org/dictionary/english/wip) bi-temporal database for F#.
 It stores a compressed set of historic values (with audit) for each entity-attribute.
