@@ -5,7 +5,6 @@ title: "MapSlim - From DictionarySlim to Fsion"
 tags: [mapslim,setslim,listslim,dictionaryslim,fsiom]
 description: "MapSlim - From DictionarySlim to Fsion"
 keywords: F#, mapslim, setslim, listslim, dictionyslim, fsion
-exclude: true
 \---
 *)
 
