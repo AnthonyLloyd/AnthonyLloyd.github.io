@@ -26,6 +26,14 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 (*** hide ***)
 namespace Fsion
 
+type Result<'a,'e> =
+    | Ok of 'a
+    | Error of 'e
+
+module Result =
+    let map (f:'a->'b) (_:Result<'a,'e>) : Result<'b,'e> = failwith "hi"
+    let mapError (f:'e->'f) (_:Result<'a,'e>) : Result<'a,'f> = failwith "hi"
+
 type Time = Time
 module Time =
     let now() = Time
@@ -434,6 +442,7 @@ module IO =
                     ) |> ignore
                 ) ios
         )
+(***)
     let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
         IO (fun env cont ->
             if Cancel.isSet env then cont None
@@ -460,6 +469,7 @@ module IO =
                     )
                 ) |> ignore
         )
+(*** hide ***)
     let timeout (milliseconds:int) (io:IO<'r,'a,'e>) : IO<'r,'a,'e option> =
         IO (fun env cont ->
             let (IO run) = race (Clock.sleep milliseconds) io
