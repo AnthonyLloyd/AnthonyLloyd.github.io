@@ -13,7 +13,8 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 
 ## Background
 
-> IO = Reader + Async + Result
+$$$
+IO = Reader + Async + Result
 
 ## IO
 
@@ -546,7 +547,7 @@ module Test =
 
 
 *)
-    let programRetry noRetry =
+    let programRetry noRetry : IO<'a,int,Either<ConsoleError,PersistError option>> =
         io {
             do! Logger.log "started"
             do! Console.writeLine "Please enter your name:"
@@ -579,7 +580,7 @@ module Test =
 
 ## Thanks
 
-[@jdegoes](https://twitter.com/jdegoes) - for ZIO and a great talk  
-[@NinoFloris](https://twitter.com/NinoFloris) for async discussions  
-[@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the Either auto lift  
+[@jdegoes](https://twitter.com/jdegoes) - for ZIO and a great talk that made me want to do this.  
+[@NinoFloris](https://twitter.com/NinoFloris) for async discussions.  
+[@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the Either auto lift idea.  
 *)
