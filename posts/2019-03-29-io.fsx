@@ -444,7 +444,12 @@ module IO =
                     ) |> ignore
                 ) ios
         )
-(***)
+(**
+## Reader
+
+## Async
+
+*)
     let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
         IO (fun env cont ->
             if Cancel.isSet env then cont None
@@ -539,7 +544,11 @@ type Persistence =
 module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
 module Test =
-(***)
+(**
+## Result
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/io/programType.png" title="program type"/>
+*)
     let programRetry noRetry =
         io {
             do! Logger.log "started"
@@ -560,13 +569,7 @@ module Test =
 
 - Pics:
 - IO = Reader + Async  Result
-- retry program
-
-## Reader
-
-## Async
-
-## Result
+- program type
 
 ## Conclusion
 
