@@ -13,12 +13,7 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 
 ## Background
 
-- IO = Reader + Async + Result
-- Reader - effect dependencies are inferred
-- Error - error type is inferred and auto lifted into Either if needed
-- Async - efficient use of OS thread without blocking
-- Result - Simple timeout and retry based on Result.Error
-- Cancel - integrated automatic cancelling of operations in cases such as race or upon an error
+> IO = Reader + Async + Result
 
 ## IO
 
@@ -447,6 +442,8 @@ module IO =
 (**
 ## Reader
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="1000px" height="60px" />
+
 ## Async
 
 *)
@@ -547,7 +544,7 @@ module Test =
 (**
 ## Result
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/io/programType.png" title="program type"/>
+
 *)
     let programRetry noRetry =
         io {
@@ -567,15 +564,22 @@ module Test =
         }
 (**
 
-- Pics:
-- IO = Reader + Async  Result
-- program type
-
 ## Conclusion
+
+- Reader - effect dependencies are inferred
+- Error - error type is inferred and auto lifted into Either if needed
+- Async - efficient use of OS thread without blocking
+- Result - Simple timeout and retry based on Result.Error
+- Cancel - integrated automatic cancelling of operations in cases such as race or upon an error
 
 ## References
 
 [ZIO Overview](https://scalaz.github.io/scalaz-zio/overview/)  
 [ZIO Data Types](https://scalaz.github.io/scalaz-zio/datatypes/)  
 
+## Thanks
+
+[@jdegoes](https://twitter.com/jdegoes) - for ZIO and a great talk  
+[@NinoFloris](https://twitter.com/NinoFloris) for async discussions  
+[@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the Either auto lift  
 *)
