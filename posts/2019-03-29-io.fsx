@@ -44,12 +44,10 @@ module Either =
 
 open System.Threading
 
-[<Struct;NoEquality;NoComparison>]
 type Cancel =
-    private
     | Cancel of bool ref * children: Cancel list ref
 
-module internal Cancel =
+module Cancel =
     let inline isSet (_:'r,Cancel(i,_)) = !i
     let inline create() = Cancel(ref false, ref [])
     let add (r:'r,Cancel(_,c)) =
