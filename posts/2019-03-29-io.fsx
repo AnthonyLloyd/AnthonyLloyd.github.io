@@ -15,14 +15,14 @@ It aims to be a skeleton of ZIO features such that additional functions can be e
 
 I recently went to a [talk](https://www.slideshare.net/jdegoes/the-death-of-final-tagless)
 on [Scala ZIO](https://github.com/scalaz/scalaz-zio) by [John De Goes](https://twitter.com/jdegoes).
-[Scala ZIO](https://github.com/scalaz/scalaz-zio) is a type-safe, composable library for asynchronous and concurrent programming in Scala.
+ZIO is a type-safe, composable library for asynchronous and concurrent programming in Scala.
 
 It takes a different approach to other Scala effects libraries in that it does not require the use of Higher-Kinded Types.
-Instead it uses a reader monad to provide access to IO effects (called ZIO Environment in ZIO).
+Instead it uses a reader monad to provide access to IO effects (called ZIO Environment).
 
 I came away wanting something similar in F#.
-A useful library that could be used at the IO layer to manage and test IO dependency code.
-I started to play with some reader code but didn't think it would ultimately be possible.
+A useful library that could be used at the outer IO layer to manage and test IO dependency code.
+I started to play with some reader code but didn't think it would ultimately work.
 
 ## IO
 
@@ -463,6 +463,7 @@ module IO =
 
 - efficient use of OS thread without blocking
 - integrated automatic cancelling of operations in cases such as race or upon an error
+- based on thread pool - no exceptions
 
 *)
     let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
@@ -566,7 +567,7 @@ module Test =
 - Simple timeout and retry based on Result.Error
 
 *)
-    let programRetry noRetry : IO<'a,int,Either<ConsoleError,PersistError option>> =
+    let programRetry noRetry =
         io {
             do! Logger.log "started"
             do! Console.writeLine "Please enter your name:"

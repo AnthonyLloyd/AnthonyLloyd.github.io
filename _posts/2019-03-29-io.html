@@ -11,12 +11,12 @@ It aims to be a skeleton of ZIO features such that additional functions can be e
 <h2>Background</h2>
 <p>I recently went to a <a href="https://www.slideshare.net/jdegoes/the-death-of-final-tagless">talk</a>
 on <a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> by <a href="https://twitter.com/jdegoes">John De Goes</a>.
-<a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> is a type-safe, composable library for asynchronous and concurrent programming in Scala.</p>
+ZIO is a type-safe, composable library for asynchronous and concurrent programming in Scala.</p>
 <p>It takes a different approach to other Scala effects libraries in that it does not require the use of Higher-Kinded Types.
-Instead it uses a reader monad to provide access to IO effects (called ZIO Environment in ZIO).</p>
+Instead it uses a reader monad to provide access to IO effects (called ZIO Environment).</p>
 <p>I came away wanting something similar in F#.
-A useful library that could be used at the IO layer to manage and test IO dependency code.
-I started to play with some reader code but didn't think it would ultimately be possible.</p>
+A useful library that could be used at the outer IO layer to manage and test IO dependency code.
+I started to play with some reader code but didn't think it would ultimately work.</p>
 <h2>IO</h2>
 <p><span class="math">\[IO = Reader + Async + Result\]</span></p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO.fs</a></p>
@@ -41,6 +41,7 @@ I started to play with some reader code but didn't think it would ultimately be 
 <ul>
 <li>efficient use of OS thread without blocking</li>
 <li>integrated automatic cancelling of operations in cases such as race or upon an error</li>
+<li>based on thread pool - no exceptions</li>
 </ul>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -120,20 +121,20 @@ I started to play with some reader code but didn't think it would ultimately be 
 <span class="l">15: </span>
 <span class="l">16: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs231', 1290)" onmouseover="showTip(event, 'fs231', 1290)" class="f">programRetry</span> <span onmouseout="hideTip(event, 'fs232', 1291)" onmouseover="showTip(event, 'fs232', 1291)" class="i">noRetry</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs201', 1292)" onmouseover="showTip(event, 'fs201', 1292)" class="t">IO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span>,<span onmouseout="hideTip(event, 'fs83', 1293)" onmouseover="showTip(event, 'fs83', 1293)" class="t">int</span>,<span onmouseout="hideTip(event, 'fs125', 1294)" onmouseover="showTip(event, 'fs125', 1294)" class="t">Either</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs213', 1295)" onmouseover="showTip(event, 'fs213', 1295)" class="t">ConsoleError</span>,<span onmouseout="hideTip(event, 'fs225', 1296)" onmouseover="showTip(event, 'fs225', 1296)" class="t">PersistError</span> <span onmouseout="hideTip(event, 'fs26', 1297)" onmouseover="showTip(event, 'fs26', 1297)" class="t">option</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="o">=</span>
-        <span onmouseout="hideTip(event, 'fs212', 1298)" onmouseover="showTip(event, 'fs212', 1298)" class="i">io</span> {
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1299)" onmouseover="showTip(event, 'fs222', 1299)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1300)" onmouseover="showTip(event, 'fs224', 1300)" class="i">log</span> <span class="s">&quot;started&quot;</span>
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs218', 1301)" onmouseover="showTip(event, 'fs218', 1301)" class="i">Console</span><span class="o">.</span><span class="i">writeLine</span> <span class="s">&quot;Please enter your name:&quot;</span>
-            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs233', 1302)" onmouseover="showTip(event, 'fs233', 1302)" class="i">name</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs218', 1303)" onmouseover="showTip(event, 'fs218', 1303)" class="i">Console</span><span class="o">.</span><span class="i">readLine</span>()
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1304)" onmouseover="showTip(event, 'fs222', 1304)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1305)" onmouseover="showTip(event, 'fs224', 1305)" class="i">log</span> (<span class="s">&quot;got name = &quot;</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs233', 1306)" onmouseover="showTip(event, 'fs233', 1306)" class="i">name</span>)
-            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs234', 1307)" onmouseover="showTip(event, 'fs234', 1307)" class="i">thread</span> <span class="o">=</span>
-                <span onmouseout="hideTip(event, 'fs228', 1308)" onmouseover="showTip(event, 'fs228', 1308)" class="i">Persistence</span><span class="o">.</span><span class="i">persist</span> <span onmouseout="hideTip(event, 'fs233', 1309)" onmouseover="showTip(event, 'fs233', 1309)" class="i">name</span>
-                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1310)" onmouseover="showTip(event, 'fs201', 1310)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs189', 1311)" onmouseover="showTip(event, 'fs189', 1311)" class="f">timeout</span> <span class="n">1000</span>
-                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1312)" onmouseover="showTip(event, 'fs201', 1312)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs164', 1313)" onmouseover="showTip(event, 'fs164', 1313)" class="f">retry</span> (<span onmouseout="hideTip(event, 'fs154', 1314)" onmouseover="showTip(event, 'fs154', 1314)" class="t">Schedule</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs108', 1315)" onmouseover="showTip(event, 'fs108', 1315)" class="f">recurs</span> <span onmouseout="hideTip(event, 'fs232', 1316)" onmouseover="showTip(event, 'fs232', 1316)" class="i">noRetry</span>)
-                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1317)" onmouseover="showTip(event, 'fs201', 1317)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs166', 1318)" onmouseover="showTip(event, 'fs166', 1318)" class="f">fork</span>
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs218', 1319)" onmouseover="showTip(event, 'fs218', 1319)" class="i">Console</span><span class="o">.</span><span class="i">writeLine</span> (<span class="s">&quot;Hi &quot;</span><span class="o">+</span><span onmouseout="hideTip(event, 'fs233', 1320)" onmouseover="showTip(event, 'fs233', 1320)" class="i">name</span>)
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs234', 1321)" onmouseover="showTip(event, 'fs234', 1321)" class="i">thread</span>
-            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1322)" onmouseover="showTip(event, 'fs222', 1322)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1323)" onmouseover="showTip(event, 'fs224', 1323)" class="i">log</span> <span class="s">&quot;finished&quot;</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs231', 1290)" onmouseover="showTip(event, 'fs231', 1290)" class="f">programRetry</span> <span onmouseout="hideTip(event, 'fs232', 1291)" onmouseover="showTip(event, 'fs232', 1291)" class="i">noRetry</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs212', 1292)" onmouseover="showTip(event, 'fs212', 1292)" class="i">io</span> {
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1293)" onmouseover="showTip(event, 'fs222', 1293)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1294)" onmouseover="showTip(event, 'fs224', 1294)" class="i">log</span> <span class="s">&quot;started&quot;</span>
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs218', 1295)" onmouseover="showTip(event, 'fs218', 1295)" class="i">Console</span><span class="o">.</span><span class="i">writeLine</span> <span class="s">&quot;Please enter your name:&quot;</span>
+            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs233', 1296)" onmouseover="showTip(event, 'fs233', 1296)" class="i">name</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs218', 1297)" onmouseover="showTip(event, 'fs218', 1297)" class="i">Console</span><span class="o">.</span><span class="i">readLine</span>()
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1298)" onmouseover="showTip(event, 'fs222', 1298)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1299)" onmouseover="showTip(event, 'fs224', 1299)" class="i">log</span> (<span class="s">&quot;got name = &quot;</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs233', 1300)" onmouseover="showTip(event, 'fs233', 1300)" class="i">name</span>)
+            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs234', 1301)" onmouseover="showTip(event, 'fs234', 1301)" class="i">thread</span> <span class="o">=</span>
+                <span onmouseout="hideTip(event, 'fs228', 1302)" onmouseover="showTip(event, 'fs228', 1302)" class="i">Persistence</span><span class="o">.</span><span class="i">persist</span> <span onmouseout="hideTip(event, 'fs233', 1303)" onmouseover="showTip(event, 'fs233', 1303)" class="i">name</span>
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1304)" onmouseover="showTip(event, 'fs201', 1304)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs189', 1305)" onmouseover="showTip(event, 'fs189', 1305)" class="f">timeout</span> <span class="n">1000</span>
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1306)" onmouseover="showTip(event, 'fs201', 1306)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs164', 1307)" onmouseover="showTip(event, 'fs164', 1307)" class="f">retry</span> (<span onmouseout="hideTip(event, 'fs154', 1308)" onmouseover="showTip(event, 'fs154', 1308)" class="t">Schedule</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs108', 1309)" onmouseover="showTip(event, 'fs108', 1309)" class="f">recurs</span> <span onmouseout="hideTip(event, 'fs232', 1310)" onmouseover="showTip(event, 'fs232', 1310)" class="i">noRetry</span>)
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs201', 1311)" onmouseover="showTip(event, 'fs201', 1311)" class="t">IO</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs166', 1312)" onmouseover="showTip(event, 'fs166', 1312)" class="f">fork</span>
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs218', 1313)" onmouseover="showTip(event, 'fs218', 1313)" class="i">Console</span><span class="o">.</span><span class="i">writeLine</span> (<span class="s">&quot;Hi &quot;</span><span class="o">+</span><span onmouseout="hideTip(event, 'fs233', 1314)" onmouseover="showTip(event, 'fs233', 1314)" class="i">name</span>)
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs234', 1315)" onmouseover="showTip(event, 'fs234', 1315)" class="i">thread</span>
+            <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs222', 1316)" onmouseover="showTip(event, 'fs222', 1316)" class="i">Logger</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 1317)" onmouseover="showTip(event, 'fs224', 1317)" class="i">log</span> <span class="s">&quot;finished&quot;</span>
             <span class="k">return</span> <span class="n">0</span>
         }
 </code></pre></td>
@@ -380,7 +381,7 @@ I started to play with some reader code but didn't think it would ultimately be 
 <div class="tip" id="fs228">type Persistence =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Persistence : PersistenceService<br />&#160;&#160;end<br /><br />Full name: Fsion.Persistence</div>
 <div class="tip" id="fs229">Multiple items<br />abstract member Persistence.Persistence : PersistenceService<br /><br />Full name: Fsion.Persistence.Persistence<br /><br />--------------------<br />type Persistence =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Persistence : PersistenceService<br />&#160;&#160;end<br /><br />Full name: Fsion.Persistence</div>
 <div class="tip" id="fs230">module Test<br /><br />from Fsion</div>
-<div class="tip" id="fs231">val programRetry : noRetry:int -&gt; IO&lt;&#39;a,int,Either&lt;ConsoleError,PersistError option&gt;&gt;<br /><br />Full name: Fsion.Test.programRetry</div>
+<div class="tip" id="fs231">val programRetry : noRetry:int -&gt; &#39;a<br /><br />Full name: Fsion.Test.programRetry</div>
 <div class="tip" id="fs232">val noRetry : int</div>
 <div class="tip" id="fs233">val name : &#39;a</div>
 <div class="tip" id="fs234">val thread : IO&lt;&#39;a,unit,&#39;b option&gt;</div>
