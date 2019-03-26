@@ -9,7 +9,7 @@ exclude: true
 \---
 
 This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
-It aims to be enough of a skeleton of ZIO features that other functions can be easily fleshed out.
+It aims to be enough of a skeleton of ZIO features that additional functions can be easily fleshed out.
 
 ## Background
 
@@ -46,12 +46,12 @@ open System.Threading
 
 [<Struct;NoEquality;NoComparison>]
 type Cancel =
-    internal
+    private
     | Cancel of bool ref * children: Cancel list ref
 
-module Cancel =
-    let inline internal isSet (_:'r,Cancel(i,_)) = !i
-    let create() = Cancel(ref false, ref [])
+module internal Cancel =
+    let inline isSet (_:'r,Cancel(i,_)) = !i
+    let inline create() = Cancel(ref false, ref [])
     let add (r:'r,Cancel(_,c)) =
         let i = create()
         c := i::!c
@@ -502,7 +502,9 @@ module IOAutoOpen =
 
 module Display =
 (***)
+ [hide]
  type Cancel = Cancel of bool ref * children: Cancel list ref
+ [hide]
  type Result<'a,'e> = Ok of resultValue:'a | Error of 'e
  type IO<'r,'a,'e> = IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
 (**
