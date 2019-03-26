@@ -7,10 +7,24 @@ description: "F# Implementation of Scala ZIO"
 keywords: F#, io, zio, async, result
 exclude: true
 \---
+
+This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
+It aims to be enough of a skeleton of ZIO features that other functions can be fleshed out easily.
+
+## Background
+
+- IO = Reader + Async + Result
+- Reader - effect dependencies are inferred
+- Error - error type is inferred and auto lifted into Either if needed
+- Async - efficient use of OS thread without blocking
+- Result - Simple timeout and retry based on Result.Error
+- Cancel - integrated automatic cancelling of operations in cases such as race or upon an error
+
+## IO
+
 *)
 
 (*** hide ***)
-
 namespace Fsion
 
 type Time = Time
@@ -486,29 +500,9 @@ type IOBuilder() =
 module IOAutoOpen =
     let io = IOBuilder()
 
-(**
-
-This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
-It aims to be enough of a skeleton of ZIO features that other functions can be fleshed out easily.
-
-## Background
-
-- IO = Reader + Async + Result
-- Reader - effect dependencies are inferred
-- Error - error type is inferred and auto lifted into Either if needed
-- Async - efficient use of OS thread without blocking
-- Result - Simple timeout and retry based on Result.Error
-- Cancel - integrated automatic cancelling of operations in cases such as race or upon an error
-
-## IO
-
-*)
-(*** hide ***)
 module Display =
-(**
-*)
-    type IO<'r,'a,'e> =
-        | IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
+(***)
+ type IO<'r,'a,'e> = IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
 (**
 
 - Pics:
