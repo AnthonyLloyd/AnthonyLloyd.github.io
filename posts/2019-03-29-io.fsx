@@ -503,7 +503,6 @@ module IOAutoOpen =
 module Display =
 (***)
 (*** hide ***)
- type Cancel = Cancel of bool ref * children: Cancel list ref
  type Result<'a,'e> = Ok of resultValue:'a | Error of 'e
 (***)
  type IO<'r,'a,'e> = IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
