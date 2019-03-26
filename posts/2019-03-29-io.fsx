@@ -9,7 +9,7 @@ exclude: true
 \---
 
 This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
-It aims to be enough of a skeleton of ZIO features that additional functions can be easily fleshed out.
+It aims to be a skeleton of ZIO features such that additional functions can be easily fleshed out.
 
 ## Background
 
@@ -18,6 +18,7 @@ IO = Reader + Async + Result
 
 ## IO
 
+[IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs)
 *)
 (*** hide ***)
 namespace Fsion
@@ -443,9 +444,14 @@ module IO =
 (**
 ## Reader
 
-<img style="border:1px solid black;padding-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="644px" height="73px" />
+<img style="padding-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="665px" height="75px" />
+
+- effect dependencies are inferred
 
 ## Async
+
+- efficient use of OS thread without blocking
+- integrated automatic cancelling of operations in cases such as race or upon an error
 
 *)
     let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
@@ -545,6 +551,8 @@ module Test =
 (**
 ## Result
 
+- error type is inferred and auto lifted into Either if needed
+- Simple timeout and retry based on Result.Error
 
 *)
     let programRetry noRetry : IO<'a,int,Either<ConsoleError,PersistError option>> =
@@ -567,11 +575,6 @@ module Test =
 
 ## Conclusion
 
-- Reader - effect dependencies are inferred
-- Error - error type is inferred and auto lifted into Either if needed
-- Async - efficient use of OS thread without blocking
-- Result - Simple timeout and retry based on Result.Error
-- Cancel - integrated automatic cancelling of operations in cases such as race or upon an error
 
 ## References
 
