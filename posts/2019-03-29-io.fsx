@@ -207,10 +207,10 @@ module Schedule =
     let recurs n = whileOutput (fun i -> i <= n) forever
 
 
-[<NoEquality;NoComparison>]
-type IO<'r,'a,'e> =
-    private
-    | IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
+(***)
+type IO<'r,'a,'e> = IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
+(*** hide ***)
+type IO<'r,'a,'e> with
     member m.Bind(f:'a->UIO<'r,'b>) : IO<'r,'b,'e> =
         let (IO run) = m
         IO (fun env cont ->
