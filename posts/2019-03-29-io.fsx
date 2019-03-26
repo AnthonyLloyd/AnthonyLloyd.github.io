@@ -9,7 +9,7 @@ exclude: true
 \---
 
 This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
-It aims to be enough of a skeleton of ZIO features that other functions can be fleshed out easily.
+It aims to be enough of a skeleton of ZIO features that other functions can be easily fleshed out.
 
 ## Background
 
