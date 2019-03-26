@@ -9,9 +9,17 @@ exclude: true
 <p>This is a prototype implementation of <a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> in F#.
 It aims to be a skeleton of ZIO features such that additional functions can be easily fleshed out.</p>
 <h2>Background</h2>
-<p><span class="math">\[IO = Reader + Async + Result\]</span></p>
+<p>I recently went to a <a href="https://www.slideshare.net/jdegoes/the-death-of-final-tagless">talk</a>
+on <a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> by <a href="https://twitter.com/jdegoes">John De Goes</a>.
+<a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> is a type-safe, composable library for asynchronous and concurrent programming in Scala.</p>
+<p>It takes a different approach to other Scala effects libraries in that it does not require the use of Higher-Kinded Types.
+Instead it uses a reader monad to provide access to IO effects (called ZIO Environment in ZIO).</p>
+<p>I came away wanting something similar in F#.
+A useful library that could be used at the IO layer to manage and test IO dependency code.
+I started to play with some reader code but didn't think it would ultimately be possible.</p>
 <h2>IO</h2>
-<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a></p>
+<p><span class="math">\[IO = Reader + Async + Result\]</span></p>
+<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO.fs</a></p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs25', 52)" onmouseover="showTip(event, 'fs25', 52)" class="t">UIO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">r</span>,<span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs25', 53)" onmouseover="showTip(event, 'fs25', 53)" class="p">UIO</span> <span class="k">of</span> (<span class="o">&#39;</span><span class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs18', 54)" onmouseover="showTip(event, 'fs18', 54)" class="t">Cancel</span> <span class="k">-&gt;</span> (<span class="o">&#39;</span><span class="i">a</span> <span onmouseout="hideTip(event, 'fs26', 55)" onmouseover="showTip(event, 'fs26', 55)" class="t">option</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 56)" onmouseover="showTip(event, 'fs27', 56)" class="t">unit</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 57)" onmouseover="showTip(event, 'fs27', 57)" class="t">unit</span>)
@@ -134,10 +142,11 @@ It aims to be a skeleton of ZIO features such that additional functions can be e
 <h2>Conclusion</h2>
 <h2>References</h2>
 <p><a href="https://scalaz.github.io/scalaz-zio/overview/">ZIO Overview</a><br />
-<a href="https://scalaz.github.io/scalaz-zio/datatypes/">ZIO Data Types</a></p>
+<a href="https://scalaz.github.io/scalaz-zio/datatypes/">ZIO Data Types</a><br />
+<a href="https://www.slideshare.net/jdegoes/the-death-of-final-tagless">The Death Of Final Tagless</a></p>
 <h2>Thanks</h2>
-<p><a href="https://twitter.com/jdegoes">@jdegoes</a> - for ZIO and a great talk that made me want to do this.<br />
-<a href="https://twitter.com/NinoFloris">@NinoFloris</a> for async discussions.<br />
+<p><a href="https://twitter.com/jdegoes">@jdegoes</a> for ZIO and a great talk that made me want to do this.<br />
+<a href="https://twitter.com/NinoFloris">@NinoFloris</a> for useful async discussions.<br />
 <a href="https://twitter.com/keithtpinson/status/1104071022544932866">@keithtpinson</a> for the Either auto lift idea.</p>
 
 

@@ -13,12 +13,23 @@ It aims to be a skeleton of ZIO features such that additional functions can be e
 
 ## Background
 
-$$$
-IO = Reader + Async + Result
+I recently went to a [talk](https://www.slideshare.net/jdegoes/the-death-of-final-tagless)
+on [Scala ZIO](https://github.com/scalaz/scalaz-zio) by [John De Goes](https://twitter.com/jdegoes).
+[Scala ZIO](https://github.com/scalaz/scalaz-zio) is a type-safe, composable library for asynchronous and concurrent programming in Scala.
+
+It takes a different approach to other Scala effects libraries in that it does not require the use of Higher-Kinded Types.
+Instead it uses a reader monad to provide access to IO effects (called ZIO Environment in ZIO).
+
+I came away wanting something similar in F#.
+A useful library that could be used at the IO layer to manage and test IO dependency code.
+I started to play with some reader code but didn't think it would ultimately be possible.
 
 ## IO
 
-[IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs)
+$$$
+IO = Reader + Async + Result
+
+[IO.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs)
 *)
 (*** hide ***)
 namespace Fsion
@@ -580,10 +591,11 @@ module Test =
 
 [ZIO Overview](https://scalaz.github.io/scalaz-zio/overview/)  
 [ZIO Data Types](https://scalaz.github.io/scalaz-zio/datatypes/)  
+[The Death Of Final Tagless](https://www.slideshare.net/jdegoes/the-death-of-final-tagless)  
 
 ## Thanks
 
-[@jdegoes](https://twitter.com/jdegoes) - for ZIO and a great talk that made me want to do this.  
-[@NinoFloris](https://twitter.com/NinoFloris) for async discussions.  
+[@jdegoes](https://twitter.com/jdegoes) for ZIO and a great talk that made me want to do this.  
+[@NinoFloris](https://twitter.com/NinoFloris) for useful async discussions.  
 [@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the Either auto lift idea.  
 *)
