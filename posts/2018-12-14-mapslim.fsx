@@ -2,7 +2,7 @@
 \---
 layout: post
 title: "MapSlim - From DictionarySlim to Fsion"
-tags: [mapslim,setslim,listslim,dictionaryslim,fsiom]
+tags: [mapslim,setslim,listslim,dictionaryslim,fsion]
 description: "MapSlim - From DictionarySlim to Fsion"
 keywords: F#, mapslim, setslim, listslim, dictionyslim, fsion
 \---

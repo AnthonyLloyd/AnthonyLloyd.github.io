@@ -1,0 +1,28 @@
+---
+layout: post
+title: "F# Implementation of Scala ZIO"
+tags: [io,zio,async,reader,result]
+description: "F# Implementation of Scala ZIO"
+keywords: F#, io, zio, async, result
+---
+<p>This is a prototype implementation of <a href="https://github.com/scalaz/scalaz-zio">Scala ZIO</a> in F#.</p>
+<h2>Background</h2>
+<ul>
+<li>IO = Reader + Async + Result</li>
+<li>Reader - effect dependencies are inferred</li>
+<li>Error - error type is inferred and auto lifted into Either if needed</li>
+<li>Async - efficient use of OS thread without blocking</li>
+<li>Result - Simple timeout and retry based on Result.Error</li>
+<li>Interupt - integrated automatic cancelling of operations in cases such as race or upon an error</li>
+<li>Pics:</li>
+<li>IO = Reader + Async  Result</li>
+<li>retry program</li>
+<li>pic of type</li>
+<li>race</li>
+</ul>
+<h2>Conclusion</h2>
+<h2>References</h2>
+<p><a href="https://scalaz.github.io/scalaz-zio/overview/">ZIO Overview</a><br />
+<a href="https://scalaz.github.io/scalaz-zio/datatypes/">ZIO Data Types</a></p>
+
+
