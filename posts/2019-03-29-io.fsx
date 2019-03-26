@@ -65,9 +65,11 @@ module internal Cancel =
         me := true
         List.iter (fun i -> set(r,i)) !kids
 
-type UIO<'r,'a> =
-    private
-    | UIO of ('r * Cancel -> ('a option -> unit) -> unit)
+(***)
+type UIO<'r,'a> = UIO of ('r * Cancel -> ('a option -> unit) -> unit)
+(*** hide ***)
+
+type UIO<'r,'a> with
     member m.Bind(f:'a->UIO<'r,'b>) : UIO<'r,'b> =
         let (UIO run) = m
         UIO (fun env cont ->
@@ -504,13 +506,61 @@ type IOBuilder() =
 module IOAutoOpen =
     let io = IOBuilder()
 
+type ConsoleError = ConsoleError
+
+type ConsoleService =
+    abstract member WriteLine : string -> unit
+    abstract member ReadLine : unit -> Result<string,ConsoleError>
+
+type Console =
+    abstract member Console : ConsoleService
+
+module Console =
+    let writeLine s = UIO.effect (fun (c:#Console) -> c.Console.WriteLine s)
+    let readLine() = IO.effect (fun (c:#Console) -> c.Console.ReadLine())
+
+type LoggingService =
+    abstract member Log : string -> unit
+
+type Logger =
+    abstract member Logging : LoggingService
+
+module Logger =
+    let log s = UIO.effect (fun (l:#Logger) -> l.Logging.Log s)
+
+type PersistError = PersistError
+
+type PersistenceService =
+    abstract member Persist : 'a -> Result<unit,PersistError>
+
+type Persistence =
+    abstract member Persistence : PersistenceService
+
+module Persistence =
+    let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
+module Test =
+(***)
+    let programRetry noRetry =
+        io {
+            do! Logger.log "started"
+            do! Console.writeLine "Please enter your name:"
+            let! name = Console.readLine()
+            do! Logger.log ("got name = " + name)
+            let! thread =
+                Persistence.persist name
+                |> IO.timeout 1000
+                |> IO.retry (Schedule.recurs noRetry)
+                |> IO.fork
+            do! Console.writeLine ("Hi "+name)
+            do! thread
+            do! Logger.log "finished"
+            return 0
+        }
 (**
 
 - Pics:
 - IO = Reader + Async  Result
 - retry program
-- pic of type
-- race
 
 ## Reader
 
