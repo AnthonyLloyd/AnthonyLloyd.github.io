@@ -443,7 +443,7 @@ module IO =
 (**
 ## Reader
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
+<img style="border:1px solid black;padding-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="644px" height="73px" />
 
 ## Async
 
