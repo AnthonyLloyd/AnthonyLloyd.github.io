@@ -20,13 +20,7 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 <h2>IO</h2>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs93', 365)" onmouseover="showTip(event, 'fs93', 365)" class="t">IO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">r</span>,<span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs93', 366)" onmouseover="showTip(event, 'fs93', 366)" class="p">IO</span> <span class="k">of</span> (<span class="o">&#39;</span><span class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs7', 367)" onmouseover="showTip(event, 'fs7', 367)" class="t">Cancel</span> <span class="k">-&gt;</span> (<span class="i">Result</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs17', 368)" onmouseover="showTip(event, 'fs17', 368)" class="t">option</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs18', 369)" onmouseover="showTip(event, 'fs18', 369)" class="t">unit</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs18', 370)" onmouseover="showTip(event, 'fs18', 370)" class="t">unit</span>)
-</code></pre></td>
-</tr>
-</table>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"> <span class="k">type</span> <span onmouseout="hideTip(event, 'fs171', 1092)" onmouseover="showTip(event, 'fs171', 1092)" class="t">IO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">r</span>,<span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs171', 1093)" onmouseover="showTip(event, 'fs171', 1093)" class="p">IO</span> <span class="k">of</span> (<span class="o">&#39;</span><span class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs7', 1094)" onmouseover="showTip(event, 'fs7', 1094)" class="t">Cancel</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs168', 1095)" onmouseover="showTip(event, 'fs168', 1095)" class="t">Result</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs17', 1096)" onmouseover="showTip(event, 'fs17', 1096)" class="t">option</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs18', 1097)" onmouseover="showTip(event, 'fs18', 1097)" class="t">unit</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs18', 1098)" onmouseover="showTip(event, 'fs18', 1098)" class="t">unit</span>)
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs104', 400)" onmouseover="showTip(event, 'fs104', 400)" class="t">IO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">r</span>,<span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs104', 401)" onmouseover="showTip(event, 'fs104', 401)" class="p">IO</span> <span class="k">of</span> (<span class="o">&#39;</span><span class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs10', 402)" onmouseover="showTip(event, 'fs10', 402)" class="t">Cancel</span> <span class="k">-&gt;</span> (<span class="i">Result</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span>,<span class="o">&#39;</span><span class="i">e</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs18', 403)" onmouseover="showTip(event, 'fs18', 403)" class="t">option</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs19', 404)" onmouseover="showTip(event, 'fs19', 404)" class="t">unit</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs19', 405)" onmouseover="showTip(event, 'fs19', 405)" class="t">unit</span>)
 </code></pre></td>
 </tr>
 </table>
@@ -47,37 +41,37 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 
 
 <div class="tip" id="fs1">Multiple items<br />union case Time.Time: Time<br /><br />--------------------<br />type Time = | Time<br /><br />Full name: Fsion.Time</div>
-<div class="tip" id="fs2">Multiple items<br />type StructAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; StructAttribute<br /><br />Full name: Microsoft.FSharp.Core.StructAttribute<br /><br />--------------------<br />new : unit -&gt; StructAttribute</div>
-<div class="tip" id="fs3">val merge : e:&#39;a -&gt; &#39;b<br /><br />Full name: Fsion.Either.merge</div>
-<div class="tip" id="fs4">val e : &#39;a</div>
-<div class="tip" id="fs5">namespace System</div>
-<div class="tip" id="fs6">namespace System.Threading</div>
-<div class="tip" id="fs7">Multiple items<br />union case Cancel.Cancel: bool ref * children: Cancel list ref -&gt; Cancel<br /><br />--------------------<br />type Cancel = | Cancel of bool ref * children: Cancel list ref<br /><br />Full name: Fsion.Cancel</div>
-<div class="tip" id="fs8">type bool = System.Boolean<br /><br />Full name: Microsoft.FSharp.Core.bool</div>
-<div class="tip" id="fs9">Multiple items<br />val ref : value:&#39;T -&gt; &#39;T ref<br /><br />Full name: Microsoft.FSharp.Core.Operators.ref<br /><br />--------------------<br />type &#39;T ref = Ref&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.ref&lt;_&gt;</div>
-<div class="tip" id="fs10">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
-<div class="tip" id="fs11">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.set</div>
-<div class="tip" id="fs12">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
-<div class="tip" id="fs13">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.List.iter</div>
-<div class="tip" id="fs14">Multiple items<br />type NoEqualityAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; NoEqualityAttribute<br /><br />Full name: Microsoft.FSharp.Core.NoEqualityAttribute<br /><br />--------------------<br />new : unit -&gt; NoEqualityAttribute</div>
-<div class="tip" id="fs15">Multiple items<br />type NoComparisonAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; NoComparisonAttribute<br /><br />Full name: Microsoft.FSharp.Core.NoComparisonAttribute<br /><br />--------------------<br />new : unit -&gt; NoComparisonAttribute</div>
-<div class="tip" id="fs16">Multiple items<br />union case UIO.UIO: (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit) -&gt; UIO&lt;&#39;r,&#39;a&gt;<br /><br />--------------------<br />type UIO&lt;&#39;r,&#39;a&gt; =<br />&#160;&#160;private | UIO of (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.UIO&lt;_,_&gt;</div>
-<div class="tip" id="fs17">type &#39;T option = Option&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.option&lt;_&gt;</div>
-<div class="tip" id="fs18">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
-<div class="tip" id="fs19">val m : UIO&lt;&#39;r,&#39;a&gt;</div>
-<div class="tip" id="fs20">member UIO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br /><br />Full name: Fsion.UIO`2.Bind</div>
-<div class="tip" id="fs21">val f : (&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;)</div>
-<div class="tip" id="fs22">val run : (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs23">val env : &#39;r * Cancel</div>
-<div class="tip" id="fs24">val cont : (&#39;b option -&gt; unit)</div>
-<div class="tip" id="fs25">union case Option.None: Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs26">val o : &#39;a option</div>
-<div class="tip" id="fs27">module Option<br /><br />from Microsoft.FSharp.Core</div>
-<div class="tip" id="fs28">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; option:&#39;T option -&gt; &#39;U option<br /><br />Full name: Microsoft.FSharp.Core.Option.map</div>
-<div class="tip" id="fs29">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs30">val run : (&#39;r * Cancel -&gt; (&#39;b option -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs31">val result : a:&#39;a -&gt; UIO&lt;&#39;r,&#39;a&gt;<br /><br />Full name: Fsion.UIO.result</div>
-<div class="tip" id="fs32">val a : &#39;a</div>
+<div class="tip" id="fs2">type Either&lt;&#39;a,&#39;b&gt; =<br />&#160;&#160;| Left of left: &#39;a<br />&#160;&#160;| Right of right: &#39;b<br /><br />Full name: Fsion.Either&lt;_,_&gt;</div>
+<div class="tip" id="fs3">union case Either.Left: left: &#39;a -&gt; Either&lt;&#39;a,&#39;b&gt;</div>
+<div class="tip" id="fs4">union case Either.Right: right: &#39;b -&gt; Either&lt;&#39;a,&#39;b&gt;</div>
+<div class="tip" id="fs5">val merge : e:Either&lt;&#39;a,&#39;a&gt; -&gt; &#39;a<br /><br />Full name: Fsion.Either.merge</div>
+<div class="tip" id="fs6">val e : Either&lt;&#39;a,&#39;a&gt;</div>
+<div class="tip" id="fs7">val a : &#39;a</div>
+<div class="tip" id="fs8">namespace System</div>
+<div class="tip" id="fs9">namespace System.Threading</div>
+<div class="tip" id="fs10">Multiple items<br />union case Cancel.Cancel: bool ref * children: Cancel list ref -&gt; Cancel<br /><br />--------------------<br />type Cancel = private | Cancel of bool ref * children: Cancel list ref<br /><br />Full name: Fsion.Cancel</div>
+<div class="tip" id="fs11">type bool = System.Boolean<br /><br />Full name: Microsoft.FSharp.Core.bool</div>
+<div class="tip" id="fs12">Multiple items<br />val ref : value:&#39;T -&gt; &#39;T ref<br /><br />Full name: Microsoft.FSharp.Core.Operators.ref<br /><br />--------------------<br />type &#39;T ref = Ref&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.ref&lt;_&gt;</div>
+<div class="tip" id="fs13">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
+<div class="tip" id="fs14">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.set</div>
+<div class="tip" id="fs15">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs16">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.List.iter</div>
+<div class="tip" id="fs17">Multiple items<br />union case UIO.UIO: (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit) -&gt; UIO&lt;&#39;r,&#39;a&gt;<br /><br />--------------------<br />type UIO&lt;&#39;r,&#39;a&gt; =<br />&#160;&#160;private | UIO of (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.UIO&lt;_,_&gt;</div>
+<div class="tip" id="fs18">type &#39;T option = Option&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.option&lt;_&gt;</div>
+<div class="tip" id="fs19">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
+<div class="tip" id="fs20">val m : UIO&lt;&#39;r,&#39;a&gt;</div>
+<div class="tip" id="fs21">member UIO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br /><br />Full name: Fsion.UIO`2.Bind</div>
+<div class="tip" id="fs22">val f : (&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;)</div>
+<div class="tip" id="fs23">val run : (&#39;r * Cancel -&gt; (&#39;a option -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs24">val env : &#39;r * Cancel</div>
+<div class="tip" id="fs25">val cont : (&#39;b option -&gt; unit)</div>
+<div class="tip" id="fs26">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs27">val o : &#39;a option</div>
+<div class="tip" id="fs28">module Option<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs29">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; option:&#39;T option -&gt; &#39;U option<br /><br />Full name: Microsoft.FSharp.Core.Option.map</div>
+<div class="tip" id="fs30">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs31">val run : (&#39;r * Cancel -&gt; (&#39;b option -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs32">val result : a:&#39;a -&gt; UIO&lt;&#39;r,&#39;a&gt;<br /><br />Full name: Fsion.UIO.result</div>
 <div class="tip" id="fs33">val cont : (&#39;a option -&gt; unit)</div>
 <div class="tip" id="fs34">val effect : f:(&#39;r -&gt; &#39;a) -&gt; UIO&lt;&#39;r,&#39;a&gt;<br /><br />Full name: Fsion.UIO.effect</div>
 <div class="tip" id="fs35">val f : (&#39;r -&gt; &#39;a)</div>
@@ -124,96 +118,110 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 <div class="tip" id="fs76">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
 <div class="tip" id="fs77">type Clock =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Clock : ClockService<br />&#160;&#160;end<br /><br />Full name: Fsion.Clock</div>
 <div class="tip" id="fs78">Multiple items<br />abstract member Clock.Clock : ClockService<br /><br />Full name: Fsion.Clock.Clock<br /><br />--------------------<br />type Clock =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Clock : ClockService<br />&#160;&#160;end<br /><br />Full name: Fsion.Clock</div>
-<div class="tip" id="fs79">val forever&lt;&#39;r,&#39;a&gt; : obj<br /><br />Full name: Fsion.Schedule.forever</div>
-<div class="tip" id="fs80">val private updated : update:((&#39;a * &#39;s -&gt; &#39;a0) -&gt; &#39;a * &#39;s -&gt; &#39;b) -&gt; &#39;c -&gt; &#39;d<br /><br />Full name: Fsion.Schedule.updated</div>
-<div class="tip" id="fs81">val update : ((&#39;a * &#39;s -&gt; &#39;a0) -&gt; &#39;a * &#39;s -&gt; &#39;b)</div>
-<div class="tip" id="fs82">val private check : test:(&#39;a * &#39;b -&gt; UIO&lt;&#39;r,bool&gt;) -&gt; m:&#39;a0 -&gt; &#39;b1<br /><br />Full name: Fsion.Schedule.check</div>
-<div class="tip" id="fs83">val test : (&#39;a * &#39;b -&gt; UIO&lt;&#39;r,bool&gt;)</div>
-<div class="tip" id="fs84">val m : &#39;a</div>
-<div class="tip" id="fs85">val update : (obj * obj -&gt; obj)</div>
-<div class="tip" id="fs86">val a : obj</div>
-<div class="tip" id="fs87">val s : obj</div>
-<div class="tip" id="fs88">val whileOutput : f:(&#39;b -&gt; bool) -&gt; m:&#39;a -&gt; &#39;b0<br /><br />Full name: Fsion.Schedule.whileOutput</div>
-<div class="tip" id="fs89">val f : (&#39;b -&gt; bool)</div>
-<div class="tip" id="fs90">val recurs : n:&#39;a -&gt; &#39;b (requires comparison)<br /><br />Full name: Fsion.Schedule.recurs</div>
-<div class="tip" id="fs91">val n : &#39;a (requires comparison)</div>
-<div class="tip" id="fs92">val i : &#39;a (requires comparison)</div>
-<div class="tip" id="fs93">Multiple items<br />union case IO.IO: (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit) -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />--------------------<br />type IO&lt;&#39;r,&#39;a,&#39;e&gt; =<br />&#160;&#160;| IO of (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;<br /><br />Full name: Fsion.IO&lt;_,_,_&gt;</div>
-<div class="tip" id="fs94">val m : IO&lt;&#39;r,&#39;a,&#39;e&gt;</div>
-<div class="tip" id="fs95">member IO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
-<div class="tip" id="fs96">val run : (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs97">val cont : (obj -&gt; unit)</div>
-<div class="tip" id="fs98">member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
-<div class="tip" id="fs99">val f : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;)</div>
-<div class="tip" id="fs100">member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
-<div class="tip" id="fs101">val f : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
-<div class="tip" id="fs102">module Either<br /><br />from Fsion</div>
-<div class="tip" id="fs103">member UIO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.UIO`2.Bind</div>
-<div class="tip" id="fs104">val bind : (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs105">val ok : a:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.ok</div>
-<div class="tip" id="fs106">val error : e:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.error</div>
-<div class="tip" id="fs107">val result : a:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.result</div>
-<div class="tip" id="fs108">val effect : f:(&#39;r -&gt; &#39;a) -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.effect</div>
-<div class="tip" id="fs109">val map : f:(&#39;a -&gt; &#39;b) -&gt; IO&lt;&#39;r,&#39;a0,&#39;b1&gt; -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO.map</div>
-<div class="tip" id="fs110">val b : obj option</div>
-<div class="tip" id="fs111">val mapError : f:(&#39;e -&gt; &#39;e2) -&gt; IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; IO&lt;&#39;r,&#39;a0,&#39;e2&gt;<br /><br />Full name: Fsion.IO.mapError</div>
-<div class="tip" id="fs112">val f : (&#39;e -&gt; &#39;e2)</div>
-<div class="tip" id="fs113">val mapResult : f:(&#39;a -&gt; &#39;b) -&gt; IO&lt;&#39;r,&#39;c,&#39;d&gt; -&gt; IO&lt;&#39;r,&#39;b0,&#39;e2&gt;<br /><br />Full name: Fsion.IO.mapResult</div>
-<div class="tip" id="fs114">val b : &#39;b option</div>
-<div class="tip" id="fs115">val private foldM : succ:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; err:(&#39;e -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;a0,&#39;b1&gt; -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;<br /><br />Full name: Fsion.IO.foldM</div>
-<div class="tip" id="fs116">val succ : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
-<div class="tip" id="fs117">val err : (&#39;e -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
-<div class="tip" id="fs118">val private retryOrElseEither : &#39;a -&gt; orElse:(&#39;e * &#39;s -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; io:IO&lt;&#39;r,&#39;a0,&#39;e&gt; -&gt; &#39;b1<br /><br />Full name: Fsion.IO.retryOrElseEither</div>
-<div class="tip" id="fs119">module Schedule<br /><br />from Fsion</div>
-<div class="tip" id="fs120">val orElse : (&#39;e * &#39;s -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
-<div class="tip" id="fs121">val io : IO&lt;&#39;r,&#39;a,&#39;e&gt;</div>
-<div class="tip" id="fs122">val retry : policy:&#39;a -&gt; io:IO&lt;&#39;r,&#39;a0,&#39;e&gt; -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.retry</div>
-<div class="tip" id="fs123">val policy : &#39;a</div>
-<div class="tip" id="fs124">val fork : IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; UIO&lt;&#39;r,IO&lt;&#39;r,&#39;a0,&#39;e&gt;&gt;<br /><br />Full name: Fsion.IO.fork</div>
-<div class="tip" id="fs125">val contFork : (IO&lt;&#39;r,&#39;a,&#39;e&gt; option -&gt; unit)</div>
-<div class="tip" id="fs126">val cont : (obj option -&gt; unit)</div>
-<div class="tip" id="fs127">val para : ios:IO&lt;&#39;r,&#39;a,&#39;e&gt; [] -&gt; IO&lt;&#39;r,&#39;a [],&#39;e&gt;<br /><br />Full name: Fsion.IO.para</div>
-<div class="tip" id="fs128">val ios : IO&lt;&#39;r,&#39;a,&#39;e&gt; []</div>
-<div class="tip" id="fs129">val envChild : &#39;r * Cancel</div>
-<div class="tip" id="fs130">val results : obj []</div>
-<div class="tip" id="fs131">module Array<br /><br />from Microsoft.FSharp.Collections</div>
-<div class="tip" id="fs132">val zeroCreate : count:int -&gt; &#39;T []<br /><br />Full name: Microsoft.FSharp.Collections.Array.zeroCreate</div>
-<div class="tip" id="fs133">property System.Array.Length: int</div>
-<div class="tip" id="fs134">val mutable count : int</div>
-<div class="tip" id="fs135">val iteri : action:(int -&gt; &#39;T -&gt; unit) -&gt; array:&#39;T [] -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.Array.iteri</div>
-<div class="tip" id="fs136">val i : int</div>
-<div class="tip" id="fs137">Interlocked.Decrement(location: byref&lt;int64&gt;) : int64<br />Interlocked.Decrement(location: byref&lt;int&gt;) : int</div>
-<div class="tip" id="fs138">Interlocked.Exchange&lt;&#39;T (requires reference type)&gt;(location1: byref&lt;&#39;T&gt;, value: &#39;T) : &#39;T<br />Interlocked.Exchange(location1: byref&lt;nativeint&gt;, value: nativeint) : nativeint<br />Interlocked.Exchange(location1: byref&lt;obj&gt;, value: obj) : obj<br />Interlocked.Exchange(location1: byref&lt;float&gt;, value: float) : float<br />Interlocked.Exchange(location1: byref&lt;float32&gt;, value: float32) : float32<br />Interlocked.Exchange(location1: byref&lt;int64&gt;, value: int64) : int64<br />Interlocked.Exchange(location1: byref&lt;int&gt;, value: int) : int</div>
-<div class="tip" id="fs139">val race : UIO&lt;&#39;a,&#39;b&gt; -&gt; IO&lt;&#39;c,&#39;d,&#39;e&gt; -&gt; IO&lt;&#39;f,&#39;g,&#39;h&gt;<br /><br />Full name: Fsion.IO.race</div>
-<div class="tip" id="fs140">val run1 : (&#39;a * Cancel -&gt; (&#39;b option -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs141">val run2 : (&#39;c * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
-<div class="tip" id="fs142">val env : &#39;f * Cancel</div>
-<div class="tip" id="fs143">val env1 : &#39;a * Cancel</div>
-<div class="tip" id="fs144">val env2 : &#39;c * Cancel</div>
-<div class="tip" id="fs145">val a : &#39;b option</div>
-<div class="tip" id="fs146">val timeout : milliseconds:int -&gt; io:IO&lt;&#39;r,&#39;a,&#39;e&gt; -&gt; IO&lt;&#39;r,&#39;a,&#39;e option&gt;<br /><br />Full name: Fsion.IO.timeout</div>
-<div class="tip" id="fs147">val toAsync : env:&#39;r -&gt; IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; Async&lt;&#39;c&gt;<br /><br />Full name: Fsion.IO.toAsync</div>
-<div class="tip" id="fs148">val cont : (&#39;c -&gt; unit)</div>
-<div class="tip" id="fs149">Multiple items<br />type IOBuilder =<br />&#160;&#160;new : unit -&gt; IOBuilder<br />&#160;&#160;member Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e1&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;<br />&#160;&#160;member Return : value:&#39;b -&gt; UIO&lt;&#39;c,&#39;b&gt;<br />&#160;&#160;member ReturnFrom : value:&#39;a -&gt; &#39;a<br /><br />Full name: Fsion.IOBuilder<br /><br />--------------------<br />new : unit -&gt; IOBuilder</div>
-<div class="tip" id="fs150">member IOBuilder.Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
-<div class="tip" id="fs151">val io : UIO&lt;&#39;r,&#39;a&gt;</div>
-<div class="tip" id="fs152">member UIO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />member UIO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;</div>
-<div class="tip" id="fs153">val __ : IOBuilder</div>
-<div class="tip" id="fs154">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
-<div class="tip" id="fs155">Multiple items<br />union case IO.IO: (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit) -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />--------------------<br />module IO<br /><br />from Fsion<br /><br />--------------------<br />type IO&lt;&#39;r,&#39;a,&#39;e&gt; =<br />&#160;&#160;| IO of (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;<br /><br />Full name: Fsion.IO&lt;_,_,_&gt;</div>
-<div class="tip" id="fs156">member IO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;</div>
-<div class="tip" id="fs157">member IOBuilder.Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
-<div class="tip" id="fs158">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
-<div class="tip" id="fs159">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e1&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,obj,obj&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
-<div class="tip" id="fs160">val io : IO&lt;&#39;r,&#39;a,&#39;e1&gt;</div>
-<div class="tip" id="fs161">member IOBuilder.Return : value:&#39;b -&gt; UIO&lt;&#39;c,&#39;b&gt;<br /><br />Full name: Fsion.IOBuilder.Return</div>
-<div class="tip" id="fs162">val value : &#39;b</div>
-<div class="tip" id="fs163">member IOBuilder.ReturnFrom : value:&#39;a -&gt; &#39;a<br /><br />Full name: Fsion.IOBuilder.ReturnFrom</div>
-<div class="tip" id="fs164">val value : &#39;a</div>
-<div class="tip" id="fs165">Multiple items<br />type AutoOpenAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; AutoOpenAttribute<br />&#160;&#160;new : path:string -&gt; AutoOpenAttribute<br />&#160;&#160;member Path : string<br /><br />Full name: Microsoft.FSharp.Core.AutoOpenAttribute<br /><br />--------------------<br />new : unit -&gt; AutoOpenAttribute<br />new : path:string -&gt; AutoOpenAttribute</div>
-<div class="tip" id="fs166">val io : IOBuilder<br /><br />Full name: Fsion.IOAutoOpen.io</div>
-<div class="tip" id="fs167">module Display<br /><br />from Fsion</div>
-<div class="tip" id="fs168">type Result&lt;&#39;a,&#39;e&gt; =<br />&#160;&#160;| Ok of resultValue: &#39;a<br />&#160;&#160;| Error of &#39;e<br /><br />Full name: Fsion.Display.Result&lt;_,_&gt;</div>
-<div class="tip" id="fs169">union case Result.Ok: resultValue: &#39;a -&gt; Result&lt;&#39;a,&#39;e&gt;</div>
-<div class="tip" id="fs170">union case Result.Error: &#39;e -&gt; Result&lt;&#39;a,&#39;e&gt;</div>
-<div class="tip" id="fs171">Multiple items<br />union case IO.IO: (&#39;r * Cancel -&gt; (Result&lt;&#39;a,&#39;e&gt; option -&gt; unit) -&gt; unit) -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />--------------------<br />module IO<br /><br />from Fsion<br /><br />--------------------<br />type IO&lt;&#39;r,&#39;a,&#39;e&gt; = | IO of (&#39;r * Cancel -&gt; (Result&lt;&#39;a,&#39;e&gt; option -&gt; unit) -&gt; unit)<br /><br />Full name: Fsion.Display.IO&lt;_,_,_&gt;</div>
+<div class="tip" id="fs79">Multiple items<br />union case Decision.Decision: cont: bool * delay: int * state: &#39;a * (unit -&gt; &#39;b) -&gt; Decision&lt;&#39;a,&#39;b&gt;<br /><br />--------------------<br />type Decision&lt;&#39;a,&#39;b&gt; = | Decision of cont: bool * delay: int * state: &#39;a * (unit -&gt; &#39;b)<br /><br />Full name: Fsion.Decision&lt;_,_&gt;</div>
+<div class="tip" id="fs80">Multiple items<br />union case Schedule.Schedule: initial: UIO&lt;&#39;r,&#39;s&gt; * update: &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt; -&gt; Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b&gt;<br /><br />--------------------<br />type Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b&gt; = private | Schedule of initial: UIO&lt;&#39;r,&#39;s&gt; * update: &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt;<br /><br />Full name: Fsion.Schedule&lt;_,_,_,_&gt;</div>
+<div class="tip" id="fs81">val forever&lt;&#39;r,&#39;a&gt; : Schedule&lt;&#39;r,int,&#39;a,int&gt;<br /><br />Full name: Fsion.Schedule.forever</div>
+<div class="tip" id="fs82">val s : int</div>
+<div class="tip" id="fs83">val private updated : update:((&#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt;) -&gt; &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b2&gt;&gt;) -&gt; Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b&gt; -&gt; Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b2&gt;<br /><br />Full name: Fsion.Schedule.updated</div>
+<div class="tip" id="fs84">val update : ((&#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt;) -&gt; &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b2&gt;&gt;)</div>
+<div class="tip" id="fs85">val i : UIO&lt;&#39;r,&#39;s&gt;</div>
+<div class="tip" id="fs86">val u : (&#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt;)</div>
+<div class="tip" id="fs87">val private check : test:(&#39;a * &#39;b -&gt; UIO&lt;&#39;r,bool&gt;) -&gt; m:Schedule&lt;&#39;r,&#39;a0,&#39;a,&#39;b&gt; -&gt; Schedule&lt;&#39;r,&#39;a0,&#39;a,&#39;b&gt;<br /><br />Full name: Fsion.Schedule.check</div>
+<div class="tip" id="fs88">val test : (&#39;a * &#39;b -&gt; UIO&lt;&#39;r,bool&gt;)</div>
+<div class="tip" id="fs89">val m : Schedule&lt;&#39;r,&#39;a,&#39;a0,&#39;b&gt;</div>
+<div class="tip" id="fs90">val update : (&#39;a * &#39;a0 -&gt; UIO&lt;&#39;r,Decision&lt;&#39;a0,&#39;b&gt;&gt;)</div>
+<div class="tip" id="fs91">val s : &#39;a</div>
+<div class="tip" id="fs92">val cont : bool</div>
+<div class="tip" id="fs93">val dur : int</div>
+<div class="tip" id="fs94">val a1 : &#39;a</div>
+<div class="tip" id="fs95">val fb : (unit -&gt; &#39;b)</div>
+<div class="tip" id="fs96">val d : Decision&lt;&#39;a,&#39;b&gt;</div>
+<div class="tip" id="fs97">val b : bool</div>
+<div class="tip" id="fs98">val whileOutput : f:(&#39;b -&gt; bool) -&gt; m:Schedule&lt;&#39;a,&#39;b0,&#39;c,&#39;b&gt; -&gt; Schedule&lt;&#39;a,&#39;b0,&#39;c,&#39;b&gt;<br /><br />Full name: Fsion.Schedule.whileOutput</div>
+<div class="tip" id="fs99">val f : (&#39;b -&gt; bool)</div>
+<div class="tip" id="fs100">val m : Schedule&lt;&#39;a,&#39;b,&#39;c,&#39;b0&gt;</div>
+<div class="tip" id="fs101">val recurs : n:int -&gt; Schedule&lt;&#39;a,int,&#39;b,int&gt;<br /><br />Full name: Fsion.Schedule.recurs</div>
+<div class="tip" id="fs102">val n : int</div>
+<div class="tip" id="fs103">val i : int</div>
+<div class="tip" id="fs104">Multiple items<br />union case IO.IO: (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit) -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />--------------------<br />type IO&lt;&#39;r,&#39;a,&#39;e&gt; =<br />&#160;&#160;| IO of (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e,&#39;e2&gt;&gt;<br /><br />Full name: Fsion.IO&lt;_,_,_&gt;</div>
+<div class="tip" id="fs105">val m : IO&lt;&#39;r,&#39;a,&#39;e&gt;</div>
+<div class="tip" id="fs106">member IO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
+<div class="tip" id="fs107">val run : (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs108">val cont : (obj -&gt; unit)</div>
+<div class="tip" id="fs109">member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
+<div class="tip" id="fs110">val f : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;)</div>
+<div class="tip" id="fs111">member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e,&#39;e2&gt;&gt;<br /><br />Full name: Fsion.IO`3.Bind</div>
+<div class="tip" id="fs112">val f : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
+<div class="tip" id="fs113">Multiple items<br />module Either<br /><br />from Fsion<br /><br />--------------------<br />type Either&lt;&#39;a,&#39;b&gt; =<br />&#160;&#160;| Left of left: &#39;a<br />&#160;&#160;| Right of right: &#39;b<br /><br />Full name: Fsion.Either&lt;_,_&gt;</div>
+<div class="tip" id="fs114">member UIO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.UIO`2.Bind</div>
+<div class="tip" id="fs115">val bind : (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs116">val ok : a:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.ok</div>
+<div class="tip" id="fs117">val error : e:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.error</div>
+<div class="tip" id="fs118">val e : &#39;a</div>
+<div class="tip" id="fs119">val result : a:&#39;a -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.result</div>
+<div class="tip" id="fs120">val effect : f:(&#39;r -&gt; &#39;a) -&gt; IO&lt;&#39;r,&#39;a0,&#39;e&gt;<br /><br />Full name: Fsion.IO.effect</div>
+<div class="tip" id="fs121">val map : f:(&#39;a -&gt; &#39;b) -&gt; IO&lt;&#39;r,&#39;a0,&#39;b1&gt; -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IO.map</div>
+<div class="tip" id="fs122">val b : obj option</div>
+<div class="tip" id="fs123">val mapError : f:(&#39;e -&gt; &#39;e2) -&gt; IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; IO&lt;&#39;r,&#39;a0,&#39;e2&gt;<br /><br />Full name: Fsion.IO.mapError</div>
+<div class="tip" id="fs124">val f : (&#39;e -&gt; &#39;e2)</div>
+<div class="tip" id="fs125">val mapResult : f:(&#39;a -&gt; &#39;b) -&gt; IO&lt;&#39;r,&#39;c,&#39;d&gt; -&gt; IO&lt;&#39;r,&#39;b0,&#39;e2&gt;<br /><br />Full name: Fsion.IO.mapResult</div>
+<div class="tip" id="fs126">val b : &#39;b option</div>
+<div class="tip" id="fs127">val private foldM : succ:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; err:(&#39;e -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;a0,&#39;b1&gt; -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;<br /><br />Full name: Fsion.IO.foldM</div>
+<div class="tip" id="fs128">val succ : (&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
+<div class="tip" id="fs129">val err : (&#39;e -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
+<div class="tip" id="fs130">val private retryOrElseEither : Schedule&lt;&#39;r,&#39;s,&#39;e,&#39;a&gt; -&gt; orElse:(&#39;e * &#39;s -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; io:IO&lt;&#39;r,&#39;a0,&#39;e&gt; -&gt; IO&lt;&#39;r,Either&lt;&#39;a0,&#39;b&gt;,&#39;e2&gt;<br /><br />Full name: Fsion.IO.retryOrElseEither</div>
+<div class="tip" id="fs131">Multiple items<br />union case Schedule.Schedule: initial: UIO&lt;&#39;r,&#39;s&gt; * update: &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt; -&gt; Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b&gt;<br /><br />--------------------<br />module Schedule<br /><br />from Fsion<br /><br />--------------------<br />type Schedule&lt;&#39;r,&#39;s,&#39;a,&#39;b&gt; = private | Schedule of initial: UIO&lt;&#39;r,&#39;s&gt; * update: &#39;a * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;b&gt;&gt;<br /><br />Full name: Fsion.Schedule&lt;_,_,_,_&gt;</div>
+<div class="tip" id="fs132">val initial : UIO&lt;&#39;r,&#39;s&gt;</div>
+<div class="tip" id="fs133">val update : (&#39;e * &#39;s -&gt; UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;a&gt;&gt;)</div>
+<div class="tip" id="fs134">val orElse : (&#39;e * &#39;s -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;)</div>
+<div class="tip" id="fs135">val io : IO&lt;&#39;r,&#39;a,&#39;e&gt;</div>
+<div class="tip" id="fs136">val loop : (&#39;s -&gt; IO&lt;&#39;r,Either&lt;&#39;a,&#39;b&gt;,&#39;e2&gt;)</div>
+<div class="tip" id="fs137">val state : &#39;s</div>
+<div class="tip" id="fs138">val e : &#39;e</div>
+<div class="tip" id="fs139">val u : UIO&lt;&#39;r,Decision&lt;&#39;s,&#39;a&gt;&gt;</div>
+<div class="tip" id="fs140">member UIO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />member UIO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;</div>
+<div class="tip" id="fs141">val delay : int</div>
+<div class="tip" id="fs142">val retry : policy:Schedule&lt;&#39;r,&#39;s,&#39;e,&#39;sb&gt; -&gt; io:IO&lt;&#39;r,&#39;a,&#39;e&gt; -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />Full name: Fsion.IO.retry</div>
+<div class="tip" id="fs143">val policy : Schedule&lt;&#39;r,&#39;s,&#39;e,&#39;sb&gt;</div>
+<div class="tip" id="fs144">val fork : IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; UIO&lt;&#39;r,IO&lt;&#39;r,&#39;a0,&#39;e&gt;&gt;<br /><br />Full name: Fsion.IO.fork</div>
+<div class="tip" id="fs145">val contFork : (IO&lt;&#39;r,&#39;a,&#39;e&gt; option -&gt; unit)</div>
+<div class="tip" id="fs146">val a : obj</div>
+<div class="tip" id="fs147">val cont : (obj option -&gt; unit)</div>
+<div class="tip" id="fs148">val para : ios:IO&lt;&#39;r,&#39;a,&#39;e&gt; [] -&gt; IO&lt;&#39;r,&#39;a [],&#39;e&gt;<br /><br />Full name: Fsion.IO.para</div>
+<div class="tip" id="fs149">val ios : IO&lt;&#39;r,&#39;a,&#39;e&gt; []</div>
+<div class="tip" id="fs150">val envChild : &#39;r * Cancel</div>
+<div class="tip" id="fs151">val results : obj []</div>
+<div class="tip" id="fs152">module Array<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs153">val zeroCreate : count:int -&gt; &#39;T []<br /><br />Full name: Microsoft.FSharp.Collections.Array.zeroCreate</div>
+<div class="tip" id="fs154">property System.Array.Length: int</div>
+<div class="tip" id="fs155">val mutable count : int</div>
+<div class="tip" id="fs156">val iteri : action:(int -&gt; &#39;T -&gt; unit) -&gt; array:&#39;T [] -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.Array.iteri</div>
+<div class="tip" id="fs157">Interlocked.Decrement(location: byref&lt;int64&gt;) : int64<br />Interlocked.Decrement(location: byref&lt;int&gt;) : int</div>
+<div class="tip" id="fs158">Interlocked.Exchange&lt;&#39;T (requires reference type)&gt;(location1: byref&lt;&#39;T&gt;, value: &#39;T) : &#39;T<br />Interlocked.Exchange(location1: byref&lt;nativeint&gt;, value: nativeint) : nativeint<br />Interlocked.Exchange(location1: byref&lt;obj&gt;, value: obj) : obj<br />Interlocked.Exchange(location1: byref&lt;float&gt;, value: float) : float<br />Interlocked.Exchange(location1: byref&lt;float32&gt;, value: float32) : float32<br />Interlocked.Exchange(location1: byref&lt;int64&gt;, value: int64) : int64<br />Interlocked.Exchange(location1: byref&lt;int&gt;, value: int) : int</div>
+<div class="tip" id="fs159">val race : UIO&lt;&#39;a,&#39;b&gt; -&gt; IO&lt;&#39;c,&#39;d,&#39;e&gt; -&gt; IO&lt;&#39;r,Either&lt;&#39;a1,&#39;a2&gt;,&#39;e1&gt;<br /><br />Full name: Fsion.IO.race</div>
+<div class="tip" id="fs160">val run1 : (&#39;a * Cancel -&gt; (&#39;b option -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs161">val run2 : (&#39;c * Cancel -&gt; (obj -&gt; unit) -&gt; unit)</div>
+<div class="tip" id="fs162">val env1 : &#39;a * Cancel</div>
+<div class="tip" id="fs163">val env2 : &#39;c * Cancel</div>
+<div class="tip" id="fs164">val a : &#39;b option</div>
+<div class="tip" id="fs165">val timeout : milliseconds:int -&gt; io:IO&lt;&#39;r,&#39;a,&#39;e&gt; -&gt; IO&lt;&#39;r,&#39;a,&#39;e option&gt;<br /><br />Full name: Fsion.IO.timeout</div>
+<div class="tip" id="fs166">val toAsync : env:&#39;r -&gt; IO&lt;&#39;r,&#39;a,&#39;b&gt; -&gt; Async&lt;&#39;c&gt;<br /><br />Full name: Fsion.IO.toAsync</div>
+<div class="tip" id="fs167">val cont : (&#39;c -&gt; unit)</div>
+<div class="tip" id="fs168">Multiple items<br />type IOBuilder =<br />&#160;&#160;new : unit -&gt; IOBuilder<br />&#160;&#160;member Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : io:IO&lt;&#39;r,&#39;a,&#39;e1&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e1,&#39;e2&gt;&gt;<br />&#160;&#160;member Return : value:&#39;b -&gt; UIO&lt;&#39;c,&#39;b&gt;<br />&#160;&#160;member ReturnFrom : value:&#39;a -&gt; &#39;a<br /><br />Full name: Fsion.IOBuilder<br /><br />--------------------<br />new : unit -&gt; IOBuilder</div>
+<div class="tip" id="fs169">member IOBuilder.Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; UIO&lt;&#39;r,&#39;b&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
+<div class="tip" id="fs170">val io : UIO&lt;&#39;r,&#39;a&gt;</div>
+<div class="tip" id="fs171">val __ : IOBuilder</div>
+<div class="tip" id="fs172">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
+<div class="tip" id="fs173">Multiple items<br />union case IO.IO: (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit) -&gt; IO&lt;&#39;r,&#39;a,&#39;e&gt;<br /><br />--------------------<br />module IO<br /><br />from Fsion<br /><br />--------------------<br />type IO&lt;&#39;r,&#39;a,&#39;e&gt; =<br />&#160;&#160;| IO of (&#39;r * Cancel -&gt; (obj -&gt; unit) -&gt; unit)<br />&#160;&#160;member Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />&#160;&#160;member Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e,&#39;e2&gt;&gt;<br /><br />Full name: Fsion.IO&lt;_,_,_&gt;</div>
+<div class="tip" id="fs174">member IO.Bind : f:(&#39;a -&gt; UIO&lt;&#39;r,&#39;b&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br />member IO.Bind : f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e,&#39;e2&gt;&gt;</div>
+<div class="tip" id="fs175">member IOBuilder.Bind : io:UIO&lt;&#39;r,&#39;a&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
+<div class="tip" id="fs176">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;) -&gt; IO&lt;&#39;r,&#39;b,&#39;e&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
+<div class="tip" id="fs177">member IOBuilder.Bind : io:IO&lt;&#39;r,&#39;a,&#39;e1&gt; * f:(&#39;a -&gt; IO&lt;&#39;r,&#39;b,&#39;e2&gt;) -&gt; IO&lt;&#39;r,&#39;b,Either&lt;&#39;e1,&#39;e2&gt;&gt;<br /><br />Full name: Fsion.IOBuilder.Bind</div>
+<div class="tip" id="fs178">val io : IO&lt;&#39;r,&#39;a,&#39;e1&gt;</div>
+<div class="tip" id="fs179">member IOBuilder.Return : value:&#39;b -&gt; UIO&lt;&#39;c,&#39;b&gt;<br /><br />Full name: Fsion.IOBuilder.Return</div>
+<div class="tip" id="fs180">val value : &#39;b</div>
+<div class="tip" id="fs181">member IOBuilder.ReturnFrom : value:&#39;a -&gt; &#39;a<br /><br />Full name: Fsion.IOBuilder.ReturnFrom</div>
+<div class="tip" id="fs182">val value : &#39;a</div>
+<div class="tip" id="fs183">Multiple items<br />type AutoOpenAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; AutoOpenAttribute<br />&#160;&#160;new : path:string -&gt; AutoOpenAttribute<br />&#160;&#160;member Path : string<br /><br />Full name: Microsoft.FSharp.Core.AutoOpenAttribute<br /><br />--------------------<br />new : unit -&gt; AutoOpenAttribute<br />new : path:string -&gt; AutoOpenAttribute</div>
+<div class="tip" id="fs184">module IOAutoOpen<br /><br />from Fsion</div>
+<div class="tip" id="fs185">val io : IOBuilder<br /><br />Full name: Fsion.IOAutoOpen.io</div>

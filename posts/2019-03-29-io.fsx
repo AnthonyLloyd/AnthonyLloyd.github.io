@@ -23,7 +23,6 @@ It aims to be enough of a skeleton of ZIO features that additional functions can
 ## IO
 
 *)
-
 (*** hide ***)
 namespace Fsion
 
@@ -31,7 +30,6 @@ type Time = Time
 module Time =
     let now() = Time
 
-[<Struct>]
 type Either<'a,'b> =
     | Left of left:'a
     | Right of right:'b
@@ -45,9 +43,10 @@ module Either =
 open System.Threading
 
 type Cancel =
+    private
     | Cancel of bool ref * children: Cancel list ref
 
-module Cancel =
+module internal Cancel =
     let inline isSet (_:'r,Cancel(i,_)) = !i
     let inline create() = Cancel(ref false, ref [])
     let add (r:'r,Cancel(_,c)) =
@@ -58,7 +57,6 @@ module Cancel =
         me := true
         List.iter (fun i -> set(r,i)) !kids
 
-[<NoEquality;NoComparison>]
 type UIO<'r,'a> =
     private
     | UIO of ('r * Cancel -> ('a option -> unit) -> unit)
@@ -180,11 +178,9 @@ module Clock =
             member __.Sleep milliseconds = UIO.delay milliseconds
         }
 
-[<Struct;NoEquality;NoComparison>]
 type Decision<'a,'b> =
     | Decision of cont:bool * delay:int * state:'a * (unit -> 'b)
 
-[<Struct;NoEquality;NoComparison>]
 type Schedule<'r,'s,'a,'b> =
     private
     | Schedule of initial:UIO<'r,'s> * update:('a * 's -> UIO<'r,Decision<'s,'b>>)
@@ -498,12 +494,6 @@ type IOBuilder() =
 module IOAutoOpen =
     let io = IOBuilder()
 
-module Display =
-(***)
-(*** hide ***)
- type Result<'a,'e> = Ok of resultValue:'a | Error of 'e
-(***)
- type IO<'r,'a,'e> = IO of ('r * Cancel -> (Result<'a,'e> option -> unit) -> unit)
 (**
 
 - Pics:
