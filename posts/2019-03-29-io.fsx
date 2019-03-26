@@ -5,6 +5,7 @@ title: "F# Implementation of Scala ZIO"
 tags: [io,zio,async,reader,result]
 description: "F# Implementation of Scala ZIO"
 keywords: F#, io, zio, async, result
+exclude: true
 \---
 *)
 
