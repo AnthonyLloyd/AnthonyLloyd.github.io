@@ -21,7 +21,7 @@ It takes a different approach to other Scala effects libraries in that it does n
 Instead it uses a reader monad to provide access to IO effects (called ZIO Environment).
 
 I came away wanting something similar in F#.
-A useful library that could be used at the outer IO layer to manage and test IO dependency code.
+A useful library that could be used in the outer IO layer to simplify and test IO dependency code.
 I started to play with some reader code but didn't think it would ultimately work.
 
 ## IO
