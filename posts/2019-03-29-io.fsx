@@ -30,7 +30,7 @@ IO = Reader + Async + Result
 
 The F# equivalent of ZIO type aliases are `UIO<'r,'a>` which represents effects without errors,
 and `IO<'r,'a,'e>` which represents effects with a possible error.
-IO combines reader, async and result into one unified monad.
+[IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) combines reader, async and result into one unified computation expression.
 *)
 (*** hide ***)
 type Result<'a,'e> =
@@ -450,9 +450,9 @@ module IO =
 (**
 ## Reader
 
-The reader part models all the environment dependencies required in the computation expression.
+The reader part represents all the environment dependencies required in the computation expression.
 It is fully type-safe with types inferred including any library requirements such as Clock for the timeout.
-The computation expression can easily be tested by running with a test environment.
+The computation expression can easily be [tested](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/IOTests.fs) by running with a test environment.
 
 <img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
 
@@ -553,23 +553,25 @@ module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
 (**
 At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
-This usually means that Async in F# or async/await in C# need to be used.
-They both join threads without having to block threads.
+This usually means Async in F# or async/await in C# need to be used.
+They both join threads without a thread pool thread having to wait.
 
-With IO async is implemented directly using the thread pool.
+With [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) async is implemented directly using the thread pool.
 There are two main reasons for this.
-In IO exceptions are not part of control flow. Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
-Cancellation is fully integrated into IO meaning in race, parallel and upon an error, computations are automatically cancelled saving resources.
+In [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) exceptions are not part of control flow.
+Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
+Cancellation is fully integrated into [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) meaning in race,
+parallel and upon an error, computations are automatically cancelled saving resources.
 
-These with the final part of IO dramatically simplify and optimise IO code.
+These with the final part dramatically simplify and optimise IO code.
 
 ## Result
 
-The result part of IO represents possible errors in an integrated and type-safe way.
+The result part of [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) represents possible errors in an integrated and type-safe way.
 The error type is inferred, and different error types are auto lifted into `Choice<'a,'b>` when combined.
-IO computations can be timed out and retried based on result using simple functions.
+[IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) computations can be timed out and retried based on result using simple functions.
 Schedule is a powerful construct that can be combined several ways.
-I've replicated the structure from ZIO but not fully explorer its uses.
+I've replicated the structure from ZIO but not fully explored its uses.
 
 *)
 let programRetry noRetry =

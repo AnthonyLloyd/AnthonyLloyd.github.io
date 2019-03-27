@@ -21,7 +21,7 @@ I started to play with some reader code but didn't think it would ultimately wor
 <p><span class="math">\[IO = Reader + Async + Result\]</span></p>
 <p>The F# equivalent of ZIO type aliases are <code>UIO&lt;'r,'a&gt;</code> which represents effects without errors,
 and <code>IO&lt;'r,'a,'e&gt;</code> which represents effects with a possible error.
-IO combines reader, async and result into one unified monad.</p>
+<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> combines reader, async and result into one unified computation expression.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs25', 49)" onmouseover="showTip(event, 'fs25', 49)" class="t">UIO</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">r</span>,<span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs25', 50)" onmouseover="showTip(event, 'fs25', 50)" class="p">UIO</span> <span class="k">of</span> (<span class="o">&#39;</span><span class="i">r</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs18', 51)" onmouseover="showTip(event, 'fs18', 51)" class="t">Cancel</span> <span class="k">-&gt;</span> (<span class="o">&#39;</span><span class="i">a</span> <span onmouseout="hideTip(event, 'fs26', 52)" onmouseover="showTip(event, 'fs26', 52)" class="t">option</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 53)" onmouseover="showTip(event, 'fs27', 53)" class="t">unit</span>) <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 54)" onmouseover="showTip(event, 'fs27', 54)" class="t">unit</span>)
@@ -35,9 +35,9 @@ IO combines reader, async and result into one unified monad.</p>
 </tr>
 </table>
 <h2>Reader</h2>
-<p>The reader part models all the environment dependencies required in the computation expression.
+<p>The reader part represents all the environment dependencies required in the computation expression.
 It is fully type-safe with types inferred including any library requirements such as Clock for the timeout.
-The computation expression can easily be tested by running with a test environment.</p>
+The computation expression can easily be <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/IOTests.fs">tested</a> by running with a test environment.</p>
 <img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
 <h2>Async</h2>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
@@ -95,19 +95,21 @@ The computation expression can easily be tested by running with a test environme
 </tr>
 </table>
 <p>At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
-This usually means that Async in F# or async/await in C# need to be used.
-They both join threads without having to block threads.</p>
-<p>With IO async is implemented directly using the thread pool.
+This usually means Async in F# or async/await in C# need to be used.
+They both join threads without a thread pool thread having to wait.</p>
+<p>With <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> async is implemented directly using the thread pool.
 There are two main reasons for this.
-In IO exceptions are not part of control flow. Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
-Cancellation is fully integrated into IO meaning in race, parallel and upon an error, computations are automatically cancelled saving resources.</p>
-<p>These with the final part of IO dramatically simplify and optimise IO code.</p>
+In <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> exceptions are not part of control flow.
+Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
+Cancellation is fully integrated into <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> meaning in race,
+parallel and upon an error, computations are automatically cancelled saving resources.</p>
+<p>These with the final part dramatically simplify and optimise IO code.</p>
 <h2>Result</h2>
-<p>The result part of IO represents possible errors in an integrated and type-safe way.
+<p>The result part of <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> represents possible errors in an integrated and type-safe way.
 The error type is inferred, and different error types are auto lifted into <code>Choice&lt;'a,'b&gt;</code> when combined.
-IO computations can be timed out and retried based on result using simple functions.
+<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs">IO</a> computations can be timed out and retried based on result using simple functions.
 Schedule is a powerful construct that can be combined several ways.
-I've replicated the structure from ZIO but not fully explorer its uses.</p>
+I've replicated the structure from ZIO but not fully explored its uses.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
