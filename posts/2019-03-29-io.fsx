@@ -29,16 +29,6 @@ $$$
 IO = Reader + Async + Result
 *)
 (*** hide ***)
-module Fsion
-
-type Result<'a,'e> =
-    | Ok of 'a
-    | Error of 'e
-
-module Result =
-    let map (f:'a->'b) (_:Result<'a,'e>) : Result<'b,'e> = failwith "hi"
-    let mapError (f:'e->'f) (_:Result<'a,'e>) : Result<'a,'f> = failwith "hi"
-
 type Time = Time
 module Time =
     let now() = Time
