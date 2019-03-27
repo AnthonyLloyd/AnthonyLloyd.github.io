@@ -29,7 +29,7 @@ $$$
 IO = Reader + Async + Result
 *)
 (*** hide ***)
-namespace Fsion
+module Fsion
 
 type Result<'a,'e> =
     | Ok of 'a
@@ -456,7 +456,7 @@ The reader part models all the environment dependencies required in the computat
 It is fully type-safe with types inferred including any library requirements such as Clock for the timeout.
 The computation expression can easily be tested by running with a test environment.
 
-<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="644px" height="73px" />
+<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
 
 ## Async
 
@@ -553,7 +553,6 @@ type Persistence =
 
 module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
-module Test =
 (**
 - efficient use of OS thread without blocking
 - integrated automatic cancelling of operations in cases such as race or upon an error
@@ -568,22 +567,22 @@ The error type is inferred and different error types are auto lifted into `Choic
 - schedule powerful
 
 *)
-    let programRetry noRetry =
-        io {
-            do! Logger.log "started"
-            do! Console.writeLine "Please enter your name:"
-            let! name = Console.readLine()
-            do! Logger.log ("got name = " + name)
-            let! thread =
-                Persistence.persist name
-                |> IO.timeout 1000
-                |> IO.retry (Schedule.recurs noRetry)
-                |> IO.fork
-            do! Console.writeLine ("Hi "+name)
-            do! thread
-            do! Logger.log "finished"
-            return 0
-        }
+let programRetry noRetry =
+    io {
+        do! Logger.log "started"
+        do! Console.writeLine "Please enter your name:"
+        let! name = Console.readLine()
+        do! Logger.log ("got name = " + name)
+        let! thread =
+            Persistence.persist name
+            |> IO.timeout 1000
+            |> IO.retry (Schedule.recurs noRetry)
+            |> IO.fork
+        do! Console.writeLine ("Hi "+name)
+        do! thread
+        do! Logger.log "finished"
+        return 0
+    }
 (**
 
 ## Conclusion
