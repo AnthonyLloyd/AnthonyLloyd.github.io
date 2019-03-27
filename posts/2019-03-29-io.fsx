@@ -22,14 +22,11 @@ Instead it uses a reader monad to provide access to IO effects (called ZIO Envir
 
 I came away wanting something similar in F#.
 A useful library that could be used in the outer IO layer to simplify and test IO dependency code.
-I started to play with some reader code but didn't think it would ultimately work.
+I started to play with some reader code but didn't think it would ultimately work out.
 
 ## IO
-
 $$$
 IO = Reader + Async + Result
-
-[IO.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs)
 *)
 (*** hide ***)
 namespace Fsion
@@ -453,41 +450,42 @@ module IO =
                 ) ios
         )
 (**
+The F# equivalent of ZIO types aliases are `UIO<'r,'a>` which models effects without errors
+and `IO<'r,'a,'e>` which models effects with a possible error.
+IO combines reader, async and result into one unified monad.
+
 ## Reader
 
-<img style="padding-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="665px" height="75px" />
+This part models all the environment dependencies required in the computation expression.
+It is fully type-safe and inferred including any library requirements such as Clock for the timeout.
+The computation expression can easily be tested by supplying a test environment when run.
 
-- effect dependencies are inferred
+<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="665px" height="75px" />
 
 ## Async
-
-- efficient use of OS thread without blocking
-- integrated automatic cancelling of operations in cases such as race or upon an error
-- based on thread pool - no exceptions
 
 *)
     let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
         IO (fun env cont ->
             if Cancel.isSet env then cont None
             else
-                let env1 = Cancel.add env
-                let env2 = Cancel.add env
+                let envChild = Cancel.add env
                 let mutable o = null
                 ThreadPool.QueueUserWorkItem (fun _ ->
-                    run1 env1 (fun a ->
+                    run1 envChild (fun a ->
                         let o = Interlocked.CompareExchange(&o, a, null)
                         if isNull o then
-                            Cancel.set env2
-                            if Cancel.isSet env1 then cont None
+                            Cancel.set envChild
+                            if Cancel.isSet env then cont None
                             else Option.map (Right >> Ok) a |> cont
                     )
                 ) |> ignore
                 ThreadPool.QueueUserWorkItem (fun _ ->
-                    run2 env2 (fun a ->
+                    run2 envChild (fun a ->
                         let o = Interlocked.CompareExchange(&o, a, null)
                         if isNull o then
-                            Cancel.set env1
-                            if Cancel.isSet env2 then cont None
+                            Cancel.set envChild
+                            if Cancel.isSet env then cont None
                             else Option.map (Result.map Left) a |> cont
                     )
                 ) |> ignore
@@ -561,10 +559,16 @@ module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
 module Test =
 (**
+- efficient use of OS thread without blocking
+- integrated automatic cancelling of operations in cases such as race or upon an error
+- complicated in Async or Task
+- based on thread pool - no exceptions
+
 ## Result
 
 - error type is inferred and auto lifted into Either if needed
 - Simple timeout and retry based on Result.Error
+- schedule powerful
 
 *)
     let programRetry noRetry =
@@ -590,6 +594,8 @@ module Test =
 
 ## References
 
+[IO.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs)  
+[IOTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/IOTests.fs)  
 [ZIO Overview](https://scalaz.github.io/scalaz-zio/overview/)  
 [ZIO Data Types](https://scalaz.github.io/scalaz-zio/datatypes/)  
 [The Death Of Final Tagless](https://www.slideshare.net/jdegoes/the-death-of-final-tagless)  
