@@ -336,7 +336,7 @@ This has the benefit of making the UI more testable and at the same time making 
 
 These benefits, combined with the type safety and composability outlined in the previous [post]({% post_url 2016-06-20-fsharp-elm-part1 %}), make this pattern compelling.  
 
-UPDATED (Aw shucks):  
+UPDATED:  
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png" title="Aw shucks"/>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png"/>
 *)
