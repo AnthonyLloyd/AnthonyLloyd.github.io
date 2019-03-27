@@ -457,7 +457,9 @@ The computation expression can easily be [tested](https://github.com/AnthonyLloy
 <img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
 
 ## Async
-
+At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
+This usually means Async in F# or async/await in C# need to be used.
+They both join threads without a thread pool thread having to wait.
 *)
     let race (UIO run1) (IO run2) : IO<'r,Choice<'a1,'a2>,'e1> =
         IO (fun env cont ->
@@ -552,10 +554,6 @@ type Persistence =
 module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
 (**
-At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
-This usually means Async in F# or async/await in C# need to be used.
-They both join threads without a thread pool thread having to wait.
-
 With [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) async is implemented directly using the thread pool.
 There are two main reasons for this.
 In [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) exceptions are not part of control flow.
