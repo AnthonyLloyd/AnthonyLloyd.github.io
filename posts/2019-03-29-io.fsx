@@ -27,8 +27,20 @@ I started to play with some reader code but didn't think it would ultimately wor
 ## IO
 $$$
 IO = Reader + Async + Result
+
+The F# equivalent of ZIO type aliases are `UIO<'r,'a>` which represents effects without errors,
+and `IO<'r,'a,'e>` which represents effects with a possible error.
+IO combines reader, async and result into one unified monad.
 *)
 (*** hide ***)
+type Result<'a,'e> =
+    | Ok of 'a
+    | Error of 'e
+
+module Result =
+    let map (f:'a->'b) (_:Result<'a,'e>) : Result<'b,'e> = failwith "hi"
+    let mapError (f:'e->'f) (_:Result<'a,'e>) : Result<'a,'f> = failwith "hi"
+
 type Time = Time
 module Time =
     let now() = Time
@@ -436,10 +448,6 @@ module IO =
                 ) ios
         )
 (**
-The F# equivalent of ZIO types aliases are `UIO<'r,'a>` which models effects without errors
-and `IO<'r,'a,'e>` which models effects with a possible error.
-IO combines reader, async and result into one unified monad.
-
 ## Reader
 
 The reader part models all the environment dependencies required in the computation expression.
@@ -544,17 +552,24 @@ type Persistence =
 module Persistence =
     let persist a = IO.effect (fun (p:#Persistence) -> p.Persistence.Persist a)
 (**
-- efficient use of OS thread without blocking
-- integrated automatic cancelling of operations in cases such as race or upon an error
-- complicated in Async or Task
-- based on thread pool - no exceptions
+At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
+This usually means that Async in F# or async/await in C# need to be used.
+They both join threads without having to block threads.
+
+With IO async is implemented directly using the thread pool.
+There are two main reasons for this.
+In IO exceptions are not part of control flow. Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
+Cancellation is fully integrated into IO meaning in race, parallel and upon an error, computations are automatically cancelled saving resources.
+
+These with the final part of IO dramatically simplify and optimise IO code.
 
 ## Result
 
-The result part models possible error in an intergrated and type-safe way.
-The error type is inferred and different error types are auto lifted into `Choice<'a,'b>` when combined.
-- Simple timeout and retry based on Result.Error
-- schedule powerful
+The result part of IO represents possible errors in an integrated and type-safe way.
+The error type is inferred, and different error types are auto lifted into `Choice<'a,'b>` when combined.
+IO computations can be timed out and retried based on result using simple functions.
+Schedule is a powerful construct that can be combined several ways.
+I've replicated the structure from ZIO but not fully explorer its uses.
 
 *)
 let programRetry noRetry =
@@ -577,6 +592,13 @@ let programRetry noRetry =
 
 ## Conclusion
 
+When type inference worked for the dependencies I was surprised.
+When it was also possible to make it work for the errors I was amazed.
+
+Computation expressions do not compose well.
+At the IO layer a solution is needed for dependencies in a testable way.
+The IO layer also needs to efficiently use the thread pool.
+Making errors type-safe and integrated in the IO logic completes this compelling trinity.
 
 ## References
 
