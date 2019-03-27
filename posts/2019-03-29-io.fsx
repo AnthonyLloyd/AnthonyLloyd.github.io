@@ -466,11 +466,10 @@ They both join threads without a thread pool thread having to wait.
             if Cancel.isSet env then cont None
             else
                 let envChild = Cancel.add env
-                let mutable o = null
+                let mutable o = 0
                 ThreadPool.QueueUserWorkItem (fun _ ->
                     run1 envChild (fun a ->
-                        let o = Interlocked.CompareExchange(&o, a, null)
-                        if isNull o then
+                        if Interlocked.Exchange(&o,1) = 0 then
                             Cancel.set envChild
                             if Cancel.isSet env then cont None
                             else Option.map (Choice2Of2 >> Ok) a |> cont
@@ -478,8 +477,7 @@ They both join threads without a thread pool thread having to wait.
                 ) |> ignore
                 ThreadPool.QueueUserWorkItem (fun _ ->
                     run2 envChild (fun a ->
-                        let o = Interlocked.CompareExchange(&o, a, null)
-                        if isNull o then
+                        if Interlocked.Exchange(&o,1) = 0 then
                             Cancel.set envChild
                             if Cancel.isSet env then cont None
                             else Option.map (Result.map Choice1Of2) a |> cont
