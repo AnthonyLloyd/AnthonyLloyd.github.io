@@ -43,15 +43,11 @@ type Time = Time
 module Time =
     let now() = Time
 
-type Either<'a,'b> =
-    | Left of left:'a
-    | Right of right:'b
-
-module Either =
-    let merge (e:Either<'a,'a>) =
-        match e with
-        | Left a -> a
-        | Right a -> a
+module Choice =
+    let merge (c:Choice<'a,'a>) =
+        match c with
+        | Choice1Of2 a -> a
+        | Choice2Of2 a -> a
 
 open System.Threading
 
@@ -257,7 +253,7 @@ type IO<'r,'a,'e> with
                         | Some(Error e) -> cont (Some(Error e))
                 )
         )
-    member m.Bind<'b,'e2>(f:'a->IO<'r,'b,'e2>) : IO<'r,'b,Either<'e,'e2>> =
+    member m.Bind<'b,'e2>(f:'a->IO<'r,'b,'e2>) : IO<'r,'b,Choice<'e,'e2>> =
         let (IO run) = m
         IO (fun env cont ->
             if Cancel.isSet env then cont None
@@ -271,11 +267,11 @@ type IO<'r,'a,'e> with
                             let (IO bind) = f a
                             if Cancel.isSet env then cont None
                             else bind env (fun o ->
-                                let b = Option.map (Result.mapError Right) o
+                                let b = Option.map (Result.mapError Choice2Of2) o
                                 if Cancel.isSet env then cont None
                                 else cont b
                             )
-                        | Some(Error e) -> cont (Some(Error (Left e)))
+                        | Some(Error e) -> cont (Some(Error (Choice1Of2 e)))
                 )
         )
 
@@ -374,12 +370,12 @@ module IO =
                             else run env cont
                 )
         )
-    let private retryOrElseEither (Schedule(initial, update))
+    let private retryOrElse (Schedule(initial, update))
                                   (orElse:'e *'s->IO<'r,'b,'e2>)
-                                  (io:IO<'r,'a,'e>) : IO<'r,Either<'a,'b>,'e2> =
-        let rec loop (state:'s) : IO<'r,Either<'a,'b>,'e2> =
+                                  (io:IO<'r,'a,'e>) : IO<'r,Choice<'a,'b>,'e2> =
+        let rec loop (state:'s) : IO<'r,Choice<'a,'b>,'e2> =
             foldM
-                (Left >> Ok >> result)
+                (Choice1Of2 >> Ok >> result)
                 (fun e ->
                     let u = update(e,state)
                     u.Bind (fun (Decision(cont,delay,state,_)) ->
@@ -388,14 +384,14 @@ module IO =
                             else Clock.sleep(delay).Bind(fun _ -> loop state)
                         else
                             orElse(e,state)
-                            |> map Right
+                            |> map Choice2Of2
                     )
                 )
                 io
         initial.Bind loop
     let retry (policy:Schedule<'r,'s,'e,'sb>) (io:IO<'r,'a,'e>) : IO<'r,'a,'e> =
-        retryOrElseEither policy (fst >> Error >> result) io
-        |> map Either.merge
+        retryOrElse policy (fst >> Error >> result) io
+        |> map Choice.merge
     let fork (IO run) : UIO<'r,IO<'r,'a,'e>> =
         UIO (fun env contFork ->
             if Cancel.isSet env then contFork None
@@ -465,7 +461,7 @@ The computation expression can easily be tested by running with a test environme
 ## Async
 
 *)
-    let race (UIO run1) (IO run2) : IO<'r,Either<'a1,'a2>,'e1> =
+    let race (UIO run1) (IO run2) : IO<'r,Choice<'a1,'a2>,'e1> =
         IO (fun env cont ->
             if Cancel.isSet env then cont None
             else
@@ -477,7 +473,7 @@ The computation expression can easily be tested by running with a test environme
                         if isNull o then
                             Cancel.set envChild
                             if Cancel.isSet env then cont None
-                            else Option.map (Right >> Ok) a |> cont
+                            else Option.map (Choice2Of2 >> Ok) a |> cont
                     )
                 ) |> ignore
                 ThreadPool.QueueUserWorkItem (fun _ ->
@@ -486,7 +482,7 @@ The computation expression can easily be tested by running with a test environme
                         if isNull o then
                             Cancel.set envChild
                             if Cancel.isSet env then cont None
-                            else Option.map (Result.map Left) a |> cont
+                            else Option.map (Result.map Choice1Of2) a |> cont
                     )
                 ) |> ignore
         )
@@ -499,8 +495,8 @@ The computation expression can easily be tested by running with a test environme
                 else
                     match o with
                     | None -> None
-                    | Some(Ok (Left a)) -> Ok a |> Some
-                    | Some(Ok (Right ())) -> Error None |> Some
+                    | Some(Ok (Choice1Of2 a)) -> Ok a |> Some
+                    | Some(Ok (Choice2Of2 ())) -> Error None |> Some
                     | Some(Error e) -> Error (Some e) |> Some
                     |> cont
             )
@@ -567,7 +563,7 @@ module Test =
 ## Result
 
 The result part models possible error in an intergrated and type-safe way.
-The error type is inferred and different error types are auto lifted into `Either<'a,'b>` when combined.
+The error type is inferred and different error types are auto lifted into `Choice<'a,'b>` when combined.
 - Simple timeout and retry based on Result.Error
 - schedule powerful
 
@@ -605,5 +601,5 @@ The error type is inferred and different error types are auto lifted into `Eithe
 
 [@jdegoes](https://twitter.com/jdegoes) for ZIO and a great talk that made me want to do this.  
 [@NinoFloris](https://twitter.com/NinoFloris) for useful async discussions.  
-[@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the Either auto lift idea.  
+[@keithtpinson](https://twitter.com/keithtpinson/status/1104071022544932866) for the error auto lift idea.  
 *)
