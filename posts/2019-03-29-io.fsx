@@ -457,7 +457,7 @@ The computation expression can easily be [tested](https://github.com/AnthonyLloy
 <img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" />
 
 ## Async
-At the IO layer thread pool threads need to be used in the most efficient way possible without any blocking.
+At the IO layer thread pool threads need to be used in the most efficient way without any blocking.
 This usually means Async in F# or async/await in C# need to be used.
 They both join threads without a thread pool thread having to wait.
 *)
