@@ -35,10 +35,10 @@ I started to play with some reader code but didn't think it would ultimately wor
 and <code>IO&lt;'r,'a,'e&gt;</code> which models effects with a possible error.
 IO combines reader, async and result into one unified monad.</p>
 <h2>Reader</h2>
-<p>This part models all the environment dependencies required in the computation expression.
-It is fully type-safe and inferred including any library requirements such as Clock for the timeout.
-The computation expression can easily be tested by supplying a test environment when run.</p>
-<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="665px" height="75px" />
+<p>The reader part models all the environment dependencies required in the computation expression.
+It is fully type-safe with types inferred including any library requirements such as Clock for the timeout.
+The computation expression can easily be tested by running with a test environment.</p>
+<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="644px" height="73px" />
 <h2>Async</h2>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -101,11 +101,10 @@ The computation expression can easily be tested by supplying a test environment 
 <li>based on thread pool - no exceptions</li>
 </ul>
 <h2>Result</h2>
-<ul>
-<li>error type is inferred and auto lifted into Either if needed</li>
-<li>Simple timeout and retry based on Result.Error</li>
-<li>schedule powerful</li>
-</ul>
+<p>The result part models possible error in an intergrated and type-safe way.
+The error type is inferred and different error types are auto lifted into <code>Either&lt;'a,'b&gt;</code> when combined.
+- Simple timeout and retry based on Result.Error
+- schedule powerful</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>

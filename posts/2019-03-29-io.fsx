@@ -456,11 +456,11 @@ IO combines reader, async and result into one unified monad.
 
 ## Reader
 
-This part models all the environment dependencies required in the computation expression.
-It is fully type-safe and inferred including any library requirements such as Clock for the timeout.
-The computation expression can easily be tested by supplying a test environment when run.
+The reader part models all the environment dependencies required in the computation expression.
+It is fully type-safe with types inferred including any library requirements such as Clock for the timeout.
+The computation expression can easily be tested by running with a test environment.
 
-<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="665px" height="75px" />
+<img style="margin-left:20px" src="/{{site.baseurl}}public/io/programType.png" title="program type" width="644px" height="73px" />
 
 ## Async
 
@@ -566,7 +566,8 @@ module Test =
 
 ## Result
 
-- error type is inferred and auto lifted into Either if needed
+The result part models possible error in an intergrated and type-safe way.
+The error type is inferred and different error types are auto lifted into `Either<'a,'b>` when combined.
 - Simple timeout and retry based on Result.Error
 - schedule powerful
 
