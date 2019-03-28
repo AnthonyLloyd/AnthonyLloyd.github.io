@@ -559,7 +559,7 @@ Errors are first class and type-safe. Unrecoverable exceptions output the stack 
 Cancellation is fully integrated into [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) meaning in race,
 parallel and upon an error, computations are automatically cancelled saving resources.
 
-These with the final part dramatically simplify and optimise IO code.
+These with the final part dramatically simplify and optimise asynchronous IO code.
 
 ## Result
 
