@@ -586,6 +586,8 @@ let programRetry noRetry =
         do! Logger.log "finished"
         return 0
     }
+(*** hide ***)
+    : IO<'r,int,Choice<ConsoleError,PersistError option>>
 (**
 
 ## Conclusion

@@ -390,7 +390,7 @@ Making errors type-safe and integrated in the IO logic completes this compelling
 <div class="tip" id="fs227">abstract member PersistenceService.Persist : &#39;a -&gt; Result&lt;unit,PersistError&gt;<br /><br />Full name: 2019-03-29-io.PersistenceService.Persist</div>
 <div class="tip" id="fs228">type Persistence =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Persistence : PersistenceService<br />&#160;&#160;end<br /><br />Full name: 2019-03-29-io.Persistence</div>
 <div class="tip" id="fs229">Multiple items<br />abstract member Persistence.Persistence : PersistenceService<br /><br />Full name: 2019-03-29-io.Persistence.Persistence<br /><br />--------------------<br />type Persistence =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Persistence : PersistenceService<br />&#160;&#160;end<br /><br />Full name: 2019-03-29-io.Persistence</div>
-<div class="tip" id="fs230">val programRetry : noRetry:int -&gt; &#39;a<br /><br />Full name: 2019-03-29-io.programRetry</div>
+<div class="tip" id="fs230">val programRetry : noRetry:int -&gt; IO&lt;&#39;r,int,Choice&lt;ConsoleError,PersistError option&gt;&gt;<br /><br />Full name: 2019-03-29-io.programRetry</div>
 <div class="tip" id="fs231">val noRetry : int</div>
 <div class="tip" id="fs232">val name : &#39;a</div>
 <div class="tip" id="fs233">val thread : IO&lt;&#39;a,unit,&#39;b option&gt;</div>
