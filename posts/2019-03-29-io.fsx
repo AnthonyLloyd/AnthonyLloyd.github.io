@@ -5,7 +5,6 @@ title: "F# Implementation of Scala ZIO"
 tags: [io,zio,async,reader,result]
 description: "F# Implementation of Scala ZIO"
 keywords: F#, io, zio, async, result
-exclude: true
 \---
 
 This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
@@ -23,6 +22,7 @@ Instead it uses a reader monad to provide access to IO effects (called ZIO Envir
 I came away wanting something similar in F#.
 A useful library that could be used in the outer IO layer to simplify and test IO dependency code.
 I started to play with some reader code but didn't think it would ultimately work out.
+In fact, it works really well.
 
 ## IO
 $$$
@@ -557,7 +557,7 @@ There are two main reasons for this.
 In [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) exceptions are not part of control flow.
 Errors are first class and type-safe. Unrecoverable exceptions output the stack trace and exit the process.
 Cancellation is fully integrated into [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/IO.fs) meaning in race,
-parallel and upon an error, computations are automatically cancelled saving resources.
+parallel and upon an error, computations are automatically cancelled, saving resources.
 
 These with the final part dramatically simplify and optimise asynchronous IO code.
 
