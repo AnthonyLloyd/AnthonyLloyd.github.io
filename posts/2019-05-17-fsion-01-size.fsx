@@ -12,6 +12,7 @@ exclude: true
 
 Tx = 71,262  
 Text : Count = 59,099 Max = 50 Chars = 804,995
+
 | Count / Bytes | transaction | entitytype | attribute | instrument | position |
 |:-----------|:----------:|:----------:|:----------:|:----------:|:----------:|
 | uri | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
@@ -41,4 +42,4 @@ Text : Count = 59,099 Max = 50 Chars = 804,995
 64-bit: Text: 3,974,002 Data: 78,838,077 Total: 82,812,079  
 Size on disk: 42,348,255
 
-**)
+*)
