@@ -26,13 +26,13 @@ DataSeries represent an ordered table of Date, Transaction Id and `int64` Encode
 with the latest values at the the top.
 
 This is encoded as a byte array.
-Each row is stored as a difference to the above field values as a [varints](https://developers.google.com/protocol-buffers/docs/encoding).
+Each row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
 
 Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.
 
 ## Data details
 
-Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly as `int64`.
+Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly to `int64`.
 The DataSeries are stored in a `MapSlim<EntityAttribute,DataSeries>`.
 
 Text: Count = 59,099 Max length = 50
@@ -77,11 +77,11 @@ This is very handy as the database file size is small enough to commit to github
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
-This agrees with what I have often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
+This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 
-It also shows my estimates in the [Data-First Architecture](http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first) blog post are too
+It also shows the estimates in the [Data-First Architecture](http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first) blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.
 
-Next we will look at the perfomance characteristics of this database compared to other options.
+Next we will look at the performance characteristics of this database compared to other options.
 
 *)

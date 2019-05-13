@@ -20,10 +20,10 @@ Size .7z ultra: 199MB</p>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.</p>
 <p>This is encoded as a byte array.
-Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
+Each row is stored as a difference to the above field values as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
 <p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
 <h2>Data details</h2>
-<p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly as <code>int64</code>.
+<p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly to <code>int64</code>.
 The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Text: Count = 59,099 Max length = 50</p>
 <table>
@@ -205,9 +205,9 @@ A database with a number of additional attributes would be expected to comfortab
 <p>This is very handy as the database file size is small enough to commit to github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
-This agrees with what I have often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
-<p>It also shows my estimates in the <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a> blog post are too
+This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
+<p>It also shows the estimates in the <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a> blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
-<p>Next we will look at the perfomance characteristics of this database compared to other options.</p>
+<p>Next we will look at the performance characteristics of this database compared to other options.</p>
 
 
