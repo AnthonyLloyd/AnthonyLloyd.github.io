@@ -6,7 +6,7 @@ description: "Fsion - Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 ---
-<p>The sample data set is around 10 months of daily position files for all the
+<p>The sample data set is around 10 months of daily position files for the 280
 <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a>
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.</p>
@@ -23,11 +23,13 @@ with the latest values at the the top.</p>
 Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
 <p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
 <h2>Data details</h2>
+<p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly as int64.
+The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Text: Count = 59,099 Max length = 50</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left"><p>Count / Bytes</p></th>
+<th align="left"><p>Count<br/>Bytes</p></th>
 <th align="center"><p>transaction</p></th>
 <th align="center"><p>entitytype</p></th>
 <th align="center"><p>attribute</p></th>
@@ -62,131 +64,131 @@ Each row is stored as a difference to the above field values as a <a href="https
 </tr>
 <tr class="even">
 <td align="left"><p>attribute_type</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>20 / 60</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>20<br/>60</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>attribute_isset</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>isin</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>36,476 / 273,162</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>36,476<br/>273,162</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>ticker</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 275,050</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>38,036<br/>275,050</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>currency</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 240,802</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>38,036<br/>240,802</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>assetclass</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,023 / 261,032</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>38,023<br/>261,032</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>sector</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>37,927 / 258,075</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>37,927<br/>258,075</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>exchange</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>12,046 / 79,467</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>12,046<br/>79,467</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>country</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 267,549</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>38,036<br/>267,549</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>coupon</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,552 / 193,815</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>25,552<br/>193,815</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>maturity</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,546 / 205,849</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>25,546<br/>205,849</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>price</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 15,846,249</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>38,036<br/>15,846,249</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>duration</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,552 / 5,740,430</p></td>
-<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>25,552<br/>5,740,430</p></td>
+<td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>fund</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 1,184,564</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>147,323<br/>1,184,564</p></td>
 </tr>
 <tr class="even">
 <td align="left"><p>instrument</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 1,096,271</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>147,323<br/>1,096,271</p></td>
 </tr>
 <tr class="odd">
 <td align="left"><p>nominal</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 8,306,493</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>147,323<br/>8,306,493</p></td>
 </tr>
 </tbody>
 </table>
