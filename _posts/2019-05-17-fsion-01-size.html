@@ -18,10 +18,10 @@ Size .zip normal: 1.1GB<br />
 Size .7z ultra: 199MB</p>
 <h2>DataSeries compression</h2>
 <p>DataSeries represent an ordered table of Date, Transaction Id and int64 Encoded Values
-with the latest values at the the top.
-This is encoded as a byte array.
-Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.
-Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
+with the latest values at the the top.</p>
+<p>This is encoded as a byte array.
+Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
+<p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
 <h2>Data details</h2>
 <p>Text: Count = 59,099 Max length = 50</p>
 <table>
@@ -38,6 +38,38 @@ Since the table is ordered, and the values in each row are very likely to be clo
 <tbody>
 <tr class="odd">
 <td align="left"><p>uri</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>name</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>5<br/>15</p></td>
+<td align="center"><p>20<br/>60</p></td>
+<td align="center"><p>38,036<br/>279,391</p></td>
+<td align="center"><p>0<br/>0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>time</p></td>
+<td align="center"><p>71,262<br/>909,886</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+<td align="center"><p>0<br/>0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>attribute_type</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>20 / 60</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>attribute_isset</p></td>
 <td align="center"><p>0 / 0</p></td>
 <td align="center"><p>0 / 0</p></td>
 <td align="center"><p>0 / 0</p></td>
@@ -45,34 +77,120 @@ Since the table is ordered, and the values in each row are very likely to be clo
 <td align="center"><p>0 / 0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>name</p></td>
+<td align="left"><p>isin</p></td>
 <td align="center"><p>0 / 0</p></td>
-<td align="center"><p>5 / 15</p></td>
-<td align="center"><p>20 / 60</p></td>
-<td align="center"><p>38,036 / 279,391</p></td>
 <td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>36,476 / 273,162</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>ticker</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>38,036 / 275,050</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>currency</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>38,036 / 240,802</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>assetclass</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>38,023 / 261,032</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>sector</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>37,927 / 258,075</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>exchange</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>12,046 / 79,467</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>country</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>38,036 / 267,549</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>coupon</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>25,552 / 193,815</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>maturity</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>25,546 / 205,849</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>price</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>38,036 / 15,846,249</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>duration</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>25,552 / 5,740,430</p></td>
+<td align="center"><p>0 / 0</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>fund</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>147,323 / 1,184,564</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>instrument</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>147,323 / 1,096,271</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>nominal</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>0 / 0</p></td>
+<td align="center"><p>147,323 / 8,306,493</p></td>
 </tr>
 </tbody>
 </table>
 
-<p>| time | 71,262
-909,886 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
-| attribute<em>type | 0 / 0 | 0 / 0 | 20 / 60 | 0 / 0 | 0 / 0 |
-| attribute</em>isset | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
-| isin | 0 / 0 | 0 / 0 | 0 / 0 | 36,476 / 273,162 | 0 / 0 |
-| ticker | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 275,050 | 0 / 0 |
-| currency | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 240,802 | 0 / 0 |
-| assetclass | 0 / 0 | 0 / 0 | 0 / 0 | 38,023 / 261,032 | 0 / 0 |
-| sector | 0 / 0 | 0 / 0 | 0 / 0 | 37,927 / 258,075 | 0 / 0 |
-| exchange | 0 / 0 | 0 / 0 | 0 / 0 | 12,046 / 79,467 | 0 / 0 |
-| country | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 267,549 | 0 / 0 |
-| coupon | 0 / 0 | 0 / 0 | 0 / 0 | 25,552 / 193,815 | 0 / 0 |
-| maturity | 0 / 0 | 0 / 0 | 0 / 0 | 25,546 / 205,849 | 0 / 0 |
-| price | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 15,846,249 | 0 / 0 |
-| duration | 0 / 0 | 0 / 0 | 0 / 0 | 25,552 / 5,740,430 | 0 / 0 |
-| fund | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 1,184,564 |
-| instrument | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 1,096,271 |
-| nominal | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 8,306,493 |</p>
 <h2>Size Estimates</h2>
 <p>32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183<br />
 64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079<br />

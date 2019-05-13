@@ -24,8 +24,10 @@ Size .7z ultra: 199MB
 
 DataSeries represent an ordered table of Date, Transaction Id and int64 Encoded Values
 with the latest values at the the top.
+
 This is encoded as a byte array.
 Each row is stored as a difference to the above field values as a [varints](https://developers.google.com/protocol-buffers/docs/encoding).
+
 Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.
 
 ## Data details
@@ -34,10 +36,9 @@ Text: Count = 59,099 Max length = 50
 
 | Count / Bytes | transaction | entitytype | attribute | instrument | position |
 |:-----------|:----------:|:----------:|:----------:|:----------:|:----------:|
-| uri | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
-| name | 0 / 0 | 5 / 15 | 20 / 60 | 38,036 / 279,391 | 0 / 0 |
-| time | 71,262
-909,886 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| uri | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
+| name | 0<br/>0 | 5<br/>15 | 20<br/>60 | 38,036<br/>279,391 | 0<br/>0 |
+| time | 71,262<br/>909,886 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
 | attribute_type | 0 / 0 | 0 / 0 | 20 / 60 | 0 / 0 | 0 / 0 |
 | attribute_isset | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
 | isin | 0 / 0 | 0 / 0 | 0 / 0 | 36,476 / 273,162 | 0 / 0 |
