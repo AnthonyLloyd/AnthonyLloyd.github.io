@@ -17,19 +17,19 @@ Size unzipped: 4.4GB<br />
 Size .zip normal: 1.1GB<br />
 Size .7z ultra: 199MB</p>
 <h2>DataSeries compression</h2>
-<p>DataSeries represent an ordered table of Date, Transaction Id and int64 Encoded Values
+<p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.</p>
 <p>This is encoded as a byte array.
 Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
 <p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
 <h2>Data details</h2>
-<p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly as int64.
+<p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly as <code>int64</code>.
 The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Text: Count = 59,099 Max length = 50</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left"><p>Count<br/>Bytes</p></th>
+<th align="center"><p>Count<br/>Bytes</p></th>
 <th align="center"><p>transaction</p></th>
 <th align="center"><p>entitytype</p></th>
 <th align="center"><p>attribute</p></th>
@@ -39,7 +39,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p>uri</p></td>
+<td align="center"><p>uri</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -47,7 +47,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>name</p></td>
+<td align="center"><p>name</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>5<br/>15</p></td>
 <td align="center"><p>20<br/>60</p></td>
@@ -55,7 +55,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>time</p></td>
+<td align="center"><p>time</p></td>
 <td align="center"><p>71,262<br/>909,886</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -63,7 +63,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>attribute_type</p></td>
+<td align="center"><p>attribute_type</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>20<br/>60</p></td>
@@ -71,7 +71,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>attribute_isset</p></td>
+<td align="center"><p>attribute_isset</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -79,7 +79,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>isin</p></td>
+<td align="center"><p>isin</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -87,7 +87,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>ticker</p></td>
+<td align="center"><p>ticker</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -95,7 +95,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>currency</p></td>
+<td align="center"><p>currency</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -103,7 +103,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>assetclass</p></td>
+<td align="center"><p>assetclass</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -111,7 +111,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>sector</p></td>
+<td align="center"><p>sector</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -119,7 +119,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>exchange</p></td>
+<td align="center"><p>exchange</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -127,7 +127,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>country</p></td>
+<td align="center"><p>country</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -135,7 +135,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>coupon</p></td>
+<td align="center"><p>coupon</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -143,7 +143,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>maturity</p></td>
+<td align="center"><p>maturity</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -151,7 +151,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>price</p></td>
+<td align="center"><p>price</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -159,7 +159,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>duration</p></td>
+<td align="center"><p>duration</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -167,7 +167,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>0<br/>0</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>fund</p></td>
+<td align="center"><p>fund</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -175,7 +175,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>147,323<br/>1,184,564</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>instrument</p></td>
+<td align="center"><p>instrument</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -183,7 +183,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 <td align="center"><p>147,323<br/>1,096,271</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>nominal</p></td>
+<td align="center"><p>nominal</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -194,10 +194,13 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 </table>
 
 <h2>Size Estimates</h2>
-<p>32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183<br />
-64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079<br />
+<p>Memory 32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183<br />
+Memory 64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079<br />
 Size on disk = 42,348,255</p>
 <img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
+<p>Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
+The files contain the key changing attributes.
+A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
 <h2>Conclusion</h2>
 <p>This is very handy as the database file size is small enough to commit to github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
@@ -205,9 +208,6 @@ If the DataSeries were not in a time series compressed format this object and po
 This agrees with what I have often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
 <p>It also shows my estimates in the <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a> blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
-<p>Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
-The files contain the key changing attributes.
-A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
 <p>Next we will look at the perfomance characteristics of this database compared to other options.</p>
 
 

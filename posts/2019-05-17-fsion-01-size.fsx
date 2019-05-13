@@ -22,7 +22,7 @@ Size .7z ultra: 199MB
 
 ## DataSeries compression
 
-DataSeries represent an ordered table of Date, Transaction Id and int64 Encoded Values
+DataSeries represent an ordered table of Date, Transaction Id and `int64` Encoded Values
 with the latest values at the the top.
 
 This is encoded as a byte array.
@@ -32,13 +32,13 @@ Since the table is ordered, and the values in each row are very likely to be clo
 
 ## Data details
 
-Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly as int64.
+Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly as `int64`.
 The DataSeries are stored in a `MapSlim<EntityAttribute,DataSeries>`.
 
 Text: Count = 59,099 Max length = 50
 
 | Count<br/>Bytes | transaction | entitytype | attribute | instrument | position |
-|:-----------|:----------:|:----------:|:----------:|:----------:|:----------:|
+|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
 | uri | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
 | name | 0<br/>0 | 5<br/>15 | 20<br/>60 | 38,036<br/>279,391 | 0<br/>0 |
 | time | 71,262<br/>909,886 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
@@ -61,11 +61,15 @@ Text: Count = 59,099 Max length = 50
 
 ## Size Estimates
 
-32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183  
-64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079  
+Memory 32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183  
+Memory 64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079  
 Size on disk = 42,348,255  
 
 <img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
+
+Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
+The files contain the key changing attributes.
+A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.
 
 ## Conclusion
 
@@ -77,10 +81,6 @@ This agrees with what I have often found in server caches. Holding and tracking 
 
 It also shows my estimates in the [Data-First Architecture](http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first) blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.
-
-Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
-The files contain the key changing attributes.
-A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.
 
 Next we will look at the perfomance characteristics of this database compared to other options.
 
