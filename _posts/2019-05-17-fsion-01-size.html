@@ -10,14 +10,19 @@ exclude: true
 <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a>
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.</p>
-<p>Funds: 280
-Days: 206
-Position files: 71,261
-Size unzipped: 4.4GB
-Size .zip normal: 1.1GB
+<p>Funds: 280<br />
+Days: 206<br />
+Position files: 71,261<br />
+Size unzipped: 4.4GB<br />
+Size .zip normal: 1.1GB<br />
 Size .7z ultra: 199MB</p>
 <h2>DataSeries compression</h2>
-<h3>Data details</h3>
+<p>DataSeries represent an ordered table of Date, Transaction Id and int64 Encoded Values
+with the latest values at the the top.
+This is encoded as a byte array.
+Each row is stored as a difference to the above field values as a <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.
+Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
+<h2>Data details</h2>
 <p>Text: Count = 59,099 Max length = 50</p>
 <table>
 <thead>
@@ -47,168 +52,42 @@ Size .7z ultra: 199MB</p>
 <td align="center"><p>38,036 / 279,391</p></td>
 <td align="center"><p>0 / 0</p></td>
 </tr>
-<tr class="odd">
-<td align="left"><p>time</p></td>
-<td align="center"><p>71,262 / 909,886</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>attribute_type</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>20 / 60</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>attribute_isset</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>transaction<em>based</em>on</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>isin</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>36,476 / 273,162</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>ticker</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 275,050</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>currency</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 240,802</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>assetclass</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,023 / 261,032</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>sector</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>37,927 / 258,075</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>exchange</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>12,046 / 79,467</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>country</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 267,549</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>coupon</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,552 / 193,815</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>maturity</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,546 / 205,849</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>price</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>38,036 / 15,846,249</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>duration</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>25,552 / 5,740,430</p></td>
-<td align="center"><p>0 / 0</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>fund</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 1,184,564</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>instrument</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 1,096,271</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>nominal</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>0 / 0</p></td>
-<td align="center"><p>147,323 / 8,306,493</p></td>
-</tr>
 </tbody>
 </table>
 
-<h3>Size Estimates</h3>
+<p>| time | 71,262
+909,886 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| attribute<em>type | 0 / 0 | 0 / 0 | 20 / 60 | 0 / 0 | 0 / 0 |
+| attribute</em>isset | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| isin | 0 / 0 | 0 / 0 | 0 / 0 | 36,476 / 273,162 | 0 / 0 |
+| ticker | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 275,050 | 0 / 0 |
+| currency | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 240,802 | 0 / 0 |
+| assetclass | 0 / 0 | 0 / 0 | 0 / 0 | 38,023 / 261,032 | 0 / 0 |
+| sector | 0 / 0 | 0 / 0 | 0 / 0 | 37,927 / 258,075 | 0 / 0 |
+| exchange | 0 / 0 | 0 / 0 | 0 / 0 | 12,046 / 79,467 | 0 / 0 |
+| country | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 267,549 | 0 / 0 |
+| coupon | 0 / 0 | 0 / 0 | 0 / 0 | 25,552 / 193,815 | 0 / 0 |
+| maturity | 0 / 0 | 0 / 0 | 0 / 0 | 25,546 / 205,849 | 0 / 0 |
+| price | 0 / 0 | 0 / 0 | 0 / 0 | 38,036 / 15,846,249 | 0 / 0 |
+| duration | 0 / 0 | 0 / 0 | 0 / 0 | 25,552 / 5,740,430 | 0 / 0 |
+| fund | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 1,184,564 |
+| instrument | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 1,096,271 |
+| nominal | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 147,323 / 8,306,493 |</p>
+<h2>Size Estimates</h2>
 <p>32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183<br />
 64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079<br />
 Size on disk = 42,348,255</p>
-<img style="margin-left:20px" src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
+<img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
 <h2>Conclusion</h2>
 <p>This is very handy as the database file size is small enough to commit to github and can be used going forward for testing and performance benchmarking.</p>
-<p>Looking at the size on disk compared to 32-bit and 64-bit in memory shows that the objects and pointers contribute quite a lot to the size.
-If the DataSeries were not in a time series compressed format this would be a lot higher.
-This agrees with what I have often found in server caches. Tracking and holding fine grained subsets of the database can actually use a lot of memory.</p>
+<p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
+If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
+This agrees with what I have often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
 <p>It also shows my estimates in the <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a> blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
 <p>Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
 The files contain the key changing attributes.
 A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
-<p>Next we will look at the perfomance characteristics of this data set compared to other options.</p>
+<p>Next we will look at the perfomance characteristics of this database compared to other options.</p>
 
 
