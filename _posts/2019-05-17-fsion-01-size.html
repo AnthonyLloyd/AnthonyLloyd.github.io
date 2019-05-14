@@ -10,35 +10,12 @@ exclude: true
 <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a>
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.</p>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><p><strong>Funds</strong></p></td>
-<td align="left"><p>280</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p><strong>Days</strong></p></td>
-<td align="left"><p>206</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p><strong>Position files</strong></p></td>
-<td align="left"><p>71,261</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p><strong>Size unzipped</strong></p></td>
-<td align="left"><p>4.4GB</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p><strong>Size .zip normal</strong></p></td>
-<td align="left"><p>1.1GB</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p><strong>Size .7z ultra</strong></p></td>
-<td align="left"><p>199MB</p></td>
-</tr>
-</tbody>
-</table>
-
+<p>| <strong>Funds</strong> | 280 |
+| <strong>Days</strong> | 206 |
+| <strong>Position files</strong> | 71,261 |
+| <strong>Size unzipped</strong> | 4.4 GB |
+| <strong>Size .zip normal</strong> | 1.1 GB |
+| <strong>Size .7z ultra</strong> | 199 MB |</p>
 <h2>DataSeries Compression</h2>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.</p>
@@ -231,7 +208,7 @@ A database with a number of additional attributes would be expected to comfortab
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
-<p>It also shows the estimates in the <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a> blog post are too
+<p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
 <p>Next we will look at the performance characteristics of this database compared to other options.</p>
 

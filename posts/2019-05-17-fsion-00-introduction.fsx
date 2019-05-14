@@ -18,28 +18,33 @@ for the Applied F# Challenge in the category of F# in your domain (finance).
 
 ## SetSlim and MapSlim
 
-[MapSlim.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)
-[MapSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs)  
 [SetSlim.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)
 [SetSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs)
+[MapSlim.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)
+[MapSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs)
 
-`SetSlim<T>`, `MapSlim<K,V>` and `ListSlim<T>` are low memory, high performance replacements for
-the mutable collections `HashSet<T>`, `Dictionary<K,V>` and `List<T>`.
-A previous [post](http://{{site.baseurl}}blog/2018/12/14/mapslim) covers their design and ~50%
-performance improvement.
+`SetSlim<T>` and `MapSlim<K,V>` are low memory, high performance replacements for
+the mutable collections `HashSet<T>` and `Dictionary<K,V>`.
+A previous [post]({% post_url 2018-12-14-mapslim %}) covers their design and
+~50% performance improvement.
 
 An important additional feature of these collections is that they do not need to be locked for
 read while updates are being applied.
-This combined with [IO](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/IO.fs) will
-hopefully result in a completely lock-free multi-theaded read model for Fsion.
+This combined with [IO]({% post_url 2019-03-29-io %}) will hopefully result
+in a completely lock-free multi-theaded read model for Fsion.
 
 ## DataSeries
 
 [DataSeries.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs)
 [DataSeriesTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs)
 
-DataSeries set check order value is sensible.
-DateSeries also naturally support sets with add and remove operations. These will come in handy when automatic indexes are added. 
+DataSeries represent an ordered table of Date, Transaction Id and `int64` Encoded Values
+with the latest values at the the top.
+The next [post]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the data compression that can be
+achieved using this data structure. 
+
+DateSeries also naturally support sets with add and remove operations.
+This will come in handy when automatic indexes are added. 
 
 ## Transactor
 
@@ -57,19 +62,16 @@ Selection takes the Transaction Id which can only from the Selector.
 Selections can be performed at any historic Transaction Id.
 The same result will be returned any time in the future. This means Selections are pure.
 
-## Why F#
-
-Type-safety - 
-Functional design - pure repeatable functions.
-Testing - property based testing for serialization, stress testing for threading.
-
-
 ## Views
 
-`Selector.Store -> Entity -> Result<T,ValidationErrors>`
+`Selector.Store -> Tx -> Entity -> Result<T,ValidationErrors>`
 
 
+## Why F#
 
+* Type-safety - typed value and views.
+* Functional design - pure repeatable functions.  
+* Testing - property based testing for serialization, stress testing for threading.  
 
 ## Conclusion
 
@@ -80,4 +82,10 @@ Work will also be done to make sure the API is resilient and optimised for perfo
 The ultimate aim is provide functional fully type-safe database and cache functionality with a set of best
 practice meta data driven satellite projects.
 
-**)
+
+## Ideas
+
+Traditional databases not efficient at normalised stores or audit queries.
+
+
+*)

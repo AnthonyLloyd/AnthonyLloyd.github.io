@@ -13,13 +13,12 @@ The sample data set is around 10 months of daily position files for the 280
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.
 
-|:-------|:-------|
 | **Funds** | 280 |
 | **Days** | 206 |
 | **Position files** | 71,261 |
-| **Size unzipped** | 4.4GB |
-| **Size .zip normal** | 1.1GB |
-| **Size .7z ultra** | 199MB |
+| **Size unzipped** | 4.4 GB |
+| **Size .zip normal** | 1.1 GB |
+| **Size .7z ultra** | 199 MB |
 
 ## DataSeries Compression
 
@@ -83,7 +82,7 @@ Looking at the size on disk compared to 32-bit and 64-bit in memory estimates sh
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 
-It also shows the estimates in the [Data-First Architecture](http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first) blog post are too
+It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) blog post are too
 high as it doesn't take account of the DataSeries compression that is possible.
 
 Next we will look at the performance characteristics of this database compared to other options.
