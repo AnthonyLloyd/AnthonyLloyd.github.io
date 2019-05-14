@@ -29,8 +29,8 @@ in a completely lock-free multi-theaded read model for Fsion.</p>
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs">DataSeriesTests.fs</a></p>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.
-The next <a href="{% post_url 2019-05-17-fsion-01-size %}">post</a> demonstrates the data compression that can be
-achieved using this data structure.</p>
+The next <a href="{% post_url 2019-05-17-fsion-01-size %}">Fsion: 1. Size</a> post demonstrates the data
+compression that can be achieved using this data structure.</p>
 <p>DateSeries also naturally support sets with add and remove operations.
 This will come in handy when automatic indexes are added.</p>
 <h2>Transactor</h2>
@@ -58,6 +58,7 @@ Work will also be done to make sure the API is resilient and optimised for perfo
 <p>The ultimate aim is provide functional fully type-safe database and cache functionality with a set of best
 practice meta data driven satellite projects.</p>
 <h2>Ideas</h2>
-<p>Traditional databases not efficient at normalised stores or audit queries.</p>
+<p>Traditional databases not efficient at normalised stores or audit queries.
+Simple, embedded no query translations.</p>
 
 

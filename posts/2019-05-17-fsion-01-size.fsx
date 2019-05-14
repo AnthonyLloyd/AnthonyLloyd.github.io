@@ -13,6 +13,7 @@ The sample data set is around 10 months of daily position files for the 280
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.
 
+|---|---|
 | **Funds** | 280 |
 | **Days** | 206 |
 | **Position files** | 71,261 |

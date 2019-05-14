@@ -40,8 +40,8 @@ in a completely lock-free multi-theaded read model for Fsion.
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` Encoded Values
 with the latest values at the the top.
-The next [post]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the data compression that can be
-achieved using this data structure. 
+The next [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}) post demonstrates the data
+compression that can be achieved using this data structure. 
 
 DateSeries also naturally support sets with add and remove operations.
 This will come in handy when automatic indexes are added. 
@@ -86,6 +86,6 @@ practice meta data driven satellite projects.
 ## Ideas
 
 Traditional databases not efficient at normalised stores or audit queries.
-
+Simple, embedded no query translations.
 
 *)
