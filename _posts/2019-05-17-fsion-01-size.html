@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Fsion - Size"
+title: "Fsion 1. Size"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion - Size"
+description: "Fsion 1. Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 ---
@@ -16,13 +16,13 @@ Position files: 71,261<br />
 Size unzipped: 4.4GB<br />
 Size .zip normal: 1.1GB<br />
 Size .7z ultra: 199MB</p>
-<h2>DataSeries compression</h2>
+<h2>DataSeries Compression</h2>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.</p>
 <p>This is encoded as a byte array.
 Each row is stored as a difference to the above field values as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
 <p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
-<h2>Data details</h2>
+<h2>Data Details</h2>
 <p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly to <code>int64</code>.
 The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Text: Count = 59,099 Max length = 50</p>

@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Fsion - Size"
+title: "Fsion 1. Size"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion - Size"
+description: "Fsion 1. Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 \---
@@ -20,7 +20,7 @@ Size unzipped: 4.4GB
 Size .zip normal: 1.1GB  
 Size .7z ultra: 199MB  
 
-## DataSeries compression
+## DataSeries Compression
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` Encoded Values
 with the latest values at the the top.
@@ -30,7 +30,7 @@ Each row is stored as a difference to the above field values as [varints](https:
 
 Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.
 
-## Data details
+## Data Details
 
 Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly to `int64`.
 The DataSeries are stored in a `MapSlim<EntityAttribute,DataSeries>`.
