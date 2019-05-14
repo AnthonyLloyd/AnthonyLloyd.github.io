@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Fsion 1. Size"
+title: "Fsion: 1. Size"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion 1. Size"
+description: "Fsion: 1. Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 ---
@@ -10,22 +10,47 @@ exclude: true
 <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a>
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.</p>
-<p>Funds: 280<br />
-Days: 206<br />
-Position files: 71,261<br />
-Size unzipped: 4.4GB<br />
-Size .zip normal: 1.1GB<br />
-Size .7z ultra: 199MB</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>Funds</strong></p></td>
+<td align="center"><p>280</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>Days</strong></p></td>
+<td align="center"><p>206</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p><strong>Position files</strong></p></td>
+<td align="center"><p>71,261</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>Size unzipped</strong></p></td>
+<td align="center"><p>4.4GB</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p><strong>Size .zip normal</strong></p></td>
+<td align="center"><p>1.1GB</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>Size .7z ultra</strong></p></td>
+<td align="center"><p>199MB</p></td>
+</tr>
+</tbody>
+</table>
+
 <h2>DataSeries Compression</h2>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> Encoded Values
 with the latest values at the the top.</p>
 <p>This is encoded as a byte array.
 Each row is stored as a difference to the above field values as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
-<p>Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.</p>
+<p>Since the table is ordered, and the values in each row are very likely to be close to the
+ones above, very high compression ratios are <a href="https://github.com/Genbox/CSharpFastPFOR">possible</a>.</p>
 <h2>Data Details</h2>
 <p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly to <code>int64</code>.
 The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Text: Count = 59,099 Max length = 50</p>
+<p>Below is a table of count and number of bytes by entity type (column) and attribute (row):</p>
 <table>
 <thead>
 <tr class="header">

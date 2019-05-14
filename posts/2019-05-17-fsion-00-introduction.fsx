@@ -1,18 +1,18 @@
 (**
 \---
 layout: post
-title: "Fsion 0. Introduction"
+title: "Fsion: 0. Introduction"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion 0. Introduction"
+description: "Fsion: 0. Introduction"
 keywords: F#, fsion, database, timeseries
 exclude: true
 \---
 
 ## SetSlim and MapSlim
 
-[MapSlim.fs])(https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)
-[MapSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs)
-[SetSlim.fs])(https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)
+[MapSlim.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs)
+[MapSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs)  
+[SetSlim.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs)
 [SetSlimTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs)
 
 Smaller and faster.

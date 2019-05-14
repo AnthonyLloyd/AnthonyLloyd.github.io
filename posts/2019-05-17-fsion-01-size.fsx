@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Fsion 1. Size"
+title: "Fsion: 1. Size"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion 1. Size"
+description: "Fsion: 1. Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 \---
@@ -13,12 +13,13 @@ The sample data set is around 10 months of daily position files for the 280
 funds available online.
 All fields in the files are loaded apart from any that can be calculated.
 
-Funds: 280  
-Days: 206  
-Position files: 71,261  
-Size unzipped: 4.4GB  
-Size .zip normal: 1.1GB  
-Size .7z ultra: 199MB  
+|:-------|:---:|
+| **Funds** | 280 |
+| **Days** | 206 |
+| **Position files** | 71,261 |
+| **Size unzipped** | 4.4GB |
+| **Size .zip normal** | 1.1GB |
+| **Size .7z ultra** | 199MB |
 
 ## DataSeries Compression
 
@@ -28,7 +29,8 @@ with the latest values at the the top.
 This is encoded as a byte array.
 Each row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
 
-Since the table is ordered, and the values in each row are very likely to be close to the ones above, very high compression ratios are possible.
+Since the table is ordered, and the values in each row are very likely to be close to the
+ones above, very high compression ratios are [possible](https://github.com/Genbox/CSharpFastPFOR).
 
 ## Data Details
 
@@ -36,6 +38,8 @@ Text values are stored in a `SetSlim<Text>` collection, numeric values are encod
 The DataSeries are stored in a `MapSlim<EntityAttribute,DataSeries>`.
 
 Text: Count = 59,099 Max length = 50
+
+Below is a table of count and number of bytes by entity type (column) and attribute (row): 
 
 | Count<br/>Bytes | transaction | entitytype | attribute | instrument | position |
 |:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
