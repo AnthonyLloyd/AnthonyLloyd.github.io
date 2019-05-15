@@ -44,7 +44,7 @@ in a completely lock-free multi-threaded read model for [Fsion](https://github.c
 [DataSeries.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs) / [DataSeriesTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs)
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values with
-the latest values at the the top.
+the latest values at the top.
 The next post [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the
 compression that can be achieved using this data structure. 
 
@@ -88,7 +88,7 @@ more type-safe.
 
 `Store -> Tx -> Entity -> Result<T,ValidationErrors>`
 
-They can be thought of as as both the schema definition (when run with an empty store) and
+They can be thought of as both the schema definition (when run with an empty store) and
 validation function.
 Multiple views can be defined for the same Entity Type for different areas of the business
 logic.
@@ -116,7 +116,7 @@ and Selection.
 Work will also be done to make sure the API is resilient and performance optimised.
 The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap)
 
-Ultimatly the aim is to provide a functional fully type-safe database and cache functionality
+Ultimately the aim is to provide a functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.
 
 Next, we will look at database size in [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
