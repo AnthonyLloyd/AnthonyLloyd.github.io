@@ -67,9 +67,9 @@ Below is a table of count and number of bytes by entity type (column) and attrib
 
 ## Size Estimates
 
-Memory 32-bit: Text = 3,028,394 Data = 64,364,789 Total = 67,393,183  
-Memory 64-bit: Text = 3,974,002 Data = 78,838,077 Total = 82,812,079  
-Size on disk = 42,348,255  
+Memory 32-bit: Text = 2.9 MB Data = 61.4 MB Total = 64.3 MB  
+Memory 64-bit: Text = 3.8 MB Data = 75.2 MB Total = 79.0 MB  
+Size on disk = 40.4 MB
 
 <img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
 
