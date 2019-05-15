@@ -37,25 +37,26 @@ compression that can be achieved using this data structure.</p>
 This is much easier than managing foreign keys sets in traditional databases and will come in
 handy when automatic indexes are added.</p>
 <h2>Transactor</h2>
-<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs">Transactor.fs</a>/<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs">TransactorTests.fs</a></p>
+<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs">Transactor.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs">TransactorTests.fs</a></p>
 <p>The Transactor is responsible for making concurrent transactions consistent before persisting
 and notifying subscribered Selectors.</p>
 <p>Transactions are created from a Selector Store with any new Entity Ids and Transaction Id
 following on from the Stores Ids.
 The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have <code>transaction_based_on</code> set to the original Transaction Id.
-Other processes would be need to resolve data conflicts based on required business logic.</p>
+Other processes would need to resolve data conflicts based on required business logic.</p>
 <p>Transactions are themselves Entity Types so any context data such as user, process or source
 can be added.</p>
 <h2>Selector</h2>
-<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a>/<a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
+<p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
 <p>Selector is responsible for applying Transactions to a Store, persisting a snapshot and has
 an API for selecting data.</p>
 <p>The Selector takes the Transaction Id in all API functions and can be performed at the at
 any historic Transaction Id.
 The same results will be returned for the same call any time in the future.
 This means Selection API calls are pure.</p>
-<h2>Views - <em>WIP</em></h2>
+<h2>View</h2>
+<p><em>WIP</em></p>
 <p>Views are functions that can be passed to the Selector API to make selection easier and
 more type-safe.</p>
 <p><code>Store -&gt; Tx -&gt; Entity -&gt; Result&lt;T,ValidationErrors&gt;</code></p>
@@ -83,5 +84,6 @@ and Selection.
 Work will also be done to make sure the API is resilient and performance optimised.</p>
 <p>The ultimate aim is to provide functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.</p>
+<p>Next we will look at database size in <a href="{% post_url 2019-05-17-fsion-01-size %}">Fsion: 1. Size</a>.</p>
 
 

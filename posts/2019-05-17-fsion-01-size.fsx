@@ -8,6 +8,8 @@ keywords: F#, fsion, database, timeseries
 exclude: true
 \---
 
+Previously we introduced [Fsion: 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}).
+
 The sample data set is around 10 months of daily position files for the 280
 [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list)
 funds available online.

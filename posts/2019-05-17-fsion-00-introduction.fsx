@@ -53,7 +53,7 @@ handy when automatic indexes are added.
 
 ## Transactor
 
-[Transactor.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs)/[TransactorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs)
+[Transactor.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs) / [TransactorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs)
 
 The Transactor is responsible for making concurrent transactions consistent before persisting
 and notifying subscribered Selectors.
@@ -62,14 +62,14 @@ Transactions are created from a Selector Store with any new Entity Ids and Trans
 following on from the Stores Ids.
 The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have `transaction_based_on` set to the original Transaction Id.
-Other processes would be need to resolve data conflicts based on required business logic.
+Other processes would need to resolve data conflicts based on required business logic.
 
 Transactions are themselves Entity Types so any context data such as user, process or source
 can be added.
 
 ## Selector
 
-[Selector.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs)/[SelectorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs)
+[Selector.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs) / [SelectorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs)
 
 Selector is responsible for applying Transactions to a Store, persisting a snapshot and has
 an API for selecting data.
@@ -79,7 +79,8 @@ any historic Transaction Id.
 The same results will be returned for the same call any time in the future.
 This means Selection API calls are pure.
 
-## Views - _WIP_
+## View
+_WIP_
 
 Views are functions that can be passed to the Selector API to make selection easier and
 more type-safe.
@@ -115,5 +116,7 @@ Work will also be done to make sure the API is resilient and performance optimis
 
 The ultimate aim is to provide functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.
+
+Next we will look at database size in [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
 
 *)
