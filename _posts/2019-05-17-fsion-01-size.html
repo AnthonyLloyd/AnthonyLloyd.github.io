@@ -232,7 +232,7 @@ A database with a number of additional attributes would be expected to comfortab
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
-<p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> blog post are too
+<p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
 <p>Next we will look at the performance characteristics of this database compared to other options.</p>
 

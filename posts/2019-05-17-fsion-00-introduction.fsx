@@ -10,17 +10,18 @@ exclude: true
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is an EAVT (Entity, Attribute, Value, Time) time-series database for F#.
 
-The main idea is by storing value updates as compressed data series, an embeded in memory
+The main idea is by storing value updates as compressed data series, an embedded in memory
 database can be created that is orders of magnitude smaller and faster than traditional
 database solutions.
 A functional in memory database can also be made more type-safe with a simpler API.
 Other key ideas can be found [here](https://github.com/AnthonyLloyd/Fsion#key-ideas).
 
-Fsion has been designed with the finance domain in mind but could be equally applicable to
+[Fsion](https://github.com/AnthonyLloyd/Fsion) has been designed with the finance domain in mind but could be equally applicable to
 domains that requires a degree of time-series, historic query or audit functionality.
 
 This series of blogs and [repo](https://github.com/AnthonyLloyd/Fsion) have been submitted
-for the Applied F# Challenge in the category of F# in your domain (finance).
+for the [Applied F# Challenge](http://foundation.fsharp.org/applied_fsharp_challenge) in
+the category of F# in your domain (finance).
 
 The following sections outline the main [Fsion](https://github.com/AnthonyLloyd/Fsion) components.
 
@@ -36,7 +37,7 @@ improvement.
 An important additional feature of these collections is that they do not need to be locked for
 read while updates are being applied.
 This combined with [IO]({% post_url 2019-03-29-io %}) will hopefully result
-in a completely lock-free multi-theaded read model for Fsion.
+in a completely lock-free multi-threaded read model for [Fsion](https://github.com/AnthonyLloyd/Fsion).
 
 ## DataSeries
 
@@ -44,7 +45,7 @@ in a completely lock-free multi-theaded read model for Fsion.
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values with
 the latest values at the the top.
-The next post [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the data
+The next post [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the
 compression that can be achieved using this data structure. 
 
 DateSeries also naturally support sets with add and remove operations.
@@ -56,7 +57,7 @@ handy when automatic indexes are added.
 [Transactor.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs) / [TransactorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs)
 
 The Transactor is responsible for making concurrent transactions consistent before persisting
-and notifying subscribered Selectors.
+and notifying subscribed Selectors.
 
 Transactions are created from a Selector Store with any new Entity Ids and Transaction Id
 following on from the Stores Ids.
@@ -71,8 +72,8 @@ can be added.
 
 [Selector.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs) / [SelectorTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs)
 
-Selector is responsible for applying Transactions to a Store, persisting a snapshot and has
-an API for selecting data.
+Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
+and has an API for selecting data.
 
 The Selector takes the Transaction Id in all API functions and can be performed at the at
 any historic Transaction Id.
@@ -89,20 +90,20 @@ more type-safe.
 
 They can be thought of as as both the schema definition (when run with an empty store) and
 validation function.
-Mutliple views can be defined for the same Entity Type for different areas of the business
+Multiple views can be defined for the same Entity Type for different areas of the business
 logic.
 
 ## Why F#
 
 * Type-safe - typed values and marshalling unstructured data into type-safe views.
 * Functional - pure repeatable API calls.
-* Robust - in handling of errors and mutli-threaded code.
+* Robust - in handling of errors and multi-threaded code.
 * Testing - property based testing for serialization, stress testing for threading.  
 
 ## Conclusion
 
 Traditional databases are not efficient as highly normalised stores with full history.
-A compressed in memory store is more efficient and offer much simpler functionlity with no 'mapping'.
+A compressed in memory store is more efficient and offer much simpler functionality with no 'mapping'.
 
 The design is flexible and can scale with the Transactor and Selector as separate processes.
 The Selector Store can be based on [FASTER](https://github.com/Microsoft/FASTER) if the size of the
@@ -113,10 +114,11 @@ The project continues to be work in progress.
 Next steps are to make the API as type-safe as possible in terms of Attributes, Transactions
 and Selection.
 Work will also be done to make sure the API is resilient and performance optimised.
+The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap)
 
-The ultimate aim is to provide functional fully type-safe database and cache functionality
+Ultimatly the aim is to provide a functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.
 
-Next we will look at database size in [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
+Next, we will look at database size in [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
 
 *)

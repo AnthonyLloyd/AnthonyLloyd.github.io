@@ -85,7 +85,7 @@ Looking at the size on disk compared to 32-bit and 64-bit in memory estimates sh
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 
-It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) blog post are too
+It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) post are too
 high as it doesn't take account of the DataSeries compression that is possible.
 
 Next we will look at the performance characteristics of this database compared to other options.
