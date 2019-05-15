@@ -8,7 +8,7 @@ keywords: F#, fsion, database, timeseries
 exclude: true
 \---
 
-Previously we introduced [Fsion: 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}).
+Previously we introduced [Fsion: 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}), now we will explore database size.
 
 The sample data set is around 10 months of daily position files for the 280
 [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list)
@@ -88,6 +88,6 @@ This agrees with what is often found in server caches. Holding and tracking fine
 It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) post are too
 high as it doesn't take account of the DataSeries compression that is possible.
 
-Next we will look at the performance characteristics of this database compared to other options.
+Next, we will look at the performance characteristics of this database compared to other options.
 
 *)

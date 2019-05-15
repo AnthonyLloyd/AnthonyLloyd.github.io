@@ -19,7 +19,7 @@ Other key ideas can be found [here](https://github.com/AnthonyLloyd/Fsion#key-id
 [Fsion](https://github.com/AnthonyLloyd/Fsion) has been designed with the finance domain in mind but could be equally applicable to
 domains that requires a degree of time-series, historic query or audit functionality.
 
-This series of blogs and [repo](https://github.com/AnthonyLloyd/Fsion) have been submitted
+This series of blogs and the [repo](https://github.com/AnthonyLloyd/Fsion) have been submitted
 for the [Applied F# Challenge](http://foundation.fsharp.org/applied_fsharp_challenge) in
 the category of F# in your domain (finance).
 

@@ -6,7 +6,7 @@ description: "Fsion: 1. Size"
 keywords: F#, fsion, database, timeseries
 exclude: true
 ---
-<p>Previously we introduced <a href="{% post_url 2019-05-17-fsion-00-introduction %}">Fsion: 0. Introduction</a>.</p>
+<p>Previously we introduced <a href="{% post_url 2019-05-17-fsion-00-introduction %}">Fsion: 0. Introduction</a>, now we will explore database size.</p>
 <p>The sample data set is around 10 months of daily position files for the 280
 <a href="https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&amp;tab=overview&amp;view=list">iShares</a>
 funds available online.
@@ -234,6 +234,6 @@ If the DataSeries were not in a time series compressed format this object and po
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
 <p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> post are too
 high as it doesn't take account of the DataSeries compression that is possible.</p>
-<p>Next we will look at the performance characteristics of this database compared to other options.</p>
+<p>Next, we will look at the performance characteristics of this database compared to other options.</p>
 
 
