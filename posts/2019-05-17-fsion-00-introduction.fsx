@@ -103,7 +103,7 @@ logic.
 ## Conclusion
 
 Traditional databases are not efficient as highly normalised stores with full history.
-A compressed in memory store is more efficient and offer much simpler functionality with no 'mapping'.
+A compressed in memory store is smaller, faster and offers simpler functionality with no 'mapping'.
 
 The design is flexible and can scale with the Transactor and Selector as separate processes.
 The Selector Store can be based on [FASTER](https://github.com/Microsoft/FASTER) if the size of the
