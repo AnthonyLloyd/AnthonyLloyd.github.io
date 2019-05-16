@@ -25,7 +25,7 @@ All fields in the files are loaded apart from any that can be calculated.
 
 ## DataSeries Compression
 
-DataSeries represent an ordered table of Date, Transaction Id and `int64` Encoded Values
+DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values
 with the latest values at the the top.
 
 This is encoded as a byte array.
@@ -39,9 +39,9 @@ ones above, very high compression ratios are [possible](https://github.com/Genbo
 Text values are stored in a `SetSlim<Text>` collection, numeric values are encoded directly to `int64`.
 The DataSeries are stored in a `MapSlim<EntityAttribute,DataSeries>`.
 
-Text: Count = 59,099 Max length = 50
-
 Below is a table of count and number of bytes by entity type (column) and attribute (row): 
+
+Text: Count = 59,099 Max length = 50
 
 | Count<br/>Bytes | transaction | entitytype | attribute | instrument | position |
 |:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
@@ -86,7 +86,7 @@ If the DataSeries were not in a time series compressed format this object and po
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 
 It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) post are too
-high as it doesn't take account of the DataSeries compression that is possible.
+high as they don't take account of the DataSeries compression that is possible.
 
 Next, we will look at the performance characteristics of this database compared to other options.
 

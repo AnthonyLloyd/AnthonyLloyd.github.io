@@ -65,8 +65,8 @@ The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have `transaction_based_on` set to the original Transaction Id.
 Other processes would need to resolve data conflicts based on required business logic.
 
-Transactions are themselves Entity Types so any context data such as user, process or source
-can be added.
+Transactions are themselves Entities in the database so any context data such as user, process
+or source can be added.
 
 ## Selector
 
@@ -75,9 +75,9 @@ can be added.
 Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
 and has an API for selecting data.
 
-The Selector takes the Transaction Id in all API functions and can be performed at the at
-any historic Transaction Id.
-The same results will be returned for the same call any time in the future.
+The Selector takes the Transaction Id in all API functions and can be performed at any historic
+Transaction Id.
+The same results will be returned for the same parameters any time in the future.
 This means Selection API calls are pure.
 
 ## View
@@ -95,8 +95,9 @@ logic.
 
 ## Why F#
 
-* Type-safe - typed values and marshalling unstructured data into type-safe views.
+* Type-Safe - native typed values and marshalling unstructured data into type-safe views.
 * Functional - pure repeatable API calls.
+* Simple - simple code will allow us to add more sofisticate functionality.
 * Robust - in handling of errors and multi-threaded code.
 * Testing - property based testing for serialization, stress testing for threading.  
 
