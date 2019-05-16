@@ -74,10 +74,11 @@ or source can be added.
 Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
 and has an API for selecting data.
 
-The Selector takes the Transaction Id in all API functions and can be performed at any historic
+The Selector takes the Transaction Id in all API functions and can be performed at any past
 Transaction Id.
 The same results will be returned for the same parameters any time in the future.
 This means Selection API calls are pure.
+Consistency of data over a number of database or cache calls is often overlooked.
 
 ## View
 _WIP_

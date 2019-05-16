@@ -51,10 +51,11 @@ or source can be added.</p>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
 <p>Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
 and has an API for selecting data.</p>
-<p>The Selector takes the Transaction Id in all API functions and can be performed at any historic
+<p>The Selector takes the Transaction Id in all API functions and can be performed at any past
 Transaction Id.
 The same results will be returned for the same parameters any time in the future.
-This means Selection API calls are pure.</p>
+This means Selection API calls are pure.
+Consistency of data over a number of database or cache calls is often overlooked.</p>
 <h2>View</h2>
 <p><em>WIP</em></p>
 <p>Views are functions that can be passed to the Selector API to make selection easier and
