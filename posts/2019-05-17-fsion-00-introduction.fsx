@@ -96,7 +96,7 @@ logic.
 ## Why F#
 
 * Type-Safe - native typed values and marshalling unstructured data into type-safe views.
-* Functional - pure repeatable API calls.
+* Functional - pure, consistent and repeatable API calls.
 * Simple - simple code will allow us to add more sophisticated functionality.
 * Robust - in handling of errors and multi-threaded code.
 * Testing - property based testing for serialization, stress testing for threading.  
