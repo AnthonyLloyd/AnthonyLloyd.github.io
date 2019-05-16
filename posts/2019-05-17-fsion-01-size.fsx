@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Fsion: 1. Size"
+title: "Fsion - 1. Size"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion: 1. Size"
+description: "Fsion - 1. Size"
 keywords: F#, fsion, database, timeseries
 \---
 

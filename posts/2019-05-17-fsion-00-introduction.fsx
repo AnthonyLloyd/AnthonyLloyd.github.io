@@ -1,9 +1,9 @@
 (**
 \---
 layout: post
-title: "Fsion: 0. Introduction"
+title: "Fsion - 0. Introduction"
 tags: [f#,fsion,database,timeseries]
-description: "Fsion: 0. Introduction"
+description: "Fsion - 0. Introduction"
 keywords: F#, fsion, database, timeseries
 \---
 
