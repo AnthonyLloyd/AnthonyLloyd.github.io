@@ -5,7 +5,6 @@ title: "Fsion: 0. Introduction"
 tags: [f#,fsion,database,timeseries]
 description: "Fsion: 0. Introduction"
 keywords: F#, fsion, database, timeseries
-exclude: true
 \---
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is an EAVT (Entity, Attribute, Value, Time) time-series database for F#.

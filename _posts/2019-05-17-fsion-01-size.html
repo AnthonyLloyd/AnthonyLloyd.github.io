@@ -4,7 +4,6 @@ title: "Fsion: 1. Size"
 tags: [f#,fsion,database,timeseries]
 description: "Fsion: 1. Size"
 keywords: F#, fsion, database, timeseries
-exclude: true
 ---
 <p>Previously we introduced <a href="{% post_url 2019-05-17-fsion-00-introduction %}">Fsion: 0. Introduction</a>, now we will explore database size.</p>
 <p>The sample data set is around 10 months of daily position files for the 280
@@ -228,7 +227,7 @@ Size on disk = 40.4 MB</p>
 The files contain the key changing attributes.
 A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
 <h2>Conclusion</h2>
-<p>This is very handy as the database file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
+<p>The file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
