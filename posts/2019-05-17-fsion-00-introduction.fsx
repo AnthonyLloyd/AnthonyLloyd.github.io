@@ -115,7 +115,7 @@ The project continues to be work in progress.
 Next steps are to make the API as type-safe as possible in terms of Attributes, Transactions
 and Selection.
 Work will also be done to make sure the API is resilient and performance optimised.
-The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap)
+The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap).
 
 Ultimately the aim is to provide a functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.

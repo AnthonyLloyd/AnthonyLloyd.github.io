@@ -79,7 +79,7 @@ A database with a number of additional attributes would be expected to comfortab
 
 ## Conclusion
 
-This is very handy as the database file size is small enough to commit to github and can be used going forward for testing and performance benchmarking.
+This is very handy as the database file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
