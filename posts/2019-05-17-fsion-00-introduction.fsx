@@ -44,7 +44,7 @@ in a completely lock-free multi-threaded read model for [Fsion](https://github.c
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values with
 the latest values at the top.
-The next post [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the
+The next post [Fsion - 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the
 compression that can be achieved using this data structure. 
 
 DateSeries also naturally support sets with add and remove operations.
@@ -119,6 +119,6 @@ The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap).
 Ultimately the aim is to provide a functional fully type-safe database and cache functionality
 with a set of best practice meta data driven satellite projects.
 
-Next, we will look at database size in [Fsion: 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
+Next, we will look at database size in [Fsion - 1. Size]({% post_url 2019-05-17-fsion-01-size %}).
 
 *)

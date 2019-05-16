@@ -7,7 +7,7 @@ description: "Fsion - 1. Size"
 keywords: F#, fsion, database, timeseries
 \---
 
-Previously we introduced [Fsion: 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}), now we will explore database size.
+Previously we introduced [Fsion - 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}), now we will explore database size.
 
 The sample data set is around 10 months of daily position files for the 280
 [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list)
