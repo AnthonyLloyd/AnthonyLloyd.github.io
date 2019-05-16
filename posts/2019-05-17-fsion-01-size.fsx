@@ -26,7 +26,7 @@ All fields in the files are loaded apart from any that can be calculated.
 ## DataSeries Compression
 
 DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values
-with the latest values at the the top.
+with the latest values at the top.
 
 This is encoded as a byte array.
 Each row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
