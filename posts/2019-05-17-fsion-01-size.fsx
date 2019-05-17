@@ -28,8 +28,11 @@ DataSeries represent an ordered table of Date, Transaction Id and `int64` encode
 with the latest values at the top.
 
 This is encoded as a byte array.
-Each row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
+The first row is stored as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
+Each subsequent row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
 
+With sensible encoding using offsets and the fact that values tend to be close to zero, even single row `DataSeries`
+are several times smaller than a more standard representation.
 Since the table is ordered, and the values in each row are very likely to be close to the
 ones above, very high compression ratios are [possible](https://github.com/Genbox/CSharpFastPFOR).
 

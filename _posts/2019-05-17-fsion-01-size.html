@@ -43,8 +43,11 @@ All fields in the files are loaded apart from any that can be calculated.</p>
 <p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> encoded Values
 with the latest values at the top.</p>
 <p>This is encoded as a byte array.
-Each row is stored as a difference to the above field values as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
-<p>Since the table is ordered, and the values in each row are very likely to be close to the
+The first row is stored as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.
+Each subsequent row is stored as a difference to the above field values as <a href="https://developers.google.com/protocol-buffers/docs/encoding">varints</a>.</p>
+<p>With sensible encoding using offsets and the fact that values tend to be close to zero, even single row <code>DataSeries</code>
+are several times smaller than a more standard representation.
+Since the table is ordered, and the values in each row are very likely to be close to the
 ones above, very high compression ratios are <a href="https://github.com/Genbox/CSharpFastPFOR">possible</a>.</p>
 <h2>Data Details</h2>
 <p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly to <code>int64</code>.
