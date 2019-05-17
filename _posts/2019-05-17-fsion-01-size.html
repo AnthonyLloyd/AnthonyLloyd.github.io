@@ -232,6 +232,8 @@ A database with a number of additional attributes would be expected to comfortab
 <h2>Conclusion</h2>
 <p>The file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
+This is not surprising since each 32-bit object has an 8 byte header and each 64-bit object has a 16 byte header, plus 4 and 8 bytes for each reference respectively.
+A whole single row <code>DataSeries</code> in the above table is only around 8 bytes.<br />
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
 <p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> post are too

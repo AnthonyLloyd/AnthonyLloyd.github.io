@@ -84,6 +84,8 @@ A database with a number of additional attributes would be expected to comfortab
 The file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
+This is not surprising since each 32-bit object has an 8 byte header and each 64-bit object has a 16 byte header, plus 4 and 8 bytes for each reference respectively.
+A whole single row `DataSeries` in the above table is only around 8 bytes.  
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 
