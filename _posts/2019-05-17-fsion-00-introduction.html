@@ -32,7 +32,7 @@ in a completely lock-free multi-threaded read model for <a href="https://github.
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs">DataSeries.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs">DataSeriesTests.fs</a></p>
 <p>DataSeries represent an ordered table of Reporting Date, Transaction Id and <code>int64</code> encoded
 Values with the latest values at the top. This forms a <a href="https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html">bitemporal</a>
-representation of value in the database.</p>
+representation of each value in the database.</p>
 <p>The next post <a href="{% post_url 2019-05-17-fsion-01-size %}">Fsion - 1. Size</a> demonstrates the
 compression that can be achieved using this data structure.</p>
 <p>DateSeries also naturally support sets with add and remove operations.
