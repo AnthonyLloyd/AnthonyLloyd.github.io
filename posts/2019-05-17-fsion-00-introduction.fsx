@@ -10,6 +10,7 @@ keywords: F#, fsion, database, timeseries
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is an EAVT (Entity, Attribute, Value, Time) time-series database for F#.
 
 The main idea is by storing value updates as compressed data series, an embedded in memory
+[bitemporal](https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html)
 database can be created that is orders of magnitude smaller and faster than traditional
 database solutions.
 A functional in memory database can also be made more type-safe with a simpler API.
