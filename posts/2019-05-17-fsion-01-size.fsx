@@ -24,7 +24,7 @@ All fields in the files are loaded apart from any that can be calculated.
 
 ## DataSeries Compression
 
-DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values
+DataSeries represent an ordered table of Reporting Date, Transaction Id and `int64` encoded Values
 with the latest values at the top.
 
 This is encoded as a byte array.

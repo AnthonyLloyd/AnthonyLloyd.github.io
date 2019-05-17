@@ -42,8 +42,10 @@ in a completely lock-free multi-threaded read model for [Fsion](https://github.c
 
 [DataSeries.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs) / [DataSeriesTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs)
 
-DataSeries represent an ordered table of Date, Transaction Id and `int64` encoded Values with
-the latest values at the top.
+DataSeries represent an ordered table of Reporting Date, Transaction Id and `int64` encoded
+Values with the latest values at the top. This forms a [bitemporal](https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html)
+representation of value in the database.
+
 The next post [Fsion - 1. Size]({% post_url 2019-05-17-fsion-01-size %}) demonstrates the
 compression that can be achieved using this data structure. 
 
@@ -64,7 +66,7 @@ The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have `transaction_based_on` set to the original Transaction Id.
 Other processes would need to resolve data conflicts based on required business logic.
 
-Transactions are themselves Entities in the database so any context data such as user, process
+Transactions are themselves Entities in the database so any context data such as time, user, process
 or source can be added.
 
 ## Selector

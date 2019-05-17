@@ -29,9 +29,10 @@ This combined with <a href="{% post_url 2019-03-29-io %}">IO</a> will hopefully 
 in a completely lock-free multi-threaded read model for <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a>.</p>
 <h2>DataSeries</h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs">DataSeries.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs">DataSeriesTests.fs</a></p>
-<p>DataSeries represent an ordered table of Date, Transaction Id and <code>int64</code> encoded Values with
-the latest values at the top.
-The next post <a href="{% post_url 2019-05-17-fsion-01-size %}">Fsion - 1. Size</a> demonstrates the
+<p>DataSeries represent an ordered table of Reporting Date, Transaction Id and <code>int64</code> encoded
+Values with the latest values at the top. This forms a <a href="https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html">bitemporal</a>
+representation of value in the database.</p>
+<p>The next post <a href="{% post_url 2019-05-17-fsion-01-size %}">Fsion - 1. Size</a> demonstrates the
 compression that can be achieved using this data structure.</p>
 <p>DateSeries also naturally support sets with add and remove operations.
 This is much easier than managing foreign keys sets in traditional databases and will come in
@@ -45,7 +46,7 @@ following on from the Stores Ids.
 The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have <code>transaction_based_on</code> set to the original Transaction Id.
 Other processes would need to resolve data conflicts based on required business logic.</p>
-<p>Transactions are themselves Entities in the database so any context data such as user, process
+<p>Transactions are themselves Entities in the database so any context data such as time, user, process
 or source can be added.</p>
 <h2>Selector</h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
