@@ -49,7 +49,7 @@ Text: Count = 59,099 Max length = 50
 |:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
 | uri | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
 | name | 0<br/>0 | 5<br/>15 | 20<br/>60 | 38,036<br/>279,391 | 0<br/>0 |
-| time | 71,262<br/>909,886 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
+| time | 71,262<br/>783,876 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
 | attribute_type | 0<br/>0 | 0<br/>0 | 20<br/>60 | 0<br/>0 | 0<br/>0 |
 | attribute_isset | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 | 0<br/>0 |
 | isin | 0<br/>0 | 0<br/>0 | 0<br/>0 | 36,476<br/>273,162 | 0<br/>0 |
@@ -69,9 +69,9 @@ Text: Count = 59,099 Max length = 50
 
 ## Size Estimates
 
-Memory 32-bit: Text = 2.9 MB Data = 61.4 MB Total = 64.3 MB  
-Memory 64-bit: Text = 3.8 MB Data = 75.2 MB Total = 79.0 MB  
-Size on disk = 40.4 MB
+Memory 32-bit: Text = 2.9 MB Data = 61.3 MB Total = 64.2 MB  
+Memory 64-bit: Text = 3.8 MB Data = 75.1 MB Total = 78.9 MB  
+Size on disk = 40.3 MB
 
 <img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
 
@@ -84,8 +84,9 @@ A database with a number of additional attributes would be expected to comfortab
 The file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
-This is not surprising since each 32-bit object has an 8 byte header and each 64-bit object has a 16 byte header, plus 4 and 8 bytes for each reference respectively.
+This is not surprising since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
 A whole single row `DataSeries` in the above table is only around 8 bytes.  
+
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
 

@@ -84,7 +84,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 </tr>
 <tr class="odd">
 <td align="center"><p>time</p></td>
-<td align="center"><p>71,262<br/>909,886</p></td>
+<td align="center"><p>71,262<br/>783,876</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
 <td align="center"><p>0<br/>0</p></td>
@@ -222,9 +222,9 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 </table>
 
 <h2>Size Estimates</h2>
-<p>Memory 32-bit: Text = 2.9 MB Data = 61.4 MB Total = 64.3 MB<br />
-Memory 64-bit: Text = 3.8 MB Data = 75.2 MB Total = 79.0 MB<br />
-Size on disk = 40.4 MB</p>
+<p>Memory 32-bit: Text = 2.9 MB Data = 61.3 MB Total = 64.2 MB<br />
+Memory 64-bit: Text = 3.8 MB Data = 75.1 MB Total = 78.9 MB<br />
+Size on disk = 40.3 MB</p>
 <img src="/{{site.baseurl}}public/fsion/size-by-files.png" title="size by files" />
 <p>Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
 The files contain the key changing attributes.
@@ -232,9 +232,9 @@ A database with a number of additional attributes would be expected to comfortab
 <h2>Conclusion</h2>
 <p>The file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
-This is not surprising since each 32-bit object has an 8 byte header and each 64-bit object has a 16 byte header, plus 4 and 8 bytes for each reference respectively.
-A whole single row <code>DataSeries</code> in the above table is only around 8 bytes.<br />
-If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
+This is not surprising since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
+A whole single row <code>DataSeries</code> in the above table is only around 8 bytes.</p>
+<p>If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
 <p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> post are too
 high as they don't take account of the DataSeries compression that is possible.</p>
