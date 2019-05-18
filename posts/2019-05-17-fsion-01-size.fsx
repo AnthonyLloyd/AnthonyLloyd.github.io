@@ -81,7 +81,7 @@ A database with a number of additional attributes would be expected to comfortab
 
 ## Conclusion
 
-The file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
+The database file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is [not surprising](https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/) since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
