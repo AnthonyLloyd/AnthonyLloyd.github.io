@@ -67,8 +67,8 @@ The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have `transaction_based_on` set to the original Transaction Id.
 Other processes would need to resolve data conflicts based on required business logic.
 
-Transactions are themselves Entities in the database so any context data such as time, user, process
-or source can be added.
+Transactions are themselves first class Entities in the database so any context data such as
+time, user, process or source can be added.
 
 ## Selector
 
@@ -81,7 +81,10 @@ The Selector takes the Transaction Id in all API functions and can be performed 
 Transaction Id.
 The same results will be returned for the same parameters any time in the future.
 This means Selection API calls are pure.
-Consistency of data over a number of database or cache calls is often overlooked.
+
+Transaction Id represents a consistent point in time.
+Long running processes can make several calls using the same Transaction Id. 
+Consistency of data in database or cache system design is often overlooked.
 
 ## View
 _WIP_

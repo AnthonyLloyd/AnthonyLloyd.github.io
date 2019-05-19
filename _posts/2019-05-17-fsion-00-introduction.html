@@ -47,8 +47,8 @@ following on from the Stores Ids.
 The Transactor if necessary (due to concurrent transactions) corrects these.
 Any corrected transactions have <code>transaction_based_on</code> set to the original Transaction Id.
 Other processes would need to resolve data conflicts based on required business logic.</p>
-<p>Transactions are themselves Entities in the database so any context data such as time, user, process
-or source can be added.</p>
+<p>Transactions are themselves first class Entities in the database so any context data such as
+time, user, process or source can be added.</p>
 <h2>Selector</h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
 <p>Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
@@ -56,8 +56,10 @@ and has an API for selecting data.</p>
 <p>The Selector takes the Transaction Id in all API functions and can be performed at any past
 Transaction Id.
 The same results will be returned for the same parameters any time in the future.
-This means Selection API calls are pure.
-Consistency of data over a number of database or cache calls is often overlooked.</p>
+This means Selection API calls are pure.</p>
+<p>Transaction Id represents a consistent point in time.
+Long running processes can make several calls using the same Transaction Id.
+Consistency of data in database or cache system design is often overlooked.</p>
 <h2>View</h2>
 <p><em>WIP</em></p>
 <p>Views are functions that can be passed to the Selector API to make selection easier and
