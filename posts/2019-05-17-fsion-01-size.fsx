@@ -12,7 +12,7 @@ Previously we introduced [Fsion - 0. Introduction]({% post_url 2019-05-17-fsion-
 The sample data set is around 10 months of daily position files for the 280
 [iShares](https://www.ishares.com/uk/intermediaries/en/products/etf-product-list#!type=emeaIshares&tab=overview&view=list)
 funds available online.
-All fields in the files are loaded apart from any that can be calculated.
+All fields in the files are loaded apart from any that can be derived.
 
 |---|---|
 | **Funds** | 280 |
@@ -82,7 +82,10 @@ A database with a number of additional attributes would be expected to comfortab
 ## Conclusion
 
 The database file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
-The data modelled is for one of the largest asset managers. Holding data compressed in memory must be possible for a number of financial databases.
+
+The data modelled is for one of the largest asset managers.
+Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded from the database.
+By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is [not surprising](https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/) since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
