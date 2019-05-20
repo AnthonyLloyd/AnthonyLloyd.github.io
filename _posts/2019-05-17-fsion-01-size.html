@@ -231,14 +231,14 @@ The files contain the key changing attributes.
 A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
 <h2>Conclusion</h2>
 <p>The database file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
-<p>The data modelled is for one of the largest financial asset managers.
-Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded.
-By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is <a href="https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/">not surprising</a> since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
 A whole single row DataSeries in the above table is only around 8 bytes.</p>
 <p>If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.</p>
+<p>The data modelled is for one of the largest financial asset managers.
+Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded.
+By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.</p>
 <p>It also shows the estimates in the <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a> post are too
 high as they don't take account of the DataSeries compression that is possible.</p>
 <p>Next, we will look at the performance characteristics of this database compared to other options.</p>

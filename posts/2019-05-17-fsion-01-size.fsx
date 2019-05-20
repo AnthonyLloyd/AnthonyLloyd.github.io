@@ -83,16 +83,16 @@ A database with a number of additional attributes would be expected to comfortab
 
 The database file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
-The data modelled is for one of the largest financial asset managers.
-Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded.
-By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.
-
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is [not surprising](https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/) since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
 A whole single row DataSeries in the above table is only around 8 bytes.  
 
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
+
+The data modelled is for one of the largest financial asset managers.
+Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded.
+By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.
 
 It also shows the estimates in the [Data-First Architecture]({% post_url 2018-02-01-architecture-data-first %}) post are too
 high as they don't take account of the DataSeries compression that is possible.
