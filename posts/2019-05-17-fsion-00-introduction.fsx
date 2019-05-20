@@ -43,7 +43,7 @@ in a completely lock-free multi-threaded read model for [Fsion](https://github.c
 
 [DataSeries.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs) / [DataSeriesTests.fs](https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs)
 
-DataSeries represent an ordered table of Reporting Date, Transaction Id and `int64` encoded
+DataSeries is an immutable collection representing an ordered table of Reporting Date, Transaction Id and `int64` encoded
 Values with the latest values at the top. This forms a [bitemporal](https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html)
 representation of each value in the database.
 
