@@ -31,7 +31,7 @@ This is encoded as a byte array.
 The first row is stored as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
 Each subsequent row is stored as a difference to the above field values as [varints](https://developers.google.com/protocol-buffers/docs/encoding).
 
-With sensible encoding using offsets and the fact that values tend to be close to zero, even single row `DataSeries`
+With sensible encoding using offsets and the fact that values tend to be close to zero, even single row DataSeries
 are several times smaller than a more standard representation.
 Since the table is ordered, and the values in each row are very likely to be close to the
 ones above, very high compression ratios are [possible](https://github.com/Genbox/CSharpFastPFOR).
@@ -85,7 +85,7 @@ The database file size is small enough to [store](https://github.com/AnthonyLloy
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is [not surprising](https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/) since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.
-A whole single row `DataSeries` in the above table is only around 8 bytes.  
+A whole single row DataSeries in the above table is only around 8 bytes.  
 
 If the DataSeries were not in a time series compressed format this object and pointer overhead would be a lot higher.
 This agrees with what is often found in server caches. Holding and tracking fine grained subsets of the database can actually use a lot of memory.
