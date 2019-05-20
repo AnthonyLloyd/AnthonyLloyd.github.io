@@ -83,8 +83,8 @@ A database with a number of additional attributes would be expected to comfortab
 
 The database file size is small enough to [store](https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp) in github and can be used going forward for testing and performance benchmarking.
 
-The data modelled is for one of the largest asset managers.
-Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded from the database.
+The data modelled is for one of the largest financial asset managers.
+Fast to calculate derived data such as profit and returns (which also tend to be costly to store) should be excluded.
 By doing this and storing only transaction data compressed in memory it is possible to use Fsion for many financial databases.
 
 Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
