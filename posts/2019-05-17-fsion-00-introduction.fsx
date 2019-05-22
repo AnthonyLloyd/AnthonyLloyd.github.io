@@ -119,7 +119,7 @@ Multiple Selector Stores can be run and filtered as a cache on the client.
 
 The project continues to be work in progress.
 Next steps are to make the API as type-safe as possible in terms of Attributes, Transactions
-and Selection.
+and Selection with schema being defined in code.
 Work will also be done to make sure the API is resilient and performance optimised.
 The roadmap can be found [here](https://github.com/AnthonyLloyd/Fsion/#roadmap).
 
