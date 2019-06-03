@@ -1,1 +1,1 @@
-Personal blog on F# and maybe a little maths.
+Personal blog on coding and maybe a little maths.
