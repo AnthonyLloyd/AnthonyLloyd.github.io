@@ -94,7 +94,7 @@ The complexity limit had been reached. This is particularly true of many C++ qua
 
 Using a high level functional language with ten times less code provides simplicity to explore better algorithms and use generic performance techniques such as asynchronous programming and memoization.   
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/perf/cpp.png" title="C++"/>
+<a href="http://flyingfrogblog.blogspot.com/2015/11/c-vs-c-performance-deleted.html"><img style="border:1px solid black" src="/{{site.baseurl}}public/perf/cpp.png" title="C++ vs C# - Jon Harrop"/></a>
 
 Performance is complicated. It is often more about the movement of data than the calculation itself.
 I prefer to start in the highest level language (F#) and move an algorithm to the lowest level language (C) as a last resort.
