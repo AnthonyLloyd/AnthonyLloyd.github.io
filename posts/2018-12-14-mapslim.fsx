@@ -5,11 +5,12 @@ title: "MapSlim - From DictionarySlim to Fsion"
 tags: [mapslim,setslim,listslim,dictionaryslim,fsion]
 description: "MapSlim - From DictionarySlim to Fsion"
 keywords: F#, mapslim, setslim, listslim, dictionyslim, fsion
-exclude: true
 \---
 *)
 
 (**
+
+PLEASE NOTE SOURCE CODE IS NO LONGER AVAILABLE AND THE POST IS HERE JUST FOR INFORMATION
 
 This post is part of the [F# Advent Calendar 2018](https://sergeytihon.com/2018/10/22/f-advent-calendar-in-english-2018/) series.
 Many thanks again to Sergey Tihon for organizing these.

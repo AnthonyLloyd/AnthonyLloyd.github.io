@@ -5,8 +5,9 @@ title: "Fsion - 0. Introduction"
 tags: [f#,fsion,database,timeseries]
 description: "Fsion - 0. Introduction"
 keywords: F#, fsion, database, timeseries
-exclude: true
 \---
+
+PLEASE NOTE SOURCE CODE IS NO LONGER AVAILABLE AND THE POST IS HERE JUST FOR INFORMATION
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) is an EAVT (Entity, Attribute, Value, Time) time-series database for F#.
 
@@ -19,10 +20,6 @@ Other key ideas can be found [here](https://github.com/AnthonyLloyd/Fsion#key-id
 
 [Fsion](https://github.com/AnthonyLloyd/Fsion) has been designed with the finance domain in mind but could be equally applicable to
 domains that requires a degree of time-series, historic query or audit functionality.
-
-This series of blogs and the [repo](https://github.com/AnthonyLloyd/Fsion) have been submitted
-for the [Applied F# Challenge](http://foundation.fsharp.org/applied_fsharp_challenge) in
-the category of F# in your domain (finance).
 
 The following sections outline the main [Fsion](https://github.com/AnthonyLloyd/Fsion) components.
 

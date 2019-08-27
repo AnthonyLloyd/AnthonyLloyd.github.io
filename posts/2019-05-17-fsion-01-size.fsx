@@ -5,8 +5,9 @@ title: "Fsion - 1. Size"
 tags: [f#,fsion,database,timeseries]
 description: "Fsion - 1. Size"
 keywords: F#, fsion, database, timeseries
-exclude: true
 \---
+
+PLEASE NOTE SOURCE CODE IS NO LONGER AVAILABLE AND THE POST IS HERE JUST FOR INFORMATION
 
 Previously we introduced [Fsion - 0. Introduction]({% post_url 2019-05-17-fsion-00-introduction %}), now we will explore database size.
 

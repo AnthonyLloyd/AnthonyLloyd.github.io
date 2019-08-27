@@ -5,8 +5,9 @@ title: "F# Implementation of Scala ZIO"
 tags: [io,zio,async,reader,result]
 description: "F# Implementation of Scala ZIO"
 keywords: F#, io, zio, async, result
-exclude: true
 \---
+
+PLEASE NOTE SOURCE CODE IS NO LONGER AVAILABLE AND THE POST IS HERE JUST FOR INFORMATION
 
 This is a prototype implementation of [Scala ZIO](https://github.com/scalaz/scalaz-zio) in F#.
 It aims to be a skeleton of ZIO features such that additional functions can be easily fleshed out.
