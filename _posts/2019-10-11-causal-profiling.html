@@ -10,16 +10,90 @@ exclude: true
 <h2>Simple model</h2>
 <h2>Faithful model</h2>
 <p>Causal profiling<br />
-Iterations: 499<br />
-| Region         |  Count  |  Time%  |    +10%     |     +5%     |     -5%     |    -10%     |    -15%     |    -20%     |
-|:--------------:|:-------:|:-------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
-| rnds           |    1629 |    94.9 |  -2.4 ± 0.5 |  -1.2 ± 0.6 |   0.3 ± 0.5 |   1.7 ± 0.5 |   2.2 ± 0.5 |   4.9 ± 0.6 |
-| bytes          |    1627 |   356.9 |  -7.2 ± 0.6 |  -3.2 ± 0.6 |   3.5 ± 0.6 |   6.5 ± 0.5 |  10.5 ± 0.5 |  13.4 ± 0.5 |
-| one            |       1 |     6.8 |  -0.4 ± 0.5 |  -0.0 ± 0.5 |  -0.4 ± 0.5 |  -0.3 ± 0.5 |  -0.0 ± 0.5 |   0.4 ± 0.5 |
-| write          |    1630 |    18.9 |  -0.9 ± 0.5 |  -0.4 ± 0.5 |  -0.3 ± 0.5 |  -0.3 ± 0.5 |  -0.1 ± 0.5 |   0.2 ± 0.5 |</p>
+Iterations: 499</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><p>Region</p></th>
+<th align="center"><p>Count</p></th>
+<th align="center"><p>Time%</p></th>
+<th align="center"><p>+10%</p></th>
+<th align="center"><p>+5%</p></th>
+<th align="center"><p>-5%</p></th>
+<th align="center"><p>-10%</p></th>
+<th align="center"><p>-15%</p></th>
+<th align="center"><p>-20%</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><p>rnds</p></td>
+<td align="center"><p>1629</p></td>
+<td align="center"><p>94.9</p></td>
+<td align="center"><p>-2.4 ± 0.5</p></td>
+<td align="center"><p>-1.2 ± 0.6</p></td>
+<td align="center"><p>0.3 ± 0.5</p></td>
+<td align="center"><p>1.7 ± 0.5</p></td>
+<td align="center"><p>2.2 ± 0.5</p></td>
+<td align="center"><p>4.9 ± 0.6</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>bytes</p></td>
+<td align="center"><p>1627</p></td>
+<td align="center"><p>356.9</p></td>
+<td align="center"><p>-7.2 ± 0.6</p></td>
+<td align="center"><p>-3.2 ± 0.6</p></td>
+<td align="center"><p>3.5 ± 0.6</p></td>
+<td align="center"><p>6.5 ± 0.5</p></td>
+<td align="center"><p>10.5 ± 0.5</p></td>
+<td align="center"><p>13.4 ± 0.5</p></td>
+</tr>
+<tr class="odd">
+<td align="center"><p>one</p></td>
+<td align="center"><p>1</p></td>
+<td align="center"><p>6.8</p></td>
+<td align="center"><p>-0.4 ± 0.5</p></td>
+<td align="center"><p>-0.0 ± 0.5</p></td>
+<td align="center"><p>-0.4 ± 0.5</p></td>
+<td align="center"><p>-0.3 ± 0.5</p></td>
+<td align="center"><p>-0.0 ± 0.5</p></td>
+<td align="center"><p>0.4 ± 0.5</p></td>
+</tr>
+<tr class="even">
+<td align="center"><p>write</p></td>
+<td align="center"><p>1630</p></td>
+<td align="center"><p>18.9</p></td>
+<td align="center"><p>-0.9 ± 0.5</p></td>
+<td align="center"><p>-0.4 ± 0.5</p></td>
+<td align="center"><p>-0.3 ± 0.5</p></td>
+<td align="center"><p>-0.3 ± 0.5</p></td>
+<td align="center"><p>-0.1 ± 0.5</p></td>
+<td align="center"><p>0.2 ± 0.5</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>Simple<br />
+Causal profiling...<br />
+Iterations: 300<br />
+| Region         |  Count  |  Time%  |     +10%     |      +5%     |      -5%     |     -10%     |     -15%     |     -20%     |
+|:---------------|--------:|--------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
+| rnds           |    1629 |    87.7 |  -2.4 ± 0.5  |  -1.3 ± 0.5  |   1.9 ± 0.6  |   1.7 ± 0.6  |   3.7 ± 0.5  |   4.3 ± 0.6  |
+| bytes          |    1627 |   340.3 |  -8.1 ± 0.5  |  -4.4 ± 0.5  |   4.1 ± 0.5  |   7.2 ± 0.6  |  11.7 ± 0.5  |  14.8 ± 0.6  |
+| one            |       1 |     5.4 |  -0.3 ± 0.5  |  -0.4 ± 0.5  |   0.8 ± 0.6  |   0.3 ± 0.6  |   0.3 ± 0.6  |   0.6 ± 0.6  |
+| write          |    1630 |    15.1 |  -1.3 ± 0.5  |  -0.8 ± 0.5  |   0.5 ± 0.6  |  -0.4 ± 0.6  |   1.1 ± 0.6  |   1.0 ± 0.6  |
+Faithful<br />
+Causal profiling...<br />
+Iterations: 300<br />
+| Region         |  Count  |  Time%  |     +10%     |      +5%     |      -5%     |     -10%     |     -15%     |     -20%     |
+|:---------------|--------:|--------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
+| rnds           |    1629 |    87.7 |  -2.7 ± 0.6  |  -1.1 ± 0.5  |   0.1 ± 0.5  |   1.6 ± 0.5  |   2.7 ± 0.5  |   3.9 ± 0.5  |
+| bytes          |    1627 |   286.6 |  -7.9 ± 0.5  |  -4.3 ± 0.5  |   2.7 ± 0.5  |   6.7 ± 0.5  |   9.3 ± 0.5  |  12.8 ± 0.5  |
+| one            |       1 |     6.7 |  -0.5 ± 0.5  |  -0.2 ± 0.5  |  -0.3 ± 0.5  |   0.4 ± 0.5  |   0.2 ± 0.5  |   0.3 ± 0.5  |
+| write          |    1630 |    16.9 |  -1.0 ± 0.5  |  -0.7 ± 0.5  |  -0.3 ± 0.5  |   0.3 ± 0.5  |   0.5 ± 0.5  |   0.8 ± 0.5  |</p>
 <h2>Conclusion</h2>
-<p>Well not so much of a conclusion as more of a question.
-What do we think simple or faithful?
+<p>Well not so much of a conclusion as more of a question.<br />
+What do we think simple or faithful?<br />
 I may not be fully appreciating why the faithful model represents reducing a region.</p>
 
 
