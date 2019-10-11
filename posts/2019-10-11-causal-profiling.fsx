@@ -80,6 +80,6 @@ This would be a simple extension to the existing implementation.
 
 It's amazing what can be achieved with a good idea (stolen!), some statistics and less than 200 lines of code.
 This technique and [Expecto's](https://github.com/haf/expecto) `isFasterThan` created from a previous [post]({% post_url 2016-05-20-performance-testing %})
-are examples of how a small amount of code can produce fast, simple, statistically robust performance tools.
+are examples of how a small amount of code can produce fast, simple and statistically robust performance tools.
   
 *)
