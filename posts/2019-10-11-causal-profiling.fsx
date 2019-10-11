@@ -65,20 +65,21 @@ The summary table show:
 
 - Region - the region name defined in `regionStart`.
 - Count - the number of times the region code is called in each run.
-- Time% - the total elapsed time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.
+- Time% - the total time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.
 - +n% - summary median and error when the region itself is slowed down.
 - -n% - summary median and error when other regions are slowed down.
 
 ## Conclusion
 
-The results from the simple and full implementation are the same for the Fasta example and within the error margin.
+The results for the simple and full implementation are within the error margin for the Fasta example.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
 The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.
 
 The talk above discusses how this technique can be extended to profile throughput and latency.
 This would be a simple extension to the existing implementation.
 
-It's amazing what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
-This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto's](https://github.com/haf/expecto) `isFasterThan` produce fast, simple, statistically robust performance tools.
+It's amazing what can be achieved with a good idea (stolen!), some statistics and less than 200 lines of code.
+This technique and [Expecto's](https://github.com/haf/expecto) `isFasterThan` created from a previous [post]({% post_url 2016-05-20-performance-testing %})
+are examples of how a small amount of code can produce fast, simple, statistically robust performance tools.
   
 *)
