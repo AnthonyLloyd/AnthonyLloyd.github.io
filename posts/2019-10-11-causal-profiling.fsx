@@ -58,26 +58,20 @@ This has to be repeated a number of times and the results are summarised after e
 The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
 
-Causal profiling...
-Iterations: 300
-
-| Region         |  Count  |  Time%  |     +10%     |      +5%     |      -5%     |     -10%     |     -15%     |     -20%     |
-|:---------------|--------:|--------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
-| rnds           |    1629 |    20.4 |  -2.8 ± 0.6  |  -0.6 ± 0.5  |   2.2 ± 0.5  |   2.0 ± 0.5  |   3.2 ± 0.6  |   3.9 ± 0.6  |
-| bytes          |    1627 |    78.3 |  -7.7 ± 0.6  |  -4.5 ± 0.6  |   4.2 ± 0.5  |   7.6 ± 0.6  |  12.3 ± 0.6  |  13.8 ± 0.6  |
-| one            |       1 |     1.9 |  -0.8 ± 0.6  |  -0.5 ± 0.5  |   0.6 ± 0.5  |  -0.7 ± 0.5  |   0.3 ± 0.6  |  -0.1 ± 0.6  |
-| write          |    1630 |     5.8 |  -1.2 ± 0.6  |  -0.8 ± 0.5  |   0.6 ± 0.5  |  -0.3 ± 0.6  |   1.4 ± 0.6  |   1.2 ± 0.6  |
+<img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 
 The summary table show:
 
 - Region - the region name defined in `regionStart`.
-- Count - the number of times the region code is called.
-- Time% - the total time elapsed in the region divided by the total elasped time times number of cores.
+- Count - the number of times the region code is called in each run.
+- Time% - the total time elapsed in the region divided by the total elasped time times number of cores. (Approx only due to small sample)
 - +n% - summary median and error when the region itself is slowed down.
 - -n% - summary median and error when other regions are slowed down.
 
 ## Conclusion
 
+The results form the simple and full implementation are the same with the error for Fasta.
+The full implementation due to how it is calculated has a smaller error for the same number of iterations.
 The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.
 
 The talk above discusses how this technique can be extended to profile throughput and latency.

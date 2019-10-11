@@ -37,80 +37,19 @@ This defines an iteration.
 This has to be repeated a number of times and the results are summarised after each iteration.</p>
 <p>The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a>.</p>
-<p>Causal profiling...
-Iterations: 300</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left"><p>Region</p></th>
-<th align="right"><p>Count</p></th>
-<th align="right"><p>Time%</p></th>
-<th align="right"><p>+10%</p></th>
-<th align="right"><p>+5%</p></th>
-<th align="right"><p>-5%</p></th>
-<th align="right"><p>-10%</p></th>
-<th align="right"><p>-15%</p></th>
-<th align="right"><p>-20%</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><p>rnds</p></td>
-<td align="right"><p>1629</p></td>
-<td align="right"><p>20.4</p></td>
-<td align="right"><p>-2.8 ± 0.6</p></td>
-<td align="right"><p>-0.6 ± 0.5</p></td>
-<td align="right"><p>2.2 ± 0.5</p></td>
-<td align="right"><p>2.0 ± 0.5</p></td>
-<td align="right"><p>3.2 ± 0.6</p></td>
-<td align="right"><p>3.9 ± 0.6</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>bytes</p></td>
-<td align="right"><p>1627</p></td>
-<td align="right"><p>78.3</p></td>
-<td align="right"><p>-7.7 ± 0.6</p></td>
-<td align="right"><p>-4.5 ± 0.6</p></td>
-<td align="right"><p>4.2 ± 0.5</p></td>
-<td align="right"><p>7.6 ± 0.6</p></td>
-<td align="right"><p>12.3 ± 0.6</p></td>
-<td align="right"><p>13.8 ± 0.6</p></td>
-</tr>
-<tr class="odd">
-<td align="left"><p>one</p></td>
-<td align="right"><p>1</p></td>
-<td align="right"><p>1.9</p></td>
-<td align="right"><p>-0.8 ± 0.6</p></td>
-<td align="right"><p>-0.5 ± 0.5</p></td>
-<td align="right"><p>0.6 ± 0.5</p></td>
-<td align="right"><p>-0.7 ± 0.5</p></td>
-<td align="right"><p>0.3 ± 0.6</p></td>
-<td align="right"><p>-0.1 ± 0.6</p></td>
-</tr>
-<tr class="even">
-<td align="left"><p>write</p></td>
-<td align="right"><p>1630</p></td>
-<td align="right"><p>5.8</p></td>
-<td align="right"><p>-1.2 ± 0.6</p></td>
-<td align="right"><p>-0.8 ± 0.5</p></td>
-<td align="right"><p>0.6 ± 0.5</p></td>
-<td align="right"><p>-0.3 ± 0.6</p></td>
-<td align="right"><p>1.4 ± 0.6</p></td>
-<td align="right"><p>1.2 ± 0.6</p></td>
-</tr>
-</tbody>
-</table>
-
+<img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 <p>The summary table show:</p>
 <ul>
 <li>Region - the region name defined in <code>regionStart</code>.</li>
-<li>Count - the number of times the region code is called.</li>
-<li>Time% - the total time elapsed in the region divided by the total elasped time times number of cores.</li>
+<li>Count - the number of times the region code is called in each run.</li>
+<li>Time% - the total time elapsed in the region divided by the total elasped time times number of cores. (Approx only due to small sample)</li>
 <li>+n% - summary median and error when the region itself is slowed down.</li>
 <li>-n% - summary median and error when other regions are slowed down.</li>
 </ul>
 <h2>Conclusion</h2>
-<p>The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.</p>
+<p>The results form the simple and full implementation are the same with the error for Fasta.
+The full implementation due to how it is calculated has a smaller error for the same number of iterations.
+The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.</p>
 <p>The talk above discusses how this technique can be extended to profile throughput and latency.
 This would be a simple extension to the existing implementation.</p>
 <p>It's amazing what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
