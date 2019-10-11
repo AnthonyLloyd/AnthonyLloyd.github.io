@@ -33,7 +33,7 @@ This is going to need <code>SpinLock</code> (again to discourage a context switc
 <h2>Statistics</h2>
 <p>These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
-This is then repeated and the results are summarised after each iteration.</p>
+This is then repeated, and the results are summarised after each iteration.</p>
 <p>The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a>.</p>
 <p>Below is the output of the <a href="https://github.com/AnthonyLloyd/Causal">repo</a> Fasta example:</p>
@@ -42,7 +42,7 @@ Outliers are defined as measurements outside of 3 times MAD as described in a pr
 <ul>
 <li>Region - the region name defined in <code>regionStart</code>.</li>
 <li>Count - the number of times the region code is called in each run.</li>
-<li>Time% - the total time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.</li>
+<li>Time% - the total time in the region divided by the total elapsed time divided by the number of cores. This is only a small sample approximation.</li>
 <li>+n% - summary median and error when the region itself is slowed down.</li>
 <li>-n% - summary median and error when other regions are slowed down.</li>
 </ul>

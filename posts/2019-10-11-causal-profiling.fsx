@@ -52,7 +52,7 @@ The code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master/
 
 These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
-This is then repeated and the results are summarised after each iteration.
+This is then repeated, and the results are summarised after each iteration.
 
 The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
@@ -65,7 +65,7 @@ The summary table show:
 
 - Region - the region name defined in `regionStart`.
 - Count - the number of times the region code is called in each run.
-- Time% - the total time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.
+- Time% - the total time in the region divided by the total elapsed time divided by the number of cores. This is only a small sample approximation.
 - +n% - summary median and error when the region itself is slowed down.
 - -n% - summary median and error when other regions are slowed down.
 
