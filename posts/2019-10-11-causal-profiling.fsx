@@ -8,7 +8,7 @@ keywords: causal, profiling, performance
 \---
 
 Recently there was an interesting talk by Emery Berger on a multithreading profiling technique called causal profiling.
-The idea is by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.
+The idea is that by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r-TLSBdHe1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -19,7 +19,7 @@ This fits well with using a debug library in preference to step through debuggin
 
 ## Simple implementation
 
-There is a simpler way that could possibly achieve the same aim.
+There is a simpler way that could achieve the same aim.
 Like many physical systems there is a scale invariance in multithreaded systems.
 If all regions are proportionally slowed down, then the causal threading picture will not change. It is just like enlarging a photo.
 
@@ -73,7 +73,7 @@ The summary table shows:
 
 The results for the simple and full implementation are within the error margin for the Fasta example.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
-The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.
+The full implementation is probably what will be used going forward but it is good to keep the simple version for comparison.
 
 The talk above discusses how this technique can be extended to profile throughput and latency.
 This would be a simple extension to the existing implementation.

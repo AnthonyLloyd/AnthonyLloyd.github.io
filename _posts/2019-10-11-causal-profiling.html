@@ -6,13 +6,13 @@ description: "Causal Profiling in .NET"
 keywords: causal, profiling, performance
 ---
 <p>Recently there was an interesting talk by Emery Berger on a multithreading profiling technique called causal profiling.
-The idea is by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.</p>
+The idea is that by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r-TLSBdHe1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <p>The talk covers a C++ library called Coz. This post explores if this can be done in .NET.</p>
 <p>To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous <a href="{% post_url 2017-04-30-kicking-the-debugger %}">post</a>.</p>
 <h2>Simple implementation</h2>
-<p>There is a simpler way that could possibly achieve the same aim.
+<p>There is a simpler way that could achieve the same aim.
 Like many physical systems there is a scale invariance in multithreaded systems.
 If all regions are proportionally slowed down, then the causal threading picture will not change. It is just like enlarging a photo.</p>
 <p>So, if all regions apart from one are proportionally slowed down, and the run time is compared with a run where everything is slowed down, this virtual speed up can be deduced.</p>
@@ -49,7 +49,7 @@ Outliers are defined as measurements outside of 3 times MAD as described in a pr
 <h2>Conclusion</h2>
 <p>The results for the simple and full implementation are within the error margin for the Fasta example.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
-The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.</p>
+The full implementation is probably what will be used going forward but it is good to keep the simple version for comparison.</p>
 <p>The talk above discusses how this technique can be extended to profile throughput and latency.
 This would be a simple extension to the existing implementation.</p>
 <p>It's amazing what can be achieved with a good idea (stolen!), some statistics and less than 200 lines of code.
