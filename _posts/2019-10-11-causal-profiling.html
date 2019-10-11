@@ -4,13 +4,12 @@ title: "Causal Profiling in .NET"
 tags: [causal,profiling,performance]
 description: "Causal Profiling in .NET"
 keywords: causal, profiling, performance
-exclude: true
 ---
 <p>Recently there was an interesting talk by Emery Berger on a multithreading profiling technique called causal profiling.
 The idea is by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r-TLSBdHe1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <p>The talk covers a C++ library called coz. This post explores if this can be done in .NET.</p>
-<p>To achieve this code to define the start and end of each region will have to be added to the codebase directly.
+<p>To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous <a href="{% post_url 2017-04-30-kicking-the-debugger %}">post</a>.</p>
 <h2>Simple implementation</h2>
 <p>There is a simpler way that could possibly achieve the same aim.
@@ -25,29 +24,30 @@ Spinning is necessary rather than sleeping as it needs to simulate work and not 
 <p>The full implementation is more involved due to two main issues.</p>
 <p>Firstly, the slow down for regions will depend on measurements of the overlap with some other region.
 This region may be being run on multiple threads and the slow down should not be double counted.
-It is the overlap with one or more running.</p>
+It is the overlap with one or more.</p>
 <p>Secondly, this interesting bookkeeping will inevitably lead to efficient locking code being needed.
 <code>Interlocked</code> low locking will not work as there are multiple variables to track (region thread count, region on since and total delay).
 This is going to need <code>SpinLock</code>, again to discourage a context switch, and as little code as possible.</p>
 <img src="/{{site.baseurl}}public/perf/CausalFull.png" title="Perf.fs"/>
 <p>This code can be found <a href="https://github.com/AnthonyLloyd/Causal/blob/master/dbg/Perf.fs">here</a>.</p>
 <h2>Statistics</h2>
-<p>These measurements need to be run for an array of code delay percentages for each region defined.
+<p>These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
-This has to be repeated a number of times and the results are summarised after each iteration.</p>
+This is then repeated a number of times and the results are summarised after each iteration.</p>
 <p>The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a>.</p>
+<p>Below is the output for the <a href="https://github.com/AnthonyLloyd/Causal">repo</a> Fasta example:</p>
 <img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 <p>The summary table show:</p>
 <ul>
 <li>Region - the region name defined in <code>regionStart</code>.</li>
 <li>Count - the number of times the region code is called in each run.</li>
-<li>Time% - the total time elapsed in the region divided by the total elasped time times number of cores. (Approx only due to small sample)</li>
+<li>Time% - the total elapsed time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.</li>
 <li>+n% - summary median and error when the region itself is slowed down.</li>
 <li>-n% - summary median and error when other regions are slowed down.</li>
 </ul>
 <h2>Conclusion</h2>
-<p>The results form the simple and full implementation are the same with the error for Fasta.
+<p>The results from the simple and full implementation are the same for the Fasta example and within the error margin.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
 The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.</p>
 <p>The talk above discusses how this technique can be extended to profile throughput and latency.
