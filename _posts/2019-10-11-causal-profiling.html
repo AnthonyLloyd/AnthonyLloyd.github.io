@@ -43,8 +43,8 @@ Outliers are defined as measurements outside of 3 times MAD as described in a pr
 <li>Region - the region name defined in <code>regionStart</code>.</li>
 <li>Count - the number of times the region code is called in each run.</li>
 <li>Time% - the total time in the region divided by the total elapsed time divided by the number of cores. This is only a small sample approximation.</li>
-<li>+n% - summary median and error when the region itself is slowed down.</li>
-<li>-n% - summary median and error when other regions are slowed down.</li>
+<li>+n% - median and error program time % change when the region itself is slowed down by a given %.</li>
+<li>-n% - median and error program time % change when other regions are slowed down by a given %.</li>
 </ul>
 <h2>Conclusion</h2>
 <p>The results for the simple and full implementation are within the error margin for the Fasta example.

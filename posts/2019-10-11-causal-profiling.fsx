@@ -66,8 +66,8 @@ The summary table shows:
 - Region - the region name defined in `regionStart`.
 - Count - the number of times the region code is called in each run.
 - Time% - the total time in the region divided by the total elapsed time divided by the number of cores. This is only a small sample approximation.
-- +n% - summary median and error when the region itself is slowed down.
-- -n% - summary median and error when other regions are slowed down.
+- +n% - median and error program time % change when the region itself is slowed down by a given %.
+- -n% - median and error program time % change when other regions are slowed down by a given %.
 
 ## Conclusion
 
