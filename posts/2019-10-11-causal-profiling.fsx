@@ -67,7 +67,7 @@ The summary table shows:
 - Count - the number of times the region code is called in each run.
 - Time% - the total time in the region divided by the total elapsed time divided by the number of cores. This is only a small sample approximation.
 - +n% - median and error program time % change when the region itself is slowed down by a given %.
-- -n% - median and error program time % change when other regions are slowed down by a given %.
+- -n% - median and error inferred program time % change when other regions are slowed down by a given % to model a virtual speed up of this region.
 
 ## Conclusion
 
