@@ -5,7 +5,6 @@ title: "Causal Profiling in .NET"
 tags: [causal,profiling,performance]
 description: "Causal Profiling in .NET"
 keywords: causal, profiling, performance
-exclude: true
 \---
 
 Recently there was an interesting talk by Emery Berger on a multithreading profiling technique called causal profiling.
@@ -15,7 +14,7 @@ The idea is by slowing everything else down running concurrently with a region o
 
 The talk covers a C++ library called coz. This post explores if this can be done in .NET.
 
-To achieve this code to define the start and end of each region will have to be added to the codebase directly.
+To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous [post]({% post_url 2017-04-30-kicking-the-debugger %}).
 
 ## Simple implementation
@@ -39,7 +38,7 @@ The full implementation is more involved due to two main issues.
 
 Firstly, the slow down for regions will depend on measurements of the overlap with some other region.
 This region may be being run on multiple threads and the slow down should not be double counted.
-It is the overlap with one or more running.
+It is the overlap with one or more.
 
 Secondly, this interesting bookkeeping will inevitably lead to efficient locking code being needed.
 `Interlocked` low locking will not work as there are multiple variables to track (region thread count, region on since and total delay).
@@ -51,12 +50,14 @@ This code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master
 
 ## Statistics
 
-These measurements need to be run for an array of code delay percentages for each region defined.
+These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
-This has to be repeated a number of times and the results are summarised after each iteration.
+This is then repeated a number of times and the results are summarised after each iteration.
 
 The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
+
+Below is the output for the [repo](https://github.com/AnthonyLloyd/Causal) Fasta example:
 
 <img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 
@@ -64,13 +65,13 @@ The summary table show:
 
 - Region - the region name defined in `regionStart`.
 - Count - the number of times the region code is called in each run.
-- Time% - the total time elapsed in the region divided by the total elasped time times number of cores. (Approx only due to small sample)
+- Time% - the total elapsed time in the region divided by the total elasped time divided by the number of cores. This is only a small sample approximation.
 - +n% - summary median and error when the region itself is slowed down.
 - -n% - summary median and error when other regions are slowed down.
 
 ## Conclusion
 
-The results form the simple and full implementation are the same with the error for Fasta.
+The results from the simple and full implementation are the same for the Fasta example and within the error margin.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
 The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.
 
@@ -79,5 +80,5 @@ This would be a simple extension to the existing implementation.
 
 It's amazing what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
 This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto](https://github.com/haf/expecto) produce fast, simple, statistically robust performance tools.
-
+  
 *)
