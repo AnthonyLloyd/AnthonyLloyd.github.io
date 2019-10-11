@@ -12,7 +12,7 @@ The idea is by slowing everything else down running concurrently with a region o
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r-TLSBdHe1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-The talk covers a C++ library called coz. This post explores if this can be done in .NET.
+The talk covers a C++ library called Coz. This post explores if this can be done in .NET.
 
 To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous [post]({% post_url 2017-04-30-kicking-the-debugger %}).

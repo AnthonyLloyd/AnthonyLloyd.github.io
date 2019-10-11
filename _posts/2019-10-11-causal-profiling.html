@@ -8,7 +8,7 @@ keywords: causal, profiling, performance
 <p>Recently there was an interesting talk by Emery Berger on a multithreading profiling technique called causal profiling.
 The idea is by slowing everything else down running concurrently with a region of code, you can infer what the effect would be of speeding up that code.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r-TLSBdHe1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p>The talk covers a C++ library called coz. This post explores if this can be done in .NET.</p>
+<p>The talk covers a C++ library called Coz. This post explores if this can be done in .NET.</p>
 <p>To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous <a href="{% post_url 2017-04-30-kicking-the-debugger %}">post</a>.</p>
 <h2>Simple implementation</h2>
