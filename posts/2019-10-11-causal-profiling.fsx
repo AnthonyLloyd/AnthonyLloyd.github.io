@@ -61,7 +61,7 @@ Below is the output of the [repo](https://github.com/AnthonyLloyd/Causal) Fasta 
 
 <img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 
-The summary table show:
+The summary table shows:
 
 - Region - the region name defined in `regionStart`.
 - Count - the number of times the region code is called in each run.
