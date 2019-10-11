@@ -30,7 +30,7 @@ Spinning is necessary rather than sleeping as it needs to simulate work and not 
 
 <img src="/{{site.baseurl}}public/perf/CausalSimple.png" title="PerfSimple.fs"/>
 
-This code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master/dbg/PerfSimple.fs).
+The code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master/dbg/PerfSimple.fs).
 
 ## Full implementation
 
@@ -42,22 +42,22 @@ It is the overlap with one or more.
 
 Secondly, this interesting bookkeeping will inevitably lead to efficient locking code being needed.
 `Interlocked` low locking will not work as there are multiple variables to track (region thread count, region on since and total delay).
-This is going to need `SpinLock`, again to discourage a context switch, and as little code as possible.
+This is going to need `SpinLock` (again to discourage a context switch) and as little code as possible.
 
 <img src="/{{site.baseurl}}public/perf/CausalFull.png" title="Perf.fs"/>
 
-This code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master/dbg/Perf.fs).
+The code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master/dbg/Perf.fs).
 
 ## Statistics
 
 These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
-This is then repeated a number of times and the results are summarised after each iteration.
+This is then repeated and the results are summarised after each iteration.
 
 The summary statistics are the median and standard error after outliers are removed.
 Outliers are defined as measurements outside of 3 times MAD as described in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
 
-Below is the output for the [repo](https://github.com/AnthonyLloyd/Causal) Fasta example:
+Below is the output of the [repo](https://github.com/AnthonyLloyd/Causal) Fasta example:
 
 <img src="/{{site.baseurl}}public/perf/CausalProfiling.png" title="Casual Profiling"/>
 
@@ -79,6 +79,6 @@ The talk above discusses how this technique can be extended to profile throughpu
 This would be a simple extension to the existing implementation.
 
 It's amazing what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
-This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto](https://github.com/haf/expecto) produce fast, simple, statistically robust performance tools.
+This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto's](https://github.com/haf/expecto) `isFasterThan` produce fast, simple, statistically robust performance tools.
   
 *)
