@@ -21,9 +21,11 @@ This fits well with using a debug library in preference to step through debuggin
 ## Simple implementation
 
 There is a simpler way that could possibly achieve the same aim.
-Similar to many other physical systems there is a scale invariance in multithreaded systems.
-If all regions are proportionally slowed down then the causal threading picture will not change. It is just like enlarging a photo.
+Like many physical systems there is a scale invariance in multithreaded systems.
+If all regions are proportionally slowed down, then the causal threading picture will not change. It is just like enlarging a photo.
+
 So, if all regions apart from one are proportionally slowed down, and the run time is compared with a run where everything is slowed down, this virtual speed up can be deduced.
+
 This can be implemented by simply recording the region start and end time and spinning in the end region call for a given percentage of the region time span.
 Spinning is necessary rather than sleeping as it needs to simulate work and not encourage a context switch.
 
@@ -39,7 +41,7 @@ Firstly, the slow down for regions will depend on measurements of the overlap wi
 This region may be being run on multiple threads and the slow down should not be double counted.
 It is the overlap with one or more running.
 
-Secondly, this interesting bookeeping will inevitably lead to efficient locking code being needed.
+Secondly, this interesting bookkeeping will inevitably lead to efficient locking code being needed.
 `Interlocked` low locking will not work as there are multiple variables to track (region thread count, region on since and total delay).
 This is going to need `SpinLock`, again to discourage a context switch, and as little code as possible.
 
@@ -49,12 +51,12 @@ This code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master
 
 ## Statistics
 
-These measurments need to be run for an array of code delay percentages for each region defined.
+These measurements need to be run for an array of code delay percentages for each region defined.
 This defines an iteration.
-This has to be repeated a number of times and the results are summerised after each iterations.
+This has to be repeated a number of times and the results are summarised after each iteration.
 
-The summary statisics are the median and standard error after outliers are removed.
-Outliers are defined as measurements outside of 3 times MAD as defined in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
+The summary statistics are the median and standard error after outliers are removed.
+Outliers are defined as measurements outside of 3 times MAD as described in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
 
 Causal profiling...
 Iterations: 300
@@ -81,7 +83,7 @@ The full implementation is probably what will be used going forward but it is go
 The talk above discusses how this technique can be extended to profile throughput and latency.
 This would be a simple extension to the existing implementation.
 
-It amazes me what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
+It's amazing what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
 This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto](https://github.com/haf/expecto) produce fast, simple, statistically robust performance tools.
 
 *)
