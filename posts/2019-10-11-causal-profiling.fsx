@@ -22,9 +22,10 @@ This fits well with using a debug library in preference to step through debuggin
 
 There is a simpler way that could possibly achieve the same aim.
 Similar to many other physical systems there is a scale invariance in multithreaded systems.
-If all regions are proportially slowed down then the causal threading picture will not change. It is just like enlarging a photo.
-So if all regions apart from one are proportially slowed down, and the run time is compared with a run where everything is slowed down, this virtual speed up can be deduced.
+If all regions are proportionally slowed down then the causal threading picture will not change. It is just like enlarging a photo.
+So, if all regions apart from one are proportionally slowed down, and the run time is compared with a run where everything is slowed down, this virtual speed up can be deduced.
 This can be implemented by simply recording the region start and end time and spinning in the end region call for a given percentage of the region time span.
+Spinning is necessary rather than sleeping as it needs to simulate work and not encourage a context switch.
 
 <img src="/{{site.baseurl}}public/perf/CausalSimple.png" title="PerfSimple.fs"/>
 
@@ -40,7 +41,7 @@ It is the overlap with one or more running.
 
 Secondly, this interesting bookeeping will inevitably lead to efficient locking code being needed.
 `Interlocked` low locking will not work as there are multiple variables to track (region thread count, region on since and total delay).
-This is going to need `SpinLock` and as little code as possible.
+This is going to need `SpinLock`, again to discourage a context switch, and as little code as possible.
 
 <img src="/{{site.baseurl}}public/perf/CausalFull.png" title="Perf.fs"/>
 
@@ -48,33 +49,39 @@ This code can be found [here](https://github.com/AnthonyLloyd/Causal/blob/master
 
 ## Statistics
 
-[Get MAD with Outliers]({% post_url 2016-10-21-MAD-Outliers %})
+These measurments need to be run for an array of code delay percentages for each region defined.
+This defines an iteration.
+This has to be repeated a number of times and the results are summerised after each iterations.
 
-## Conclusion
+The summary statisics are the median and standard error after outliers are removed.
+Outliers are defined as measurements outside of 3 times MAD as defined in a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
 
-The talk above discusses how this technique can be extended to profile throughput and latency.
-This would be a fairly simple extension to the existing implementation.
-
-It always amazes me what can be achieved with a good idea (stolen!), statistics and 200 lines of code.
-This technique similarly to a previous post on [Performance Testing]({% post_url 2016-05-20-performance-testing %}) produces a simple statistically robust performance test. 
-
-Simple
 Causal profiling...
 Iterations: 300
+
 | Region         |  Count  |  Time%  |     +10%     |      +5%     |      -5%     |     -10%     |     -15%     |     -20%     |
 |:---------------|--------:|--------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
 | rnds           |    1629 |    20.4 |  -2.8 ± 0.6  |  -0.6 ± 0.5  |   2.2 ± 0.5  |   2.0 ± 0.5  |   3.2 ± 0.6  |   3.9 ± 0.6  |
 | bytes          |    1627 |    78.3 |  -7.7 ± 0.6  |  -4.5 ± 0.6  |   4.2 ± 0.5  |   7.6 ± 0.6  |  12.3 ± 0.6  |  13.8 ± 0.6  |
 | one            |       1 |     1.9 |  -0.8 ± 0.6  |  -0.5 ± 0.5  |   0.6 ± 0.5  |  -0.7 ± 0.5  |   0.3 ± 0.6  |  -0.1 ± 0.6  |
 | write          |    1630 |     5.8 |  -1.2 ± 0.6  |  -0.8 ± 0.5  |   0.6 ± 0.5  |  -0.3 ± 0.6  |   1.4 ± 0.6  |   1.2 ± 0.6  |
-Faithful
-Causal profiling...
-Iterations: 300
-| Region         |  Count  |  Time%  |     +10%     |      +5%     |      -5%     |     -10%     |     -15%     |     -20%     |
-|:---------------|--------:|--------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
-| rnds           |    1629 |    22.4 |  -2.1 ± 0.7  |  -0.9 ± 0.6  |   1.1 ± 0.6  |   1.7 ± 0.6  |   2.1 ± 0.6  |   4.2 ± 0.6  |
-| bytes          |    1627 |    82.5 |  -7.4 ± 0.7  |  -3.8 ± 0.7  |   3.2 ± 0.6  |   5.8 ± 0.6  |   9.1 ± 0.6  |  12.3 ± 0.6  |
-| one            |       1 |     0.3 |   0.2 ± 0.6  |   0.1 ± 0.6  |   0.1 ± 0.6  |   0.2 ± 0.6  |   0.2 ± 0.7  |   0.5 ± 0.6  |
-| write          |    1630 |     3.1 |  -0.6 ± 0.6  |  -0.2 ± 0.6  |   0.6 ± 0.6  |   0.2 ± 0.6  |   0.5 ± 0.6  |   0.1 ± 0.7  |
+
+The summary table show:
+
+- Region - the region name defined in `regionStart`.
+- Count - the number of times the region code is called.
+- Time% - the total time elapsed in the region divided by the total elasped time times number of cores.
+- +n% - summary median and error when the region itself is slowed down.
+- -n% - summary median and error when other regions are slowed down.
+
+## Conclusion
+
+The full implementation is probably what will be used going forward but it is good to keep the simple version around to compare.
+
+The talk above discusses how this technique can be extended to profile throughput and latency.
+This would be a simple extension to the existing implementation.
+
+It amazes me what can be achieved with a good idea (stolen!), some statistics and 200 lines of code.
+This technique and a previous [post]({% post_url 2016-05-20-performance-testing %}) used in [Expecto](https://github.com/haf/expecto) produce fast, simple, statistically robust performance tools.
 
 *)
