@@ -84,18 +84,30 @@ The code below should hopefully start to give an idea of what can be done.
 module OverflowAndNaNCheck =
     open Checked
 
-    let inline private isNaN v = match box v with | :? float as v -> Double.IsNaN v | _ -> false
-    let inline (/) a b = let c = a/b in if isNaN c then failwithf "NaN found: %A / %A = %A" a b c else c
-    let inline (+) a b = let c = a+b in if isNaN c then failwithf "NaN found: %A + %A = %A" a b c else c
-    let inline (-) a b = let c = a-b in if isNaN c then failwithf "NaN found: %A - %A = %A" a b c else c
-    let inline (*) a b = let c = a*b in if isNaN c then failwithf "NaN found: %A * %A = %A" a b c else c
-    let inline ( ** ) a b = let c = a**b in if isNaN c then failwithf "NaN found: %A ** %A = %A" a b c else c
-    let inline sqrt a = let c = sqrt a in if isNaN c then failwithf "NaN found: sqrt %A = %A" a c else c
-    let inline log a = let c = log a in if isNaN c then failwithf "NaN found: log %A = %A" a c else c
-    let inline log10 a = let c = log10 a in if isNaN c then failwithf "NaN found: log10 %A = %A" a c else c
-    let inline asin a = let c = asin a in if isNaN c then failwithf "NaN found: asin %A = %A" a c else c
-    let inline acos a = let c = acos a in if isNaN c then failwithf "NaN found: acos %A = %A" a c else c
-    let inline atan a = let c = atan a in if isNaN c then failwithf "NaN found: atan %A = %A" a c else c
+    let inline private isNaN v =
+        match box v with | :? float as v -> Double.IsNaN v | _ -> false
+    let inline (/) a b =
+        let c = a/b in if isNaN c then failwithf "NaN found: %A / %A = %A" a b c else c
+    let inline (+) a b =
+        let c = a+b in if isNaN c then failwithf "NaN found: %A + %A = %A" a b c else c
+    let inline (-) a b =
+        let c = a-b in if isNaN c then failwithf "NaN found: %A - %A = %A" a b c else c
+    let inline (*) a b =
+        let c = a*b in if isNaN c then failwithf "NaN found: %A * %A = %A" a b c else c
+    let inline ( ** ) a b =
+        let c = a**b in if isNaN c then failwithf "NaN found: %A ** %A = %A" a b c else c
+    let inline sqrt a =
+        let c = sqrt a in if isNaN c then failwithf "NaN found: sqrt %A = %A" a c else c
+    let inline log a =
+        let c = log a in if isNaN c then failwithf "NaN found: log %A = %A" a c else c
+    let inline log10 a =
+        let c = log10 a in if isNaN c then failwithf "NaN found: log10 %A = %A" a c else c
+    let inline asin a =
+        let c = asin a in if isNaN c then failwithf "NaN found: asin %A = %A" a c else c
+    let inline acos a =
+        let c = acos a in if isNaN c then failwithf "NaN found: acos %A = %A" a c else c
+    let inline atan a =
+        let c = atan a in if isNaN c then failwithf "NaN found: atan %A = %A" a c else c
 
 module Dbg =
     let private rand = Random()
@@ -128,9 +140,18 @@ module Dbg =
         let s = Seq.cache s
         Seq.iter (write "%s: %A" desc) s
         s
-    let fun1 desc (f:'a->'b) = fun a -> let b = f a in write "%s - Input: %A\t\t Output: %A" desc a b; b
-    let fun2 desc (f:'a->'b->'c) = fun a b -> let c = f a b in write "%s - Input: %A\t\t Output: %A" desc (a,b) c; c
-    let fun3 desc (f:'a->'b->'c->'d) = fun a b c -> let d = f a b c in write "%s - Input: %A\t\t Output: %A" desc (a,b,c) d; d
+    let fun1 desc (f:'a->'b) =
+        fun a ->
+            let b = f a
+            write "%s - Input: %A\t\t Output: %A" desc a b; b
+    let fun2 desc (f:'a->'b->'c) =
+        fun a b ->
+            let c = f a b
+            write "%s - Input: %A\t\t Output: %A" desc (a,b) c; c
+    let fun3 desc (f:'a->'b->'c->'d) =
+        fun a b c ->
+            let d = f a b c
+            write "%s - Input: %A\t\t Output: %A" desc (a,b,c) d; d
     type counter(desc:string) =
         let mutable count = 0
         member __.Count = count

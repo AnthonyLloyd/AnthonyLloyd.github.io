@@ -393,7 +393,8 @@ module StatisticsTests =
     type Duplication =
         | Low | Medium | High
         member i.ToInt = match i with | Low->500000000 | Medium->5000 | High->50
-        override i.ToString() = match i with | Low->"Low" | Medium->"Medium" | High->"High"
+        override i.ToString() =
+            match i with | Low->"Low" | Medium->"Medium" | High->"High"
 
     type Sorted =
         | No | Part | Yes
@@ -410,16 +411,17 @@ module StatisticsTests =
             | Part ->
                 let a = List.sort l |> List.toArray
                 let len = Array.length a
-                Seq.iter (fun _ -> Statistics.swap a (r.Next len) (r.Next len)) {1..len/4}
+                Seq.iter (fun _ -> Statistics.swap a (r.Next len) (r.Next len))
+                         {1..len/4}
                 List.ofArray a
             )
 
     [<Fact>]
     let MedianPerfTest() =
-        printfn
-            "| Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |"
-        printfn
-            "|:-----------:|:----------:|:---------:|:---------:|:----------:|:---------:|"
+        "| Duplication |   Sorted   |  Current  |  MathNet  |  FullSort  |  1.000 =  |"
+        |> printfn
+        "|:-----------:|:----------:|:---------:|:---------:|:----------:|:---------:|"
+        |> printfn
         Seq.collect (fun d -> Seq.map (fun s -> (d,s),list d s) [No;Part;Yes])
             [Low;Medium;High]
         |> Seq.iter (fun ((d,s),lists) ->
@@ -430,8 +432,8 @@ module StatisticsTests =
             let p2 = timeStatistics medianQuickSelect
             let p3 = timeStatistics medianFullSort
             printfn
-                "|    %-6s   |    %-4s    |   1.000   |  %6.3f   |   %6.3f   |  %.4fs  |"
-                (string d) (string s) (p2.Mean/p1.Mean) (p3.Mean/p1.Mean) p1.Mean
+              "|    %-6s   |    %-4s    |   1.000   |  %6.3f   |   %6.3f   |  %.4fs  |"
+              (string d) (string s) (p2.Mean/p1.Mean) (p3.Mean/p1.Mean) p1.Mean
         )
 (**
 

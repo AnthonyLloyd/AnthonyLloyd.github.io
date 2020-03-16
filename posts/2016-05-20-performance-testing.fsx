@@ -77,9 +77,11 @@ module Statistics =
     let scale f s = {s with Mean=s.Mean*f;Variance=s.Variance*sqr f}
 
     /// Single iteration statistics for a given iteration count and total statistics.
-    let singleIteration ic s = {N=s.N*ic;Mean=s.Mean/float ic;Variance=s.Variance/float ic}
+    let singleIteration ic s =
+        {N=s.N*ic;Mean=s.Mean/float ic;Variance=s.Variance/float ic}
 
-    /// Student's t-distribution inverse for 0.1% confidence level by degrees of freedom.
+    /// Student's t-distribution inverse for 0.1% confidence level by
+    /// degrees of freedom.
     let private tInv = 
         [|636.6;31.60;12.92;8.610;6.869;5.959;5.408;5.041;4.781;4.587;4.437;4.318;4.221;
           4.140;4.073;4.015;3.965;3.922;3.883;3.850;3.819;3.792;3.768;3.745;3.725;3.707;
@@ -102,7 +104,8 @@ module Statistics =
 
     /// Welch's t-test for a given Welch statistic to a confidence level of 0.1%.
     let welchTest w =
-        if abs w.T < Array.get tInv (min w.DF (Array.length tInv) - 1) then 0 else sign w.T
+        if abs w.T < Array.get tInv (min w.DF (Array.length tInv) - 1) then 0
+        else sign w.T
 (*** hide ***)
 open Statistics
 (**
@@ -135,7 +138,8 @@ module Performance =
         |> Seq.map (singleIteration ic)
         |> Seq.find (fun s -> s.MeanStandardError<=relativeError*s.Mean)
 
-    /// Create and iterate two statistics sequences until the metric means can be compared.
+    /// Create and iterate two statistics sequences until the metric means can be
+    /// compared.
     let inline private measureCompare (metric,metricTarget) f1 f2 =
         if f1 id<>f2 id then failwith "function results are not the same"
         let ic = targetIterationCount metric metricTarget f2
@@ -147,7 +151,8 @@ module Performance =
             let maxDF = 10000
             if w.DF>maxDF then Some 0 else match welchTest w with |0->None |c->Some c)
 
-    /// Measure the given function for the iteration count using the start and end metric.
+    /// Measure the given function for the iteration count using the start and end
+    /// metric.
     let inline private measureMetric startMetric endMetric ic f =
         GC.Collect()
         GC.WaitForPendingFinalizers()
@@ -179,7 +184,8 @@ module Performance =
             t
         measureMetric startMetric endMetric ic f
 
-    /// Measure the garbage collection metric for the given function and iteration count.
+    /// Measure the garbage collection metric for the given function and iteration
+    /// count.
     let private garbageMetric ic f =
         let count() = GC.CollectionCount 0 + GC.CollectionCount 1 + GC.CollectionCount 2
         measureMetric count (fun s -> count()-s) ic f
@@ -195,7 +201,8 @@ module Performance =
         measureStatistics timeMeasure 0.01 f |> scale (1.0/float Stopwatch.Frequency)
     /// Memory statistics for a given function accurate to a mean standard error of 1%.
     let memoryStatistics f = measureStatistics memoryMeasure 0.01 f
-    /// GC count statistics for a given function accurate to a mean standard error of 1%.
+    /// GC count statistics for a given function accurate to a mean standard error of
+    /// 1%.
     let gcCountStatistics f = measureStatistics garbageMeasure 0.01 f
     
     /// Time comparison for two given functions to a confidence level of 0.1%.

@@ -179,7 +179,8 @@ Lazy evaluation can be achieved in F# by using the `Seq` collection and also the
 *)
 
 /// Infinite sequence of derivative estimates.
-let derivativeEstimates f x h0 = Seq.unfoldInf ((*)0.5) h0 |> Seq.map (derivativeEstimate f x)        
+let derivativeEstimates f x h0 =
+    Seq.unfoldInf ((*)0.5) h0 |> Seq.map (derivativeEstimate f x)        
 
 /// Infinite sequence of integral estimates.
 let integralEstimates f a b =
@@ -190,19 +191,24 @@ let integralEstimates f a b =
 /// Richardson extrapolation for a given estimate sequence.
 let richardsonExtrapolation s =
     let createRow previousRow estimate_i =
-        let richardsonAndPow4 (current,pow4) previous = richardsonFormula current previous pow4, pow4*4.0
-        Seq.scan richardsonAndPow4 (estimate_i,4.0) previousRow |> Seq.map fst |> Seq.cache
+        let richardsonAndPow4 (current,pow4) previous =
+            richardsonFormula current previous pow4, pow4*4.0
+        Seq.scan richardsonAndPow4 (estimate_i,4.0) previousRow
+        |> Seq.map fst |> Seq.cache
     Seq.scan createRow Seq.empty s |> Seq.tail
 
 /// Stopping criteria for a given accuracy and sequence of Richardson estimates.
 let stoppingCriteria tol s =
-    Seq.map Seq.last s |> Seq.triplewise |> Seq.find (fun (a,b,c) -> abs(a-b)<=tol && abs(b-c)<=tol) |> trd
+    Seq.map Seq.last s |> Seq.triplewise
+    |> Seq.find (fun (a,b,c) -> abs(a-b)<=tol && abs(b-c)<=tol) |> trd
 
 /// Derivative accurate to tol using Richardson extrapolation.
-let derivative tol f x h0 = derivativeEstimates f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
+let derivative tol f x h0 =
+    derivativeEstimates f x h0 |> richardsonExtrapolation |> stoppingCriteria tol
 
 /// Integral accurate to tol using Richardson extrapolation.
-let integral tol f a b = integralEstimates f a b |> richardsonExtrapolation |> stoppingCriteria tol
+let integral tol f a b =
+    integralEstimates f a b |> richardsonExtrapolation |> stoppingCriteria tol
 
 (**
 ## Conclusion
