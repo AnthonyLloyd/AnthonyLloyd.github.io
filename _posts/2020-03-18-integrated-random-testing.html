@@ -1,0 +1,36 @@
+---
+layout: post
+title: "Integrated Random Testing"
+tags: [testing,perfomance,fsharp]
+description: "Integrated Random Testing"
+keywords: f#, fsharp, performance, testing
+---
+<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing can't be multithreaded and integrated better.
+<a href="https://github.com/haf/expecto">Expecto</a> does a great job of improving performance by running unit tests in parallel which also opens up useful functionality like stress testing.
+I want a testing library where making a test random is a simple change to a unit test where shrinking just works.
+I want random tests to run and shrink across multiple threads.
+I want random performance tests that runs a range of inputs.</p>
+<h2><a name="Design" class="anchor" href="#Design">Design</a></h2>
+<p>The goal is a simpler, more lightweight testing library with faster, more integrated parallel random testing with automatic shrinking.
+The library should encourage the shift from a number of unit and regression tests with input and output data to fewer more general random tests.</p>
+<p>The prototype I've come up with has the following features:</p>
+<ul>
+<li>Asserts no longer exception based and all are evaluated. =&gt; More than one Assert per test are accepetable. Simpler setup and faster for multi part testing.</li>
+<li>Integrate random testing more closely. =&gt; Simpler syntax. Easier more general testing. Reduce emphasis on the term "property based test".</li>
+<li>No sizing or number of runs for random tests. Instead use distributions. =&gt; More realistics examples.</li>
+<li>Automatic random shrinking giving a reproducible seed. Smaller candidates found using fast PCG loop. =&gt; Simpler reproducible examples.</li>
+<li>Stress testing in parallel across unit and random tests using PCG streams. =&gt; Low sync, high performance, fine grained parallel testing.</li>
+</ul>
+<h2><a name="Random-testing-with-random-shrinking" class="anchor" href="#Random-testing-with-random-shrinking">Random testing with random shrinking</a></h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<ul>
+<li>
+John Hughes don't write tests! - call API randomly with state machine
+<ul>
+<li>look for interaction bug tweet! feature interaction bugs</li>
+</ul>
+</li>
+<li>John Hughes <a href="https://youtu.be/NcJOiQlzlXQ">https://youtu.be/NcJOiQlzlXQ</a> - one prop test - label test cases would have built, check all results and cover label %.</li>
+</ul>
+
+
