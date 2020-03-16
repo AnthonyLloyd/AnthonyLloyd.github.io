@@ -162,12 +162,15 @@ module UI =
             |Div (_,l),Div (_,[]) ->
                 List.fold (fun (i,diffs) _ -> i+1,RemoveUI(i::path)::diffs)
                     (index,diffs) l |> snd
-            |Div (l,(h1::t1)),Div (_,(h2::t2)) when LanguagePrimitives.PhysicalEquality h1 h2 ->
+            |Div (l,(h1::t1)),Div (_,(h2::t2))
+                when LanguagePrimitives.PhysicalEquality h1 h2 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1) diffs
-            |Div (l,(h1::t1)),Div (_,(h2::h3::t2)) when LanguagePrimitives.PhysicalEquality h1 h3 ->
+            |Div (l,(h1::t1)),Div (_,(h2::h3::t2))
+                when LanguagePrimitives.PhysicalEquality h1 h3 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1)
                     (InsertUI(index::path,h2)::diffs)
-            |Div (l,(_::h2::t1)),Div (_,(h3::t2)) when LanguagePrimitives.PhysicalEquality h2 h3 ->
+            |Div (l,(_::h2::t1)),Div (_,(h3::t2))
+                when LanguagePrimitives.PhysicalEquality h2 h3 ->
                 diff (Div(l,t1)) (Div(l,t2)) path (index+1)
                     (RemoveUI(index::path)::diffs)
             |Div (l,(h1::t1)),Div (_,(h2::t2)) ->
