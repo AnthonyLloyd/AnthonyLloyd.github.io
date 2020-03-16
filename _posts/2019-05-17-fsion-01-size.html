@@ -40,7 +40,7 @@ All fields in the files are loaded apart from any that can be derived.</p>
 </tbody>
 </table>
 
-<h2>DataSeries Compression</h2>
+<h2><a name="DataSeries-Compression" class="anchor" href="#DataSeries-Compression">DataSeries Compression</a></h2>
 <p>DataSeries is an immutable collection representing an ordered table of Reporting Date, Transaction Id and <code>int64</code> encoded Values
 with the latest values at the top.</p>
 <p>This is encoded as a byte array.
@@ -50,7 +50,7 @@ Each subsequent row is stored as a difference to the above field values as <a hr
 are several times smaller than a more standard representation.
 Since the table is ordered, and the values in each row are very likely to be close to the
 ones above, very high compression ratios are <a href="https://github.com/Genbox/CSharpFastPFOR">possible</a>.</p>
-<h2>Data Details</h2>
+<h2><a name="Data-Details" class="anchor" href="#Data-Details">Data Details</a></h2>
 <p>Text values are stored in a <code>SetSlim&lt;Text&gt;</code> collection, numeric values are encoded directly to <code>int64</code>.
 The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</code>.</p>
 <p>Below is a table of count and number of bytes by entity type (column) and attribute (row):</p>
@@ -222,7 +222,7 @@ The DataSeries are stored in a <code>MapSlim&lt;EntityAttribute,DataSeries&gt;</
 </tbody>
 </table>
 
-<h2>Size Estimates</h2>
+<h2><a name="Size-Estimates" class="anchor" href="#Size-Estimates">Size Estimates</a></h2>
 <p>Memory 32-bit: Text = 2.9 MB Data = 61.3 MB Total = 64.2 MB<br />
 Memory 64-bit: Text = 3.8 MB Data = 75.1 MB Total = 78.9 MB<br />
 Size on disk = 40.3 MB</p>
@@ -230,7 +230,7 @@ Size on disk = 40.3 MB</p>
 <p>Extrapolating these curves to 10 years of files would give total memory usage of around 650 MB.
 The files contain the key changing attributes.
 A database with a number of additional attributes would be expected to comfortably fit in 1 to 5 GB.</p>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The database file size is small enough to <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/data/2019-05-13_210216.3290164.fsp">store</a> in github and can be used going forward for testing and performance benchmarking.</p>
 <p>Looking at the size on disk compared to 32-bit and 64-bit in memory estimates shows that the objects and pointers contribute a large amount to the size.
 This is <a href="https://www.red-gate.com/simple-talk/dotnet/.net-framework/object-overhead-the-hidden-.net-memory--allocation-cost/">not surprising</a> since each 32-bit object has an 8 byte header and 16 bytes for 64-bit, plus 4 and 8 bytes for each reference respectively.

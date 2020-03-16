@@ -8,14 +8,14 @@ keywords: f#, fsharp, functional, complexity, simplicity
 <p>This post outlines my views on the often overlooked and misunderstood topic of managing complexity in software development.</p>
 <p>It answers questions I'm asked sometimes on why I prefer to develop systems in F#, a strongly typed functional-first language.</p>
 <p>The next time someone asks I can refer them here!</p>
-<h2>The Questions</h2>
+<h2><a name="The-Questions" class="anchor" href="#The-Questions">The Questions</a></h2>
 <ul>
 <li>Why don't you program in a language like C++ that has better performance?</li>
 <li>What is this functional programming and why would you want to use it?</li>
 <li>Isn't it hard to hire F# developers? Wouldn't it be easier to stick to more standard C#?</li>
 <li>Why not use something like Python that has lots of libraries to quickly build things?</li>
 </ul>
-<h2>The Answer</h2>
+<h2><a name="The-Answer" class="anchor" href="#The-Answer">The Answer</a></h2>
 <p>The answer is I want to reduce and control complexity.</p>
 <p>Simplicity and the flexibility it brings increases the chance of discovering the best abstraction for the domain.
 The classic example of this is 'everything is a file' in Unix.
@@ -32,7 +32,7 @@ Are you sure that will always be the case?</p>
 <p>The primary cause of software project failure is complexity.<br />
 <cite>Roger Sessions</cite></p>
 </blockquote>
-<h2>Accidental Complexity</h2>
+<h2><a name="Accidental-Complexity" class="anchor" href="#Accidental-Complexity">Accidental Complexity</a></h2>
 <p>The more I use a functional language the longer the list of patterns I consider to have excessive accidental complexity:</p>
 <ul>
 <li>Object oriented programming</li>
@@ -53,7 +53,7 @@ Are you sure that will always be the case?</p>
 <p>In an attempt to reduce complexity, there is a trend of building systems out of batches of data transformation scripts or moving to microservices.
 These don't reduce complexity; they dramatically increase it.
 Distributed systems are harder to reason about and change. Doing this to be able to scale out can make sense but it has to be done with great skill.</p>
-<h3>Short term gain, long term pain</h3>
+<h3><a name="Short-term-gain-long-term-pain" class="anchor" href="#Short-term-gain-long-term-pain">Short term gain, long term pain</a></h3>
 <blockquote>
 <p>Simplicity is prerequisite for reliability.<br />
 <cite>Edsger W Dijkstra</cite></p>
@@ -69,7 +69,7 @@ Every software developer needs to watch this. It is also very entertaining.</p>
 <li>Guard rail programming, i.e. tests rather than types, is not simple. It does not help you get to where you want to go.</li>
 </ul>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/DevSpeed.png" title="Dev Speed"/>
-<h3>Performance of low vs high level languages</h3>
+<h3><a name="Performance-of-low-vs-high-level-languages" class="anchor" href="#Performance-of-low-vs-high-level-languages">Performance of low vs high level languages</a></h3>
 <p>Let's say C can be 20%-50% faster than F# for a given algorithm. In my experience, getting to the best algorithm can produce an order of magnitude or more increase in performance.
 I've seen systems that have become so complicated that even though a better algorithm is known it can't be used because it would require a large rewrite.
 The complexity limit had been reached. This is particularly true of many C++ quant libraries.</p>
@@ -78,7 +78,7 @@ The complexity limit had been reached. This is particularly true of many C++ qua
 <p>Performance is complicated. It is often more about the movement of data than the calculation itself.
 I prefer to start in the highest level language (F#) and move an algorithm to the lowest level language (C) as a last resort.
 How often do I need to do this? Very rarely. Really only for access to chip optimised linear algebra and optimisation libraries.</p>
-<h2>Why F#?</h2>
+<h2><a name="Why-F" class="anchor" href="#Why-F">Why F#?</a></h2>
 <p>Functional programming is simple-first programming.</p>
 <p>Why is functional programming so simple? Because it comes from mathematics as the simplest possible programming construct.
 You don't have to understand category theory to benefit from this.</p>
@@ -88,19 +88,19 @@ You don't have to understand category theory to benefit from this.</p>
 </blockquote>
 <p>Functional programming is not a fad the profession can ignore. Its rigorous mathematical foundation means that it will be around forever.
 Software developers should be encouraged to learn the benefits it provides.</p>
-<h3>Choose data type safety and functions over objects</h3>
+<h3><a name="Choose-data-type-safety-and-functions-over-objects" class="anchor" href="#Choose-data-type-safety-and-functions-over-objects">Choose data type safety and functions over objects</a></h3>
 <p>Data is simple. This is especially true in a strong type system that supports union types. Illegal state can be made unrepresentable.</p>
 <p>Pure functions are simple. They always give the same output for the same input. They are easy to reason about and test.</p>
 <p>Objects are complex. They fuse data and functions with side effects. They hold links to other objects. They are hard to almost impossible to <a href="https://fsharpforfunandprofit.com/posts/is-your-language-unreasonable/">reason about</a>. Testing is painful.
 Software developers have to become familiar with the codebase and hold a large model of the system in their head. Don't let them go on holiday.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/UnionTypes.png" title="Union Types"/>
-<h3>Choose immutability over the mutant</h3>
+<h3><a name="Choose-immutability-over-the-mutant" class="anchor" href="#Choose-immutability-over-the-mutant">Choose immutability over the mutant</a></h3>
 <p>How do you handle queries and calculations (possibly long running) on a mutable domain model? Concurrent collections? Cross domain locking?
 What you have created is a bug paradise. They will get cosy and settle in for the long term.</p>
 <p>In the domain I work in a number of statistics (risk attribution, backtesting, what if analysis) are about changing the state slightly and comparing the results of a calculation.
 How would you do this in a mutable domain model? Locking and transactions? Clone the world? Visitor pattern? I've been there and wouldn't wish it on anyone.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/testable.png" title="Testable"/>
-<h3>Choose linear composition over spaghetti</h3>
+<h3><a name="Choose-linear-composition-over-spaghetti" class="anchor" href="#Choose-linear-composition-over-spaghetti">Choose linear composition over spaghetti</a></h3>
 <p>There is something missing between perfect data, pure functions and beautiful systems.</p>
 <p>Functional programming allows functions to be passed around just like data. Functions can accept other functions as an input in a generic way. They are called higher-order functions.</p>
 <p>This may sound alien but it provides a quantum leap in terms of code reuse and assembling systems.
@@ -108,7 +108,7 @@ In fact, I didn't understand the full power of code reuse until I started progra
 <p>Object orientated programming has a poorer method of assembling systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
 This helps but results in systems that are harder to reason about and increases complexity.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/OOP.png" title="OOP"/>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
 Every release of Java and C# add more functional features. Unfortunately, this will not ultimately fix these languages, it just increases their complexity.
 As an industry we need to decide how we should move on.</p>

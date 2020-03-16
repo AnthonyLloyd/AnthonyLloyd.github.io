@@ -18,7 +18,7 @@ F# has particular strengths in data-oriented programming.</p>
 I will argue most asset management systems store and use the wrong data.
 This limits functionality and increases system complexity.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/10_servers.png" title="10 Servers"/>
-<h2>Traditional Approach</h2>
+<h2><a name="Traditional-Approach" class="anchor" href="#Traditional-Approach">Traditional Approach</a></h2>
 <p>Most asset management systems consider <code>positions</code>, <code>profit</code> and <code>returns</code> to be their primary data.
 You can see this as they normally have overnight batch processes that generate and save <code>positions</code> for the next day.</p>
 <p>This produces an enormous amount of duplicate data.
@@ -27,7 +27,7 @@ What is being saved is essentially a chosen set of calculation results.</p>
 <p>Worse is that other processes are built on top of this position data such as adjustments, lock down and fund aggregation.</p>
 <p>This architecture comes from not investigating the characteristics of the data first and jumping straight to thinking about system entities and functionality.</p>
 <img style="border:1px solid black;padding: 10px 20px" src="/{{site.baseurl}}public/twitter/gs.png" title="GS"/>
-<h2>Data-First Approach</h2>
+<h2><a name="Data-First-Approach" class="anchor" href="#Data-First-Approach">Data-First Approach</a></h2>
 <p>The primary data for asset management is asset <code>terms</code>, price <code>timeseries</code> and <code>trades</code>.
 All other position data are just calculations based on these.
 We can ignore these for now and consider caching of calculations at a later stage.</p>
@@ -56,7 +56,7 @@ It turns out with in memory data this requires negligible processing time and ca
 <p>More advanced functionality can be offered, such as looking at a hierarchy of funds and perform calculations at a parent level, with various degrees of filtering and aggregation.
 As the data is bitemporal we can easily ask questions such as "what did this report look like previously?" or even "what was responsible for a change in a calculation result?".
 Since the data is append only we can just update for latest additions and save cloud costs.</p>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/fig_data.png" title="Fig data"/>
 <p>By first understanding the data, we can build a system that is simpler, faster, more flexible and cheaper to host.</p>
 <p>Software developers cannot always answer questions on the size and characteristics of their system's data. It has been abstracted away from them.
@@ -66,13 +66,13 @@ Infinitely scalable by default leads to complexity and poor performance.</p>
 <p>With cloud computing, where architectural costs are obvious, right sizing is essential.</p>
 <p>Most of the references I could find come from the games industry.
 I would be interested to hear about any other examples or counterexamples.</p>
-<h2>References</h2>
+<h2><a name="References" class="anchor" href="#References">References</a></h2>
 <p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">The One Weird Trick: data first, not code first - Even Todd</a><br />
 <a href="https://news.ycombinator.com/item?id=10291688">Data first, not code first - Hacker News</a><br />
 <a href="http://gamedevs.org/uploads/practical-examples-in-data-oriented-design.pdf">Practical Examples in Data Oriented Design - Niklas Frykholm</a><br />
 <a href="http://gamesfromwithin.com/data-oriented-design">Data-Oriented Design - Noel Llopis</a><br />
 <a href="https://martinfowler.com/articles/lmax.html#QueuesAndTheirLackOfMechanicalSympathy">Queues and their lack of mechanical sympathy - Martin Fowler</a></p>
-<h2>FAQ - some questions I've been asked</h2>
+<h2><a name="FAQ-some-questions-I-ve-been-asked" class="anchor" href="#FAQ-some-questions-I-ve-been-asked">FAQ - some questions I've been asked</a></h2>
 <ol>
 <li>
 <p>How do you deal with previously reported values and make sure they will be the same in the future?</p>

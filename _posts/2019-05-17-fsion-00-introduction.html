@@ -16,7 +16,7 @@ Other key ideas can be found <a href="https://github.com/AnthonyLloyd/Fsion#key-
 <p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> has been designed with the finance domain in mind but could be equally applicable to
 domains that requires a degree of time-series, historic query or audit functionality.</p>
 <p>The following sections outline the main <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> components.</p>
-<h2>SetSlim and MapSlim</h2>
+<h2><a name="SetSlim-and-MapSlim" class="anchor" href="#SetSlim-and-MapSlim">SetSlim and MapSlim</a></h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs">SetSlim.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SetSlimTests.fs">SetSlimTests.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs">MapSlimTests.fs</a></p>
 <p><code>SetSlim&lt;T&gt;</code> and <code>MapSlim&lt;K,V&gt;</code> are low memory, high performance replacements for the mutable
 collections <code>HashSet&lt;T&gt;</code> and <code>Dictionary&lt;K,V&gt;</code>.
@@ -26,7 +26,7 @@ improvement.</p>
 read while updates are being applied.
 This combined with <a href="{% post_url 2019-03-29-io %}">IO</a> will hopefully result
 in a completely lock-free multi-threaded read model for <a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a>.</p>
-<h2>DataSeries</h2>
+<h2><a name="DataSeries" class="anchor" href="#DataSeries">DataSeries</a></h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/DataSeries.fs">DataSeries.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/DataSeriesTests.fs">DataSeriesTests.fs</a></p>
 <p>DataSeries is an immutable collection representing an ordered table of Reporting Date, Transaction Id and <code>int64</code> encoded
 Values with the latest values at the top. This forms a <a href="https://www.networkworld.com/article/3186634/what-is-bitemporal-and-why-should-the-enterprise-care.html">bitemporal</a>
@@ -36,7 +36,7 @@ compression that can be achieved using this data structure.</p>
 <p>DateSeries also naturally support sets with add and remove operations.
 This is much easier than managing foreign keys sets in traditional databases and will come in
 handy when automatic indexes are added.</p>
-<h2>Transactor</h2>
+<h2><a name="Transactor" class="anchor" href="#Transactor">Transactor</a></h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Transactor.fs">Transactor.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/TransactorTests.fs">TransactorTests.fs</a></p>
 <p>The Transactor is responsible for making concurrent transactions consistent before persisting
 and notifying subscribed Selectors.</p>
@@ -47,7 +47,7 @@ Any corrected transactions have <code>transaction_based_on</code> set to the ori
 Other processes would need to resolve data conflicts based on required business logic.</p>
 <p>Transactions are themselves first class Entities in the database so any context data such as
 time, user, process or source can be added.</p>
-<h2>Selector</h2>
+<h2><a name="Selector" class="anchor" href="#Selector">Selector</a></h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/Selector.fs">Selector.fs</a> / <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/SelectorTests.fs">SelectorTests.fs</a></p>
 <p>Selector is responsible for applying Transactions to a Store, saving and loading a snapshot
 and has an API for selecting data.</p>
@@ -58,7 +58,7 @@ This means Selection API calls are pure.</p>
 <p>Transaction Id represents a consistent point in time.
 Long running processes can make several calls using the same Transaction Id.
 Consistency of data in database or cache system design is often overlooked.</p>
-<h2>View</h2>
+<h2><a name="View" class="anchor" href="#View">View</a></h2>
 <p><em>WIP</em></p>
 <p>Views are functions that can be passed to the Selector API to make selection easier and
 more type-safe.</p>
@@ -67,7 +67,7 @@ more type-safe.</p>
 validation function.
 Multiple views can be defined for the same Entity Type for different areas of the business
 logic.</p>
-<h2>Why F#</h2>
+<h2><a name="Why-F" class="anchor" href="#Why-F">Why F#</a></h2>
 <ul>
 <li>Type-Safe - native typed values and marshalling unstructured data into type-safe views.</li>
 <li>Functional - pure, consistent and repeatable API calls returning immutable data.</li>
@@ -75,7 +75,7 @@ logic.</p>
 <li>Robust - in handling of errors and multi-threaded code.</li>
 <li>Testing - property based testing for serialization, stress testing for threading.</li>
 </ul>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>Traditional databases are not efficient as highly normalised stores with full history.
 A compressed in memory store is smaller, faster and offers simpler functionality with no 'mapping'.</p>
 <p>The design is flexible and can scale with the Transactor and Selector as separate processes.

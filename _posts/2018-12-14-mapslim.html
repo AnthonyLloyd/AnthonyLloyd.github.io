@@ -19,14 +19,14 @@ It came from ideas used in the <a href="https://benchmarksgame-team.pages.debian
 It stores a compressed set of historic values (with audit) for each entity-attribute.
 The idea is that functional techniques can be used to translate unstructured data to fully type safe representations.
 Compression and using attribute functions like Excel aims to keep database sizes minimal and possibly in memory.</p>
-<h2>Fsion locking model</h2>
+<h2><a name="Fsion-locking-model" class="anchor" href="#Fsion-locking-model">Fsion locking model</a></h2>
 <p>For the in memory version the value <code>DataSeries</code> are stored in a <code>Dictionary&lt;EntityAttribute,DataSeries&gt;</code> collection.
 Each immutable <code>DataSeries</code> can be atomically replaced.
 All queries are executed up to a given transaction id or time.
 This simplifies the locking model as entries can be updated at the same time as a consistent set of reads are made.</p>
 <p>The problem is that a <code>ReaderWriterLock</code> would still need to be used on the <code>Dictionary</code> for the read and write side.
 By creating lock-free for read collections the database can be simplified to fully lock-free for read access.</p>
-<h2>MapSlim, SetSlim and ListSlim</h2>
+<h2><a name="MapSlim-SetSlim-and-ListSlim" class="anchor" href="#MapSlim-SetSlim-and-ListSlim">MapSlim, SetSlim and ListSlim</a></h2>
 <p>Three new collections <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a>,
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/SetSlim.fs">SetSlim</a>
 and <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/ListSlim.fs">ListSlim</a> have been created in F#.</p>
@@ -39,7 +39,7 @@ One benefit that comes from this is that the collection entries can also be inde
 <p>Calling the possibly updating <code>GetRef</code> method must be done using a lock while manipulating the <code>ref</code> value.</p>
 <p>These collections have great potential for caches and functionality such as memoize.
 The threading model becomes much simpler and eliminates the need to switch to concurrent collections.</p>
-<h2>Testing</h2>
+<h2><a name="Testing" class="anchor" href="#Testing">Testing</a></h2>
 <p>Performance and multithreading testing provides a good demonstration of <a href="https://github.com/haf/expecto">Expecto's</a> abilities.</p>
 <p>In under 250 lines of code the <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion.Tests/MapSlimTests.fs">MapSlimTests</a>
 have unit tests, property tests, performance tests and threading stress tests.</p>
@@ -49,7 +49,7 @@ have unit tests, property tests, performance tests and threading stress tests.</
 <p><img src="/{{site.baseurl}}public/mapslim/mapslim_perf.png" alt="mapslim_perf" /></p>
 <p>The tests show large performance improvements over equivalent mutable collections.
 In multithreading situations such as server caches this difference will be even greater.</p>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p><a href="https://github.com/AnthonyLloyd/Fsion">Fsion</a> makes use of immutable <code>DataSeries</code> and lock-free read collections like
 <a href="https://github.com/AnthonyLloyd/Fsion/blob/master/Fsion/MapSlim.fs">MapSlim</a>
 to create a lock-free row versioning style concurrency model.</p>
@@ -58,7 +58,7 @@ It simplifies often complex and error prone locking required in server caches.</
 <p>In future posts I hope to demonstrate how combining all of this can lead to a
 simple yet high performance database and server.</p>
 <p>Happy holidays!</p>
-<h2>References</h2>
+<h2><a name="References" class="anchor" href="#References">References</a></h2>
 <p><a href="https://www.datomic.com/">Datomic</a><br />
 <a href="https://vvvvalvalval.github.io/posts/2018-11-12-datomic-event-sourcing-without-the-hassle.html">Datomic: Event Sourcing without the hassle</a><br />
 <a href="http://anthonylloyd.github.io/blog/2018/02/01/architecture-data-first">Data-First Architecture</a><br />

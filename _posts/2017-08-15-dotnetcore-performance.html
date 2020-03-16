@@ -11,37 +11,37 @@ This surprised me as I was under the impression .Net Core 2.0 performance would 
 <p>I have concentrated on the 6 programs where Java was the fastest and not looked at the other 4 (binary-trees, spectral-norm, fasta, pidigits).</p>
 <p>Below are some notes on each of these programs and some conclusions.</p>
 <p>A follow up <a href="{% post_url 2017-12-30-dotnetcore-performance-part2 %}">post</a> gives the latest results and covers F# also.</p>
-<h3>reverse-complement</h3>
+<h3><a name="reverse-complement" class="anchor" href="#reverse-complement">reverse-complement</a></h3>
 <p>Old Result: C# 1.39s - Java 1.10s</p>
 <p>Changes made: Reversing in place and more efficient parallel processing.</p>
 <p>New Result: C# 0.79s - Java 1.10s</p>
-<h3>mandelbrot</h3>
+<h3><a name="mandelbrot" class="anchor" href="#mandelbrot">mandelbrot</a></h3>
 <p>Old Result: C# 7.29s - Java 7.10s</p>
 <p>Changes made: Simplified the parallel processing by using TPL Parallel.For.</p>
 <p>New Result: C# 6.78s - Java 7.10s</p>
-<h3>n-body</h3>
+<h3><a name="n-body" class="anchor" href="#n-body">n-body</a></h3>
 <p>Old Result: C# 21.71s - Java 21.54s</p>
 <p>I made many failed attempts to try to improve this result e.g. low level parallel, SIMD.</p>
 <p>Dissapointing as it looks like Java has a small edge on these single thread numeric calculations.</p>
 <p>Some I submitted can be found <a href="https://alioth.debian.org/tracker/index.php?group_id=100815&amp;atid=413122">here</a>.</p>
-<h3>fannkuch-redux</h3>
+<h3><a name="fannkuch-redux" class="anchor" href="#fannkuch-redux">fannkuch-redux</a></h3>
 <p>Old Result: C# 18.80s - Java 13.74s</p>
 <p>I think Java has some advantage in int array manipulation.</p>
 <p>I tried splitting up into more parallel blocks but the overhead outweighs the better CPU use.</p>
 <p>Changes made: Small array optimisations and more efficient parallel processing.</p>
 <p>New Result: C# 14.45s - Java 13.74s</p>
-<h3>k-nucleotide</h3>
+<h3><a name="k-nucleotide" class="anchor" href="#k-nucleotide">k-nucleotide</a></h3>
 <p>Old Result: C# 13.76s - Java 07.93s</p>
 <p>Java code cheats in that they have managed to find a very specific dictionary from an obscure library.</p>
 <p>The dictionary count can be done in parallel but I think the Java dictionary wins it here.</p>
 <p>Changes made: More efficient byte array memory use and parallel processing.</p>
 <p>New Result: C# 12.37s - Java 07.93s</p>
-<h3>regex-redux</h3>
+<h3><a name="regex-redux" class="anchor" href="#regex-redux">regex-redux</a></h3>
 <p>Old Result: C# 32.02s - Java 12.31s</p>
 <p>Regex is not great in .Net. I don't think it's even compiled on .Net Core.</p>
 <p>Changes made: Reordered the tasks to run longest to shortest.</p>
 <p>New Result: C# 31.19s - Java 12.31s</p>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>First some caveats.</p>
 <p>The test machine is a single 64-bit quad core machine. This may not represent current servers.
 I found optimising for performance on a different machine to be very interesting.

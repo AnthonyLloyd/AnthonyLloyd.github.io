@@ -7,146 +7,78 @@ keywords: elm, ui, gui, WPF, Xamarin
 ---
 <p>This is the second part of a prototype of <a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> in F#.
 The first <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> covered the logical UI and this covers using it with WPF and Xamarin.</p>
-<h2>Native UI Implementation</h2>
+<h2><a name="Native-UI-Implementation" class="anchor" href="#Native-UI-Implementation">Native UI Implementation</a></h2>
 <p>Below is the WPF implementation of the <code>INativeUI</code> interface.
 The Xamarin <a href="https://github.com/AnthonyLloyd/Elm/blob/master/XamarinApp/Xamarin.fs">implementation</a> is very similar.</p>
 <p>Threading proves to be simple with all the updates being performed on the UI thread in a single call.
 <code>UIUpdate</code> maps well to the operations required to locate and update the native UI elements.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
-<span class="l">21: </span>
-<span class="l">22: </span>
-<span class="l">23: </span>
-<span class="l">24: </span>
-<span class="l">25: </span>
-<span class="l">26: </span>
-<span class="l">27: </span>
-<span class="l">28: </span>
-<span class="l">29: </span>
-<span class="l">30: </span>
-<span class="l">31: </span>
-<span class="l">32: </span>
-<span class="l">33: </span>
-<span class="l">34: </span>
-<span class="l">35: </span>
-<span class="l">36: </span>
-<span class="l">37: </span>
-<span class="l">38: </span>
-<span class="l">39: </span>
-<span class="l">40: </span>
-<span class="l">41: </span>
-<span class="l">42: </span>
-<span class="l">43: </span>
-<span class="l">44: </span>
-<span class="l">45: </span>
-<span class="l">46: </span>
-<span class="l">47: </span>
-<span class="l">48: </span>
-<span class="l">49: </span>
-<span class="l">50: </span>
-<span class="l">51: </span>
-<span class="l">52: </span>
-<span class="l">53: </span>
-<span class="l">54: </span>
-<span class="l">55: </span>
-<span class="l">56: </span>
-<span class="l">57: </span>
-<span class="l">58: </span>
-<span class="l">59: </span>
-<span class="l">60: </span>
-<span class="l">61: </span>
-<span class="l">62: </span>
-<span class="l">63: </span>
-<span class="l">64: </span>
-<span class="l">65: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span onmouseout="hideTip(event, 'fs200', 773)" onmouseover="showTip(event, 'fs200', 773)" class="t">WPF</span> <span class="o">=</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs201', 774)" onmouseover="showTip(event, 'fs201', 774)" class="f">CreateNaiveUI</span> (<span onmouseout="hideTip(event, 'fs202', 775)" onmouseover="showTip(event, 'fs202', 775)" class="i">root</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs203', 776)" onmouseover="showTip(event, 'fs203', 776)" class="t">ContentControl</span>) <span class="o">=</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span onmouseout="hideTip(event, 'fs196', 771)" onmouseover="showTip(event, 'fs196', 771)" class="m">WPF</span> <span class="o">=</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs197', 772)" onmouseover="showTip(event, 'fs197', 772)" class="fn">CreateNaiveUI</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs198', 773)" onmouseover="showTip(event, 'fs198', 773)" class="id">root</span><span class="pn">:</span><span onmouseout="hideTip(event, 'fs199', 774)" onmouseover="showTip(event, 'fs199', 774)" class="rt">ContentControl</span><span class="pn">)</span> <span class="o">=</span>
         
-        <span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs204', 777)" onmouseover="showTip(event, 'fs204', 777)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs128', 778)" onmouseover="showTip(event, 'fs128', 778)" class="i">ui</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs205', 779)" onmouseover="showTip(event, 'fs205', 779)" class="t">UIElement</span> <span class="o">=</span>
-            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs128', 780)" onmouseover="showTip(event, 'fs128', 780)" class="i">ui</span> <span class="k">with</span>
-            |<span onmouseout="hideTip(event, 'fs38', 781)" onmouseover="showTip(event, 'fs38', 781)" class="p">Text</span> <span onmouseout="hideTip(event, 'fs76', 782)" onmouseover="showTip(event, 'fs76', 782)" class="i">text</span> <span class="k">-&gt;</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs206', 783)" onmouseover="showTip(event, 'fs206', 783)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs207', 784)" onmouseover="showTip(event, 'fs207', 784)" class="t">Label</span>(<span class="i">Content</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 785)" onmouseover="showTip(event, 'fs39', 785)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 786)" onmouseover="showTip(event, 'fs76', 786)" class="i">text</span>)
-                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs206', 787)" onmouseover="showTip(event, 'fs206', 787)" class="i">c</span>
-            |<span onmouseout="hideTip(event, 'fs208', 788)" onmouseover="showTip(event, 'fs208', 788)" class="p">Input</span> (<span onmouseout="hideTip(event, 'fs76', 789)" onmouseover="showTip(event, 'fs76', 789)" class="i">text</span>,<span onmouseout="hideTip(event, 'fs209', 790)" onmouseover="showTip(event, 'fs209', 790)" class="v">event</span>) <span class="k">-&gt;</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs210', 791)" onmouseover="showTip(event, 'fs210', 791)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs211', 792)" onmouseover="showTip(event, 'fs211', 792)" class="t">TextBox</span>(<span onmouseout="hideTip(event, 'fs38', 793)" onmouseover="showTip(event, 'fs38', 793)" class="i">Text</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 794)" onmouseover="showTip(event, 'fs39', 794)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 795)" onmouseover="showTip(event, 'fs76', 795)" class="i">text</span>)
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs212', 796)" onmouseover="showTip(event, 'fs212', 796)" class="v">event</span> <span class="o">=</span> <span class="o">!</span><span onmouseout="hideTip(event, 'fs212', 797)" onmouseover="showTip(event, 'fs212', 797)" class="v">event</span>
-                <span onmouseout="hideTip(event, 'fs210', 798)" onmouseover="showTip(event, 'fs210', 798)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs213', 799)" onmouseover="showTip(event, 'fs213', 799)" class="i">TextChanged</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs214', 800)" onmouseover="showTip(event, 'fs214', 800)" class="f">Add</span>(<span class="k">fun</span> _ <span class="k">-&gt;</span> <span class="k">let</span> <span onmouseout="hideTip(event, 'fs215', 801)" onmouseover="showTip(event, 'fs215', 801)" class="i">t</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs210', 802)" onmouseover="showTip(event, 'fs210', 802)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs216', 803)" onmouseover="showTip(event, 'fs216', 803)" class="i">Text</span>
-                                           <span onmouseout="hideTip(event, 'fs217', 804)" onmouseover="showTip(event, 'fs217', 804)" class="i">async</span> { <span class="o">!</span><span onmouseout="hideTip(event, 'fs212', 805)" onmouseover="showTip(event, 'fs212', 805)" class="v">event</span> <span onmouseout="hideTip(event, 'fs215', 806)" onmouseover="showTip(event, 'fs215', 806)" class="i">t</span> } <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs218', 807)" onmouseover="showTip(event, 'fs218', 807)" class="t">Async</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs219', 808)" onmouseover="showTip(event, 'fs219', 808)" class="f">Start</span>)
-                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs210', 809)" onmouseover="showTip(event, 'fs210', 809)" class="i">c</span>
-            |<span onmouseout="hideTip(event, 'fs220', 810)" onmouseover="showTip(event, 'fs220', 810)" class="p">Button</span> (<span onmouseout="hideTip(event, 'fs76', 811)" onmouseover="showTip(event, 'fs76', 811)" class="i">text</span>,<span onmouseout="hideTip(event, 'fs221', 812)" onmouseover="showTip(event, 'fs221', 812)" class="v">event</span>) <span class="k">-&gt;</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs222', 813)" onmouseover="showTip(event, 'fs222', 813)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs220', 814)" onmouseover="showTip(event, 'fs220', 814)" class="t">Button</span>(<span class="i">Content</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 815)" onmouseover="showTip(event, 'fs39', 815)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 816)" onmouseover="showTip(event, 'fs76', 816)" class="i">text</span>)
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs223', 817)" onmouseover="showTip(event, 'fs223', 817)" class="v">event</span> <span class="o">=</span> <span class="o">!</span><span onmouseout="hideTip(event, 'fs223', 818)" onmouseover="showTip(event, 'fs223', 818)" class="v">event</span>
-                <span onmouseout="hideTip(event, 'fs222', 819)" onmouseover="showTip(event, 'fs222', 819)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs224', 820)" onmouseover="showTip(event, 'fs224', 820)" class="i">Click</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs214', 821)" onmouseover="showTip(event, 'fs214', 821)" class="f">Add</span>(<span class="k">fun</span> _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs217', 822)" onmouseover="showTip(event, 'fs217', 822)" class="i">async</span> { (<span class="o">!</span><span onmouseout="hideTip(event, 'fs223', 823)" onmouseover="showTip(event, 'fs223', 823)" class="v">event</span>)() } <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs218', 824)" onmouseover="showTip(event, 'fs218', 824)" class="t">Async</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs219', 825)" onmouseover="showTip(event, 'fs219', 825)" class="f">Start</span>)
-                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs222', 826)" onmouseover="showTip(event, 'fs222', 826)" class="i">c</span>
-            |<span onmouseout="hideTip(event, 'fs42', 827)" onmouseover="showTip(event, 'fs42', 827)" class="p">Div</span> (<span onmouseout="hideTip(event, 'fs90', 828)" onmouseover="showTip(event, 'fs90', 828)" class="i">layout</span>,<span onmouseout="hideTip(event, 'fs225', 829)" onmouseover="showTip(event, 'fs225', 829)" class="i">list</span>) <span class="k">-&gt;</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs226', 830)" onmouseover="showTip(event, 'fs226', 830)" class="i">children</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs92', 831)" onmouseover="showTip(event, 'fs92', 831)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs93', 832)" onmouseover="showTip(event, 'fs93', 832)" class="f">map</span> <span onmouseout="hideTip(event, 'fs204', 833)" onmouseover="showTip(event, 'fs204', 833)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs225', 834)" onmouseover="showTip(event, 'fs225', 834)" class="i">list</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs227', 835)" onmouseover="showTip(event, 'fs227', 835)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs228', 836)" onmouseover="showTip(event, 'fs228', 836)" class="t">StackPanel</span>(<span onmouseout="hideTip(event, 'fs229', 837)" onmouseover="showTip(event, 'fs229', 837)" class="i">Orientation</span><span class="o">=</span>
-                                    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs90', 838)" onmouseover="showTip(event, 'fs90', 838)" class="i">layout</span> <span class="k">with</span> 
-                                    |<span onmouseout="hideTip(event, 'fs36', 839)" onmouseover="showTip(event, 'fs36', 839)" class="p">Vertical</span><span class="k">-&gt;</span><span onmouseout="hideTip(event, 'fs229', 840)" onmouseover="showTip(event, 'fs229', 840)" class="t">Orientation</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs230', 841)" onmouseover="showTip(event, 'fs230', 841)" class="i">Vertical</span>
-                                    |<span onmouseout="hideTip(event, 'fs35', 842)" onmouseover="showTip(event, 'fs35', 842)" class="p">Horizontal</span><span class="k">-&gt;</span><span onmouseout="hideTip(event, 'fs229', 843)" onmouseover="showTip(event, 'fs229', 843)" class="t">Orientation</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs231', 844)" onmouseover="showTip(event, 'fs231', 844)" class="i">Horizontal</span>)
-                <span onmouseout="hideTip(event, 'fs92', 845)" onmouseover="showTip(event, 'fs92', 845)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs97', 846)" onmouseover="showTip(event, 'fs97', 846)" class="f">iter</span> (<span onmouseout="hideTip(event, 'fs227', 847)" onmouseover="showTip(event, 'fs227', 847)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs232', 848)" onmouseover="showTip(event, 'fs232', 848)" class="i">Children</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs233', 849)" onmouseover="showTip(event, 'fs233', 849)" class="f">Add</span><span class="o">&gt;</span><span class="o">&gt;</span><span onmouseout="hideTip(event, 'fs77', 850)" onmouseover="showTip(event, 'fs77', 850)" class="f">ignore</span>) <span onmouseout="hideTip(event, 'fs226', 851)" onmouseover="showTip(event, 'fs226', 851)" class="i">children</span>
-                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs227', 852)" onmouseover="showTip(event, 'fs227', 852)" class="i">c</span>
+        <span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs200', 775)" onmouseover="showTip(event, 'fs200', 775)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs127', 776)" onmouseover="showTip(event, 'fs127', 776)" class="id">ui</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs201', 777)" onmouseover="showTip(event, 'fs201', 777)" class="rt">UIElement</span> <span class="o">=</span>
+            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs127', 778)" onmouseover="showTip(event, 'fs127', 778)" class="id">ui</span> <span class="k">with</span>
+            <span class="pn">|</span><span onmouseout="hideTip(event, 'fs38', 779)" onmouseover="showTip(event, 'fs38', 779)" class="uc">Text</span> <span onmouseout="hideTip(event, 'fs75', 780)" onmouseover="showTip(event, 'fs75', 780)" class="id">text</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs202', 781)" onmouseover="showTip(event, 'fs202', 781)" class="id">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs203', 782)" onmouseover="showTip(event, 'fs203', 782)" class="rt">Label</span><span class="pn">(</span><span class="id">Content</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 783)" onmouseover="showTip(event, 'fs39', 783)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 784)" onmouseover="showTip(event, 'fs75', 784)" class="id">text</span><span class="pn">)</span>
+                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs202', 785)" onmouseover="showTip(event, 'fs202', 785)" class="id">c</span>
+            <span class="pn">|</span><span onmouseout="hideTip(event, 'fs204', 786)" onmouseover="showTip(event, 'fs204', 786)" class="uc">Input</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs75', 787)" onmouseover="showTip(event, 'fs75', 787)" class="id">text</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs205', 788)" onmouseover="showTip(event, 'fs205', 788)" class="mv">event</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs206', 789)" onmouseover="showTip(event, 'fs206', 789)" class="id">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs207', 790)" onmouseover="showTip(event, 'fs207', 790)" class="rt">TextBox</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs38', 791)" onmouseover="showTip(event, 'fs38', 791)" class="id">Text</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 792)" onmouseover="showTip(event, 'fs39', 792)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 793)" onmouseover="showTip(event, 'fs75', 793)" class="id">text</span><span class="pn">)</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs208', 794)" onmouseover="showTip(event, 'fs208', 794)" class="mv">event</span> <span class="o">=</span> <span class="o">!</span><span onmouseout="hideTip(event, 'fs208', 795)" onmouseover="showTip(event, 'fs208', 795)" class="mv">event</span>
+                <span onmouseout="hideTip(event, 'fs206', 796)" onmouseover="showTip(event, 'fs206', 796)" class="fn">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs209', 797)" onmouseover="showTip(event, 'fs209', 797)" class="id">TextChanged</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs210', 798)" onmouseover="showTip(event, 'fs210', 798)" class="id">Add</span><span class="pn">(</span><span class="k">fun</span> <span class="id">_</span> <span class="k">-&gt;</span> <span class="k">let</span> <span onmouseout="hideTip(event, 'fs211', 799)" onmouseover="showTip(event, 'fs211', 799)" class="id">t</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs206', 800)" onmouseover="showTip(event, 'fs206', 800)" class="id">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs212', 801)" onmouseover="showTip(event, 'fs212', 801)" class="id">Text</span>
+                                           <span onmouseout="hideTip(event, 'fs213', 802)" onmouseover="showTip(event, 'fs213', 802)" class="k">async</span> <span class="pn">{</span> <span class="o">!</span><span onmouseout="hideTip(event, 'fs208', 803)" onmouseover="showTip(event, 'fs208', 803)" class="mv">event</span> <span onmouseout="hideTip(event, 'fs211', 804)" onmouseover="showTip(event, 'fs211', 804)" class="id">t</span> <span class="pn">}</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs214', 805)" onmouseover="showTip(event, 'fs214', 805)" class="rt">Async</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs215', 806)" onmouseover="showTip(event, 'fs215', 806)" class="id">Start</span><span class="pn">)</span>
+                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs206', 807)" onmouseover="showTip(event, 'fs206', 807)" class="id">c</span>
+            <span class="pn">|</span><span onmouseout="hideTip(event, 'fs216', 808)" onmouseover="showTip(event, 'fs216', 808)" class="uc">Button</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs75', 809)" onmouseover="showTip(event, 'fs75', 809)" class="id">text</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs217', 810)" onmouseover="showTip(event, 'fs217', 810)" class="mv">event</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs218', 811)" onmouseover="showTip(event, 'fs218', 811)" class="id">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs216', 812)" onmouseover="showTip(event, 'fs216', 812)" class="rt">Button</span><span class="pn">(</span><span class="id">Content</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs39', 813)" onmouseover="showTip(event, 'fs39', 813)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 814)" onmouseover="showTip(event, 'fs75', 814)" class="id">text</span><span class="pn">)</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs219', 815)" onmouseover="showTip(event, 'fs219', 815)" class="mv">event</span> <span class="o">=</span> <span class="o">!</span><span onmouseout="hideTip(event, 'fs219', 816)" onmouseover="showTip(event, 'fs219', 816)" class="mv">event</span>
+                <span onmouseout="hideTip(event, 'fs218', 817)" onmouseover="showTip(event, 'fs218', 817)" class="fn">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs220', 818)" onmouseover="showTip(event, 'fs220', 818)" class="id">Click</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs210', 819)" onmouseover="showTip(event, 'fs210', 819)" class="id">Add</span><span class="pn">(</span><span class="k">fun</span> <span class="id">_</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs213', 820)" onmouseover="showTip(event, 'fs213', 820)" class="k">async</span> <span class="pn">{</span> <span class="pn">(</span><span class="o">!</span><span onmouseout="hideTip(event, 'fs219', 821)" onmouseover="showTip(event, 'fs219', 821)" class="mv">event</span><span class="pn">)</span><span class="pn">(</span><span class="pn">)</span> <span class="pn">}</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs214', 822)" onmouseover="showTip(event, 'fs214', 822)" class="rt">Async</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs215', 823)" onmouseover="showTip(event, 'fs215', 823)" class="id">Start</span><span class="pn">)</span>
+                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs218', 824)" onmouseover="showTip(event, 'fs218', 824)" class="id">c</span>
+            <span class="pn">|</span><span onmouseout="hideTip(event, 'fs42', 825)" onmouseover="showTip(event, 'fs42', 825)" class="uc">Div</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs89', 826)" onmouseover="showTip(event, 'fs89', 826)" class="id">layout</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs221', 827)" onmouseover="showTip(event, 'fs221', 827)" class="id">list</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs222', 828)" onmouseover="showTip(event, 'fs222', 828)" class="id">children</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs91', 829)" onmouseover="showTip(event, 'fs91', 829)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs92', 830)" onmouseover="showTip(event, 'fs92', 830)" class="id">map</span> <span onmouseout="hideTip(event, 'fs200', 831)" onmouseover="showTip(event, 'fs200', 831)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs221', 832)" onmouseover="showTip(event, 'fs221', 832)" class="id">list</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs223', 833)" onmouseover="showTip(event, 'fs223', 833)" class="id">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs224', 834)" onmouseover="showTip(event, 'fs224', 834)" class="rt">StackPanel</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs225', 835)" onmouseover="showTip(event, 'fs225', 835)" class="id">Orientation</span><span class="o">=</span>
+                                    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs89', 836)" onmouseover="showTip(event, 'fs89', 836)" class="id">layout</span> <span class="k">with</span> 
+                                    <span class="pn">|</span><span onmouseout="hideTip(event, 'fs36', 837)" onmouseover="showTip(event, 'fs36', 837)" class="uc">Vertical</span><span class="k">-&gt;</span><span onmouseout="hideTip(event, 'fs225', 838)" onmouseover="showTip(event, 'fs225', 838)" class="vt">Orientation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs226', 839)" onmouseover="showTip(event, 'fs226', 839)" class="id">Vertical</span>
+                                    <span class="pn">|</span><span onmouseout="hideTip(event, 'fs35', 840)" onmouseover="showTip(event, 'fs35', 840)" class="uc">Horizontal</span><span class="k">-&gt;</span><span onmouseout="hideTip(event, 'fs225', 841)" onmouseover="showTip(event, 'fs225', 841)" class="vt">Orientation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs227', 842)" onmouseover="showTip(event, 'fs227', 842)" class="id">Horizontal</span><span class="pn">)</span>
+                <span onmouseout="hideTip(event, 'fs91', 843)" onmouseover="showTip(event, 'fs91', 843)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs96', 844)" onmouseover="showTip(event, 'fs96', 844)" class="id">iter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs223', 845)" onmouseover="showTip(event, 'fs223', 845)" class="fn">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs228', 846)" onmouseover="showTip(event, 'fs228', 846)" class="id">Children</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs229', 847)" onmouseover="showTip(event, 'fs229', 847)" class="id">Add</span><span class="o">&gt;</span><span class="pn">&gt;</span><span onmouseout="hideTip(event, 'fs76', 848)" onmouseover="showTip(event, 'fs76', 848)" class="fn">ignore</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs222', 849)" onmouseover="showTip(event, 'fs222', 849)" class="id">children</span>
+                <span class="k">upcast</span> <span onmouseout="hideTip(event, 'fs223', 850)" onmouseover="showTip(event, 'fs223', 850)" class="id">c</span>
 
-        <span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs234', 853)" onmouseover="showTip(event, 'fs234', 853)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs235', 854)" onmouseover="showTip(event, 'fs235', 854)" class="i">loc</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs236', 855)" onmouseover="showTip(event, 'fs236', 855)" class="t">Panel</span> <span class="o">=</span>
-            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs235', 856)" onmouseover="showTip(event, 'fs235', 856)" class="i">loc</span> <span class="k">with</span>
-            |[] <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs202', 857)" onmouseover="showTip(event, 'fs202', 857)" class="i">root</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs237', 858)" onmouseover="showTip(event, 'fs237', 858)" class="i">Content</span> <span class="o">:?&gt;</span> _
-            |<span onmouseout="hideTip(event, 'fs15', 859)" onmouseover="showTip(event, 'fs15', 859)" class="i">i</span><span class="o">::</span><span onmouseout="hideTip(event, 'fs238', 860)" onmouseover="showTip(event, 'fs238', 860)" class="i">xs</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs234', 861)" onmouseover="showTip(event, 'fs234', 861)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs238', 862)" onmouseover="showTip(event, 'fs238', 862)" class="i">xs</span>)<span class="o">.</span><span class="i">Children</span><span class="o">.</span><span class="i">Item</span> <span onmouseout="hideTip(event, 'fs15', 863)" onmouseover="showTip(event, 'fs15', 863)" class="i">i</span> <span class="o">:?&gt;</span> _
+        <span class="k">let</span> <span class="k">rec</span> <span onmouseout="hideTip(event, 'fs230', 851)" onmouseover="showTip(event, 'fs230', 851)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs231', 852)" onmouseover="showTip(event, 'fs231', 852)" class="id">loc</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs232', 853)" onmouseover="showTip(event, 'fs232', 853)" class="rt">Panel</span> <span class="o">=</span>
+            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs231', 854)" onmouseover="showTip(event, 'fs231', 854)" class="id">loc</span> <span class="k">with</span>
+            <span class="pn">|</span><span class="pn">[</span><span class="pn">]</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs198', 855)" onmouseover="showTip(event, 'fs198', 855)" class="id">root</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs233', 856)" onmouseover="showTip(event, 'fs233', 856)" class="id">Content</span> <span class="o">:?&gt;</span> <span class="id">_</span>
+            <span class="pn">|</span><span onmouseout="hideTip(event, 'fs15', 857)" onmouseover="showTip(event, 'fs15', 857)" class="id">i</span><span class="uc">::</span><span onmouseout="hideTip(event, 'fs234', 858)" onmouseover="showTip(event, 'fs234', 858)" class="id">xs</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs230', 859)" onmouseover="showTip(event, 'fs230', 859)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs234', 860)" onmouseover="showTip(event, 'fs234', 860)" class="id">xs</span><span class="pn">)</span><span class="pn">.</span><span class="id">Children</span><span class="pn">.</span><span class="id">Item</span> <span onmouseout="hideTip(event, 'fs15', 861)" onmouseover="showTip(event, 'fs15', 861)" class="id">i</span> <span class="o">:?&gt;</span> <span class="id">_</span>
 
-        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs239', 864)" onmouseover="showTip(event, 'fs239', 864)" class="f">uiUpdate</span> <span onmouseout="hideTip(event, 'fs240', 865)" onmouseover="showTip(event, 'fs240', 865)" class="i">u</span> <span class="o">=</span>
-            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs240', 866)" onmouseover="showTip(event, 'fs240', 866)" class="i">u</span> <span class="k">with</span>
-            | <span onmouseout="hideTip(event, 'fs45', 867)" onmouseover="showTip(event, 'fs45', 867)" class="p">InsertUI</span> (<span onmouseout="hideTip(event, 'fs235', 868)" onmouseover="showTip(event, 'fs235', 868)" class="i">loc</span>,<span onmouseout="hideTip(event, 'fs128', 869)" onmouseover="showTip(event, 'fs128', 869)" class="i">ui</span>) <span class="k">-&gt;</span>
-                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs235', 870)" onmouseover="showTip(event, 'fs235', 870)" class="i">loc</span> <span class="k">with</span>
-                |[] <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs202', 871)" onmouseover="showTip(event, 'fs202', 871)" class="i">root</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs237', 872)" onmouseover="showTip(event, 'fs237', 872)" class="i">Content</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs204', 873)" onmouseover="showTip(event, 'fs204', 873)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs128', 874)" onmouseover="showTip(event, 'fs128', 874)" class="i">ui</span>
-                |<span onmouseout="hideTip(event, 'fs15', 875)" onmouseover="showTip(event, 'fs15', 875)" class="i">i</span><span class="o">::</span><span onmouseout="hideTip(event, 'fs238', 876)" onmouseover="showTip(event, 'fs238', 876)" class="i">xs</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs234', 877)" onmouseover="showTip(event, 'fs234', 877)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs238', 878)" onmouseover="showTip(event, 'fs238', 878)" class="i">xs</span>)<span class="o">.</span><span class="i">Children</span><span class="o">.</span><span class="f">Insert</span>(<span onmouseout="hideTip(event, 'fs15', 879)" onmouseover="showTip(event, 'fs15', 879)" class="i">i</span>,<span onmouseout="hideTip(event, 'fs204', 880)" onmouseover="showTip(event, 'fs204', 880)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs128', 881)" onmouseover="showTip(event, 'fs128', 881)" class="i">ui</span>)
-            | <span onmouseout="hideTip(event, 'fs47', 882)" onmouseover="showTip(event, 'fs47', 882)" class="p">UpdateUI</span> (<span onmouseout="hideTip(event, 'fs235', 883)" onmouseover="showTip(event, 'fs235', 883)" class="i">loc</span>,<span onmouseout="hideTip(event, 'fs128', 884)" onmouseover="showTip(event, 'fs128', 884)" class="i">ui</span>) <span class="k">-&gt;</span>
-                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs241', 885)" onmouseover="showTip(event, 'fs241', 885)" class="i">element</span> <span class="o">=</span> <span class="k">match</span> <span onmouseout="hideTip(event, 'fs235', 886)" onmouseover="showTip(event, 'fs235', 886)" class="i">loc</span> <span class="k">with</span>
-                              |[] <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs202', 887)" onmouseover="showTip(event, 'fs202', 887)" class="i">root</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs237', 888)" onmouseover="showTip(event, 'fs237', 888)" class="i">Content</span> <span class="o">:?&gt;</span> _
-                              |<span onmouseout="hideTip(event, 'fs15', 889)" onmouseover="showTip(event, 'fs15', 889)" class="i">i</span><span class="o">::</span><span onmouseout="hideTip(event, 'fs238', 890)" onmouseover="showTip(event, 'fs238', 890)" class="i">xs</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs234', 891)" onmouseover="showTip(event, 'fs234', 891)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs238', 892)" onmouseover="showTip(event, 'fs238', 892)" class="i">xs</span>)<span class="o">.</span><span class="i">Children</span><span class="o">.</span><span class="i">Item</span> <span onmouseout="hideTip(event, 'fs15', 893)" onmouseover="showTip(event, 'fs15', 893)" class="i">i</span>
-                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs128', 894)" onmouseover="showTip(event, 'fs128', 894)" class="i">ui</span> <span class="k">with</span>
-                | <span onmouseout="hideTip(event, 'fs38', 895)" onmouseover="showTip(event, 'fs38', 895)" class="p">Text</span> <span onmouseout="hideTip(event, 'fs76', 896)" onmouseover="showTip(event, 'fs76', 896)" class="i">text</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs241', 897)" onmouseover="showTip(event, 'fs241', 897)" class="i">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs207', 898)" onmouseover="showTip(event, 'fs207', 898)" class="t">Label</span>)<span class="o">.</span><span class="i">Content</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 899)" onmouseover="showTip(event, 'fs39', 899)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 900)" onmouseover="showTip(event, 'fs76', 900)" class="i">text</span>
-                | <span onmouseout="hideTip(event, 'fs208', 901)" onmouseover="showTip(event, 'fs208', 901)" class="p">Input</span> (<span onmouseout="hideTip(event, 'fs76', 902)" onmouseover="showTip(event, 'fs76', 902)" class="i">text</span>,_) <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs241', 903)" onmouseover="showTip(event, 'fs241', 903)" class="i">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs211', 904)" onmouseover="showTip(event, 'fs211', 904)" class="t">TextBox</span>)<span class="o">.</span><span onmouseout="hideTip(event, 'fs38', 905)" onmouseover="showTip(event, 'fs38', 905)" class="i">Text</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 906)" onmouseover="showTip(event, 'fs39', 906)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 907)" onmouseover="showTip(event, 'fs76', 907)" class="i">text</span>
-                | <span onmouseout="hideTip(event, 'fs220', 908)" onmouseover="showTip(event, 'fs220', 908)" class="p">Button</span> (<span onmouseout="hideTip(event, 'fs76', 909)" onmouseover="showTip(event, 'fs76', 909)" class="i">text</span>,_) <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs241', 910)" onmouseover="showTip(event, 'fs241', 910)" class="i">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs220', 911)" onmouseover="showTip(event, 'fs220', 911)" class="t">Button</span>)<span class="o">.</span><span class="i">Content</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 912)" onmouseover="showTip(event, 'fs39', 912)" class="f">string</span> <span onmouseout="hideTip(event, 'fs76', 913)" onmouseover="showTip(event, 'fs76', 913)" class="i">text</span>
-                | <span onmouseout="hideTip(event, 'fs42', 914)" onmouseover="showTip(event, 'fs42', 914)" class="p">Div</span> _ <span class="k">-&gt;</span> ()
-            | <span onmouseout="hideTip(event, 'fs48', 915)" onmouseover="showTip(event, 'fs48', 915)" class="p">ReplaceUI</span> (<span onmouseout="hideTip(event, 'fs235', 916)" onmouseover="showTip(event, 'fs235', 916)" class="i">loc</span>,<span onmouseout="hideTip(event, 'fs128', 917)" onmouseover="showTip(event, 'fs128', 917)" class="i">ui</span>) <span class="k">-&gt;</span>
-                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs235', 918)" onmouseover="showTip(event, 'fs235', 918)" class="i">loc</span> <span class="k">with</span>
-                |[] <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs202', 919)" onmouseover="showTip(event, 'fs202', 919)" class="i">root</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs237', 920)" onmouseover="showTip(event, 'fs237', 920)" class="i">Content</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs204', 921)" onmouseover="showTip(event, 'fs204', 921)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs128', 922)" onmouseover="showTip(event, 'fs128', 922)" class="i">ui</span>
-                |<span onmouseout="hideTip(event, 'fs15', 923)" onmouseover="showTip(event, 'fs15', 923)" class="i">i</span><span class="o">::</span><span onmouseout="hideTip(event, 'fs238', 924)" onmouseover="showTip(event, 'fs238', 924)" class="i">xs</span> <span class="k">-&gt;</span>
-                    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs242', 925)" onmouseover="showTip(event, 'fs242', 925)" class="i">c</span> <span class="o">=</span> (<span onmouseout="hideTip(event, 'fs234', 926)" onmouseover="showTip(event, 'fs234', 926)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs238', 927)" onmouseover="showTip(event, 'fs238', 927)" class="i">xs</span>)<span class="o">.</span><span class="i">Children</span>
-                    <span onmouseout="hideTip(event, 'fs242', 928)" onmouseover="showTip(event, 'fs242', 928)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs243', 929)" onmouseover="showTip(event, 'fs243', 929)" class="f">RemoveAt</span> <span onmouseout="hideTip(event, 'fs15', 930)" onmouseover="showTip(event, 'fs15', 930)" class="i">i</span>
-                    <span onmouseout="hideTip(event, 'fs242', 931)" onmouseover="showTip(event, 'fs242', 931)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs244', 932)" onmouseover="showTip(event, 'fs244', 932)" class="f">Insert</span>(<span onmouseout="hideTip(event, 'fs15', 933)" onmouseover="showTip(event, 'fs15', 933)" class="i">i</span>,<span onmouseout="hideTip(event, 'fs204', 934)" onmouseover="showTip(event, 'fs204', 934)" class="f">createUI</span> <span onmouseout="hideTip(event, 'fs128', 935)" onmouseover="showTip(event, 'fs128', 935)" class="i">ui</span>)
-            | <span onmouseout="hideTip(event, 'fs49', 936)" onmouseover="showTip(event, 'fs49', 936)" class="p">RemoveUI</span> <span onmouseout="hideTip(event, 'fs235', 937)" onmouseover="showTip(event, 'fs235', 937)" class="i">loc</span> <span class="k">-&gt;</span>
-                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs235', 938)" onmouseover="showTip(event, 'fs235', 938)" class="i">loc</span> <span class="k">with</span>
-                |[] <span class="k">-&gt;</span> ()
-                |<span onmouseout="hideTip(event, 'fs15', 939)" onmouseover="showTip(event, 'fs15', 939)" class="i">i</span><span class="o">::</span><span onmouseout="hideTip(event, 'fs238', 940)" onmouseover="showTip(event, 'fs238', 940)" class="i">xs</span> <span class="k">-&gt;</span> (<span onmouseout="hideTip(event, 'fs234', 941)" onmouseover="showTip(event, 'fs234', 941)" class="f">locatePanel</span> <span onmouseout="hideTip(event, 'fs238', 942)" onmouseover="showTip(event, 'fs238', 942)" class="i">xs</span>)<span class="o">.</span><span class="i">Children</span><span class="o">.</span><span class="f">RemoveAt</span> <span onmouseout="hideTip(event, 'fs15', 943)" onmouseover="showTip(event, 'fs15', 943)" class="i">i</span>
-            | <span onmouseout="hideTip(event, 'fs50', 944)" onmouseover="showTip(event, 'fs50', 944)" class="p">EventUI</span> _ <span class="k">-&gt;</span> ()
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs235', 862)" onmouseover="showTip(event, 'fs235', 862)" class="fn">uiUpdate</span> <span onmouseout="hideTip(event, 'fs236', 863)" onmouseover="showTip(event, 'fs236', 863)" class="id">u</span> <span class="o">=</span>
+            <span class="k">match</span> <span onmouseout="hideTip(event, 'fs236', 864)" onmouseover="showTip(event, 'fs236', 864)" class="id">u</span> <span class="k">with</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs45', 865)" onmouseover="showTip(event, 'fs45', 865)" class="uc">InsertUI</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs231', 866)" onmouseover="showTip(event, 'fs231', 866)" class="id">loc</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs127', 867)" onmouseover="showTip(event, 'fs127', 867)" class="id">ui</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs231', 868)" onmouseover="showTip(event, 'fs231', 868)" class="id">loc</span> <span class="k">with</span>
+                <span class="pn">|</span><span class="pn">[</span><span class="pn">]</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs198', 869)" onmouseover="showTip(event, 'fs198', 869)" class="id">root</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs233', 870)" onmouseover="showTip(event, 'fs233', 870)" class="id">Content</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs200', 871)" onmouseover="showTip(event, 'fs200', 871)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs127', 872)" onmouseover="showTip(event, 'fs127', 872)" class="id">ui</span>
+                <span class="pn">|</span><span onmouseout="hideTip(event, 'fs15', 873)" onmouseover="showTip(event, 'fs15', 873)" class="id">i</span><span class="uc">::</span><span onmouseout="hideTip(event, 'fs234', 874)" onmouseover="showTip(event, 'fs234', 874)" class="id">xs</span> <span class="k">-&gt;</span> <span class="fn">(</span><span onmouseout="hideTip(event, 'fs230', 875)" onmouseover="showTip(event, 'fs230', 875)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs234', 876)" onmouseover="showTip(event, 'fs234', 876)" class="id">xs</span><span class="pn">)</span><span class="pn">.</span><span class="id">Children</span><span class="pn">.</span><span class="id">Insert</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs15', 877)" onmouseover="showTip(event, 'fs15', 877)" class="id">i</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs200', 878)" onmouseover="showTip(event, 'fs200', 878)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs127', 879)" onmouseover="showTip(event, 'fs127', 879)" class="id">ui</span><span class="pn">)</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs47', 880)" onmouseover="showTip(event, 'fs47', 880)" class="uc">UpdateUI</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs231', 881)" onmouseover="showTip(event, 'fs231', 881)" class="id">loc</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs127', 882)" onmouseover="showTip(event, 'fs127', 882)" class="id">ui</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">let</span> <span onmouseout="hideTip(event, 'fs237', 883)" onmouseover="showTip(event, 'fs237', 883)" class="id">element</span> <span class="o">=</span> <span class="k">match</span> <span onmouseout="hideTip(event, 'fs231', 884)" onmouseover="showTip(event, 'fs231', 884)" class="id">loc</span> <span class="k">with</span>
+                              <span class="pn">|</span><span class="pn">[</span><span class="pn">]</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs198', 885)" onmouseover="showTip(event, 'fs198', 885)" class="id">root</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs233', 886)" onmouseover="showTip(event, 'fs233', 886)" class="id">Content</span> <span class="o">:?&gt;</span> <span class="id">_</span>
+                              <span class="pn">|</span><span onmouseout="hideTip(event, 'fs15', 887)" onmouseover="showTip(event, 'fs15', 887)" class="id">i</span><span class="uc">::</span><span onmouseout="hideTip(event, 'fs234', 888)" onmouseover="showTip(event, 'fs234', 888)" class="id">xs</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs230', 889)" onmouseover="showTip(event, 'fs230', 889)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs234', 890)" onmouseover="showTip(event, 'fs234', 890)" class="id">xs</span><span class="pn">)</span><span class="pn">.</span><span class="id">Children</span><span class="pn">.</span><span class="id">Item</span> <span onmouseout="hideTip(event, 'fs15', 891)" onmouseover="showTip(event, 'fs15', 891)" class="id">i</span>
+                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs127', 892)" onmouseover="showTip(event, 'fs127', 892)" class="id">ui</span> <span class="k">with</span>
+                <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs38', 893)" onmouseover="showTip(event, 'fs38', 893)" class="uc">Text</span> <span onmouseout="hideTip(event, 'fs75', 894)" onmouseover="showTip(event, 'fs75', 894)" class="id">text</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs237', 895)" onmouseover="showTip(event, 'fs237', 895)" class="id">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs203', 896)" onmouseover="showTip(event, 'fs203', 896)" class="rt">Label</span><span class="pn">)</span><span class="pn">.</span><span class="id">Content</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 897)" onmouseover="showTip(event, 'fs39', 897)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 898)" onmouseover="showTip(event, 'fs75', 898)" class="id">text</span>
+                <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs204', 899)" onmouseover="showTip(event, 'fs204', 899)" class="uc">Input</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs75', 900)" onmouseover="showTip(event, 'fs75', 900)" class="id">text</span><span class="pn">,</span><span class="id">_</span><span class="pn">)</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs237', 901)" onmouseover="showTip(event, 'fs237', 901)" class="id">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs207', 902)" onmouseover="showTip(event, 'fs207', 902)" class="rt">TextBox</span><span class="pn">)</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 903)" onmouseover="showTip(event, 'fs38', 903)" class="id">Text</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 904)" onmouseover="showTip(event, 'fs39', 904)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 905)" onmouseover="showTip(event, 'fs75', 905)" class="id">text</span>
+                <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs216', 906)" onmouseover="showTip(event, 'fs216', 906)" class="uc">Button</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs75', 907)" onmouseover="showTip(event, 'fs75', 907)" class="id">text</span><span class="pn">,</span><span class="id">_</span><span class="pn">)</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs237', 908)" onmouseover="showTip(event, 'fs237', 908)" class="id">element</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs216', 909)" onmouseover="showTip(event, 'fs216', 909)" class="rt">Button</span><span class="pn">)</span><span class="pn">.</span><span class="id">Content</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs39', 910)" onmouseover="showTip(event, 'fs39', 910)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs75', 911)" onmouseover="showTip(event, 'fs75', 911)" class="id">text</span>
+                <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs42', 912)" onmouseover="showTip(event, 'fs42', 912)" class="uc">Div</span> <span class="id">_</span> <span class="k">-&gt;</span> <span class="pn">(</span><span class="pn">)</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs48', 913)" onmouseover="showTip(event, 'fs48', 913)" class="uc">ReplaceUI</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs231', 914)" onmouseover="showTip(event, 'fs231', 914)" class="id">loc</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs127', 915)" onmouseover="showTip(event, 'fs127', 915)" class="id">ui</span><span class="pn">)</span> <span class="k">-&gt;</span>
+                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs231', 916)" onmouseover="showTip(event, 'fs231', 916)" class="id">loc</span> <span class="k">with</span>
+                <span class="pn">|</span><span class="pn">[</span><span class="pn">]</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs198', 917)" onmouseover="showTip(event, 'fs198', 917)" class="id">root</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs233', 918)" onmouseover="showTip(event, 'fs233', 918)" class="id">Content</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs200', 919)" onmouseover="showTip(event, 'fs200', 919)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs127', 920)" onmouseover="showTip(event, 'fs127', 920)" class="id">ui</span>
+                <span class="pn">|</span><span onmouseout="hideTip(event, 'fs15', 921)" onmouseover="showTip(event, 'fs15', 921)" class="id">i</span><span class="uc">::</span><span onmouseout="hideTip(event, 'fs234', 922)" onmouseover="showTip(event, 'fs234', 922)" class="id">xs</span> <span class="k">-&gt;</span>
+                    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs238', 923)" onmouseover="showTip(event, 'fs238', 923)" class="id">c</span> <span class="o">=</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs230', 924)" onmouseover="showTip(event, 'fs230', 924)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs234', 925)" onmouseover="showTip(event, 'fs234', 925)" class="id">xs</span><span class="pn">)</span><span class="pn">.</span><span class="id">Children</span>
+                    <span onmouseout="hideTip(event, 'fs238', 926)" onmouseover="showTip(event, 'fs238', 926)" class="fn">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs239', 927)" onmouseover="showTip(event, 'fs239', 927)" class="id">RemoveAt</span> <span onmouseout="hideTip(event, 'fs15', 928)" onmouseover="showTip(event, 'fs15', 928)" class="id">i</span>
+                    <span onmouseout="hideTip(event, 'fs238', 929)" onmouseover="showTip(event, 'fs238', 929)" class="fn">c</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs240', 930)" onmouseover="showTip(event, 'fs240', 930)" class="id">Insert</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs15', 931)" onmouseover="showTip(event, 'fs15', 931)" class="id">i</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs200', 932)" onmouseover="showTip(event, 'fs200', 932)" class="fn">createUI</span> <span onmouseout="hideTip(event, 'fs127', 933)" onmouseover="showTip(event, 'fs127', 933)" class="id">ui</span><span class="pn">)</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs49', 934)" onmouseover="showTip(event, 'fs49', 934)" class="uc">RemoveUI</span> <span onmouseout="hideTip(event, 'fs231', 935)" onmouseover="showTip(event, 'fs231', 935)" class="id">loc</span> <span class="k">-&gt;</span>
+                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs231', 936)" onmouseover="showTip(event, 'fs231', 936)" class="id">loc</span> <span class="k">with</span>
+                <span class="pn">|</span><span class="pn">[</span><span class="pn">]</span> <span class="k">-&gt;</span> <span class="pn">(</span><span class="pn">)</span>
+                <span class="pn">|</span><span onmouseout="hideTip(event, 'fs15', 937)" onmouseover="showTip(event, 'fs15', 937)" class="id">i</span><span class="uc">::</span><span onmouseout="hideTip(event, 'fs234', 938)" onmouseover="showTip(event, 'fs234', 938)" class="id">xs</span> <span class="k">-&gt;</span> <span class="fn">(</span><span onmouseout="hideTip(event, 'fs230', 939)" onmouseover="showTip(event, 'fs230', 939)" class="fn">locatePanel</span> <span onmouseout="hideTip(event, 'fs234', 940)" onmouseover="showTip(event, 'fs234', 940)" class="id">xs</span><span class="pn">)</span><span class="pn">.</span><span class="id">Children</span><span class="pn">.</span><span class="id">RemoveAt</span> <span onmouseout="hideTip(event, 'fs15', 941)" onmouseover="showTip(event, 'fs15', 941)" class="id">i</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs50', 942)" onmouseover="showTip(event, 'fs50', 942)" class="uc">EventUI</span> <span class="id">_</span> <span class="k">-&gt;</span> <span class="pn">(</span><span class="pn">)</span>
 
-        { <span class="k">new</span> <span onmouseout="hideTip(event, 'fs58', 945)" onmouseover="showTip(event, 'fs58', 945)" class="t">INativeUI</span> <span class="k">with</span>
-            <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="f">Send</span> <span onmouseout="hideTip(event, 'fs245', 946)" onmouseover="showTip(event, 'fs245', 946)" class="i">list</span> <span class="o">=</span>
-                <span onmouseout="hideTip(event, 'fs202', 947)" onmouseover="showTip(event, 'fs202', 947)" class="i">root</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs246', 948)" onmouseover="showTip(event, 'fs246', 948)" class="i">Dispatcher</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs247', 949)" onmouseover="showTip(event, 'fs247', 949)" class="f">Invoke</span> (<span class="k">fun</span> () <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs92', 950)" onmouseover="showTip(event, 'fs92', 950)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs97', 951)" onmouseover="showTip(event, 'fs97', 951)" class="i">iter</span> <span onmouseout="hideTip(event, 'fs239', 952)" onmouseover="showTip(event, 'fs239', 952)" class="i">uiUpdate</span> <span onmouseout="hideTip(event, 'fs245', 953)" onmouseover="showTip(event, 'fs245', 953)" class="i">list</span>)
-        }
-</code></pre></td>
-</tr>
-</table>
-<h2>Results</h2>
+        <span class="pn">{</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs58', 943)" onmouseover="showTip(event, 'fs58', 943)" class="if">INativeUI</span> <span class="k">with</span>
+            <span class="k">member</span> <span class="id">__</span><span class="pn">.</span><span class="fn">Send</span> <span onmouseout="hideTip(event, 'fs241', 944)" onmouseover="showTip(event, 'fs241', 944)" class="id">list</span> <span class="o">=</span>
+                <span onmouseout="hideTip(event, 'fs198', 945)" onmouseover="showTip(event, 'fs198', 945)" class="fn">root</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs242', 946)" onmouseover="showTip(event, 'fs242', 946)" class="id">Dispatcher</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs243', 947)" onmouseover="showTip(event, 'fs243', 947)" class="id">Invoke</span> <span class="pn">(</span><span class="k">fun</span> <span class="pn">(</span><span class="pn">)</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs91', 948)" onmouseover="showTip(event, 'fs91', 948)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs96', 949)" onmouseover="showTip(event, 'fs96', 949)" class="id">iter</span> <span onmouseout="hideTip(event, 'fs235', 950)" onmouseover="showTip(event, 'fs235', 950)" class="fn">uiUpdate</span> <span onmouseout="hideTip(event, 'fs241', 951)" onmouseover="showTip(event, 'fs241', 951)" class="id">list</span><span class="pn">)</span>
+        <span class="pn">}</span>
+</code></pre>
+<h2><a name="Results" class="anchor" href="#Results">Results</a></h2>
 <p>The same <code>CounterList</code> UI application from the previous <a href="{% post_url 2016-06-20-fsharp-elm-part1 %}">post</a> has been used across a number of native UIs.
 The example <a href="https://github.com/AnthonyLloyd/Elm">source</a> produces the following mobile and desktop UIs.</p>
 <table style="border:0px">
@@ -159,7 +91,7 @@ The example <a href="https://github.com/AnthonyLloyd/Elm">source</a> produces th
 		<td style="background-color:white;border:0px"><img src="/{{site.baseurl}}public/elm/WinUWP.png" title="UWP Application" width="340px" height="500px"/></td>
 	</tr>
 </table>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p><a href="http://guide.elm-lang.org/architecture/index.html">The Elm Architecture</a> continues to look to be a very promising pattern.</p>
 <p>The <code>INativeUI</code> implementation is a single place for native UI element creation and is much more DRY than other UI models.
 So far, styling has not been considered, but this single place should make it easier with both an Elm and a CSS model being possible.</p>
@@ -170,8 +102,8 @@ This has the benefit of making the UI more testable and at the same time making 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/elm/donpraise.png"/>
 
 
-<div class="tip" id="fs1">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
-<div class="tip" id="fs2">val remove : n:int -&gt; l:&#39;a list -&gt; &#39;a list * &#39;a list<br /><br />Full name: Main.List.remove</div>
+<div class="tip" id="fs1">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;&#160;&#160;interface IReadOnlyList&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IReadOnlyCollection&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IEnumerable<br />&#160;&#160;&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;&#160;&#160;member Head : &#39;T<br />&#160;&#160;&#160;&#160;member IsEmpty : bool<br />&#160;&#160;&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;&#160;&#160;member Length : int<br />&#160;&#160;&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;&#160;&#160;...</div>
+<div class="tip" id="fs2">val remove : n:int -&gt; l:&#39;a list -&gt; &#39;a list * &#39;a list</div>
 <div class="tip" id="fs3">val n : int</div>
 <div class="tip" id="fs4">val l : &#39;a list</div>
 <div class="tip" id="fs5">val pop : (int -&gt; &#39;b list -&gt; &#39;b list -&gt; &#39;b list * &#39;b list)</div>
@@ -179,241 +111,237 @@ This has the benefit of making the UI more testable and at the same time making 
 <div class="tip" id="fs7">val p : &#39;b list</div>
 <div class="tip" id="fs8">val x : &#39;b</div>
 <div class="tip" id="fs9">val xs : &#39;b list</div>
-<div class="tip" id="fs10">val add : p:&#39;a list -&gt; l:&#39;a list -&gt; &#39;a list<br /><br />Full name: Main.List.add</div>
+<div class="tip" id="fs10">val add : p:&#39;a list -&gt; l:&#39;a list -&gt; &#39;a list</div>
 <div class="tip" id="fs11">val p : &#39;a list</div>
 <div class="tip" id="fs12">val x : &#39;a</div>
 <div class="tip" id="fs13">val xs : &#39;a list</div>
-<div class="tip" id="fs14">val removei : i:int -&gt; l:&#39;a list -&gt; &#39;a list<br /><br />Full name: Main.List.removei</div>
+<div class="tip" id="fs14">val removei : i:int -&gt; l:&#39;a list -&gt; &#39;a list</div>
 <div class="tip" id="fs15">val i : int</div>
 <div class="tip" id="fs16">val t : &#39;a list</div>
-<div class="tip" id="fs17">val tail : list:&#39;T list -&gt; &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List.tail</div>
-<div class="tip" id="fs18">val replacei : i:int -&gt; item:&#39;a -&gt; l:&#39;a list -&gt; &#39;a list<br /><br />Full name: Main.List.replacei</div>
+<div class="tip" id="fs17">val tail : list:&#39;T list -&gt; &#39;T list</div>
+<div class="tip" id="fs18">val replacei : i:int -&gt; item:&#39;a -&gt; l:&#39;a list -&gt; &#39;a list</div>
 <div class="tip" id="fs19">val item : &#39;a</div>
-<div class="tip" id="fs20">val revMap : mapping:(&#39;a -&gt; &#39;b) -&gt; list:&#39;a list -&gt; &#39;b list<br /><br />Full name: Main.List.revMap</div>
+<div class="tip" id="fs20">val revMap : mapping:(&#39;a -&gt; &#39;b) -&gt; list:&#39;a list -&gt; &#39;b list</div>
 <div class="tip" id="fs21">val mapping : (&#39;a -&gt; &#39;b)</div>
-<div class="tip" id="fs22">Multiple items<br />val list : &#39;a list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
+<div class="tip" id="fs22">Multiple items<br />val list : &#39;a list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
 <div class="tip" id="fs23">val work : (&#39;a list -&gt; &#39;b list -&gt; &#39;b list)</div>
 <div class="tip" id="fs24">val input : &#39;a list</div>
 <div class="tip" id="fs25">val output : &#39;b list</div>
-<div class="tip" id="fs26">val mapAt : i:int -&gt; mapping:(&#39;a -&gt; &#39;a) -&gt; list:&#39;a list -&gt; &#39;a list<br /><br />Full name: Main.List.mapAt</div>
+<div class="tip" id="fs26">val mapAt : i:int -&gt; mapping:(&#39;a -&gt; &#39;a) -&gt; list:&#39;a list -&gt; &#39;a list</div>
 <div class="tip" id="fs27">val mapping : (&#39;a -&gt; &#39;a)</div>
 <div class="tip" id="fs28">val removed : &#39;a list</div>
 <div class="tip" id="fs29">val tail : &#39;a list</div>
-<div class="tip" id="fs30">val head : list:&#39;T list -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.List.head</div>
-<div class="tip" id="fs31">Multiple items<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type &#39;msg Event = (&#39;msg -&gt; unit) ref ref<br /><br />Full name: Main.Event&lt;_&gt;<br /><em><br /><br />&#160;Message event used on the primative UI components.</em><br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />Full name: Microsoft.FSharp.Control.Event&lt;_,_&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
-<div class="tip" id="fs32">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
-<div class="tip" id="fs33">Multiple items<br />val ref : value:&#39;T -&gt; &#39;T ref<br /><br />Full name: Microsoft.FSharp.Core.Operators.ref<br /><br />--------------------<br />type &#39;T ref = Ref&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.ref&lt;_&gt;</div>
-<div class="tip" id="fs34">type Layout =<br />&#160;&#160;| Horizontal<br />&#160;&#160;| Vertical<br /><br />Full name: Main.Layout<br /><em><br /><br />&#160;Layout for a section of UI components.</em></div>
+<div class="tip" id="fs30">val head : list:&#39;T list -&gt; &#39;T</div>
+<div class="tip" id="fs31">Multiple items<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type &#39;msg Event = (&#39;msg -&gt; unit) ref ref<br /><em><br /><br />&#160;Message event used on the primative UI components.</em><br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
+<div class="tip" id="fs32">type unit = Unit</div>
+<div class="tip" id="fs33">Multiple items<br />val ref : value:&#39;T -&gt; &#39;T ref<br /><br />--------------------<br />type &#39;T ref = Ref&lt;&#39;T&gt;</div>
+<div class="tip" id="fs34">type Layout =<br />&#160;&#160;| Horizontal<br />&#160;&#160;| Vertical<br /><em><br /><br />&#160;Layout for a section of UI components.</em></div>
 <div class="tip" id="fs35">union case Layout.Horizontal: Layout</div>
 <div class="tip" id="fs36">union case Layout.Vertical: Layout</div>
-<div class="tip" id="fs37">type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><br />Full name: Main.UI<br /><em><br /><br />&#160;Primative UI components.</em></div>
+<div class="tip" id="fs37">type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><em><br /><br />&#160;Primative UI components.</em></div>
 <div class="tip" id="fs38">union case UI.Text: string -&gt; UI</div>
-<div class="tip" id="fs39">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs39">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />--------------------<br />type string = System.String</div>
 <div class="tip" id="fs40">union case UI.Input: string * string Event -&gt; UI</div>
 <div class="tip" id="fs41">union case UI.Button: string * unit Event -&gt; UI</div>
 <div class="tip" id="fs42">union case UI.Div: Layout * UI list -&gt; UI</div>
-<div class="tip" id="fs43">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
-<div class="tip" id="fs44">type UIUpdate =<br />&#160;&#160;| InsertUI of int list * UI<br />&#160;&#160;| UpdateUI of int list * UI<br />&#160;&#160;| ReplaceUI of int list * UI<br />&#160;&#160;| RemoveUI of int list<br />&#160;&#160;| EventUI of (unit -&gt; unit)<br /><br />Full name: Main.UIUpdate<br /><em><br /><br />&#160;UI component update and event redirection.</em></div>
+<div class="tip" id="fs43">type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs44">type UIUpdate =<br />&#160;&#160;| InsertUI of int list * UI<br />&#160;&#160;| UpdateUI of int list * UI<br />&#160;&#160;| ReplaceUI of int list * UI<br />&#160;&#160;| RemoveUI of int list<br />&#160;&#160;| EventUI of (unit -&gt; unit)<br /><em><br /><br />&#160;UI component update and event redirection.</em></div>
 <div class="tip" id="fs45">union case UIUpdate.InsertUI: int list * UI -&gt; UIUpdate</div>
-<div class="tip" id="fs46">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs46">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />--------------------<br />type int = int32<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int</div>
 <div class="tip" id="fs47">union case UIUpdate.UpdateUI: int list * UI -&gt; UIUpdate</div>
 <div class="tip" id="fs48">union case UIUpdate.ReplaceUI: int list * UI -&gt; UIUpdate</div>
 <div class="tip" id="fs49">union case UIUpdate.RemoveUI: int list -&gt; UIUpdate</div>
 <div class="tip" id="fs50">union case UIUpdate.EventUI: (unit -&gt; unit) -&gt; UIUpdate</div>
-<div class="tip" id="fs51">Multiple items<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><br />Full name: Main.UI<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><br />Full name: Main.UI&lt;_&gt;<br /><em><br /><br />&#160;UI component including a message event.</em></div>
-<div class="tip" id="fs52">Multiple items<br />UI.UI: UI<br /><br />--------------------<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><br />Full name: Main.UI<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><br />Full name: Main.UI&lt;_&gt;<br /><em><br /><br />&#160;UI component including a message event.</em></div>
-<div class="tip" id="fs53">Multiple items<br />UI.Event: &#39;msg -&gt; unit<br /><br />--------------------<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type &#39;msg Event = (&#39;msg -&gt; unit) ref ref<br /><br />Full name: Main.Event&lt;_&gt;<br /><em><br /><br />&#160;Message event used on the primative UI components.</em><br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />Full name: Microsoft.FSharp.Control.Event&lt;_,_&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
-<div class="tip" id="fs54">type App&lt;&#39;msg,&#39;model&gt; =<br />&#160;&#160;{Model: &#39;model;<br />&#160;&#160;&#160;Update: &#39;msg -&gt; &#39;model -&gt; &#39;model;<br />&#160;&#160;&#160;View: &#39;model -&gt; &#39;msg UI;}<br /><br />Full name: Main.App&lt;_,_&gt;<br /><em><br /><br />&#160;UI application.</em></div>
+<div class="tip" id="fs51">Multiple items<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><em><br /><br />&#160;UI component including a message event.</em></div>
+<div class="tip" id="fs52">Multiple items<br />UI.UI: UI<br /><br />--------------------<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><em><br /><br />&#160;UI component including a message event.</em></div>
+<div class="tip" id="fs53">Multiple items<br />UI.Event: &#39;msg -&gt; unit<br /><br />--------------------<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type &#39;msg Event = (&#39;msg -&gt; unit) ref ref<br /><em><br /><br />&#160;Message event used on the primative UI components.</em><br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
+<div class="tip" id="fs54">type App&lt;&#39;msg,&#39;model&gt; =<br />&#160;&#160;{Model: &#39;model;<br />&#160;&#160;&#160;Update: &#39;msg -&gt; &#39;model -&gt; &#39;model;<br />&#160;&#160;&#160;View: &#39;model -&gt; &#39;msg UI;}<br /><em><br /><br />&#160;UI application.</em></div>
 <div class="tip" id="fs55">App.Model: &#39;model</div>
 <div class="tip" id="fs56">App.Update: &#39;msg -&gt; &#39;model -&gt; &#39;model</div>
 <div class="tip" id="fs57">App.View: &#39;model -&gt; &#39;msg UI</div>
-<div class="tip" id="fs58">type INativeUI =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Send : UIUpdate list -&gt; unit<br />&#160;&#160;end<br /><br />Full name: Main.INativeUI<br /><em><br /><br />&#160;Native UI interface.</em></div>
-<div class="tip" id="fs59">abstract member INativeUI.Send : UIUpdate list -&gt; unit<br /><br />Full name: Main.INativeUI.Send</div>
-<div class="tip" id="fs60">Multiple items<br />type CompilationRepresentationAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute<br />&#160;&#160;member Flags : CompilationRepresentationFlags<br /><br />Full name: Microsoft.FSharp.Core.CompilationRepresentationAttribute<br /><br />--------------------<br />new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute</div>
-<div class="tip" id="fs61">type CompilationRepresentationFlags =<br />&#160;&#160;|  None  =  0<br />&#160;&#160;|  Static  =  1<br />&#160;&#160;|  Instance  =  2<br />&#160;&#160;|  ModuleSuffix  =  4<br />&#160;&#160;|  UseNullAsTrueValue  =  8<br />&#160;&#160;|  Event  =  16<br /><br />Full name: Microsoft.FSharp.Core.CompilationRepresentationFlags</div>
-<div class="tip" id="fs62">CompilationRepresentationFlags.ModuleSuffix: CompilationRepresentationFlags = 4</div>
-<div class="tip" id="fs63">val memoize&lt;&#39;model,&#39;msg (requires reference type and reference type)&gt; : ((&#39;model -&gt; &#39;msg UI) -&gt; &#39;model -&gt; &#39;msg UI) (requires reference type and reference type)<br /><br />Full name: Main.UIModule.memoize<br /><em><br /><br />&#160;Memoize view generation from model object references.</em></div>
-<div class="tip" id="fs64">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
-<div class="tip" id="fs65">val d : System.Runtime.CompilerServices.ConditionalWeakTable&lt;&#39;model,&#39;msg UI&gt; (requires reference type and reference type)</div>
-<div class="tip" id="fs66">namespace System</div>
-<div class="tip" id="fs67">namespace System.Runtime</div>
-<div class="tip" id="fs68">namespace System.Runtime.CompilerServices</div>
-<div class="tip" id="fs69">Multiple items<br />type ConditionalWeakTable&lt;&#39;TKey,&#39;TValue (requires reference type and reference type)&gt; =<br />&#160;&#160;new : unit -&gt; ConditionalWeakTable&lt;&#39;TKey, &#39;TValue&gt;<br />&#160;&#160;member Add : key:&#39;TKey * value:&#39;TValue -&gt; unit<br />&#160;&#160;member GetOrCreateValue : key:&#39;TKey -&gt; &#39;TValue<br />&#160;&#160;member GetValue : key:&#39;TKey * createValueCallback:CreateValueCallback&lt;&#39;TKey, &#39;TValue&gt; -&gt; &#39;TValue<br />&#160;&#160;member Remove : key:&#39;TKey -&gt; bool<br />&#160;&#160;member TryGetValue : key:&#39;TKey * value:&#39;TValue -&gt; bool<br />&#160;&#160;nested type CreateValueCallback<br /><br />Full name: System.Runtime.CompilerServices.ConditionalWeakTable&lt;_,_&gt;<br /><br />--------------------<br />System.Runtime.CompilerServices.ConditionalWeakTable() : unit</div>
-<div class="tip" id="fs70">val view : (&#39;model -&gt; &#39;msg UI) (requires reference type and reference type)</div>
-<div class="tip" id="fs71">val model : &#39;model (requires reference type)</div>
-<div class="tip" id="fs72">System.Runtime.CompilerServices.ConditionalWeakTable.TryGetValue(key: &#39;model, value: byref&lt;&#39;msg UI&gt;) : bool</div>
-<div class="tip" id="fs73">val ui : &#39;msg UI (requires reference type)</div>
-<div class="tip" id="fs74">System.Runtime.CompilerServices.ConditionalWeakTable.Add(key: &#39;model, value: &#39;msg UI) : unit</div>
-<div class="tip" id="fs75">val text : text:string -&gt; &#39;a UI<br /><br />Full name: Main.UIModule.text<br /><em><br /><br />&#160;Returns a Text display UI component.</em></div>
-<div class="tip" id="fs76">val text : string</div>
-<div class="tip" id="fs77">val ignore : value:&#39;T -&gt; unit<br /><br />Full name: Microsoft.FSharp.Core.Operators.ignore</div>
-<div class="tip" id="fs78">val input : text:string -&gt; string UI<br /><br />Full name: Main.UIModule.input<br /><em><br /><br />&#160;Returns a text Input UI component.</em></div>
-<div class="tip" id="fs79">val ev : (string -&gt; unit) ref ref</div>
-<div class="tip" id="fs80">val ui : string UI</div>
-<div class="tip" id="fs81">val raise : (string -&gt; unit)</div>
-<div class="tip" id="fs82">val a : string</div>
-<div class="tip" id="fs83">UI.Event: string -&gt; unit</div>
-<div class="tip" id="fs84">val button : text:string -&gt; msg:&#39;a -&gt; &#39;a UI<br /><br />Full name: Main.UIModule.button<br /><em><br /><br />&#160;Returns a Button UI component.</em></div>
-<div class="tip" id="fs85">val msg : &#39;a</div>
-<div class="tip" id="fs86">val ev : (unit -&gt; unit) ref ref</div>
-<div class="tip" id="fs87">val ui : &#39;a UI</div>
-<div class="tip" id="fs88">UI.Event: &#39;a -&gt; unit</div>
-<div class="tip" id="fs89">val div : layout:Layout -&gt; list:&#39;a UI list -&gt; &#39;a UI<br /><br />Full name: Main.UIModule.div<br /><em><br /><br />&#160;Returns a section of UI components given a layout.<br />&#160;The name div comes from HTML and represents a division (or section) of UI components.</em></div>
-<div class="tip" id="fs90">val layout : Layout</div>
-<div class="tip" id="fs91">Multiple items<br />val list : &#39;a UI list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
-<div class="tip" id="fs92">Multiple items<br />module List<br /><br />from Main<br /><br />--------------------<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
-<div class="tip" id="fs93">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list<br /><br />Full name: Microsoft.FSharp.Collections.List.map</div>
-<div class="tip" id="fs94">UI.UI: UI</div>
-<div class="tip" id="fs95">val raise : (&#39;a -&gt; unit)</div>
-<div class="tip" id="fs96">val a : &#39;a</div>
-<div class="tip" id="fs97">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.List.iter</div>
-<div class="tip" id="fs98">val i : &#39;a UI</div>
-<div class="tip" id="fs99">val map : f:(&#39;a -&gt; &#39;b) -&gt; ui:&#39;a UI -&gt; &#39;b UI<br /><br />Full name: Main.UIModule.map<br /><em><br /><br />&#160;Returns a new UI component mapping the message event using the given function.</em></div>
-<div class="tip" id="fs100">val f : (&#39;a -&gt; &#39;b)</div>
-<div class="tip" id="fs101">val ui2 : &#39;b UI</div>
-<div class="tip" id="fs102">val e : &#39;a</div>
-<div class="tip" id="fs103">UI.Event: &#39;b -&gt; unit</div>
-<div class="tip" id="fs104">val diff : ui1:&#39;a UI -&gt; ui2:&#39;b UI -&gt; UIUpdate list<br /><br />Full name: Main.UIModule.diff<br /><em><br /><br />&#160;Returns a list of UI updates from two UI components.</em></div>
-<div class="tip" id="fs105">val ui1 : &#39;a UI</div>
-<div class="tip" id="fs106">val update : (&#39;c ref ref -&gt; &#39;c ref ref -&gt; unit -&gt; unit)</div>
-<div class="tip" id="fs107">val e1 : &#39;c ref ref</div>
-<div class="tip" id="fs108">val e2 : &#39;c ref ref</div>
-<div class="tip" id="fs109">val ev : &#39;c ref</div>
-<div class="tip" id="fs110">val diff : (UI -&gt; UI -&gt; int list -&gt; int -&gt; UIUpdate list -&gt; UIUpdate list)</div>
-<div class="tip" id="fs111">val ui1 : UI</div>
-<div class="tip" id="fs112">val ui2 : UI</div>
-<div class="tip" id="fs113">val path : int list</div>
-<div class="tip" id="fs114">val index : int</div>
-<div class="tip" id="fs115">val diffs : UIUpdate list</div>
-<div class="tip" id="fs116">module LanguagePrimitives<br /><br />from Microsoft.FSharp.Core</div>
-<div class="tip" id="fs117">val PhysicalEquality : e1:&#39;T -&gt; e2:&#39;T -&gt; bool (requires reference type)<br /><br />Full name: Microsoft.FSharp.Core.LanguagePrimitives.PhysicalEquality</div>
-<div class="tip" id="fs118">val t1 : string</div>
-<div class="tip" id="fs119">val t2 : string</div>
-<div class="tip" id="fs120">val e1 : unit Event</div>
-<div class="tip" id="fs121">val e2 : unit Event</div>
-<div class="tip" id="fs122">val e1 : string Event</div>
-<div class="tip" id="fs123">val e2 : string Event</div>
-<div class="tip" id="fs124">val l1 : Layout</div>
-<div class="tip" id="fs125">val l2 : Layout</div>
-<div class="tip" id="fs126">val l : UI list</div>
-<div class="tip" id="fs127">val fold : folder:(&#39;State -&gt; &#39;T -&gt; &#39;State) -&gt; state:&#39;State -&gt; list:&#39;T list -&gt; &#39;State<br /><br />Full name: Microsoft.FSharp.Collections.List.fold</div>
-<div class="tip" id="fs128">val ui : UI</div>
-<div class="tip" id="fs129">val snd : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T2<br /><br />Full name: Microsoft.FSharp.Core.Operators.snd</div>
-<div class="tip" id="fs130">val l : Layout</div>
-<div class="tip" id="fs131">val h1 : UI</div>
-<div class="tip" id="fs132">val t1 : UI list</div>
-<div class="tip" id="fs133">val h2 : UI</div>
-<div class="tip" id="fs134">val t2 : UI list</div>
-<div class="tip" id="fs135">val h3 : UI</div>
-<div class="tip" id="fs136">val app : model:&#39;a -&gt; update:(&#39;b -&gt; &#39;a -&gt; &#39;a) -&gt; view:(&#39;a -&gt; &#39;b UI) -&gt; App&lt;&#39;b,&#39;a&gt;<br /><br />Full name: Main.UIModule.app<br /><em><br /><br />&#160;Returns a UI application from a UI model, update and view.</em></div>
-<div class="tip" id="fs137">val model : &#39;a</div>
-<div class="tip" id="fs138">val update : (&#39;b -&gt; &#39;a -&gt; &#39;a)</div>
-<div class="tip" id="fs139">val view : (&#39;a -&gt; &#39;b UI)</div>
-<div class="tip" id="fs140">val run : nativeUI:INativeUI -&gt; app:App&lt;&#39;a,&#39;b&gt; -&gt; unit<br /><br />Full name: Main.UIModule.run<br /><em><br /><br />&#160;Runs a UI application given a native UI.</em></div>
-<div class="tip" id="fs141">val nativeUI : INativeUI</div>
-<div class="tip" id="fs142">val app : App&lt;&#39;a,&#39;b&gt;</div>
-<div class="tip" id="fs143">val handle : (&#39;b -&gt; &#39;a UI -&gt; &#39;a -&gt; unit)</div>
-<div class="tip" id="fs144">val model : &#39;b</div>
-<div class="tip" id="fs145">val newModel : &#39;b</div>
-<div class="tip" id="fs146">App.Update: &#39;a -&gt; &#39;b -&gt; &#39;b</div>
-<div class="tip" id="fs147">val newUI : &#39;a UI</div>
-<div class="tip" id="fs148">App.View: &#39;b -&gt; &#39;a UI</div>
-<div class="tip" id="fs149">val diff : UIUpdate list</div>
-<div class="tip" id="fs150">val f : (unit -&gt; unit)</div>
-<div class="tip" id="fs151">abstract member INativeUI.Send : UIUpdate list -&gt; unit</div>
-<div class="tip" id="fs152">App.Model: &#39;b</div>
-<div class="tip" id="fs153">type Msg =<br />&#160;&#160;| Increment<br />&#160;&#160;| Decrement<br /><br />Full name: Main.Counter.Msg</div>
-<div class="tip" id="fs154">union case Msg.Increment: Msg</div>
-<div class="tip" id="fs155">union case Msg.Decrement: Msg</div>
-<div class="tip" id="fs156">type Model = int<br /><br />Full name: Main.Counter.Model</div>
-<div class="tip" id="fs157">val init : i:Model -&gt; Model<br /><br />Full name: Main.Counter.init</div>
-<div class="tip" id="fs158">val i : Model</div>
-<div class="tip" id="fs159">val update : msg:Msg -&gt; model:int -&gt; Model<br /><br />Full name: Main.Counter.update</div>
-<div class="tip" id="fs160">val msg : Msg</div>
-<div class="tip" id="fs161">val model : int</div>
-<div class="tip" id="fs162">val view : model:Model -&gt; Msg UI<br /><br />Full name: Main.Counter.view</div>
-<div class="tip" id="fs163">val model : Model</div>
-<div class="tip" id="fs164">Multiple items<br />module UI<br /><br />from Main<br /><br />--------------------<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><br />Full name: Main.UI<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><br />Full name: Main.UI&lt;_&gt;<br /><em><br /><br />&#160;UI component including a message event.</em></div>
-<div class="tip" id="fs165">val app : i:Model -&gt; App&lt;Msg,Model&gt;<br /><br />Full name: Main.Counter.app</div>
-<div class="tip" id="fs166">type Msg =<br />&#160;&#160;| Reset<br />&#160;&#160;| Top of Msg<br />&#160;&#160;| Bottom of Msg<br /><br />Full name: Main.CounterPair.Msg</div>
-<div class="tip" id="fs167">union case Msg.Reset: Msg</div>
-<div class="tip" id="fs168">union case Msg.Top: Counter.Msg -&gt; Msg</div>
-<div class="tip" id="fs169">module Counter<br /><br />from Main</div>
-<div class="tip" id="fs170">union case Msg.Bottom: Counter.Msg -&gt; Msg</div>
-<div class="tip" id="fs171">type Model =<br />&#160;&#160;{Top: Model;<br />&#160;&#160;&#160;Bottom: Model;}<br /><br />Full name: Main.CounterPair.Model</div>
-<div class="tip" id="fs172">Model.Top: Counter.Model</div>
-<div class="tip" id="fs173">Model.Bottom: Counter.Model</div>
-<div class="tip" id="fs174">val init : top:Counter.Model -&gt; bottom:Counter.Model -&gt; Model<br /><br />Full name: Main.CounterPair.init</div>
-<div class="tip" id="fs175">val top : Counter.Model</div>
-<div class="tip" id="fs176">val bottom : Counter.Model</div>
-<div class="tip" id="fs177">val init : i:Counter.Model -&gt; Counter.Model<br /><br />Full name: Main.Counter.init</div>
-<div class="tip" id="fs178">val update : msg:Msg -&gt; model:Model -&gt; Model<br /><br />Full name: Main.CounterPair.update</div>
-<div class="tip" id="fs179">val msg : Counter.Msg</div>
-<div class="tip" id="fs180">val update : msg:Counter.Msg -&gt; model:int -&gt; Counter.Model<br /><br />Full name: Main.Counter.update</div>
-<div class="tip" id="fs181">val view : model:Model -&gt; Msg UI<br /><br />Full name: Main.CounterPair.view</div>
-<div class="tip" id="fs182">val view : model:Counter.Model -&gt; Counter.Msg UI<br /><br />Full name: Main.Counter.view</div>
-<div class="tip" id="fs183">val app : top:Counter.Model -&gt; bottom:Counter.Model -&gt; App&lt;Msg,Model&gt;<br /><br />Full name: Main.CounterPair.app</div>
-<div class="tip" id="fs184">type Msg =<br />&#160;&#160;| Insert<br />&#160;&#160;| Remove<br />&#160;&#160;| Modify of int * Msg<br /><br />Full name: Main.CounterList.Msg</div>
-<div class="tip" id="fs185">union case Msg.Insert: Msg</div>
-<div class="tip" id="fs186">union case Msg.Remove: Msg</div>
-<div class="tip" id="fs187">union case Msg.Modify: int * Counter.Msg -&gt; Msg</div>
-<div class="tip" id="fs188">type Model =<br />&#160;&#160;{Counters: Model list;}<br /><br />Full name: Main.CounterList.Model</div>
-<div class="tip" id="fs189">Model.Counters: Counter.Model list</div>
-<div class="tip" id="fs190">val init : Model<br /><br />Full name: Main.CounterList.init</div>
-<div class="tip" id="fs191">val update : msg:Msg -&gt; model:Model -&gt; Model<br /><br />Full name: Main.CounterList.update</div>
-<div class="tip" id="fs192">val xs : Counter.Model list</div>
-<div class="tip" id="fs193">val view : model:Model -&gt; Msg UI<br /><br />Full name: Main.CounterList.view</div>
-<div class="tip" id="fs194">val mapi : mapping:(int -&gt; &#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list<br /><br />Full name: Microsoft.FSharp.Collections.List.mapi</div>
-<div class="tip" id="fs195">val c : Counter.Model</div>
-<div class="tip" id="fs196">val v : Counter.Msg</div>
-<div class="tip" id="fs197">val app : App&lt;Msg,Model&gt;<br /><br />Full name: Main.CounterList.app</div>
-<div class="tip" id="fs198">namespace System.Windows</div>
-<div class="tip" id="fs199">namespace System.Windows.Controls</div>
-<div class="tip" id="fs200">module WPF<br /><br />from Main</div>
-<div class="tip" id="fs201">val CreateNaiveUI : root:ContentControl -&gt; INativeUI<br /><br />Full name: Main.WPF.CreateNaiveUI</div>
-<div class="tip" id="fs202">val root : ContentControl</div>
-<div class="tip" id="fs203">Multiple items<br />type ContentControl =<br />&#160;&#160;inherit Control<br />&#160;&#160;new : unit -&gt; ContentControl<br />&#160;&#160;member Content : obj with get, set<br />&#160;&#160;member ContentStringFormat : string with get, set<br />&#160;&#160;member ContentTemplate : DataTemplate with get, set<br />&#160;&#160;member ContentTemplateSelector : DataTemplateSelector with get, set<br />&#160;&#160;member HasContent : bool<br />&#160;&#160;member ShouldSerializeContent : unit -&gt; bool<br />&#160;&#160;static val ContentProperty : DependencyProperty<br />&#160;&#160;static val HasContentProperty : DependencyProperty<br />&#160;&#160;static val ContentTemplateProperty : DependencyProperty<br />&#160;&#160;...<br /><br />Full name: System.Windows.Controls.ContentControl<br /><br />--------------------<br />ContentControl() : unit</div>
-<div class="tip" id="fs204">val createUI : (UI -&gt; UIElement)</div>
-<div class="tip" id="fs205">Multiple items<br />type UIElement =<br />&#160;&#160;inherit Visual<br />&#160;&#160;new : unit -&gt; UIElement<br />&#160;&#160;member AddHandler : routedEvent:RoutedEvent * handler:Delegate -&gt; unit + 1 overload<br />&#160;&#160;member AddToEventRoute : route:EventRoute * e:RoutedEventArgs -&gt; unit<br />&#160;&#160;member AllowDrop : bool with get, set<br />&#160;&#160;member ApplyAnimationClock : dp:DependencyProperty * clock:AnimationClock -&gt; unit + 1 overload<br />&#160;&#160;member AreAnyTouchesCaptured : bool<br />&#160;&#160;member AreAnyTouchesCapturedWithin : bool<br />&#160;&#160;member AreAnyTouchesDirectlyOver : bool<br />&#160;&#160;member AreAnyTouchesOver : bool<br />&#160;&#160;member Arrange : finalRect:Rect -&gt; unit<br />&#160;&#160;...<br /><br />Full name: System.Windows.UIElement<br /><br />--------------------<br />UIElement() : unit</div>
-<div class="tip" id="fs206">val c : Label</div>
-<div class="tip" id="fs207">Multiple items<br />type Label =<br />&#160;&#160;inherit ContentControl<br />&#160;&#160;new : unit -&gt; Label<br />&#160;&#160;member Target : UIElement with get, set<br />&#160;&#160;static val TargetProperty : DependencyProperty<br /><br />Full name: System.Windows.Controls.Label<br /><br />--------------------<br />Label() : unit</div>
-<div class="tip" id="fs208">Multiple items<br />union case UI.Input: string * string Event -&gt; UI<br /><br />--------------------<br />namespace System.Windows.Input</div>
-<div class="tip" id="fs209">val event : string Event</div>
-<div class="tip" id="fs210">val c : TextBox</div>
-<div class="tip" id="fs211">Multiple items<br />type TextBox =<br />&#160;&#160;inherit TextBoxBase<br />&#160;&#160;new : unit -&gt; TextBox<br />&#160;&#160;member CaretIndex : int with get, set<br />&#160;&#160;member CharacterCasing : CharacterCasing with get, set<br />&#160;&#160;member Clear : unit -&gt; unit<br />&#160;&#160;member GetCharacterIndexFromLineIndex : lineIndex:int -&gt; int<br />&#160;&#160;member GetCharacterIndexFromPoint : point:Point * snapToText:bool -&gt; int<br />&#160;&#160;member GetFirstVisibleLineIndex : unit -&gt; int<br />&#160;&#160;member GetLastVisibleLineIndex : unit -&gt; int<br />&#160;&#160;member GetLineIndexFromCharacterIndex : charIndex:int -&gt; int<br />&#160;&#160;member GetLineLength : lineIndex:int -&gt; int<br />&#160;&#160;...<br /><br />Full name: System.Windows.Controls.TextBox<br /><br />--------------------<br />TextBox() : unit</div>
-<div class="tip" id="fs212">val event : (string -&gt; unit) ref</div>
-<div class="tip" id="fs213">event Primitives.TextBoxBase.TextChanged: IEvent&lt;TextChangedEventHandler,TextChangedEventArgs&gt;</div>
-<div class="tip" id="fs214">member System.IObservable.Add : callback:(&#39;T -&gt; unit) -&gt; unit</div>
-<div class="tip" id="fs215">val t : string</div>
-<div class="tip" id="fs216">property TextBox.Text: string</div>
-<div class="tip" id="fs217">val async : AsyncBuilder<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.async</div>
-<div class="tip" id="fs218">Multiple items<br />type Async<br />static member AsBeginEnd : computation:(&#39;Arg -&gt; Async&lt;&#39;T&gt;) -&gt; (&#39;Arg * AsyncCallback * obj -&gt; IAsyncResult) * (IAsyncResult -&gt; &#39;T) * (IAsyncResult -&gt; unit)<br />static member AwaitEvent : event:IEvent&lt;&#39;Del,&#39;T&gt; * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt; (requires delegate and &#39;Del :&gt; Delegate)<br />static member AwaitIAsyncResult : iar:IAsyncResult * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />static member AwaitTask : task:Task -&gt; Async&lt;unit&gt;<br />static member AwaitTask : task:Task&lt;&#39;T&gt; -&gt; Async&lt;&#39;T&gt;<br />static member AwaitWaitHandle : waitHandle:WaitHandle * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />static member CancelDefaultToken : unit -&gt; unit<br />static member Catch : computation:Async&lt;&#39;T&gt; -&gt; Async&lt;Choice&lt;&#39;T,exn&gt;&gt;<br />static member FromBeginEnd : beginAction:(AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg:&#39;Arg1 * beginAction:(&#39;Arg1 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg1:&#39;Arg1 * arg2:&#39;Arg2 * beginAction:(&#39;Arg1 * &#39;Arg2 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg1:&#39;Arg1 * arg2:&#39;Arg2 * arg3:&#39;Arg3 * beginAction:(&#39;Arg1 * &#39;Arg2 * &#39;Arg3 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromContinuations : callback:((&#39;T -&gt; unit) * (exn -&gt; unit) * (OperationCanceledException -&gt; unit) -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member Ignore : computation:Async&lt;&#39;T&gt; -&gt; Async&lt;unit&gt;<br />static member OnCancel : interruption:(unit -&gt; unit) -&gt; Async&lt;IDisposable&gt;<br />static member Parallel : computations:seq&lt;Async&lt;&#39;T&gt;&gt; -&gt; Async&lt;&#39;T []&gt;<br />static member RunSynchronously : computation:Async&lt;&#39;T&gt; * ?timeout:int * ?cancellationToken:CancellationToken -&gt; &#39;T<br />static member Sleep : millisecondsDueTime:int -&gt; Async&lt;unit&gt;<br />static member Start : computation:Async&lt;unit&gt; * ?cancellationToken:CancellationToken -&gt; unit<br />static member StartAsTask : computation:Async&lt;&#39;T&gt; * ?taskCreationOptions:TaskCreationOptions * ?cancellationToken:CancellationToken -&gt; Task&lt;&#39;T&gt;<br />static member StartChild : computation:Async&lt;&#39;T&gt; * ?millisecondsTimeout:int -&gt; Async&lt;Async&lt;&#39;T&gt;&gt;<br />static member StartChildAsTask : computation:Async&lt;&#39;T&gt; * ?taskCreationOptions:TaskCreationOptions -&gt; Async&lt;Task&lt;&#39;T&gt;&gt;<br />static member StartImmediate : computation:Async&lt;unit&gt; * ?cancellationToken:CancellationToken -&gt; unit<br />static member StartWithContinuations : computation:Async&lt;&#39;T&gt; * continuation:(&#39;T -&gt; unit) * exceptionContinuation:(exn -&gt; unit) * cancellationContinuation:(OperationCanceledException -&gt; unit) * ?cancellationToken:CancellationToken -&gt; unit<br />static member SwitchToContext : syncContext:SynchronizationContext -&gt; Async&lt;unit&gt;<br />static member SwitchToNewThread : unit -&gt; Async&lt;unit&gt;<br />static member SwitchToThreadPool : unit -&gt; Async&lt;unit&gt;<br />static member TryCancelled : computation:Async&lt;&#39;T&gt; * compensation:(OperationCanceledException -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member CancellationToken : Async&lt;CancellationToken&gt;<br />static member DefaultCancellationToken : CancellationToken<br /><br />Full name: Microsoft.FSharp.Control.Async<br /><br />--------------------<br />type Async&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Control.Async&lt;_&gt;</div>
-<div class="tip" id="fs219">static member Async.Start : computation:Async&lt;unit&gt; * ?cancellationToken:System.Threading.CancellationToken -&gt; unit</div>
-<div class="tip" id="fs220">Multiple items<br />type Button =<br />&#160;&#160;inherit ButtonBase<br />&#160;&#160;new : unit -&gt; Button<br />&#160;&#160;member IsCancel : bool with get, set<br />&#160;&#160;member IsDefault : bool with get, set<br />&#160;&#160;member IsDefaulted : bool<br />&#160;&#160;static val IsDefaultProperty : DependencyProperty<br />&#160;&#160;static val IsCancelProperty : DependencyProperty<br />&#160;&#160;static val IsDefaultedProperty : DependencyProperty<br /><br />Full name: System.Windows.Controls.Button<br /><br />--------------------<br />Button() : unit</div>
-<div class="tip" id="fs221">val event : unit Event</div>
-<div class="tip" id="fs222">val c : Button</div>
-<div class="tip" id="fs223">val event : (unit -&gt; unit) ref</div>
-<div class="tip" id="fs224">event Primitives.ButtonBase.Click: IEvent&lt;RoutedEventHandler,RoutedEventArgs&gt;</div>
-<div class="tip" id="fs225">Multiple items<br />val list : UI list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
-<div class="tip" id="fs226">val children : UIElement list</div>
-<div class="tip" id="fs227">val c : StackPanel</div>
-<div class="tip" id="fs228">Multiple items<br />type StackPanel =<br />&#160;&#160;inherit Panel<br />&#160;&#160;new : unit -&gt; StackPanel<br />&#160;&#160;member CanHorizontallyScroll : bool with get, set<br />&#160;&#160;member CanVerticallyScroll : bool with get, set<br />&#160;&#160;member ExtentHeight : float<br />&#160;&#160;member ExtentWidth : float<br />&#160;&#160;member HorizontalOffset : float<br />&#160;&#160;member LineDown : unit -&gt; unit<br />&#160;&#160;member LineLeft : unit -&gt; unit<br />&#160;&#160;member LineRight : unit -&gt; unit<br />&#160;&#160;member LineUp : unit -&gt; unit<br />&#160;&#160;...<br /><br />Full name: System.Windows.Controls.StackPanel<br /><br />--------------------<br />StackPanel() : unit</div>
-<div class="tip" id="fs229">type Orientation =<br />&#160;&#160;| Horizontal = 0<br />&#160;&#160;| Vertical = 1<br /><br />Full name: System.Windows.Controls.Orientation</div>
-<div class="tip" id="fs230">field Orientation.Vertical = 1</div>
-<div class="tip" id="fs231">field Orientation.Horizontal = 0</div>
-<div class="tip" id="fs232">property Panel.Children: UIElementCollection</div>
-<div class="tip" id="fs233">UIElementCollection.Add(element: UIElement) : int</div>
-<div class="tip" id="fs234">val locatePanel : (int list -&gt; Panel)</div>
-<div class="tip" id="fs235">val loc : int list</div>
-<div class="tip" id="fs236">type Panel =<br />&#160;&#160;inherit FrameworkElement<br />&#160;&#160;member Background : Brush with get, set<br />&#160;&#160;member Children : UIElementCollection<br />&#160;&#160;member IsItemsHost : bool with get, set<br />&#160;&#160;member ShouldSerializeChildren : unit -&gt; bool<br />&#160;&#160;static val BackgroundProperty : DependencyProperty<br />&#160;&#160;static val IsItemsHostProperty : DependencyProperty<br />&#160;&#160;static val ZIndexProperty : DependencyProperty<br />&#160;&#160;static member GetZIndex : element:UIElement -&gt; int<br />&#160;&#160;static member SetZIndex : element:UIElement * value:int -&gt; unit<br /><br />Full name: System.Windows.Controls.Panel</div>
-<div class="tip" id="fs237">property ContentControl.Content: obj</div>
-<div class="tip" id="fs238">val xs : int list</div>
-<div class="tip" id="fs239">val uiUpdate : (UIUpdate -&gt; unit)</div>
-<div class="tip" id="fs240">val u : UIUpdate</div>
-<div class="tip" id="fs241">val element : UIElement</div>
-<div class="tip" id="fs242">val c : UIElementCollection</div>
-<div class="tip" id="fs243">UIElementCollection.RemoveAt(index: int) : unit</div>
-<div class="tip" id="fs244">UIElementCollection.Insert(index: int, element: UIElement) : unit</div>
-<div class="tip" id="fs245">Multiple items<br />val list : UIUpdate list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
-<div class="tip" id="fs246">property Threading.DispatcherObject.Dispatcher: Threading.Dispatcher</div>
-<div class="tip" id="fs247">Threading.Dispatcher.Invoke(method: System.Delegate, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, method: System.Delegate) : obj<br />Threading.Dispatcher.Invoke(method: System.Delegate, timeout: System.TimeSpan, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />Threading.Dispatcher.Invoke(method: System.Delegate, priority: Threading.DispatcherPriority, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, timeout: System.TimeSpan, method: System.Delegate) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, method: System.Delegate, arg: obj) : obj<br />Threading.Dispatcher.Invoke(method: System.Delegate, timeout: System.TimeSpan, priority: Threading.DispatcherPriority, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, timeout: System.TimeSpan, method: System.Delegate, arg: obj) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, method: System.Delegate, arg: obj, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, timeout: System.TimeSpan, method: System.Delegate, arg: obj, [&lt;System.ParamArray&gt;] args: obj []) : obj</div>
+<div class="tip" id="fs58">type INativeUI =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Send : UIUpdate list -&gt; unit<br />&#160;&#160;end<br /><em><br /><br />&#160;Native UI interface.</em></div>
+<div class="tip" id="fs59">Multiple items<br />type CompilationRepresentationAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute<br />&#160;&#160;member Flags : CompilationRepresentationFlags<br /><br />--------------------<br />new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute</div>
+<div class="tip" id="fs60">type CompilationRepresentationFlags =<br />&#160;&#160;| None = 0<br />&#160;&#160;| Static = 1<br />&#160;&#160;| Instance = 2<br />&#160;&#160;| ModuleSuffix = 4<br />&#160;&#160;| UseNullAsTrueValue = 8<br />&#160;&#160;| Event = 16</div>
+<div class="tip" id="fs61">CompilationRepresentationFlags.ModuleSuffix: CompilationRepresentationFlags = 4</div>
+<div class="tip" id="fs62">val memoize&lt;&#39;model,&#39;msg (requires reference type and reference type)&gt; : ((&#39;model -&gt; &#39;msg UI) -&gt; &#39;model -&gt; &#39;msg UI) (requires reference type and reference type)<br /><em><br /><br />&#160;Memoize view generation from model object references.</em></div>
+<div class="tip" id="fs63">val not : value:bool -&gt; bool</div>
+<div class="tip" id="fs64">val d : System.Runtime.CompilerServices.ConditionalWeakTable&lt;&#39;model,&#39;msg UI&gt; (requires reference type and reference type)</div>
+<div class="tip" id="fs65">namespace System</div>
+<div class="tip" id="fs66">namespace System.Runtime</div>
+<div class="tip" id="fs67">namespace System.Runtime.CompilerServices</div>
+<div class="tip" id="fs68">Multiple items<br />type ConditionalWeakTable&lt;&#39;TKey,&#39;TValue (requires reference type and reference type)&gt; =<br />&#160;&#160;new : unit -&gt; ConditionalWeakTable&lt;&#39;TKey, &#39;TValue&gt;<br />&#160;&#160;member Add : key:&#39;TKey * value:&#39;TValue -&gt; unit<br />&#160;&#160;member GetOrCreateValue : key:&#39;TKey -&gt; &#39;TValue<br />&#160;&#160;member GetValue : key:&#39;TKey * createValueCallback:CreateValueCallback&lt;&#39;TKey, &#39;TValue&gt; -&gt; &#39;TValue<br />&#160;&#160;member Remove : key:&#39;TKey -&gt; bool<br />&#160;&#160;member TryGetValue : key:&#39;TKey * value:&#39;TValue -&gt; bool<br />&#160;&#160;nested type CreateValueCallback<br /><br />--------------------<br />System.Runtime.CompilerServices.ConditionalWeakTable() : System.Runtime.CompilerServices.ConditionalWeakTable&lt;&#39;TKey,&#39;TValue&gt;</div>
+<div class="tip" id="fs69">val view : (&#39;model -&gt; &#39;msg UI) (requires reference type and reference type)</div>
+<div class="tip" id="fs70">val model : &#39;model (requires reference type)</div>
+<div class="tip" id="fs71">System.Runtime.CompilerServices.ConditionalWeakTable.TryGetValue(key: &#39;model, value: byref&lt;&#39;msg UI&gt;) : bool</div>
+<div class="tip" id="fs72">val ui : &#39;msg UI (requires reference type)</div>
+<div class="tip" id="fs73">System.Runtime.CompilerServices.ConditionalWeakTable.Add(key: &#39;model, value: &#39;msg UI) : unit</div>
+<div class="tip" id="fs74">val text : text:string -&gt; &#39;a UI<br /><em><br /><br />&#160;Returns a Text display UI component.</em></div>
+<div class="tip" id="fs75">val text : string</div>
+<div class="tip" id="fs76">val ignore : value:&#39;T -&gt; unit</div>
+<div class="tip" id="fs77">val input : text:string -&gt; string UI<br /><em><br /><br />&#160;Returns a text Input UI component.</em></div>
+<div class="tip" id="fs78">val ev : (string -&gt; unit) ref ref</div>
+<div class="tip" id="fs79">val ui : string UI</div>
+<div class="tip" id="fs80">val raise : (string -&gt; unit)</div>
+<div class="tip" id="fs81">val a : string</div>
+<div class="tip" id="fs82">UI.Event: string -&gt; unit</div>
+<div class="tip" id="fs83">val button : text:string -&gt; msg:&#39;a -&gt; &#39;a UI<br /><em><br /><br />&#160;Returns a Button UI component.</em></div>
+<div class="tip" id="fs84">val msg : &#39;a</div>
+<div class="tip" id="fs85">val ev : (unit -&gt; unit) ref ref</div>
+<div class="tip" id="fs86">val ui : &#39;a UI</div>
+<div class="tip" id="fs87">UI.Event: &#39;a -&gt; unit</div>
+<div class="tip" id="fs88">val div : layout:Layout -&gt; list:&#39;a UI list -&gt; &#39;a UI<br /><em><br /><br />&#160;Returns a section of UI components given a layout.<br />&#160;The name div comes from HTML and represents a division (or section) of UI components.</em></div>
+<div class="tip" id="fs89">val layout : Layout</div>
+<div class="tip" id="fs90">Multiple items<br />val list : &#39;a UI list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs91">Multiple items<br />module List<br /><br />from Main<br /><br />--------------------<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;&#160;&#160;interface IReadOnlyList&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IReadOnlyCollection&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IEnumerable<br />&#160;&#160;&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;&#160;&#160;member Head : &#39;T<br />&#160;&#160;&#160;&#160;member IsEmpty : bool<br />&#160;&#160;&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;&#160;&#160;member Length : int<br />&#160;&#160;&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;&#160;&#160;...</div>
+<div class="tip" id="fs92">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list</div>
+<div class="tip" id="fs93">UI.UI: UI</div>
+<div class="tip" id="fs94">val raise : (&#39;a -&gt; unit)</div>
+<div class="tip" id="fs95">val a : &#39;a</div>
+<div class="tip" id="fs96">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit</div>
+<div class="tip" id="fs97">val i : &#39;a UI</div>
+<div class="tip" id="fs98">val map : f:(&#39;a -&gt; &#39;b) -&gt; ui:&#39;a UI -&gt; &#39;b UI<br /><em><br /><br />&#160;Returns a new UI component mapping the message event using the given function.</em></div>
+<div class="tip" id="fs99">val f : (&#39;a -&gt; &#39;b)</div>
+<div class="tip" id="fs100">val ui2 : &#39;b UI</div>
+<div class="tip" id="fs101">val e : &#39;a</div>
+<div class="tip" id="fs102">UI.Event: &#39;b -&gt; unit</div>
+<div class="tip" id="fs103">val diff : ui1:&#39;a UI -&gt; ui2:&#39;b UI -&gt; UIUpdate list<br /><em><br /><br />&#160;Returns a list of UI updates from two UI components.</em></div>
+<div class="tip" id="fs104">val ui1 : &#39;a UI</div>
+<div class="tip" id="fs105">val update : (&#39;c ref ref -&gt; &#39;c ref ref -&gt; unit -&gt; unit)</div>
+<div class="tip" id="fs106">val e1 : &#39;c ref ref</div>
+<div class="tip" id="fs107">val e2 : &#39;c ref ref</div>
+<div class="tip" id="fs108">val ev : &#39;c ref</div>
+<div class="tip" id="fs109">val diff : (UI -&gt; UI -&gt; int list -&gt; int -&gt; UIUpdate list -&gt; UIUpdate list)</div>
+<div class="tip" id="fs110">val ui1 : UI</div>
+<div class="tip" id="fs111">val ui2 : UI</div>
+<div class="tip" id="fs112">val path : int list</div>
+<div class="tip" id="fs113">val index : int</div>
+<div class="tip" id="fs114">val diffs : UIUpdate list</div>
+<div class="tip" id="fs115">module LanguagePrimitives<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs116">val PhysicalEquality : e1:&#39;T -&gt; e2:&#39;T -&gt; bool (requires reference type)</div>
+<div class="tip" id="fs117">val t1 : string</div>
+<div class="tip" id="fs118">val t2 : string</div>
+<div class="tip" id="fs119">val e1 : unit Event</div>
+<div class="tip" id="fs120">val e2 : unit Event</div>
+<div class="tip" id="fs121">val e1 : string Event</div>
+<div class="tip" id="fs122">val e2 : string Event</div>
+<div class="tip" id="fs123">val l1 : Layout</div>
+<div class="tip" id="fs124">val l2 : Layout</div>
+<div class="tip" id="fs125">val l : UI list</div>
+<div class="tip" id="fs126">val fold : folder:(&#39;State -&gt; &#39;T -&gt; &#39;State) -&gt; state:&#39;State -&gt; list:&#39;T list -&gt; &#39;State</div>
+<div class="tip" id="fs127">val ui : UI</div>
+<div class="tip" id="fs128">val snd : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T2</div>
+<div class="tip" id="fs129">val l : Layout</div>
+<div class="tip" id="fs130">val h1 : UI</div>
+<div class="tip" id="fs131">val t1 : UI list</div>
+<div class="tip" id="fs132">val h2 : UI</div>
+<div class="tip" id="fs133">val t2 : UI list</div>
+<div class="tip" id="fs134">val h3 : UI</div>
+<div class="tip" id="fs135">val app : model:&#39;a -&gt; update:(&#39;b -&gt; &#39;a -&gt; &#39;a) -&gt; view:(&#39;a -&gt; &#39;b UI) -&gt; App&lt;&#39;b,&#39;a&gt;<br /><em><br /><br />&#160;Returns a UI application from a UI model, update and view.</em></div>
+<div class="tip" id="fs136">val model : &#39;a</div>
+<div class="tip" id="fs137">val update : (&#39;b -&gt; &#39;a -&gt; &#39;a)</div>
+<div class="tip" id="fs138">val view : (&#39;a -&gt; &#39;b UI)</div>
+<div class="tip" id="fs139">val run : nativeUI:INativeUI -&gt; app:App&lt;&#39;a,&#39;b&gt; -&gt; unit<br /><em><br /><br />&#160;Runs a UI application given a native UI.</em></div>
+<div class="tip" id="fs140">val nativeUI : INativeUI</div>
+<div class="tip" id="fs141">val app : App&lt;&#39;a,&#39;b&gt;</div>
+<div class="tip" id="fs142">val handle : (&#39;b -&gt; &#39;a UI -&gt; &#39;a -&gt; unit)</div>
+<div class="tip" id="fs143">val model : &#39;b</div>
+<div class="tip" id="fs144">val newModel : &#39;b</div>
+<div class="tip" id="fs145">App.Update: &#39;a -&gt; &#39;b -&gt; &#39;b</div>
+<div class="tip" id="fs146">val newUI : &#39;a UI</div>
+<div class="tip" id="fs147">App.View: &#39;b -&gt; &#39;a UI</div>
+<div class="tip" id="fs148">val diff : UIUpdate list</div>
+<div class="tip" id="fs149">val f : (unit -&gt; unit)</div>
+<div class="tip" id="fs150">abstract member INativeUI.Send : UIUpdate list -&gt; unit</div>
+<div class="tip" id="fs151">App.Model: &#39;b</div>
+<div class="tip" id="fs152">type Msg =<br />&#160;&#160;| Increment<br />&#160;&#160;| Decrement</div>
+<div class="tip" id="fs153">union case Msg.Increment: Msg</div>
+<div class="tip" id="fs154">union case Msg.Decrement: Msg</div>
+<div class="tip" id="fs155">type Model = int</div>
+<div class="tip" id="fs156">val init : i:Model -&gt; Model</div>
+<div class="tip" id="fs157">val i : Model</div>
+<div class="tip" id="fs158">val update : msg:Msg -&gt; model:int -&gt; Model</div>
+<div class="tip" id="fs159">val msg : Msg</div>
+<div class="tip" id="fs160">val model : int</div>
+<div class="tip" id="fs161">val view : model:Model -&gt; Msg UI</div>
+<div class="tip" id="fs162">val model : Model</div>
+<div class="tip" id="fs163">Multiple items<br />module UI<br /><br />from Main<br /><br />--------------------<br />type UI =<br />&#160;&#160;| Text of string<br />&#160;&#160;| Input of string * string Event<br />&#160;&#160;| Button of string * unit Event<br />&#160;&#160;| Div of Layout * UI list<br /><em><br /><br />&#160;Primative UI components.</em><br /><br />--------------------<br />type &#39;msg UI =<br />&#160;&#160;{UI: UI;<br />&#160;&#160;&#160;mutable Event: &#39;msg -&gt; unit;}<br /><em><br /><br />&#160;UI component including a message event.</em></div>
+<div class="tip" id="fs164">val app : i:Model -&gt; App&lt;Msg,Model&gt;</div>
+<div class="tip" id="fs165">type Msg =<br />&#160;&#160;| Reset<br />&#160;&#160;| Top of Msg<br />&#160;&#160;| Bottom of Msg</div>
+<div class="tip" id="fs166">union case Msg.Reset: Msg</div>
+<div class="tip" id="fs167">union case Msg.Top: Counter.Msg -&gt; Msg</div>
+<div class="tip" id="fs168">module Counter<br /><br />from Main</div>
+<div class="tip" id="fs169">union case Msg.Bottom: Counter.Msg -&gt; Msg</div>
+<div class="tip" id="fs170">type Model =<br />&#160;&#160;{Top: Model;<br />&#160;&#160;&#160;Bottom: Model;}</div>
+<div class="tip" id="fs171">Model.Top: Counter.Model</div>
+<div class="tip" id="fs172">Model.Bottom: Counter.Model</div>
+<div class="tip" id="fs173">val init : top:Counter.Model -&gt; bottom:Counter.Model -&gt; Model</div>
+<div class="tip" id="fs174">val top : Counter.Model</div>
+<div class="tip" id="fs175">val bottom : Counter.Model</div>
+<div class="tip" id="fs176">val init : i:Counter.Model -&gt; Counter.Model</div>
+<div class="tip" id="fs177">val update : msg:Msg -&gt; model:Model -&gt; Model</div>
+<div class="tip" id="fs178">val msg : Counter.Msg</div>
+<div class="tip" id="fs179">val update : msg:Counter.Msg -&gt; model:int -&gt; Counter.Model</div>
+<div class="tip" id="fs180">val view : model:Counter.Model -&gt; Counter.Msg UI</div>
+<div class="tip" id="fs181">val app : top:Counter.Model -&gt; bottom:Counter.Model -&gt; App&lt;Msg,Model&gt;</div>
+<div class="tip" id="fs182">type Msg =<br />&#160;&#160;| Insert<br />&#160;&#160;| Remove<br />&#160;&#160;| Modify of int * Msg</div>
+<div class="tip" id="fs183">union case Msg.Insert: Msg</div>
+<div class="tip" id="fs184">union case Msg.Remove: Msg</div>
+<div class="tip" id="fs185">union case Msg.Modify: int * Counter.Msg -&gt; Msg</div>
+<div class="tip" id="fs186">type Model =<br />&#160;&#160;{Counters: Model list;}</div>
+<div class="tip" id="fs187">Model.Counters: Counter.Model list</div>
+<div class="tip" id="fs188">val init : Model</div>
+<div class="tip" id="fs189">val xs : Counter.Model list</div>
+<div class="tip" id="fs190">val mapi : mapping:(int -&gt; &#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list</div>
+<div class="tip" id="fs191">val c : Counter.Model</div>
+<div class="tip" id="fs192">val v : Counter.Msg</div>
+<div class="tip" id="fs193">val app : App&lt;Msg,Model&gt;</div>
+<div class="tip" id="fs194">namespace System.Windows</div>
+<div class="tip" id="fs195">namespace System.Windows.Controls</div>
+<div class="tip" id="fs196">module WPF<br /><br />from Main</div>
+<div class="tip" id="fs197">val CreateNaiveUI : root:ContentControl -&gt; INativeUI</div>
+<div class="tip" id="fs198">val root : ContentControl</div>
+<div class="tip" id="fs199">Multiple items<br />type ContentControl =<br />&#160;&#160;inherit Control<br />&#160;&#160;new : unit -&gt; ContentControl<br />&#160;&#160;member Content : obj with get, set<br />&#160;&#160;member ContentStringFormat : string with get, set<br />&#160;&#160;member ContentTemplate : DataTemplate with get, set<br />&#160;&#160;member ContentTemplateSelector : DataTemplateSelector with get, set<br />&#160;&#160;member HasContent : bool<br />&#160;&#160;member ShouldSerializeContent : unit -&gt; bool<br />&#160;&#160;static val ContentProperty : DependencyProperty<br />&#160;&#160;static val HasContentProperty : DependencyProperty<br />&#160;&#160;static val ContentTemplateProperty : DependencyProperty<br />&#160;&#160;...<br /><br />--------------------<br />ContentControl() : ContentControl</div>
+<div class="tip" id="fs200">val createUI : (UI -&gt; UIElement)</div>
+<div class="tip" id="fs201">Multiple items<br />type UIElement =<br />&#160;&#160;inherit Visual<br />&#160;&#160;new : unit -&gt; UIElement<br />&#160;&#160;member AddHandler : routedEvent:RoutedEvent * handler:Delegate -&gt; unit + 1 overload<br />&#160;&#160;member AddToEventRoute : route:EventRoute * e:RoutedEventArgs -&gt; unit<br />&#160;&#160;member AllowDrop : bool with get, set<br />&#160;&#160;member ApplyAnimationClock : dp:DependencyProperty * clock:AnimationClock -&gt; unit + 1 overload<br />&#160;&#160;member AreAnyTouchesCaptured : bool<br />&#160;&#160;member AreAnyTouchesCapturedWithin : bool<br />&#160;&#160;member AreAnyTouchesDirectlyOver : bool<br />&#160;&#160;member AreAnyTouchesOver : bool<br />&#160;&#160;member Arrange : finalRect:Rect -&gt; unit<br />&#160;&#160;...<br /><br />--------------------<br />UIElement() : UIElement</div>
+<div class="tip" id="fs202">val c : Label</div>
+<div class="tip" id="fs203">Multiple items<br />type Label =<br />&#160;&#160;inherit ContentControl<br />&#160;&#160;new : unit -&gt; Label<br />&#160;&#160;member Target : UIElement with get, set<br />&#160;&#160;static val TargetProperty : DependencyProperty<br /><br />--------------------<br />Label() : Label</div>
+<div class="tip" id="fs204">Multiple items<br />union case UI.Input: string * string Event -&gt; UI<br /><br />--------------------<br />namespace System.Windows.Input</div>
+<div class="tip" id="fs205">val event : string Event</div>
+<div class="tip" id="fs206">val c : TextBox</div>
+<div class="tip" id="fs207">Multiple items<br />type TextBox =<br />&#160;&#160;inherit TextBoxBase<br />&#160;&#160;new : unit -&gt; TextBox<br />&#160;&#160;member CaretIndex : int with get, set<br />&#160;&#160;member CharacterCasing : CharacterCasing with get, set<br />&#160;&#160;member Clear : unit -&gt; unit<br />&#160;&#160;member GetCharacterIndexFromLineIndex : lineIndex:int -&gt; int<br />&#160;&#160;member GetCharacterIndexFromPoint : point:Point * snapToText:bool -&gt; int<br />&#160;&#160;member GetFirstVisibleLineIndex : unit -&gt; int<br />&#160;&#160;member GetLastVisibleLineIndex : unit -&gt; int<br />&#160;&#160;member GetLineIndexFromCharacterIndex : charIndex:int -&gt; int<br />&#160;&#160;member GetLineLength : lineIndex:int -&gt; int<br />&#160;&#160;...<br /><br />--------------------<br />TextBox() : TextBox</div>
+<div class="tip" id="fs208">val event : (string -&gt; unit) ref</div>
+<div class="tip" id="fs209">event Primitives.TextBoxBase.TextChanged: IEvent&lt;TextChangedEventHandler,TextChangedEventArgs&gt;</div>
+<div class="tip" id="fs210">member System.IObservable.Add : callback:(&#39;T -&gt; unit) -&gt; unit</div>
+<div class="tip" id="fs211">val t : string</div>
+<div class="tip" id="fs212">property TextBox.Text: string</div>
+<div class="tip" id="fs213">val async : AsyncBuilder</div>
+<div class="tip" id="fs214">Multiple items<br />type Async =<br />&#160;&#160;static member AsBeginEnd : computation:(&#39;Arg -&gt; Async&lt;&#39;T&gt;) -&gt; (&#39;Arg * AsyncCallback * obj -&gt; IAsyncResult) * (IAsyncResult -&gt; &#39;T) * (IAsyncResult -&gt; unit)<br />&#160;&#160;static member AwaitEvent : event:IEvent&lt;&#39;Del,&#39;T&gt; * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt; (requires delegate and &#39;Del :&gt; Delegate)<br />&#160;&#160;static member AwaitIAsyncResult : iar:IAsyncResult * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />&#160;&#160;static member AwaitTask : task:Task -&gt; Async&lt;unit&gt;<br />&#160;&#160;static member AwaitTask : task:Task&lt;&#39;T&gt; -&gt; Async&lt;&#39;T&gt;<br />&#160;&#160;static member AwaitWaitHandle : waitHandle:WaitHandle * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />&#160;&#160;static member CancelDefaultToken : unit -&gt; unit<br />&#160;&#160;static member Catch : computation:Async&lt;&#39;T&gt; -&gt; Async&lt;Choice&lt;&#39;T,exn&gt;&gt;<br />&#160;&#160;static member Choice : computations:seq&lt;Async&lt;&#39;T option&gt;&gt; -&gt; Async&lt;&#39;T option&gt;<br />&#160;&#160;static member FromBeginEnd : beginAction:(AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />&#160;&#160;...<br /><br />--------------------<br />type Async&lt;&#39;T&gt; =</div>
+<div class="tip" id="fs215">static member Async.Start : computation:Async&lt;unit&gt; * ?cancellationToken:System.Threading.CancellationToken -&gt; unit</div>
+<div class="tip" id="fs216">Multiple items<br />type Button =<br />&#160;&#160;inherit ButtonBase<br />&#160;&#160;new : unit -&gt; Button<br />&#160;&#160;member IsCancel : bool with get, set<br />&#160;&#160;member IsDefault : bool with get, set<br />&#160;&#160;member IsDefaulted : bool<br />&#160;&#160;static val IsDefaultProperty : DependencyProperty<br />&#160;&#160;static val IsCancelProperty : DependencyProperty<br />&#160;&#160;static val IsDefaultedProperty : DependencyProperty<br /><br />--------------------<br />Button() : Button</div>
+<div class="tip" id="fs217">val event : unit Event</div>
+<div class="tip" id="fs218">val c : Button</div>
+<div class="tip" id="fs219">val event : (unit -&gt; unit) ref</div>
+<div class="tip" id="fs220">event Primitives.ButtonBase.Click: IEvent&lt;RoutedEventHandler,RoutedEventArgs&gt;</div>
+<div class="tip" id="fs221">Multiple items<br />val list : UI list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs222">val children : UIElement list</div>
+<div class="tip" id="fs223">val c : StackPanel</div>
+<div class="tip" id="fs224">Multiple items<br />type StackPanel =<br />&#160;&#160;inherit Panel<br />&#160;&#160;new : unit -&gt; StackPanel<br />&#160;&#160;member CanHorizontallyScroll : bool with get, set<br />&#160;&#160;member CanVerticallyScroll : bool with get, set<br />&#160;&#160;member ExtentHeight : float<br />&#160;&#160;member ExtentWidth : float<br />&#160;&#160;member HorizontalOffset : float<br />&#160;&#160;member LineDown : unit -&gt; unit<br />&#160;&#160;member LineLeft : unit -&gt; unit<br />&#160;&#160;member LineRight : unit -&gt; unit<br />&#160;&#160;member LineUp : unit -&gt; unit<br />&#160;&#160;...<br /><br />--------------------<br />StackPanel() : StackPanel</div>
+<div class="tip" id="fs225">type Orientation =<br />&#160;&#160;| Horizontal = 0<br />&#160;&#160;| Vertical = 1</div>
+<div class="tip" id="fs226">field Orientation.Vertical: Orientation = 1</div>
+<div class="tip" id="fs227">field Orientation.Horizontal: Orientation = 0</div>
+<div class="tip" id="fs228">property Panel.Children: UIElementCollection</div>
+<div class="tip" id="fs229">UIElementCollection.Add(element: UIElement) : int</div>
+<div class="tip" id="fs230">val locatePanel : (int list -&gt; Panel)</div>
+<div class="tip" id="fs231">val loc : int list</div>
+<div class="tip" id="fs232">type Panel =<br />&#160;&#160;inherit FrameworkElement<br />&#160;&#160;member Background : Brush with get, set<br />&#160;&#160;member Children : UIElementCollection<br />&#160;&#160;member HasLogicalOrientationPublic : bool<br />&#160;&#160;member IsItemsHost : bool with get, set<br />&#160;&#160;member LogicalOrientationPublic : Orientation<br />&#160;&#160;member ShouldSerializeChildren : unit -&gt; bool<br />&#160;&#160;static val BackgroundProperty : DependencyProperty<br />&#160;&#160;static val IsItemsHostProperty : DependencyProperty<br />&#160;&#160;static val ZIndexProperty : DependencyProperty<br />&#160;&#160;static member GetZIndex : element:UIElement -&gt; int<br />&#160;&#160;...</div>
+<div class="tip" id="fs233">property ContentControl.Content: obj</div>
+<div class="tip" id="fs234">val xs : int list</div>
+<div class="tip" id="fs235">val uiUpdate : (UIUpdate -&gt; unit)</div>
+<div class="tip" id="fs236">val u : UIUpdate</div>
+<div class="tip" id="fs237">val element : UIElement</div>
+<div class="tip" id="fs238">val c : UIElementCollection</div>
+<div class="tip" id="fs239">UIElementCollection.RemoveAt(index: int) : unit</div>
+<div class="tip" id="fs240">UIElementCollection.Insert(index: int, element: UIElement) : unit</div>
+<div class="tip" id="fs241">Multiple items<br />val list : UIUpdate list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs242">property Threading.DispatcherObject.Dispatcher: Threading.Dispatcher</div>
+<div class="tip" id="fs243">Threading.Dispatcher.Invoke&lt;&#39;TResult&gt;(callback: System.Func&lt;&#39;TResult&gt;) : &#39;TResult<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(callback: System.Action) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(method: System.Delegate, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, method: System.Delegate) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke&lt;&#39;TResult&gt;(callback: System.Func&lt;&#39;TResult&gt;, priority: Threading.DispatcherPriority) : &#39;TResult<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(callback: System.Action, priority: Threading.DispatcherPriority) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(method: System.Delegate, timeout: System.TimeSpan, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(method: System.Delegate, priority: Threading.DispatcherPriority, [&lt;System.ParamArray&gt;] args: obj []) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, timeout: System.TimeSpan, method: System.Delegate) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Threading.Dispatcher.Invoke(priority: Threading.DispatcherPriority, method: System.Delegate, arg: obj) : obj<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
