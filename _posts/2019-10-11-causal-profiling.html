@@ -11,7 +11,7 @@ The idea is that by slowing everything else down running concurrently with a reg
 <p>The talk covers a C++ library called Coz. This post explores if this can be done in .NET.</p>
 <p>To achieve this, code to define the start and end of each region will have to be added to the codebase directly.
 This fits well with using a debug library in preference to step through debugging discussed in a previous <a href="{% post_url 2017-04-30-kicking-the-debugger %}">post</a>.</p>
-<h2>Simple implementation</h2>
+<h2><a name="Simple-implementation" class="anchor" href="#Simple-implementation">Simple implementation</a></h2>
 <p>There is a simpler way that could achieve the same aim.
 Like many physical systems there is a scale invariance in multithreaded systems.
 If all regions are proportionally slowed down, then the causal threading picture will not change. It is just like enlarging a photo.</p>
@@ -20,7 +20,7 @@ If all regions are proportionally slowed down, then the causal threading picture
 Spinning is necessary rather than sleeping as it needs to simulate work and not encourage a context switch.</p>
 <img src="/{{site.baseurl}}public/perf/CausalSimple.png" title="PerfSimple.fs"/>
 <p>The code can be found <a href="https://github.com/AnthonyLloyd/Causal/blob/master/dbg/PerfSimple.fs">here</a>.</p>
-<h2>Full implementation</h2>
+<h2><a name="Full-implementation" class="anchor" href="#Full-implementation">Full implementation</a></h2>
 <p>The full implementation is more involved due to two main issues.</p>
 <p>Firstly, the slow down for regions will depend on measurements of the overlap with some other region.
 This region may be being run on multiple threads and the slow down should not be double counted.
@@ -30,7 +30,7 @@ It is the overlap with one or more.</p>
 This is going to need <code>SpinLock</code> (again to discourage a context switch) and as little code as possible.</p>
 <img src="/{{site.baseurl}}public/perf/CausalFull.png" title="Perf.fs"/>
 <p>The code can be found <a href="https://github.com/AnthonyLloyd/Causal/blob/master/dbg/Perf.fs">here</a>.</p>
-<h2>Statistics</h2>
+<h2><a name="Statistics" class="anchor" href="#Statistics">Statistics</a></h2>
 <p>These measurements need to be run for an array of delay percentages for each region defined.
 This defines an iteration.
 This is then repeated, and the results are summarised after each iteration.</p>
@@ -46,7 +46,7 @@ Outliers are defined as measurements outside of 3 times MAD as described in a pr
 <li>+n% - median and error program time % change when the region itself is slowed down by a given %.</li>
 <li>-n% - median and error inferred program time % change when other regions are slowed down by a given % to model a virtual speed up of this region.</li>
 </ul>
-<h2>Conclusion</h2>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The results for the simple and full implementation are within the error margin for the Fasta example.
 The full implementation due to how it is calculated has a smaller error for the same number of iterations.
 The full implementation is probably what will be used going forward but it is good to keep the simple version for comparison.</p>
