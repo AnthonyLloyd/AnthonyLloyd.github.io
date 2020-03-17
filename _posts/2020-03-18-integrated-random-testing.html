@@ -5,32 +5,24 @@ tags: [testing,perfomance,fsharp]
 description: "Integrated Random Testing"
 keywords: f#, fsharp, performance, testing
 ---
-<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing can't be multithreaded and integrated better.
-<a href="https://github.com/haf/expecto">Expecto</a> does a great job of improving performance by running unit tests in parallel which also opens up useful functionality like stress testing.
-I want a testing library where making a test random is a simple change to a unit test where shrinking just works.
-I want random tests to run and shrink across multiple threads.
-I want random performance tests that runs a range of inputs.</p>
-<h2><a name="Design" class="anchor" href="#Design">Design</a></h2>
-<p>The goal is a simpler, more lightweight testing library with faster, more integrated parallel random testing with automatic shrinking.
-The library should encourage the shift from a number of unit and regression tests with input and output data to fewer more general random tests.</p>
-<p>The prototype I've come up with has the following features:</p>
-<ul>
-<li>Asserts no longer exception based and all are evaluated. =&gt; More than one Assert per test are accepetable. Simpler setup and faster for multi part testing.</li>
-<li>Integrate random testing more closely. =&gt; Simpler syntax. Easier more general testing. Reduce emphasis on the term "property based test".</li>
-<li>No sizing or number of runs for random tests. Instead use distributions. =&gt; More realistics examples.</li>
-<li>Automatic random shrinking giving a reproducible seed. Smaller candidates found using fast PCG loop. =&gt; Simpler reproducible examples.</li>
-<li>Stress testing in parallel across unit and random tests using PCG streams. =&gt; Low sync, high performance, fine grained parallel testing.</li>
-</ul>
+<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing are not multithreaded and integrated better.
+Testing libraries like <a href="https://github.com/haf/expecto">Expecto</a> do a great job of improving performance by running unit tests in parallel while also opening up useful functionality like stress testing.
+I want to take this further with a new prototype.</p>
+<p>The goal is a simpler, more lightweight testing library with faster, more integrated parallel random testing with automatic parallel shrinking.</p>
+<p>The library should encourage the shift from a number of unit and regression tests that have hard coded input and output data to fewer more general random tests.
+This idea is covered well by John Hughes in <a href="https://youtu.be/DZhbmv8WsYU">Don't write tests!</a> and the idea of <a href="https://youtu.be/NcJOiQlzlXQ">One test to rule them all</a>.
+Key takeaways are one more general random test can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given run time.</p>
+<h2><a name="Prototype-Design-Features" class="anchor" href="#Prototype-Design-Features">Prototype Design Features</a></h2>
+<ol>
+<li>Asserts no longer exception based and all are evaluated - More than one Assert per test are acceptable. Simpler setup and faster for multi part testing.</li>
+<li>Integrate random testing more closely - Simpler syntax. Easier to move to more general random testing.</li>
+<li>No sizing or number of runs for random tests - Instead use distributions. More realistics large examples.</li>
+<li>Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.</li>
+<li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>
+<li>Integrate performance testing - Performance tests can be random and run in parallel.</li>
+<li>Tests are run fully in parallel using continuations - Fine grained in test asyncronous code is possible to make each test faster.</li>
+</ol>
 <h2><a name="Random-testing-with-random-shrinking" class="anchor" href="#Random-testing-with-random-shrinking">Random testing with random shrinking</a></h2>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
-<ul>
-<li>
-John Hughes don't write tests! - call API randomly with state machine
-<ul>
-<li>look for interaction bug tweet! feature interaction bugs</li>
-</ul>
-</li>
-<li>John Hughes <a href="https://youtu.be/NcJOiQlzlXQ">https://youtu.be/NcJOiQlzlXQ</a> - one prop test - label test cases would have built, check all results and cover label %.</li>
-</ul>
 
 
