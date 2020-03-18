@@ -5,24 +5,336 @@ tags: [testing,perfomance,fsharp]
 description: "Integrated Random Testing"
 keywords: f#, fsharp, performance, testing
 ---
-<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing are not multithreaded and integrated better.
+<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing are not better integrated and multithreaded.
 Testing libraries like <a href="https://github.com/haf/expecto">Expecto</a> do a great job of improving performance by running unit tests in parallel while also opening up useful functionality like stress testing.
 I want to take this further with a new prototype.</p>
 <p>The goal is a simpler, more lightweight testing library with faster, more integrated parallel random testing with automatic parallel shrinking.</p>
-<p>The library should encourage the shift from a number of unit and regression tests that have hard coded input and output data to fewer more general random tests.
+<p>The library aims to encourage the shift from a number of unit and regression tests with hard coded input and output data to fewer more general random tests.
 This idea is covered well by John Hughes in <a href="https://youtu.be/DZhbmv8WsYU">Don't write tests!</a> and the idea of <a href="https://youtu.be/NcJOiQlzlXQ">One test to rule them all</a>.
-Key takeaways are one more general random test can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given run time.</p>
-<h2><a name="Prototype-Design-Features" class="anchor" href="#Prototype-Design-Features">Prototype Design Features</a></h2>
+Key takeaways are one more general random test can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.</p>
+<h2><a name="Prototype-Features" class="anchor" href="#Prototype-Features">Prototype Features</a></h2>
 <ol>
-<li>Asserts no longer exception based and all are evaluated - More than one Assert per test are acceptable. Simpler setup and faster for multi part testing.</li>
-<li>Integrate random testing more closely - Simpler syntax. Easier to move to more general random testing.</li>
-<li>No sizing or number of runs for random tests - Instead use distributions. More realistics large examples.</li>
+<li>Asserts are no longer exception based and all are evaluated - More than one per test is encouraged. Simpler setup and faster for multi part testing.</li>
+<li>Integrated random testing - Simpler syntax. Easier to move to more general random testing.</li>
+<li>No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.</li>
 <li>Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.</li>
 <li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>
-<li>Integrate performance testing - Performance tests can be random and run in parallel.</li>
-<li>Tests are run fully in parallel using continuations - Fine grained in test asyncronous code is possible to make each test faster.</li>
+<li>Integrated performance testing - Performance tests can be random and run in parallel.</li>
+<li>Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster.</li>
 </ol>
 <h2><a name="Random-testing-with-random-shrinking" class="anchor" href="#Random-testing-with-random-shrinking">Random testing with random shrinking</a></h2>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">genTests</span> <span class="o">=</span>
+    <span class="id">test</span> <span class="s">&quot;gen&quot;</span> <span class="pn">{</span>
+        <span class="id">test</span> <span class="s">&quot;int&quot;</span> <span class="pn">{</span>
+            <span class="k">let!</span> <span class="id">s</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs184', 1538)" onmouseover="showTip(event, 'fs184', 1538)" class="id">Gen</span><span class="pn">.</span><span class="id">int</span>
+            <span class="k">let!</span> <span class="id">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs184', 1539)" onmouseover="showTip(event, 'fs184', 1539)" class="id">Gen</span><span class="pn">.</span><span class="id">int</span><span class="pn">.</span><span class="pn">[</span><span class="n">0..</span><span onmouseout="hideTip(event, 'fs33', 1540)" onmouseover="showTip(event, 'fs33', 1540)" class="id">Int32</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs273', 1541)" onmouseover="showTip(event, 'fs273', 1541)" class="id">MaxValue</span><span class="o">-</span><span class="id">s</span><span class="pn">]</span>
+            <span class="k">let!</span> <span class="id">i</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs184', 1542)" onmouseover="showTip(event, 'fs184', 1542)" class="id">Gen</span><span class="pn">.</span><span class="id">int</span><span class="pn">.</span><span class="pn">[</span><span class="id">s</span><span class="o">..</span><span class="id">s</span><span class="o">+</span><span class="id">c</span><span class="pn">]</span>
+            <span class="id">Test</span><span class="pn">.</span><span class="id">between</span> <span class="id">i</span> <span class="id">s</span> <span class="pn">(</span><span class="id">s</span><span class="o">+</span><span class="id">c</span><span class="pn">)</span> <span class="s">&quot;in range&quot;</span>
+        <span class="pn">}</span>
+        <span class="id">test</span> <span class="s">&quot;int distribution&quot;</span> <span class="pn">{</span>
+            <span class="k">let</span> <span class="id">freq</span> <span class="o">=</span> <span class="n">10</span>
+            <span class="k">let</span> <span class="id">buckets</span> <span class="o">=</span> <span class="n">1000</span>
+            <span class="k">let!</span> <span class="id">ints</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs184', 1543)" onmouseover="showTip(event, 'fs184', 1543)" class="id">Gen</span><span class="pn">.</span><span class="id">seq</span><span class="pn">.</span><span class="pn">[</span><span class="id">freq</span> <span class="pn">*</span> <span class="id">buckets</span><span class="pn">]</span> <span onmouseout="hideTip(event, 'fs184', 1544)" onmouseover="showTip(event, 'fs184', 1544)" class="id">Gen</span><span class="pn">.</span><span class="id">int</span><span class="pn">.</span><span class="pn">[</span><span class="o">..</span><span class="id">buckets</span><span class="o">-</span><span class="n">1</span><span class="pn">]</span>
+            <span class="k">let</span> <span class="id">actual</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs105', 1545)" onmouseover="showTip(event, 'fs105', 1545)" class="id">Array</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs108', 1546)" onmouseover="showTip(event, 'fs108', 1546)" class="id">zeroCreate</span> <span class="id">buckets</span>
+            <span onmouseout="hideTip(event, 'fs219', 1547)" onmouseover="showTip(event, 'fs219', 1547)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs223', 1548)" onmouseover="showTip(event, 'fs223', 1548)" class="id">iter</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">i</span> <span class="k">-&gt;</span> <span class="id">actual</span><span class="pn">.</span><span class="pn">[</span><span class="id">i</span><span class="pn">]</span> <span class="k">&lt;-</span> <span class="id">actual</span><span class="pn">.</span><span class="pn">[</span><span class="id">i</span><span class="pn">]</span> <span class="o">+</span> <span class="n">1</span><span class="pn">)</span> <span class="id">ints</span>
+            <span class="k">let</span> <span class="id">expected</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs105', 1549)" onmouseover="showTip(event, 'fs105', 1549)" class="id">Array</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs293', 1550)" onmouseover="showTip(event, 'fs293', 1550)" class="id">create</span> <span class="id">buckets</span> <span class="id">freq</span>
+            <span class="id">Test</span><span class="pn">.</span><span class="id">chiSquared</span> <span class="id">actual</span> <span class="id">expected</span> <span class="s">&quot;chi-squared&quot;</span>
+        <span class="pn">}</span>
+    <span class="pn">}</span>
+</code></pre>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 
 
+<div class="tip" id="fs1">module IRT</div>
+<div class="tip" id="fs2">namespace System</div>
+<div class="tip" id="fs3">namespace System.Threading</div>
+<div class="tip" id="fs4">namespace System.Diagnostics</div>
+<div class="tip" id="fs5">namespace System.Globalization</div>
+<div class="tip" id="fs6">namespace System.Runtime</div>
+<div class="tip" id="fs7">namespace System.Runtime.CompilerServices</div>
+<div class="tip" id="fs8">namespace System.Runtime.InteropServices</div>
+<div class="tip" id="fs9">namespace Microsoft</div>
+<div class="tip" id="fs10">namespace Microsoft.FSharp</div>
+<div class="tip" id="fs11">namespace Microsoft.FSharp.Core</div>
+<div class="tip" id="fs12">PCG.Inc: uint64</div>
+<div class="tip" id="fs13">Multiple items<br />val uint64 : value:&#39;T -&gt; uint64 (requires member op_Explicit)<br /><br />--------------------<br />type uint64 = UInt64</div>
+<div class="tip" id="fs14">PCG.State: uint64</div>
+<div class="tip" id="fs15">val inc : uint64</div>
+<div class="tip" id="fs16">val state : uint64</div>
+<div class="tip" id="fs17">val stream : int</div>
+<div class="tip" id="fs18">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />--------------------<br />type int = int32<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int</div>
+<div class="tip" id="fs19">val seed : uint64</div>
+<div class="tip" id="fs20">Multiple items<br />type PCG =<br />&#160;&#160;new : stream:int -&gt; PCG<br />&#160;&#160;private new : inc:uint64 * state:uint64 -&gt; PCG<br />&#160;&#160;new : stream:int * seed:uint64 -&gt; PCG<br />&#160;&#160;val Inc: uint64<br />&#160;&#160;val mutable State: uint64<br />&#160;&#160;member Next : unit -&gt; uint32<br />&#160;&#160;member Next : maxExclusive:int -&gt; int<br />&#160;&#160;member Next64 : unit -&gt; uint64<br />&#160;&#160;member Next64 : maxExclusive:int64 -&gt; int64<br />&#160;&#160;override ToString : unit -&gt; string<br />&#160;&#160;...<br /><br />--------------------<br />new : stream:int -&gt; PCG<br />new : stream:int * seed:uint64 -&gt; PCG<br />private new : inc:uint64 * state:uint64 -&gt; PCG</div>
+<div class="tip" id="fs21">Multiple items<br />type Stopwatch =<br />&#160;&#160;new : unit -&gt; Stopwatch<br />&#160;&#160;member Elapsed : TimeSpan<br />&#160;&#160;member ElapsedMilliseconds : int64<br />&#160;&#160;member ElapsedTicks : int64<br />&#160;&#160;member IsRunning : bool<br />&#160;&#160;member Reset : unit -&gt; unit<br />&#160;&#160;member Restart : unit -&gt; unit<br />&#160;&#160;member Start : unit -&gt; unit<br />&#160;&#160;member Stop : unit -&gt; unit<br />&#160;&#160;static val Frequency : int64<br />&#160;&#160;...<br /><br />--------------------<br />Stopwatch() : Stopwatch</div>
+<div class="tip" id="fs22">Stopwatch.GetTimestamp() : int64</div>
+<div class="tip" id="fs23">val i : PCG</div>
+<div class="tip" id="fs24">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T</div>
+<div class="tip" id="fs25">val s : string</div>
+<div class="tip" id="fs26">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />--------------------<br />type string = String</div>
+<div class="tip" id="fs27">val l : int</div>
+<div class="tip" id="fs28">property String.Length: int</div>
+<div class="tip" id="fs29">val mutable stream : int</div>
+<div class="tip" id="fs30">module Unchecked<br /><br />from Microsoft.FSharp.Core.Operators</div>
+<div class="tip" id="fs31">val defaultof&lt;&#39;T&gt; : &#39;T</div>
+<div class="tip" id="fs32">val mutable state : uint64</div>
+<div class="tip" id="fs33">type Int32 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : int<br />&#160;&#160;&#160;&#160;static val MinValue : int<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; int + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:int -&gt; bool + 1 overload<br />&#160;&#160;end</div>
+<div class="tip" id="fs34">Int32.TryParse(s: string, result: byref&lt;int&gt;) : bool<br />Int32.TryParse(s: string, style: NumberStyles, provider: IFormatProvider, result: byref&lt;int&gt;) : bool</div>
+<div class="tip" id="fs35">String.Substring(startIndex: int) : string<br />String.Substring(startIndex: int, length: int) : string</div>
+<div class="tip" id="fs36">type NumberStyles =<br />&#160;&#160;| None = 0<br />&#160;&#160;| AllowLeadingWhite = 1<br />&#160;&#160;| AllowTrailingWhite = 2<br />&#160;&#160;| AllowLeadingSign = 4<br />&#160;&#160;| AllowTrailingSign = 8<br />&#160;&#160;| AllowParentheses = 16<br />&#160;&#160;| AllowDecimalPoint = 32<br />&#160;&#160;| AllowThousands = 64<br />&#160;&#160;| AllowExponent = 128<br />&#160;&#160;| AllowCurrencySymbol = 256<br />&#160;&#160;...</div>
+<div class="tip" id="fs37">field NumberStyles.HexNumber: NumberStyles = 515</div>
+<div class="tip" id="fs38">type UInt64 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : uint64<br />&#160;&#160;&#160;&#160;static val MinValue : uint64<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; uint64 + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:uint64 -&gt; bool + 1 overload<br />&#160;&#160;end</div>
+<div class="tip" id="fs39">UInt64.TryParse(s: string, result: byref&lt;uint64&gt;) : bool<br />UInt64.TryParse(s: string, style: NumberStyles, provider: IFormatProvider, result: byref&lt;uint64&gt;) : bool</div>
+<div class="tip" id="fs40">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs41">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs42">val p : PCG</div>
+<div class="tip" id="fs43">val oldstate : uint64</div>
+<div class="tip" id="fs44">val xorshifted : uint32</div>
+<div class="tip" id="fs45">Multiple items<br />val uint32 : value:&#39;T -&gt; uint32 (requires member op_Explicit)<br /><br />--------------------<br />type uint32 = UInt32</div>
+<div class="tip" id="fs46">val rot : int</div>
+<div class="tip" id="fs47">member PCG.Next : unit -&gt; uint32<br />member PCG.Next : maxExclusive:int -&gt; int</div>
+<div class="tip" id="fs48">val maxExclusive : int</div>
+<div class="tip" id="fs49">val bound : uint32</div>
+<div class="tip" id="fs50">val threshold : uint32</div>
+<div class="tip" id="fs51">val find : (unit -&gt; int)</div>
+<div class="tip" id="fs52">val r : uint32</div>
+<div class="tip" id="fs53">val maxExclusive : int64</div>
+<div class="tip" id="fs54">Multiple items<br />val int64 : value:&#39;T -&gt; int64 (requires member op_Explicit)<br /><br />--------------------<br />type int64 = Int64<br /><br />--------------------<br />type int64&lt;&#39;Measure&gt; = int64</div>
+<div class="tip" id="fs55">val bound : uint64</div>
+<div class="tip" id="fs56">val threshold : uint64</div>
+<div class="tip" id="fs57">val find : (unit -&gt; int64)</div>
+<div class="tip" id="fs58">val r : uint64</div>
+<div class="tip" id="fs59">member PCG.Next64 : unit -&gt; uint64<br />member PCG.Next64 : maxExclusive:int64 -&gt; int64</div>
+<div class="tip" id="fs60">Multiple items<br />module Result<br /><br />from Microsoft.FSharp.Core<br /><br />--------------------<br />[&lt;Struct&gt;]<br />type Result&lt;&#39;T,&#39;TError&gt; =<br />&#160;&#160;| Ok of ResultValue: &#39;T<br />&#160;&#160;| Error of ErrorValue: &#39;TError</div>
+<div class="tip" id="fs61">val private traverse : f:(&#39;a -&gt; Result&lt;&#39;b,&#39;c&gt;) -&gt; list:&#39;a list -&gt; Result&lt;&#39;b list,&#39;c list&gt;</div>
+<div class="tip" id="fs62">val f : (&#39;a -&gt; Result&lt;&#39;b,&#39;c&gt;)</div>
+<div class="tip" id="fs63">Multiple items<br />val list : &#39;a list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs64">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;&#160;&#160;interface IReadOnlyList&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IReadOnlyCollection&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IEnumerable<br />&#160;&#160;&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;&#160;&#160;member Head : &#39;T<br />&#160;&#160;&#160;&#160;member IsEmpty : bool<br />&#160;&#160;&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;&#160;&#160;member Length : int<br />&#160;&#160;&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;&#160;&#160;...</div>
+<div class="tip" id="fs65">val fold : folder:(&#39;State -&gt; &#39;T -&gt; &#39;State) -&gt; state:&#39;State -&gt; list:&#39;T list -&gt; &#39;State</div>
+<div class="tip" id="fs66">[&lt;Struct&gt;]<br />val s : Result&lt;&#39;b list,&#39;c list&gt;</div>
+<div class="tip" id="fs67">val i : &#39;a</div>
+<div class="tip" id="fs68">union case Result.Ok: ResultValue: &#39;T -&gt; Result&lt;&#39;T,&#39;TError&gt;</div>
+<div class="tip" id="fs69">val l : &#39;b list</div>
+<div class="tip" id="fs70">val h : &#39;b</div>
+<div class="tip" id="fs71">union case Result.Error: ErrorValue: &#39;TError -&gt; Result&lt;&#39;T,&#39;TError&gt;</div>
+<div class="tip" id="fs72">val l : &#39;c list</div>
+<div class="tip" id="fs73">val e : &#39;c</div>
+<div class="tip" id="fs74">val h : &#39;c</div>
+<div class="tip" id="fs75">val private sequence : list:Result&lt;&#39;a,&#39;b&gt; list -&gt; Result&lt;&#39;a list,&#39;b list&gt;</div>
+<div class="tip" id="fs76">Multiple items<br />val list : Result&lt;&#39;a,&#39;b&gt; list<br /><br />--------------------<br />type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs77">val id : x:&#39;T -&gt; &#39;T</div>
+<div class="tip" id="fs78">namespace System.Text</div>
+<div class="tip" id="fs79">union case Text.For: string -&gt; Text</div>
+<div class="tip" id="fs80">union case Text.Grey: string -&gt; Text</div>
+<div class="tip" id="fs81">union case Text.Red: string -&gt; Text</div>
+<div class="tip" id="fs82">union case Text.BrightRed: string -&gt; Text</div>
+<div class="tip" id="fs83">union case Text.Green: string -&gt; Text</div>
+<div class="tip" id="fs84">union case Text.BrightGreen: string -&gt; Text</div>
+<div class="tip" id="fs85">union case Text.Yellow: string -&gt; Text</div>
+<div class="tip" id="fs86">union case Text.BrightYellow: string -&gt; Text</div>
+<div class="tip" id="fs87">union case Text.Blue: string -&gt; Text</div>
+<div class="tip" id="fs88">union case Text.BrightBlue: string -&gt; Text</div>
+<div class="tip" id="fs89">union case Text.Magenta: string -&gt; Text</div>
+<div class="tip" id="fs90">union case Text.BrightMagenta: string -&gt; Text</div>
+<div class="tip" id="fs91">union case Text.Cyan: string -&gt; Text</div>
+<div class="tip" id="fs92">union case Text.BrightCyan: string -&gt; Text</div>
+<div class="tip" id="fs93">Multiple items<br />union case Text.Text: struct (Text * Text) -&gt; Text<br /><br />--------------------<br />namespace System.Text<br /><br />--------------------<br />type Text =<br />&#160;&#160;| For of string<br />&#160;&#160;| Grey of string<br />&#160;&#160;| Red of string<br />&#160;&#160;| BrightRed of string<br />&#160;&#160;| Green of string<br />&#160;&#160;| BrightGreen of string<br />&#160;&#160;| Yellow of string<br />&#160;&#160;| BrightYellow of string<br />&#160;&#160;| Blue of string<br />&#160;&#160;| BrightBlue of string<br />&#160;&#160;...<br />&#160;&#160;&#160;&#160;static member ( + ) : t1:Text * t2:Text -&gt; Text</div>
+<div class="tip" id="fs94">val t1 : Text</div>
+<div class="tip" id="fs95">val t2 : Text</div>
+<div class="tip" id="fs96">Multiple items<br />type LiteralAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; LiteralAttribute<br /><br />--------------------<br />new : unit -&gt; LiteralAttribute</div>
+<div class="tip" id="fs97">val private reset : string</div>
+<div class="tip" id="fs98">val private toANSIList : t:Text -&gt; string list</div>
+<div class="tip" id="fs99">val t : Text</div>
+<div class="tip" id="fs100">val toANSI : t:Text -&gt; string</div>
+<div class="tip" id="fs101">Multiple items<br />type String =<br />&#160;&#160;new : value:char -&gt; string + 7 overloads<br />&#160;&#160;member Chars : int -&gt; char<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;member Contains : value:string -&gt; bool<br />&#160;&#160;member CopyTo : sourceIndex:int * destination:char[] * destinationIndex:int * count:int -&gt; unit<br />&#160;&#160;member EndsWith : value:string -&gt; bool + 2 overloads<br />&#160;&#160;member Equals : obj:obj -&gt; bool + 2 overloads<br />&#160;&#160;member GetEnumerator : unit -&gt; CharEnumerator<br />&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;...<br /><br />--------------------<br />String(value: nativeptr&lt;char&gt;) : String<br />String(value: nativeptr&lt;sbyte&gt;) : String<br />String(value: char []) : String<br />String(c: char, count: int) : String<br />String(value: nativeptr&lt;char&gt;, startIndex: int, length: int) : String<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int) : String<br />String(value: char [], startIndex: int, length: int) : String<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int, enc: Text.Encoding) : String</div>
+<div class="tip" id="fs102">String.Concat([&lt;ParamArray&gt;] values: string []) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(values: Collections.Generic.IEnumerable&lt;string&gt;) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat&lt;&#39;T&gt;(values: Collections.Generic.IEnumerable&lt;&#39;T&gt;) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat([&lt;ParamArray&gt;] args: obj []) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(arg0: obj) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(str0: string, str1: string) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(arg0: obj, arg1: obj) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(str0: string, str1: string, str2: string) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(arg0: obj, arg1: obj, arg2: obj) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />String.Concat(str0: string, str1: string, str2: string, str3: string) : string<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs103">ListSlim.count: int</div>
+<div class="tip" id="fs104">ListSlim.entries: &#39;k []</div>
+<div class="tip" id="fs105">type Array =<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CopyTo : array:Array * index:int -&gt; unit + 1 overload<br />&#160;&#160;member GetEnumerator : unit -&gt; IEnumerator<br />&#160;&#160;member GetLength : dimension:int -&gt; int<br />&#160;&#160;member GetLongLength : dimension:int -&gt; int64<br />&#160;&#160;member GetLowerBound : dimension:int -&gt; int<br />&#160;&#160;member GetUpperBound : dimension:int -&gt; int<br />&#160;&#160;member GetValue : [&lt;ParamArray&gt;] indices:int[] -&gt; obj + 7 overloads<br />&#160;&#160;member Initialize : unit -&gt; unit<br />&#160;&#160;member IsFixedSize : bool<br />&#160;&#160;...</div>
+<div class="tip" id="fs106">val empty&lt;&#39;T&gt; : &#39;T []</div>
+<div class="tip" id="fs107">val capacity : int</div>
+<div class="tip" id="fs108">val zeroCreate : count:int -&gt; &#39;T []</div>
+<div class="tip" id="fs109">val m : ListSlim&lt;&#39;k&gt;</div>
+<div class="tip" id="fs110">val i : int</div>
+<div class="tip" id="fs111">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)</div>
+<div class="tip" id="fs112">val v : &#39;k</div>
+<div class="tip" id="fs113">val key : &#39;k</div>
+<div class="tip" id="fs114">property Array.Length: int</div>
+<div class="tip" id="fs115">val newEntries : &#39;k []</div>
+<div class="tip" id="fs116">Array.Copy(sourceArray: Array, destinationArray: Array, length: int64) : unit<br />Array.Copy(sourceArray: Array, destinationArray: Array, length: int) : unit<br />Array.Copy(sourceArray: Array, sourceIndex: int64, destinationArray: Array, destinationIndex: int64, length: int64) : unit<br />Array.Copy(sourceArray: Array, sourceIndex: int, destinationArray: Array, destinationIndex: int, length: int) : unit</div>
+<div class="tip" id="fs117">val init : count:int -&gt; initializer:(int -&gt; &#39;T) -&gt; &#39;T []</div>
+<div class="tip" id="fs118">val get : array:&#39;T [] -&gt; index:int -&gt; &#39;T</div>
+<div class="tip" id="fs119">val init : length:int -&gt; initializer:(int -&gt; &#39;T) -&gt; &#39;T list</div>
+<div class="tip" id="fs120">Multiple items<br />type StructAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; StructAttribute<br /><br />--------------------<br />new : unit -&gt; StructAttribute</div>
+<div class="tip" id="fs121">type private Entry&lt;&#39;k,&#39;v&gt; =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;val mutable bucket: int<br />&#160;&#160;&#160;&#160;val mutable key: &#39;k<br />&#160;&#160;&#160;&#160;val mutable value: &#39;v<br />&#160;&#160;&#160;&#160;val mutable next: int<br />&#160;&#160;end</div>
+<div class="tip" id="fs122">Entry.bucket: int</div>
+<div class="tip" id="fs123">Entry.key: &#39;k</div>
+<div class="tip" id="fs124">Entry.value: &#39;v</div>
+<div class="tip" id="fs125">Entry.next: int</div>
+<div class="tip" id="fs126">Multiple items<br />type private InitialHolder&lt;&#39;k,&#39;v&gt; =<br />&#160;&#160;new : unit -&gt; InitialHolder&lt;&#39;k,&#39;v&gt;<br />&#160;&#160;static member Initial : Entry&lt;&#39;k,&#39;v&gt; []<br /><br />--------------------<br />private new : unit -&gt; InitialHolder&lt;&#39;k,&#39;v&gt;</div>
+<div class="tip" id="fs127">val initial : Entry&lt;&#39;k,&#39;v&gt; []</div>
+<div class="tip" id="fs128">type IEquatable&lt;&#39;T&gt; =<br />&#160;&#160;member Equals : other:&#39;T -&gt; bool</div>
+<div class="tip" id="fs129">MapSlim.count: int</div>
+<div class="tip" id="fs130">MapSlim.entries: Entry&lt;&#39;k,&#39;v&gt; []</div>
+<div class="tip" id="fs131">property InitialHolder.Initial: Entry&lt;&#39;k,&#39;v&gt; []</div>
+<div class="tip" id="fs132">val powerOf2 : (int -&gt; int)</div>
+<div class="tip" id="fs133">val v : int</div>
+<div class="tip" id="fs134">val twos : (int -&gt; int)</div>
+<div class="tip" id="fs135">val m : MapSlim&lt;&#39;k,&#39;v&gt; (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)</div>
+<div class="tip" id="fs136">val oldEntries : Entry&lt;&#39;k,&#39;v&gt; [] (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)</div>
+<div class="tip" id="fs137">val entries : Entry&lt;&#39;k,&#39;v&gt; [] (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)</div>
+<div class="tip" id="fs138">val bi : int</div>
+<div class="tip" id="fs139">Multiple items<br />type MethodImplAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; MethodImplAttribute + 2 overloads<br />&#160;&#160;val MethodCodeType : MethodCodeType<br />&#160;&#160;member Value : MethodImplOptions<br /><br />--------------------<br />MethodImplAttribute() : MethodImplAttribute<br />MethodImplAttribute(methodImplOptions: MethodImplOptions) : MethodImplAttribute<br />MethodImplAttribute(value: int16) : MethodImplAttribute</div>
+<div class="tip" id="fs140">type MethodImplOptions =<br />&#160;&#160;| Unmanaged = 4<br />&#160;&#160;| ForwardRef = 16<br />&#160;&#160;| PreserveSig = 128<br />&#160;&#160;| InternalCall = 4096<br />&#160;&#160;| Synchronized = 32<br />&#160;&#160;| NoInlining = 8<br />&#160;&#160;| AggressiveInlining = 256<br />&#160;&#160;| NoOptimization = 64</div>
+<div class="tip" id="fs141">field MethodImplOptions.NoInlining: MethodImplOptions = 8</div>
+<div class="tip" id="fs142">val key : &#39;k (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)</div>
+<div class="tip" id="fs143">val hashCode : int</div>
+<div class="tip" id="fs144">member private MapSlim.Resize : unit -&gt; unit</div>
+<div class="tip" id="fs145">val bucketIndex : int</div>
+<div class="tip" id="fs146">val value : &#39;v</div>
+<div class="tip" id="fs147">Object.GetHashCode() : int</div>
+<div class="tip" id="fs148">val mutable i : int</div>
+<div class="tip" id="fs149">val not : value:bool -&gt; bool</div>
+<div class="tip" id="fs150">Object.Equals(obj: obj) : bool<br />IEquatable.Equals(other: &#39;k) : bool</div>
+<div class="tip" id="fs151">val v : byref&lt;&#39;v&gt;</div>
+<div class="tip" id="fs152">member private MapSlim.AddKey : key:&#39;k * hashCode:int -&gt; byref&lt;&#39;v&gt;</div>
+<div class="tip" id="fs153">type byref&lt;&#39;T&gt; = (# &quot;&lt;Common IL Type Omitted&gt;&quot; #)</div>
+<div class="tip" id="fs154">val added : outref&lt;bool&gt;</div>
+<div class="tip" id="fs155">type bool = Boolean</div>
+<div class="tip" id="fs156">type outref&lt;&#39;T&gt; = outref&lt;&#39;T&gt;</div>
+<div class="tip" id="fs157">[&lt;Struct&gt;]<br />type &#39;T voption = ValueOption&lt;&#39;T&gt;</div>
+<div class="tip" id="fs158">union case ValueOption.ValueSome: &#39;T -&gt; ValueOption&lt;&#39;T&gt;</div>
+<div class="tip" id="fs159">union case ValueOption.ValueNone: ValueOption&lt;&#39;T&gt;</div>
+<div class="tip" id="fs160">val entries : Entry&lt;&#39;k,&#39;v&gt; (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)</div>
+<div class="tip" id="fs161">Multiple items<br />type AllowNullLiteralAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; AllowNullLiteralAttribute<br />&#160;&#160;new : value:bool -&gt; AllowNullLiteralAttribute<br />&#160;&#160;member Value : bool<br /><br />--------------------<br />new : unit -&gt; AllowNullLiteralAttribute<br />new : value:bool -&gt; AllowNullLiteralAttribute</div>
+<div class="tip" id="fs162">Size.I: uint64</div>
+<div class="tip" id="fs163">Size.L: Size list</div>
+<div class="tip" id="fs164">Multiple items<br />type Size =<br />&#160;&#160;interface IComparable<br />&#160;&#160;interface IComparable&lt;Size&gt;<br />&#160;&#160;new : i:uint64 * l:Size list -&gt; Size<br />&#160;&#160;val I: uint64<br />&#160;&#160;val L: Size list<br />&#160;&#160;override Equals : y:obj -&gt; bool<br />&#160;&#160;override GetHashCode : unit -&gt; int<br />&#160;&#160;static member zero : Size<br /><br />--------------------<br />new : i:uint64 * l:Size list -&gt; Size</div>
+<div class="tip" id="fs165">type &#39;T list = List&lt;&#39;T&gt;</div>
+<div class="tip" id="fs166">val i : uint64</div>
+<div class="tip" id="fs167">val l : Size list</div>
+<div class="tip" id="fs168">val x : Size</div>
+<div class="tip" id="fs169">val y : obj</div>
+<div class="tip" id="fs170">Multiple items<br />type IComparable =<br />&#160;&#160;member CompareTo : obj:obj -&gt; int<br /><br />--------------------<br />type IComparable&lt;&#39;T&gt; =<br />&#160;&#160;member CompareTo : other:&#39;T -&gt; int</div>
+<div class="tip" id="fs171">val y : Size</div>
+<div class="tip" id="fs172">val compare : (Size -&gt; Size -&gt; int64)</div>
+<div class="tip" id="fs173">val i : int64</div>
+<div class="tip" id="fs174">val fold2 : folder:(&#39;State -&gt; &#39;T1 -&gt; &#39;T2 -&gt; &#39;State) -&gt; state:&#39;State -&gt; list1:&#39;T1 list -&gt; list2:&#39;T2 list -&gt; &#39;State</div>
+<div class="tip" id="fs175">val s : int64</div>
+<div class="tip" id="fs176">val sign : value:&#39;T -&gt; int (requires member get_Sign)</div>
+<div class="tip" id="fs177">type Gen&lt;&#39;a&gt; =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Gen : PCG -&gt; &#39;a * Size<br />&#160;&#160;end</div>
+<div class="tip" id="fs178">Multiple items<br />type PCG =<br />&#160;&#160;new : stream:int -&gt; PCG<br />&#160;&#160;private new : inc:uint64 * state:uint64 -&gt; PCG<br />&#160;&#160;new : stream:int * seed:uint64 -&gt; PCG<br />&#160;&#160;val Inc: uint64<br />&#160;&#160;val mutable State: uint64<br />&#160;&#160;member Next : unit -&gt; uint32<br />&#160;&#160;member Next : maxExclusive:int -&gt; int<br />&#160;&#160;member Next64 : unit -&gt; uint64<br />&#160;&#160;member Next64 : maxExclusive:int64 -&gt; int64<br />&#160;&#160;override ToString : unit -&gt; string<br />&#160;&#160;...<br /><br />--------------------<br />new : stream:int -&gt; PCG<br />new : stream:int * seed:uint64 -&gt; PCG</div>
+<div class="tip" id="fs179">type GenRange&lt;&#39;a,&#39;b&gt; =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;inherit Gen&lt;&#39;b&gt;<br />&#160;&#160;&#160;&#160;abstract member GetSlice : &#39;a option * &#39;a option -&gt; Gen&lt;&#39;b&gt;<br />&#160;&#160;end</div>
+<div class="tip" id="fs180">type &#39;T option = Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs181">Multiple items<br />type GenBuilder =<br />&#160;&#160;new : unit -&gt; GenBuilder<br />&#160;&#160;new : Gen:obj -&gt; GenBuilder<br /><br />--------------------<br />new : unit -&gt; GenBuilder<br />new : Gen:obj -&gt; GenBuilder</div>
+<div class="tip" id="fs182">val g : unit * Size</div>
+<div class="tip" id="fs183">property Size.zero: Size</div>
+<div class="tip" id="fs184">Multiple items<br />val Gen : obj<br /><br />--------------------<br />type Gen&lt;&#39;a&gt; =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Gen : PCG -&gt; &#39;a * Size<br />&#160;&#160;end</div>
+<div class="tip" id="fs185">val fst : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T1</div>
+<div class="tip" id="fs186">type obj = Object</div>
+<div class="tip" id="fs187">Multiple items<br />union case Text.Text: struct (Text * Text) -&gt; Text<br /><br />--------------------<br />module Text<br /><br />from IRT<br /><br />--------------------<br />namespace System.Text<br /><br />--------------------<br />type Text =<br />&#160;&#160;| For of string<br />&#160;&#160;| Grey of string<br />&#160;&#160;| Red of string<br />&#160;&#160;| BrightRed of string<br />&#160;&#160;| Green of string<br />&#160;&#160;| BrightGreen of string<br />&#160;&#160;| Yellow of string<br />&#160;&#160;| BrightYellow of string<br />&#160;&#160;| Blue of string<br />&#160;&#160;| BrightBlue of string<br />&#160;&#160;...<br />&#160;&#160;&#160;&#160;static member ( + ) : t1:Text * t2:Text -&gt; Text</div>
+<div class="tip" id="fs188">Multiple items<br />val Failure : message:string -&gt; exn<br /><br />--------------------<br />active recognizer Failure: exn -&gt; string option</div>
+<div class="tip" id="fs189">Multiple items<br />type Exception =<br />&#160;&#160;new : unit -&gt; Exception + 2 overloads<br />&#160;&#160;member Data : IDictionary<br />&#160;&#160;member GetBaseException : unit -&gt; Exception<br />&#160;&#160;member GetObjectData : info:SerializationInfo * context:StreamingContext -&gt; unit<br />&#160;&#160;member GetType : unit -&gt; Type<br />&#160;&#160;member HResult : int with get, set<br />&#160;&#160;member HelpLink : string with get, set<br />&#160;&#160;member InnerException : Exception<br />&#160;&#160;member Message : string<br />&#160;&#160;member Source : string with get, set<br />&#160;&#160;...<br /><br />--------------------<br />Exception() : Exception<br />Exception(message: string) : Exception<br />Exception(message: string, innerException: exn) : Exception</div>
+<div class="tip" id="fs190">type exn = Exception</div>
+<div class="tip" id="fs191">Multiple items<br />type ListSlim&lt;&#39;k&gt; =<br />&#160;&#160;new : unit -&gt; ListSlim&lt;&#39;k&gt;<br />&#160;&#160;new : capacity:int -&gt; ListSlim&lt;&#39;k&gt;<br />&#160;&#160;val mutable private count: int<br />&#160;&#160;val mutable private entries: &#39;k []<br />&#160;&#160;member Add : key:&#39;k -&gt; int<br />&#160;&#160;member ToArray : unit -&gt; &#39;k []<br />&#160;&#160;member ToList : unit -&gt; &#39;k list<br />&#160;&#160;member Count : int<br />&#160;&#160;member Item : i:int -&gt; &#39;k with get<br />&#160;&#160;member Item : i:int -&gt; &#39;k with set<br /><br />--------------------<br />new : unit -&gt; ListSlim&lt;&#39;k&gt;<br />new : capacity:int -&gt; ListSlim&lt;&#39;k&gt;</div>
+<div class="tip" id="fs192">val exists : predicate:(&#39;T -&gt; bool) -&gt; list:&#39;T list -&gt; bool</div>
+<div class="tip" id="fs193">type unit = Unit</div>
+<div class="tip" id="fs194">Multiple items<br />type MapSlim&lt;&#39;k,&#39;v (requires equality and &#39;k :&gt; IEquatable&lt;&#39;k&gt;)&gt; =<br />&#160;&#160;new : unit -&gt; MapSlim&lt;&#39;k,&#39;v&gt;<br />&#160;&#160;new : capacity:int -&gt; MapSlim&lt;&#39;k,&#39;v&gt;<br />&#160;&#160;val mutable private count: int<br />&#160;&#160;val mutable private entries: Entry&lt;&#39;k,&#39;v&gt; []<br />&#160;&#160;member private AddKey : key:&#39;k * hashCode:int -&gt; byref&lt;&#39;v&gt;<br />&#160;&#160;member GetOption : key:&#39;k -&gt; &#39;v voption<br />&#160;&#160;member GetRef : key:&#39;k -&gt; byref&lt;&#39;v&gt;<br />&#160;&#160;member GetRef : key:&#39;k * added:outref&lt;bool&gt; -&gt; byref&lt;&#39;v&gt;<br />&#160;&#160;member Item : i:int -&gt; &#39;k * &#39;v<br />&#160;&#160;member Key : i:int -&gt; &#39;k<br />&#160;&#160;...<br /><br />--------------------<br />new : unit -&gt; MapSlim&lt;&#39;k,&#39;v&gt;<br />new : capacity:int -&gt; MapSlim&lt;&#39;k,&#39;v&gt;</div>
+<div class="tip" id="fs195">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list</div>
+<div class="tip" id="fs196">Multiple items<br />type CallerLineNumberAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; CallerLineNumberAttribute<br /><br />--------------------<br />CallerLineNumberAttribute() : CallerLineNumberAttribute</div>
+<div class="tip" id="fs197">Multiple items<br />type OptionalAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; OptionalAttribute<br /><br />--------------------<br />OptionalAttribute() : OptionalAttribute</div>
+<div class="tip" id="fs198">Multiple items<br />type DefaultParameterValueAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : value:obj -&gt; DefaultParameterValueAttribute<br />&#160;&#160;member Value : obj<br /><br />--------------------<br />DefaultParameterValueAttribute(value: obj) : DefaultParameterValueAttribute</div>
+<div class="tip" id="fs199">val lock : lockObject:&#39;Lock -&gt; action:(unit -&gt; &#39;T) -&gt; &#39;T (requires reference type)</div>
+<div class="tip" id="fs200">val isNull : value:&#39;T -&gt; bool (requires &#39;T : null)</div>
+<div class="tip" id="fs201">type IDisposable =<br />&#160;&#160;member Dispose : unit -&gt; unit</div>
+<div class="tip" id="fs202">Multiple items<br />val seq : sequence:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><br />--------------------<br />type seq&lt;&#39;T&gt; = Collections.Generic.IEnumerable&lt;&#39;T&gt;</div>
+<div class="tip" id="fs203">Multiple items<br />type AutoOpenAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; AutoOpenAttribute<br />&#160;&#160;new : path:string -&gt; AutoOpenAttribute<br />&#160;&#160;member Path : string<br /><br />--------------------<br />new : unit -&gt; AutoOpenAttribute<br />new : path:string -&gt; AutoOpenAttribute</div>
+<div class="tip" id="fs204">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />--------------------<br />type float = Double<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float</div>
+<div class="tip" id="fs205">Multiple items<br />module Result<br /><br />from IRT<br /><br />--------------------<br />module Result<br /><br />from Microsoft.FSharp.Core<br /><br />--------------------<br />[&lt;Struct&gt;]<br />type Result&lt;&#39;T,&#39;TError&gt; =<br />&#160;&#160;| Ok of ResultValue: &#39;T<br />&#160;&#160;| Error of ErrorValue: &#39;TError</div>
+<div class="tip" id="fs206">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; result:Result&lt;&#39;T,&#39;TError&gt; -&gt; Result&lt;&#39;U,&#39;TError&gt;</div>
+<div class="tip" id="fs207">val rev : list:&#39;T list -&gt; &#39;T list</div>
+<div class="tip" id="fs208">val mapError : mapping:(&#39;TError -&gt; &#39;U) -&gt; result:Result&lt;&#39;T,&#39;TError&gt; -&gt; Result&lt;&#39;T,&#39;U&gt;</div>
+<div class="tip" id="fs209">String.Join(separator: string, values: Collections.Generic.IEnumerable&lt;string&gt;) : string<br />String.Join&lt;&#39;T&gt;(separator: string, values: Collections.Generic.IEnumerable&lt;&#39;T&gt;) : string<br />String.Join(separator: string, [&lt;ParamArray&gt;] values: obj []) : string<br />String.Join(separator: string, [&lt;ParamArray&gt;] value: string []) : string<br />String.Join(separator: string, value: string [], startIndex: int, count: int) : string</div>
+<div class="tip" id="fs210">type IFormatProvider =<br />&#160;&#160;member GetFormat : formatType:Type -&gt; obj</div>
+<div class="tip" id="fs211">field NumberStyles.Any: NumberStyles = 511</div>
+<div class="tip" id="fs212">Multiple items<br />type CultureInfo =<br />&#160;&#160;new : name:string -&gt; CultureInfo + 3 overloads<br />&#160;&#160;member Calendar : Calendar<br />&#160;&#160;member ClearCachedData : unit -&gt; unit<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CompareInfo : CompareInfo<br />&#160;&#160;member CultureTypes : CultureTypes<br />&#160;&#160;member DateTimeFormat : DateTimeFormatInfo with get, set<br />&#160;&#160;member DisplayName : string<br />&#160;&#160;member EnglishName : string<br />&#160;&#160;member Equals : value:obj -&gt; bool<br />&#160;&#160;...<br /><br />--------------------<br />CultureInfo(name: string) : CultureInfo<br />CultureInfo(culture: int) : CultureInfo<br />CultureInfo(name: string, useUserOverride: bool) : CultureInfo<br />CultureInfo(culture: int, useUserOverride: bool) : CultureInfo</div>
+<div class="tip" id="fs213">property CultureInfo.InvariantCulture: CultureInfo</div>
+<div class="tip" id="fs214">static member PCG.TryParse : s:string -&gt; PCG option</div>
+<div class="tip" id="fs215">val append : array1:&#39;T [] -&gt; array2:&#39;T [] -&gt; &#39;T []</div>
+<div class="tip" id="fs216">val tryFind : predicate:(&#39;T -&gt; bool) -&gt; list:&#39;T list -&gt; &#39;T option</div>
+<div class="tip" id="fs217">Multiple items<br />type StringBuilder =<br />&#160;&#160;new : unit -&gt; StringBuilder + 5 overloads<br />&#160;&#160;member Append : value:string -&gt; StringBuilder + 19 overloads<br />&#160;&#160;member AppendFormat : format:string * arg0:obj -&gt; StringBuilder + 7 overloads<br />&#160;&#160;member AppendLine : unit -&gt; StringBuilder + 1 overload<br />&#160;&#160;member Capacity : int with get, set<br />&#160;&#160;member Chars : int -&gt; char with get, set<br />&#160;&#160;member Clear : unit -&gt; StringBuilder<br />&#160;&#160;member CopyTo : sourceIndex:int * destination:char[] * destinationIndex:int * count:int -&gt; unit<br />&#160;&#160;member EnsureCapacity : capacity:int -&gt; int<br />&#160;&#160;member Equals : sb:StringBuilder -&gt; bool<br />&#160;&#160;...<br /><br />--------------------<br />Text.StringBuilder() : Text.StringBuilder<br />Text.StringBuilder(capacity: int) : Text.StringBuilder<br />Text.StringBuilder(value: string) : Text.StringBuilder<br />Text.StringBuilder(value: string, capacity: int) : Text.StringBuilder<br />Text.StringBuilder(capacity: int, maxCapacity: int) : Text.StringBuilder<br />Text.StringBuilder(value: string, startIndex: int, length: int, capacity: int) : Text.StringBuilder</div>
+<div class="tip" id="fs218">val ignore : value:&#39;T -&gt; unit</div>
+<div class="tip" id="fs219">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs220">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;</div>
+<div class="tip" id="fs221">val max : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires comparison)</div>
+<div class="tip" id="fs222">val append : source1:seq&lt;&#39;T&gt; -&gt; source2:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;</div>
+<div class="tip" id="fs223">val iter : action:(&#39;T -&gt; unit) -&gt; source:seq&lt;&#39;T&gt; -&gt; unit</div>
+<div class="tip" id="fs224">val countBy : projection:(&#39;T -&gt; &#39;Key) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;Key * int&gt; (requires equality)</div>
+<div class="tip" id="fs225">val choose : chooser:(&#39;T -&gt; &#39;U option) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;</div>
+<div class="tip" id="fs226">val toList : source:seq&lt;&#39;T&gt; -&gt; &#39;T list</div>
+<div class="tip" id="fs227">val collect : mapping:(&#39;T -&gt; &#39;U list) -&gt; list:&#39;T list -&gt; &#39;U list</div>
+<div class="tip" id="fs228">val isEmpty : list:&#39;T list -&gt; bool</div>
+<div class="tip" id="fs229">val where : predicate:(&#39;T -&gt; bool) -&gt; list:&#39;T list -&gt; &#39;T list</div>
+<div class="tip" id="fs230">val distinctBy : projection:(&#39;T -&gt; &#39;Key) -&gt; list:&#39;T list -&gt; &#39;T list (requires equality)</div>
+<div class="tip" id="fs231">val toArray : list:&#39;T list -&gt; &#39;T []</div>
+<div class="tip" id="fs232">val unzip : array:(&#39;T1 * &#39;T2) [] -&gt; &#39;T1 [] * &#39;T2 []</div>
+<div class="tip" id="fs233">val contains : value:&#39;T -&gt; source:&#39;T list -&gt; bool (requires equality)</div>
+<div class="tip" id="fs234">val choose : chooser:(&#39;T -&gt; &#39;U option) -&gt; list:&#39;T list -&gt; &#39;U list</div>
+<div class="tip" id="fs235">val sortInPlace : array:&#39;T [] -&gt; unit (requires comparison)</div>
+<div class="tip" id="fs236">val sqrt : value:&#39;T -&gt; &#39;U (requires member Sqrt)</div>
+<div class="tip" id="fs237">val reduce : reduction:(&#39;T -&gt; &#39;T -&gt; &#39;T) -&gt; list:&#39;T list -&gt; &#39;T</div>
+<div class="tip" id="fs238">type Console =<br />&#160;&#160;static member BackgroundColor : ConsoleColor with get, set<br />&#160;&#160;static member Beep : unit -&gt; unit + 1 overload<br />&#160;&#160;static member BufferHeight : int with get, set<br />&#160;&#160;static member BufferWidth : int with get, set<br />&#160;&#160;static member CapsLock : bool<br />&#160;&#160;static member Clear : unit -&gt; unit<br />&#160;&#160;static member CursorLeft : int with get, set<br />&#160;&#160;static member CursorSize : int with get, set<br />&#160;&#160;static member CursorTop : int with get, set<br />&#160;&#160;static member CursorVisible : bool with get, set<br />&#160;&#160;...</div>
+<div class="tip" id="fs239">Console.WriteLine() : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: string) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: obj) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: uint64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: uint32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: float32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: float) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.WriteLine(value: decimal) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs240">event Console.CancelKeyPress: IEvent&lt;ConsoleCancelEventHandler,ConsoleCancelEventArgs&gt;</div>
+<div class="tip" id="fs241">Multiple items<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type Event&lt;&#39;T&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;T&gt;<br />&#160;&#160;member Trigger : arg:&#39;T -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;T&gt;<br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;T&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
+<div class="tip" id="fs242">val add : callback:(&#39;T -&gt; unit) -&gt; sourceEvent:IEvent&lt;&#39;Del,&#39;T&gt; -&gt; unit (requires delegate and &#39;Del :&gt; Delegate)</div>
+<div class="tip" id="fs243">Console.Write(value: string) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: obj) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: uint64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: uint32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: float32) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: decimal) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(value: float) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />Console.Write(buffer: char []) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs244">val length : list:&#39;T list -&gt; int</div>
+<div class="tip" id="fs245">Multiple items<br />val ref : value:&#39;T -&gt; &#39;T ref<br /><br />--------------------<br />type &#39;T ref = Ref&lt;&#39;T&gt;</div>
+<div class="tip" id="fs246">type Int64 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : int64<br />&#160;&#160;&#160;&#160;static val MinValue : int64<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; int64 + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:int64 -&gt; bool + 1 overload<br />&#160;&#160;end</div>
+<div class="tip" id="fs247">field int64.MaxValue: int64 = 9223372036854775807L</div>
+<div class="tip" id="fs248">type Interlocked =<br />&#160;&#160;static member Add : location1:int * value:int -&gt; int + 1 overload<br />&#160;&#160;static member CompareExchange : location1:int * value:int * comparand:int -&gt; int + 6 overloads<br />&#160;&#160;static member Decrement : location:int -&gt; int + 1 overload<br />&#160;&#160;static member Exchange : location1:int * value:int -&gt; int + 6 overloads<br />&#160;&#160;static member Increment : location:int -&gt; int + 1 overload<br />&#160;&#160;static member MemoryBarrier : unit -&gt; unit<br />&#160;&#160;static member Read : location:int64 -&gt; int64</div>
+<div class="tip" id="fs249">Interlocked.Increment(location: byref&lt;int64&gt;) : int64<br />Interlocked.Increment(location: byref&lt;int&gt;) : int</div>
+<div class="tip" id="fs250">type ThreadPool =<br />&#160;&#160;static member BindHandle : osHandle:nativeint -&gt; bool + 1 overload<br />&#160;&#160;static member GetAvailableThreads : workerThreads:int * completionPortThreads:int -&gt; unit<br />&#160;&#160;static member GetMaxThreads : workerThreads:int * completionPortThreads:int -&gt; unit<br />&#160;&#160;static member GetMinThreads : workerThreads:int * completionPortThreads:int -&gt; unit<br />&#160;&#160;static member QueueUserWorkItem : callBack:WaitCallback -&gt; bool + 1 overload<br />&#160;&#160;static member RegisterWaitForSingleObject : waitObject:WaitHandle * callBack:WaitOrTimerCallback * state:obj * millisecondsTimeOutInterval:uint32 * executeOnlyOnce:bool -&gt; RegisteredWaitHandle + 3 overloads<br />&#160;&#160;static member SetMaxThreads : workerThreads:int * completionPortThreads:int -&gt; bool<br />&#160;&#160;static member SetMinThreads : workerThreads:int * completionPortThreads:int -&gt; bool<br />&#160;&#160;static member UnsafeQueueNativeOverlapped : overlapped:NativeOverlapped -&gt; bool<br />&#160;&#160;static member UnsafeQueueUserWorkItem : callBack:WaitCallback * state:obj -&gt; bool<br />&#160;&#160;...</div>
+<div class="tip" id="fs251">ThreadPool.UnsafeQueueUserWorkItem(callBack: WaitCallback, state: obj) : bool</div>
+<div class="tip" id="fs252">module Option<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs253">val isNone : option:&#39;T option -&gt; bool</div>
+<div class="tip" id="fs254">val set : array:&#39;T [] -&gt; index:int -&gt; value:&#39;T -&gt; unit</div>
+<div class="tip" id="fs255">val tryPick : chooser:(&#39;T -&gt; &#39;U option) -&gt; list:&#39;T list -&gt; &#39;U option</div>
+<div class="tip" id="fs256">val pick : chooser:(&#39;T -&gt; &#39;U option) -&gt; list:&#39;T list -&gt; &#39;U</div>
+<div class="tip" id="fs257">val defaultValue : value:&#39;T -&gt; option:&#39;T option -&gt; &#39;T</div>
+<div class="tip" id="fs258">field Stopwatch.Frequency: int64</div>
+<div class="tip" id="fs259">val defaultWith : defThunk:(unit -&gt; &#39;T) -&gt; option:&#39;T option -&gt; &#39;T</div>
+<div class="tip" id="fs260">type Environment =<br />&#160;&#160;static member CommandLine : string<br />&#160;&#160;static member CurrentDirectory : string with get, set<br />&#160;&#160;static member CurrentManagedThreadId : int<br />&#160;&#160;static member Exit : exitCode:int -&gt; unit<br />&#160;&#160;static member ExitCode : int with get, set<br />&#160;&#160;static member ExpandEnvironmentVariables : name:string -&gt; string<br />&#160;&#160;static member FailFast : message:string -&gt; unit + 1 overload<br />&#160;&#160;static member GetCommandLineArgs : unit -&gt; string[]<br />&#160;&#160;static member GetEnvironmentVariable : variable:string -&gt; string + 1 overload<br />&#160;&#160;static member GetEnvironmentVariables : unit -&gt; IDictionary + 1 overload<br />&#160;&#160;...<br />&#160;&#160;nested type SpecialFolder<br />&#160;&#160;nested type SpecialFolderOption</div>
+<div class="tip" id="fs261">Interlocked.Decrement(location: byref&lt;int64&gt;) : int64<br />Interlocked.Decrement(location: byref&lt;int&gt;) : int</div>
+<div class="tip" id="fs262">val min : e1:&#39;T -&gt; e2:&#39;T -&gt; &#39;T (requires comparison)</div>
+<div class="tip" id="fs263">val iteri : action:(int -&gt; &#39;T -&gt; unit) -&gt; array:&#39;T [] -&gt; unit</div>
+<div class="tip" id="fs264">val iter : action:(&#39;T -&gt; unit) -&gt; option:&#39;T option -&gt; unit</div>
+<div class="tip" id="fs265">type GC =<br />&#160;&#160;static member AddMemoryPressure : bytesAllocated:int64 -&gt; unit<br />&#160;&#160;static member CancelFullGCNotification : unit -&gt; unit<br />&#160;&#160;static member Collect : unit -&gt; unit + 4 overloads<br />&#160;&#160;static member CollectionCount : generation:int -&gt; int<br />&#160;&#160;static member EndNoGCRegion : unit -&gt; unit<br />&#160;&#160;static member GetGeneration : obj:obj -&gt; int + 1 overload<br />&#160;&#160;static member GetTotalMemory : forceFullCollection:bool -&gt; int64<br />&#160;&#160;static member KeepAlive : obj:obj -&gt; unit<br />&#160;&#160;static member MaxGeneration : int<br />&#160;&#160;static member ReRegisterForFinalize : obj:obj -&gt; unit<br />&#160;&#160;...</div>
+<div class="tip" id="fs266">GC.GetTotalMemory(forceFullCollection: bool) : int64</div>
+<div class="tip" id="fs267">Multiple items<br />type Thread =<br />&#160;&#160;inherit CriticalFinalizerObject<br />&#160;&#160;new : start:ThreadStart -&gt; Thread + 3 overloads<br />&#160;&#160;member Abort : unit -&gt; unit + 1 overload<br />&#160;&#160;member ApartmentState : ApartmentState with get, set<br />&#160;&#160;member CurrentCulture : CultureInfo with get, set<br />&#160;&#160;member CurrentUICulture : CultureInfo with get, set<br />&#160;&#160;member DisableComObjectEagerCleanup : unit -&gt; unit<br />&#160;&#160;member ExecutionContext : ExecutionContext<br />&#160;&#160;member GetApartmentState : unit -&gt; ApartmentState<br />&#160;&#160;member GetCompressedStack : unit -&gt; CompressedStack<br />&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;...<br /><br />--------------------<br />Thread(start: ThreadStart) : Thread<br />Thread(start: ParameterizedThreadStart) : Thread<br />Thread(start: ThreadStart, maxStackSize: int) : Thread<br />Thread(start: ParameterizedThreadStart, maxStackSize: int) : Thread</div>
+<div class="tip" id="fs268">Thread.Sleep(timeout: TimeSpan) : unit<br />Thread.Sleep(millisecondsTimeout: int) : unit</div>
+<div class="tip" id="fs269">val max : e1:&#39;T -&gt; e2:&#39;T -&gt; &#39;T (requires comparison)</div>
+<div class="tip" id="fs270">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit</div>
+<div class="tip" id="fs271">Multiple items<br />val byte : value:&#39;T -&gt; byte (requires member op_Explicit)<br /><br />--------------------<br />type byte = Byte</div>
+<div class="tip" id="fs272">val defaultArg : arg:&#39;T option -&gt; defaultValue:&#39;T -&gt; &#39;T</div>
+<div class="tip" id="fs273">field int.MaxValue: int = 2147483647</div>
+<div class="tip" id="fs274">type BitConverter =<br />&#160;&#160;static val IsLittleEndian : bool<br />&#160;&#160;static member DoubleToInt64Bits : value:float -&gt; int64<br />&#160;&#160;static member GetBytes : value:bool -&gt; byte[] + 9 overloads<br />&#160;&#160;static member Int64BitsToDouble : value:int64 -&gt; float<br />&#160;&#160;static member ToBoolean : value:byte[] * startIndex:int -&gt; bool<br />&#160;&#160;static member ToChar : value:byte[] * startIndex:int -&gt; char<br />&#160;&#160;static member ToDouble : value:byte[] * startIndex:int -&gt; float<br />&#160;&#160;static member ToInt16 : value:byte[] * startIndex:int -&gt; int16<br />&#160;&#160;static member ToInt32 : value:byte[] * startIndex:int -&gt; int<br />&#160;&#160;static member ToInt64 : value:byte[] * startIndex:int -&gt; int64<br />&#160;&#160;...</div>
+<div class="tip" id="fs275">BitConverter.Int64BitsToDouble(value: int64) : float</div>
+<div class="tip" id="fs276">type &#39;T array = &#39;T []</div>
+<div class="tip" id="fs277">val toList : array:&#39;T [] -&gt; &#39;T list</div>
+<div class="tip" id="fs278">val unzip : list:(&#39;T1 * &#39;T2) list -&gt; &#39;T1 list * &#39;T2 list</div>
+<div class="tip" id="fs279">val init : count:int -&gt; initializer:(int -&gt; &#39;T) -&gt; seq&lt;&#39;T&gt;</div>
+<div class="tip" id="fs280">Multiple items<br />val char : value:&#39;T -&gt; char (requires member op_Explicit)<br /><br />--------------------<br />type char = Char</div>
+<div class="tip" id="fs281">module Operators<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs282">val int : value:&#39;T -&gt; int (requires member op_Explicit)</div>
+<div class="tip" id="fs283">val uint64 : value:&#39;T -&gt; uint64 (requires member op_Explicit)</div>
+<div class="tip" id="fs284">Multiple items<br />type CompilationRepresentationAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute<br />&#160;&#160;member Flags : CompilationRepresentationFlags<br /><br />--------------------<br />new : flags:CompilationRepresentationFlags -&gt; CompilationRepresentationAttribute</div>
+<div class="tip" id="fs285">type CompilationRepresentationFlags =<br />&#160;&#160;| None = 0<br />&#160;&#160;| Static = 1<br />&#160;&#160;| Instance = 2<br />&#160;&#160;| ModuleSuffix = 4<br />&#160;&#160;| UseNullAsTrueValue = 8<br />&#160;&#160;| Event = 16</div>
+<div class="tip" id="fs286">CompilationRepresentationFlags.ModuleSuffix: CompilationRepresentationFlags = 4</div>
+<div class="tip" id="fs287">module Printf<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs288">val kbprintf : continuation:(unit -&gt; &#39;Result) -&gt; builder:Text.StringBuilder -&gt; format:Printf.BuilderFormat&lt;&#39;T,&#39;Result&gt; -&gt; &#39;T</div>
+<div class="tip" id="fs289">val box : value:&#39;T -&gt; obj</div>
+<div class="tip" id="fs290">val exists : predicate:(&#39;T -&gt; bool) -&gt; array:&#39;T [] -&gt; bool</div>
+<div class="tip" id="fs291">val fold2 : folder:(&#39;State -&gt; &#39;T1 -&gt; &#39;T2 -&gt; &#39;State) -&gt; state:&#39;State -&gt; array1:&#39;T1 [] -&gt; array2:&#39;T2 [] -&gt; &#39;State</div>
+<div class="tip" id="fs292">val abs : value:&#39;T -&gt; &#39;T (requires member Abs)</div>
+<div class="tip" id="fs293">val create : count:int -&gt; value:&#39;T -&gt; &#39;T []</div>
