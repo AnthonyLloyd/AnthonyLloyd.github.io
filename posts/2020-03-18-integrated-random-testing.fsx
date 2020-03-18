@@ -1086,19 +1086,21 @@ This idea is covered well by John Hughes in [Don't write tests!](https://youtu.b
 Key takeaways are general random tests can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.
 
 ## Prototype Features
-
 1. Asserts are no longer exception based and all are evaluated - More than one per test is encouraged. Simpler setup and faster for multi part testing.
-2. Integrated random testing - Simpler syntax. Easier to move to more general random testing.
-3. No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.
-4. Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
-5. Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
-6. Integrated performance testing - Performance tests can be random and run in parallel.
-7. Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster. 
-
-## Random testing with random shrinking
-
 *)
-let genTests =
+test "PCG demo 1" {
+    let pcg = PCG.TryParse "36185706b82c2e03f8" |> Option.get
+    Test.equal pcg.Stream 54 "stream"
+    Test.equal pcg.State 0x185706b82c2e03f8UL "state"
+    let expectedNext = [|0xa15c02b7u;0x7b47f409u;0xba1d3330u|] // ...
+    let expectedState = [|0x2b47fed88766bb05UL;0x8b33296d19bf5b4eUL;0xf7079824c154bf23UL|] // ...
+    for i = 0 to expectedNext.Length-1 do
+        Test.equal (pcg.Next()) expectedNext.[i] ("n"+string i)
+        Test.equal pcg.State expectedState.[i] ("s"+string i)
+}
+(**
+2. Integrated random testing - Simpler syntax. Easier to move to more general random testing.
+*)
     test "gen" {
         test "int" {
             let! s = Gen.int
@@ -1115,36 +1117,100 @@ let genTests =
             let expected = Array.create buckets freq
             Test.chiSquared actual expected "chi-squared"
         }
-    }
 (**
-
+3. No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.
+4. Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
 *)
-test "performance" {
-    test "get" {
-        let ms = MapSlim()
-        let dict = Dictionary()
-        let! n = Gen.int.[1..100]
-        let! keys =
-            Gen.array.[n] Gen.int.[-1000..1000]
-            |> Gen.map (
-                Array.mapi (fun i h ->
-                    let k = KeyWithHash(uint64 i, h)
-                    ms.Set(k,k)
-                    dict.Add(k,k)
-                    k
-                )
-            )
-        Test.faster
-            (fun () ->
-                for i = 0 to n-1 do
-                    ms.GetOption keys.[i] |> ignore
-            )
-            (fun () ->
-                for i = 0 to n-1 do
-                    dict.TryGetValue keys.[i] |> ignore
-            )
-            "get"
+test "list rev does nothing not" {
+    let! list =
+        let f ma mi bu = Version (int ma,int mi,int bu)
+        Gen.map3 f Gen.byte Gen.byte Gen.byte
+        |> Gen.list.[0..100]
+    Test.equal (List.rev list) list "list rev does nothing not"
+}
+(**
+5. Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
+*)
+test "multithreading" {
+    let n = 10
+    let ms = MapSlim()
+    test "update" {
+        let! i = Gen.int.[..n-1]
+        let v = &ms.GetRef i
+        v <- 1-v
     }
+    test "get" {
+        let! i = Gen.int.[..n-1]
+        let v = defaultValueArg (ms.GetOption i) 0
+        Test.isTrue (v=0 || v=1) "get is 0 or 1"
+    }
+    test "item" {
+        if ms.Count > 0 then
+            let! i = Gen.int.[..ms.Count-1]
+            let k,v = ms.Item i
+            Test.lessThan k n "key is ok"
+            Test.isTrue (v=0 || v=1) "value is 0 or 1"
+    }
+}
+(**
+6. Integrated performance testing - Performance tests can be random and run in parallel.
+*)
+test "mapslim" {
+    // ...
+    test "performance" {
+        // ...
+        test "get" {
+            let ms = MapSlim()
+            let dict = Dictionary()
+            let! n = Gen.int.[1..100]
+            let! keys =
+                Gen.array.[n] Gen.int.[-1000..1000]
+                |> Gen.map (
+                    Array.mapi (fun i h ->
+                        let k = KeyWithHash(uint64 i, h)
+                        ms.Set(k,k)
+                        dict.Add(k,k)
+                        k
+                    )
+                )
+            Test.faster
+                (fun () ->
+                    for i = 0 to n-1 do
+                        ms.GetOption keys.[i] |> ignore
+                )
+                (fun () ->
+                    for i = 0 to n-1 do
+                        dict.TryGetValue keys.[i] |> ignore
+                )
+                "get"
+        }
+        // ...
+    }
+    // ...
+}
+(**
+7. Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster. 
+*)
+test "reference" {
+    let getTest name (gen:Gen<'a>) = test name {
+        let! items = Gen.tuple gen Gen.int
+                    |> Gen.list.[..100]
+        let! check = gen
+        let actual =
+            let ms = MapSlim()
+            List.iter ms.Set items
+            ms.GetOption check
+            |> function | ValueSome i -> Some i | ValueNone -> None
+        let expected =
+            List.fold (fun m (k,v) -> Map.add k v m) Map.empty items
+            |> Map.tryFind check
+        Test.equal actual expected "check value equal"
+    }
+    getTest "get byte" Gen.byte
+    getTest "get char" Gen.char
+    getTest "get int" Gen.int.[..10]
+    getTest "get uint" Gen.uint.[..10u]
+    getTest "get string" Gen.string
 }
 (**
 
