@@ -1143,7 +1143,7 @@ test "list rev does nothing not" {
 }
 (**
 - Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
-<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink"/>
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="border-left:0px;border-top: 10px" />
 - Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
 test "multithreading" {
@@ -1171,9 +1171,7 @@ test "multithreading" {
 - Integrated performance testing - Performance tests can be random and run in parallel with statistics collected across all threads.
 *)
 test "mapslim" {
-    // ...
     test "performance" {
-        // ...
         test "get" {
             let ms = MapSlim()
             let dict = Dictionary()
@@ -1204,7 +1202,8 @@ test "mapslim" {
     // ...
 }
 (**
-- Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster. 
+<img src="/{{site.baseurl}}public/test/faster.png" title="faster"/>
+- Tests are run in parallel using continuations - Fine grained, in test asynchronous code to make each test faster. 
 *)
 test "reference" {
     let getTest name (gen:Gen<'a>) = test name {
@@ -1232,7 +1231,7 @@ test "reference" {
     getTest "get string" Gen.string
 }
 (**
-
+<img src="/{{site.baseurl}}public/test/help.png" title="help"/>
 ## Conclusion
 
 *)

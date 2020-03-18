@@ -61,7 +61,7 @@ Key takeaways are general random tests can provide more coverage for less test c
 <ul>
 <li>
 Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.
-<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink"/>
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="border-left:0px;border-top: 10px" />
 </li>
 <li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>
 </ul>
@@ -91,9 +91,7 @@ Automatic random shrinking giving a reproducible seed - Smaller candidates found
 <li>Integrated performance testing - Performance tests can be random and run in parallel with statistics collected across all threads.</li>
 </ul>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">test</span> <span class="s">&quot;mapslim&quot;</span> <span class="pn">{</span>
-    <span class="c">// ...</span>
     <span class="id">test</span> <span class="s">&quot;performance&quot;</span> <span class="pn">{</span>
-        <span class="c">// ...</span>
         <span class="id">test</span> <span class="s">&quot;get&quot;</span> <span class="pn">{</span>
             <span class="k">let</span> <span class="id">ms</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs197', 1593)" onmouseover="showTip(event, 'fs197', 1593)" class="id">MapSlim</span><span class="pn">(</span><span class="pn">)</span>
             <span class="k">let</span> <span onmouseout="hideTip(event, 'fs299', 1594)" onmouseover="showTip(event, 'fs299', 1594)" class="id">dict</span> <span class="o">=</span> <span class="id">Dictionary</span><span class="pn">(</span><span class="pn">)</span>
@@ -124,9 +122,8 @@ Automatic random shrinking giving a reproducible seed - Smaller candidates found
     <span class="c">// ...</span>
 <span class="pn">}</span>
 </code></pre>
-<ul>
-<li>Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster.</li>
-</ul>
+<img src="/{{site.baseurl}}public/test/faster.png" title="faster"/>
+- Tests are run in parallel using continuations - Fine grained, in test asynchronous code to make each test faster. 
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">test</span> <span class="s">&quot;reference&quot;</span> <span class="pn">{</span>
     <span class="k">let</span> <span class="id">getTest</span> <span class="id">name</span> <span class="pn">(</span><span class="id">gen</span><span class="pn">:</span><span onmouseout="hideTip(event, 'fs184', 1606)" onmouseover="showTip(event, 'fs184', 1606)" class="id">Gen</span><span class="pn">&lt;</span><span class="id">&#39;</span><span class="id">a</span><span class="pn">&gt;</span><span class="pn">)</span> <span class="o">=</span> <span class="id">test</span> <span class="id">name</span> <span class="pn">{</span>
         <span class="k">let!</span> <span class="id">items</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs184', 1607)" onmouseover="showTip(event, 'fs184', 1607)" class="id">Gen</span><span class="pn">.</span><span class="id">tuple</span> <span class="id">gen</span> <span onmouseout="hideTip(event, 'fs184', 1608)" onmouseover="showTip(event, 'fs184', 1608)" class="id">Gen</span><span class="pn">.</span><span class="id">int</span>
@@ -153,6 +150,7 @@ Automatic random shrinking giving a reproducible seed - Smaller candidates found
     <span class="id">getTest</span> <span class="s">&quot;get string&quot;</span> <span onmouseout="hideTip(event, 'fs184', 1630)" onmouseover="showTip(event, 'fs184', 1630)" class="id">Gen</span><span class="pn">.</span><span class="id">string</span>
 <span class="pn">}</span>
 </code></pre>
+<img src="/{{site.baseurl}}public/test/help.png" title="help"/>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 
 
