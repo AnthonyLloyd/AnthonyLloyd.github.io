@@ -1143,7 +1143,7 @@ test "list rev does nothing not" {
 }
 (**
 - Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
-<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="border-left:0px;border-top: 10px" />
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:0px;margin-top:20px" />
 - Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
 test "multithreading" {
@@ -1203,6 +1203,7 @@ test "mapslim" {
 }
 (**
 <img src="/{{site.baseurl}}public/test/faster.png" title="faster"/>
+
 - Tests are run in parallel using continuations - Fine grained, in test asynchronous code to make each test faster. 
 *)
 test "reference" {
@@ -1233,5 +1234,17 @@ test "reference" {
 (**
 <img src="/{{site.baseurl}}public/test/help.png" title="help"/>
 ## Conclusion
+
+The prototype currently has no dependencies and is a single file for the library, one for Gen and one for Test.
+They can easily be copied into a project to try them out, and new Gen and Test functions added. 
+
+The prototype is still in an early stage.
+It is missing more tests, label functionality, async io and needs a tidy and performance work.
+
+I am keen to share it now to see if there are further ideas.
+Some of the functionality if successful could be added to existing projects or it could form it's own.
+It is unclear at this point.
+
+The code can be found [here](https://github.com/AnthonyLloyd/Test).
 
 *)
