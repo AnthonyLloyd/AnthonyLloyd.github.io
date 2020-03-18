@@ -49,17 +49,20 @@ Key takeaways are general random tests can provide more coverage for less test c
 </code></pre>
 <ul>
 <li>No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.</li>
-<li>Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.</li>
 </ul>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">test</span> <span class="s">&quot;list rev does nothing not&quot;</span> <span class="pn">{</span>
     <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs165', 1574)" onmouseover="showTip(event, 'fs165', 1574)" class="id">list</span> <span class="o">=</span>
         <span class="k">let</span> <span class="id">f</span> <span class="id">ma</span> <span class="id">mi</span> <span class="id">bu</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs297', 1575)" onmouseover="showTip(event, 'fs297', 1575)" class="id">Version</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs18', 1576)" onmouseover="showTip(event, 'fs18', 1576)" class="id">int</span> <span class="id">ma</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs18', 1577)" onmouseover="showTip(event, 'fs18', 1577)" class="id">int</span> <span class="id">mi</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs18', 1578)" onmouseover="showTip(event, 'fs18', 1578)" class="id">int</span> <span class="id">bu</span><span class="pn">)</span>
         <span onmouseout="hideTip(event, 'fs184', 1579)" onmouseover="showTip(event, 'fs184', 1579)" class="id">Gen</span><span class="pn">.</span><span class="id">map3</span> <span class="id">f</span> <span onmouseout="hideTip(event, 'fs184', 1580)" onmouseover="showTip(event, 'fs184', 1580)" class="id">Gen</span><span class="pn">.</span><span class="id">byte</span> <span onmouseout="hideTip(event, 'fs184', 1581)" onmouseover="showTip(event, 'fs184', 1581)" class="id">Gen</span><span class="pn">.</span><span class="id">byte</span> <span onmouseout="hideTip(event, 'fs184', 1582)" onmouseover="showTip(event, 'fs184', 1582)" class="id">Gen</span><span class="pn">.</span><span class="id">byte</span>
         <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs184', 1583)" onmouseover="showTip(event, 'fs184', 1583)" class="id">Gen</span><span class="pn">.</span><span class="id">list</span><span class="pn">.</span><span class="pn">[</span><span class="n">0..</span><span class="n">100</span><span class="pn">]</span>
-    <span class="id">Test</span><span class="pn">.</span><span class="id">equal</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs64', 1584)" onmouseover="showTip(event, 'fs64', 1584)" class="id">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs209', 1585)" onmouseover="showTip(event, 'fs209', 1585)" class="id">rev</span> <span onmouseout="hideTip(event, 'fs165', 1586)" onmouseover="showTip(event, 'fs165', 1586)" class="id">list</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs165', 1587)" onmouseover="showTip(event, 'fs165', 1587)" class="id">list</span> <span class="s">&quot;list rev does nothing not&quot;</span>
+    <span class="id">Test</span><span class="pn">.</span><span class="id">equal</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs64', 1584)" onmouseover="showTip(event, 'fs64', 1584)" class="id">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs209', 1585)" onmouseover="showTip(event, 'fs209', 1585)" class="id">rev</span> <span onmouseout="hideTip(event, 'fs165', 1586)" onmouseover="showTip(event, 'fs165', 1586)" class="id">list</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs165', 1587)" onmouseover="showTip(event, 'fs165', 1587)" class="id">list</span> <span class="s">&quot;rev equal&quot;</span>
 <span class="pn">}</span>
 </code></pre>
 <ul>
+<li>
+Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink"/>
+</li>
 <li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>
 </ul>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">test</span> <span class="s">&quot;multithreading&quot;</span> <span class="pn">{</span>
@@ -85,7 +88,7 @@ Key takeaways are general random tests can provide more coverage for less test c
 <span class="pn">}</span>
 </code></pre>
 <ul>
-<li>Integrated performance testing - Performance tests can be random and run in parallel.</li>
+<li>Integrated performance testing - Performance tests can be random and run in parallel with statistics collected across all threads.</li>
 </ul>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="id">test</span> <span class="s">&quot;mapslim&quot;</span> <span class="pn">{</span>
     <span class="c">// ...</span>

@@ -1133,16 +1133,17 @@ test "PCG demo 1" {
         }
 (**
 - No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.
-- Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
 *)
 test "list rev does nothing not" {
     let! list =
         let f ma mi bu = Version (int ma,int mi,int bu)
         Gen.map3 f Gen.byte Gen.byte Gen.byte
         |> Gen.list.[0..100]
-    Test.equal (List.rev list) list "list rev does nothing not"
+    Test.equal (List.rev list) list "rev equal"
 }
 (**
+- Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink"/>
 - Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
 test "multithreading" {
@@ -1167,7 +1168,7 @@ test "multithreading" {
     }
 }
 (**
-- Integrated performance testing - Performance tests can be random and run in parallel.
+- Integrated performance testing - Performance tests can be random and run in parallel with statistics collected across all threads.
 *)
 test "mapslim" {
     // ...
