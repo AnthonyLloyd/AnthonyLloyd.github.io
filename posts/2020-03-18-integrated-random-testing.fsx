@@ -328,6 +328,18 @@ type TestResult =
     static member hasErrs (r:TestResult list) =
         List.exists (function | Failure _ | Exception _ -> true | _ -> false) r
 
+type IO<'a> = TODO
+
+module IO =
+    let fork (a:IO<'a>) : IO<IO<'a>> = failwith "todo"
+
+type IOBuilder() =
+    member _.Return (a:'a) : IO<'a> = failwith "todo"
+
+[<AutoOpen>]
+module IOAutoOpen =
+    let io = IOBuilder()
+
 [<Struct>]
 type Test = private Test of string * (PCG->(TestResult list option->unit)->unit)
 
@@ -396,6 +408,8 @@ type TestBuilder(name:string) =
                             else c(Some r)
                 )
         )
+    member _.Bind(a:IO<'a>,f:'a->Test) : Test =
+        failwith "todo"
     member m.While(guard, body:unit->Test) =
         if guard() then m.Bind(body(), fun () -> m.While(guard, body))
         else m.Zero()
@@ -1086,20 +1100,20 @@ This idea is covered well by John Hughes in [Don't write tests!](https://youtu.b
 Key takeaways are general random tests can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.
 
 ## Prototype Features
-1. Asserts are no longer exception based and all are evaluated - More than one per test is encouraged. Simpler setup and faster for multi part testing.
+- Asserts are no longer exception based and all are evaluated - More than one per test is encouraged. Simpler setup and faster for multi part testing.
 *)
 test "PCG demo 1" {
     let pcg = PCG.TryParse "36185706b82c2e03f8" |> Option.get
     Test.equal pcg.Stream 54 "stream"
     Test.equal pcg.State 0x185706b82c2e03f8UL "state"
-    let expectedNext = [|0xa15c02b7u;0x7b47f409u;0xba1d3330u|] // ...
-    let expectedState = [|0x2b47fed88766bb05UL;0x8b33296d19bf5b4eUL;0xf7079824c154bf23UL|] // ...
+    let expectedNext = [|0xa15c02b7u;0x7b47f409u|] // ...
+    let expectedState = [|0x2b47fed88766bb05UL;0x8b33296d19bf5b4eUL|] // ...
     for i = 0 to expectedNext.Length-1 do
         Test.equal (pcg.Next()) expectedNext.[i] ("n"+string i)
         Test.equal pcg.State expectedState.[i] ("s"+string i)
 }
 (**
-2. Integrated random testing - Simpler syntax. Easier to move to more general random testing.
+- Integrated random testing - Simpler syntax. Easier to move to more general random testing.
 *)
     test "gen" {
         test "int" {
@@ -1118,8 +1132,8 @@ test "PCG demo 1" {
             Test.chiSquared actual expected "chi-squared"
         }
 (**
-3. No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.
-4. Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
+- No sizing or number of runs for random tests - Instead use distributions. More realistic large test cases.
+- Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
 *)
 test "list rev does nothing not" {
     let! list =
@@ -1129,7 +1143,7 @@ test "list rev does nothing not" {
     Test.equal (List.rev list) list "list rev does nothing not"
 }
 (**
-5. Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
+- Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
 test "multithreading" {
     let n = 10
@@ -1153,7 +1167,7 @@ test "multithreading" {
     }
 }
 (**
-6. Integrated performance testing - Performance tests can be random and run in parallel.
+- Integrated performance testing - Performance tests can be random and run in parallel.
 *)
 test "mapslim" {
     // ...
@@ -1189,21 +1203,25 @@ test "mapslim" {
     // ...
 }
 (**
-7. Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster. 
+- Tests are run in parallel using continuations - Fine grained, in test asyncronous code to make each test faster. 
 *)
 test "reference" {
     let getTest name (gen:Gen<'a>) = test name {
         let! items = Gen.tuple gen Gen.int
-                    |> Gen.list.[..100]
+                        |> Gen.list.[..100]
         let! check = gen
+        let! expectedFork =
+            io {
+                return
+                List.fold (fun m (k,v) -> Map.add k v m) Map.empty items
+                |> Map.tryFind check
+            } |> IO.fork
         let actual =
             let ms = MapSlim()
             List.iter ms.Set items
             ms.GetOption check
             |> function | ValueSome i -> Some i | ValueNone -> None
-        let expected =
-            List.fold (fun m (k,v) -> Map.add k v m) Map.empty items
-            |> Map.tryFind check
+        let! expected = expectedFork
         Test.equal actual expected "check value equal"
     }
     getTest "get byte" Gen.byte
