@@ -5,14 +5,14 @@ tags: [testing,perfomance,fsharp]
 description: "Integrated Random Testing"
 keywords: f#, fsharp, performance, testing
 ---
-<p>For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing are not better integrated and multithreaded.
+<p>For a while I've been annoyed by the performance of testing libraries in general, but also with how random testing and performance testing are not better integrated and multithreaded.
 Testing libraries like <a href="https://github.com/haf/expecto">Expecto</a> do a great job of improving performance by running unit tests in parallel while also opening up useful functionality like stress testing.
 I want to take this further with a new prototype.</p>
 <p>The goal is a simpler, more lightweight testing library with faster, more integrated parallel random testing with automatic parallel shrinking.</p>
 <p>The library aims to encourage the shift from a number of unit and regression tests with hard coded input and output data to fewer more general random tests.
 This idea is covered well by John Hughes in <a href="https://youtu.be/DZhbmv8WsYU">Don't write tests!</a> and the idea of <a href="https://youtu.be/NcJOiQlzlXQ">One test to rule them all</a>.
 Key takeaways are general random tests can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.</p>
-<h2><a name="Prototype-Features" class="anchor" href="#Prototype-Features">Prototype Features</a></h2>
+<h2><a name="Features" class="anchor" href="#Features">Features</a></h2>
 <ul>
 <li>Asserts are no longer exception based and all are evaluated - More than one per test is encouraged. Simpler setup and faster for multi part testing.</li>
 </ul>
@@ -61,7 +61,7 @@ Key takeaways are general random tests can provide more coverage for less test c
 <ul>
 <li>
 Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.
-<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:0px;margin-top:20px" />
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:-10px;margin-top:20px" />
 </li>
 <li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>
 </ul>
@@ -156,10 +156,10 @@ Automatic random shrinking giving a reproducible seed - Smaller candidates found
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The prototype currently has no dependencies and is a single file for the library, one for Gen and one for Test.
 They can easily be copied into a project to try them out, and new Gen and Test functions added.</p>
-<p>The prototype is still in an early stage.
+<p>The library is still in an early stage.
 It is missing more tests, label functionality, async io and needs a tidy and performance work.</p>
 <p>I am keen to share it now to see if there are further ideas.
-Some of the functionality if successful could be added to existing projects or it could form it's own.
+Some of the functionality if successful could be added to existing projects or it could form its own.
 It is unclear at this point.</p>
 <p>The code can be found <a href="https://github.com/AnthonyLloyd/Test">here</a>.</p>
 
