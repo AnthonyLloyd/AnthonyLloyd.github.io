@@ -1061,6 +1061,18 @@ module Test =
                 Failure(Message message + "\n    Chi-squared standard deviation = " + Numeric(SDs.ToString("0.0")))
             else Success
 
+type KeyWithHash =
+    val key : uint64
+    val hashCode : int
+    new(i:uint64, hashCode: int) = { key = i; hashCode = hashCode }
+    member m.Key = m.key
+    interface IEquatable<KeyWithHash> with
+        member m.Equals (o:KeyWithHash) =
+            m.key = o.key
+    override m.Equals(o:obj) =
+        o :? KeyWithHash && (o :?> KeyWithHash).key = m.key
+    override m.GetHashCode() = m.hashCode
+
 (**
 
 For a while I've been bothered by the performance of testing libraries in general, but also with how random testing and performance testing are not better integrated and multithreaded.
@@ -1071,7 +1083,7 @@ The goal is a simpler, more lightweight testing library with faster, more integr
 
 The library aims to encourage the shift from a number of unit and regression tests with hard coded input and output data to fewer more general random tests.
 This idea is covered well by John Hughes in [Don't write tests!](https://youtu.be/DZhbmv8WsYU) and the idea of [One test to rule them all](https://youtu.be/NcJOiQlzlXQ).
-Key takeaways are one more general random test can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.
+Key takeaways are general random tests can provide more coverage for less test code, and larger test cases have a higher probability of finding a failure for a given execution time.
 
 ## Prototype Features
 
@@ -1090,20 +1102,50 @@ let genTests =
     test "gen" {
         test "int" {
             let! s = Gen.int
-            let! c = Gen.int.[0..Int32.MaxValue-s]
-            let! i = Gen.int.[s..s+c]
-            Test.between i s (s+c) "in range"
+            let! l = Gen.int.[0..Int32.MaxValue-s]
+            let! i = Gen.int.[s..s+l]
+            Test.between i s (s+l) "between"
         }
         test "int distribution" {
             let freq = 10
             let buckets = 1000
-            let! ints = Gen.seq.[freq * buckets] Gen.int.[..buckets-1]
+            let! ints = Gen.seq.[freq * buckets] Gen.int.[0..buckets-1]
             let actual = Array.zeroCreate buckets
             Seq.iter (fun i -> actual.[i] <- actual.[i] + 1) ints
             let expected = Array.create buckets freq
             Test.chiSquared actual expected "chi-squared"
         }
     }
+(**
+
+*)
+test "performance" {
+    test "get" {
+        let ms = MapSlim()
+        let dict = Dictionary()
+        let! n = Gen.int.[1..100]
+        let! keys =
+            Gen.array.[n] Gen.int.[-1000..1000]
+            |> Gen.map (
+                Array.mapi (fun i h ->
+                    let k = KeyWithHash(uint64 i, h)
+                    ms.Set(k,k)
+                    dict.Add(k,k)
+                    k
+                )
+            )
+        Test.faster
+            (fun () ->
+                for i = 0 to n-1 do
+                    ms.GetOption keys.[i] |> ignore
+            )
+            (fun () ->
+                for i = 0 to n-1 do
+                    dict.TryGetValue keys.[i] |> ignore
+            )
+            "get"
+    }
+}
 (**
 
 ## Conclusion
