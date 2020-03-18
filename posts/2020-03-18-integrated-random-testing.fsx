@@ -1143,7 +1143,7 @@ test "list rev does nothing not" {
 }
 (**
 - Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
-<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:-10px;margin-top:20px" />
+<img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:-30px;margin-top:20px" />
 - Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
 test "multithreading" {
