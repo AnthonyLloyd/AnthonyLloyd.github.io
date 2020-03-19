@@ -28,7 +28,7 @@ Key takeaways are general random tests can provide more coverage for less test c
 <span class="pn">}</span>
 </code></pre>
 <ul>
-<li>Integrated random testing - Simpler syntax. Easier to move to more general random testing.</li>
+<li>Integrated random testing - Simpler syntax. Easier to move to more general random testing. Run in fine grained parallel.</li>
 </ul>
 <pre class="fssnip highlighted"><code lang="fsharp">    <span class="id">test</span> <span class="s">&quot;gen&quot;</span> <span class="pn">{</span>
         <span class="id">test</span> <span class="s">&quot;int&quot;</span> <span class="pn">{</span>
@@ -60,7 +60,7 @@ Key takeaways are general random tests can provide more coverage for less test c
 </code></pre>
 <ul>
 <li>
-Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.
+Automatic parallel random shrinking giving a reproducible seed - Smaller candidates found using a fast <a href="https://www.pcg-random.org/">PCG</a> loop. Simpler reproducible examples.
 <img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:-30px;margin-top:20px" />
 </li>
 <li>Stress testing in parallel across unit and random tests using <a href="https://www.pcg-random.org/">PCG</a> streams - Low sync, high performance, fine grained parallel testing.</li>

@@ -1113,7 +1113,7 @@ test "PCG demo 1" {
         Test.equal pcg.State expectedState.[i] ("s"+string i)
 }
 (**
-- Integrated random testing - Simpler syntax. Easier to move to more general random testing.
+- Integrated random testing - Simpler syntax. Easier to move to more general random testing. Run in fine grained parallel.
 *)
     test "gen" {
         test "int" {
@@ -1142,7 +1142,7 @@ test "list rev does nothing not" {
     Test.equal (List.rev list) list "rev equal"
 }
 (**
-- Automatic random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
+- Automatic parallel random shrinking giving a reproducible seed - Smaller candidates found using a fast [PCG](https://www.pcg-random.org/) loop. Simpler reproducible examples.
 <img src="/{{site.baseurl}}public/test/shrink.png" title="shrink" style="margin-left:-30px;margin-top:20px" />
 - Stress testing in parallel across unit and random tests using [PCG](https://www.pcg-random.org/) streams - Low sync, high performance, fine grained parallel testing.
 *)
