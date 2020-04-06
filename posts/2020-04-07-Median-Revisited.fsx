@@ -7,14 +7,14 @@ description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 \---
 
-In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) I demostrated a faster [Selection algorithm](https://en.wikipedia.org/wiki/Selection_algorithm).
-I will revisit this focusing on the Median and MAD statistical measures.
+In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) I demostrated a faster [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithm.
+I will revisit this focusing on the Median and MAD statistical measures and their practical use in performance testing.
 
-Though the Median is robust to outliers, one downside is it requires all the sample values to be kept for the calculation.
-For online algorithms as the sample size increases this creates a problem.
-I will provide an online algorithm to esimate the Median and MAD in limited memory.
+Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
+For online algorithms as the sample size increases this creates a memory problem.
+I will provide an online algorithm to esimate the Median and MAD in fixed memory.
 
-## Revist
+## Median Algorithm
 *)
 module Statistics =
     let medianInPlace (a:float[]) (index:int) (length:int) =
@@ -72,7 +72,9 @@ module Statistics =
         outerLoop index (index+length-1)
 (**
 
-Performance
+## Performance
+
+The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdotnet.com/DescriptiveStatistics.html) Quickselect and the [Perfolizer](https://github.com/AndreyAkinshin/perfolizer#quickselectadaptive) QuickSelectAdaptive algorithms.
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
 
@@ -81,7 +83,10 @@ Performance
 ## Online Estimator
 
 In a previous [post]({% post_url 2016-05-20-performance-testing %}) online statistic calculations were discussed.
-They are useful in performance testing.
+Hybrid of a full Median and MAD calculation and then a recursive estimator.
+
+$$$
+SE ~ \frac{MAD}{\sqrt{n}}
 
 *)
 type MedianEstimator =
@@ -115,7 +120,7 @@ type MedianEstimator =
                 m.A <- null
 (**
 
-I have found for performance testing `MedianEstimator(100,0.001)` gives stable results.
+I have found for performance testing `N=99` and `F=0.001` gives stable results.
 
 ## Conclusion
 
