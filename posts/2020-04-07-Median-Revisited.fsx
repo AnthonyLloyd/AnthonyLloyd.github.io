@@ -14,7 +14,7 @@ Though the Median is robust to outliers and a very useful measure, one downside 
 For online algorithms as the sample size increases this creates a memory problem.
 I will provide an online algorithm to esimate the Median and MAD in fixed memory.
 
-## Median Algorithm
+## Full Median Algorithm
 *)
 module Statistics =
     let medianInPlace (a:float[]) (index:int) (length:int) =
@@ -74,9 +74,13 @@ module Statistics =
 
 ## Performance
 
-The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdotnet.com/DescriptiveStatistics.html) Quickselect and the [Perfolizer](https://github.com/AndreyAkinshin/perfolizer#quickselectadaptive) QuickSelectAdaptive algorithms.
+The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdotnet.com/DescriptiveStatistics.html#Median) Quickselect and the [Perfolizer](https://github.com/AndreyAkinshin/perfolizer#quickselectadaptive) QuickSelectAdaptive algorithms.
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
+
+A statistical test on counts of the faster algorithm with the Median and MAD estimated as useful information.
+A sigma of 6 gives a good stopping value.
+This allows performance testing to be run across all threads and reaches statistically significate results extremely quickly.
 
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 
@@ -86,7 +90,7 @@ In a previous [post]({% post_url 2016-05-20-performance-testing %}) online stati
 Hybrid of a full Median and MAD calculation and then a recursive estimator.
 
 $$$
-SE ~ \frac{MAD}{\sqrt{n}}
+SE \sim \frac{MAD}{\sqrt{n}}
 
 *)
 type MedianEstimator =
@@ -120,7 +124,7 @@ type MedianEstimator =
                 m.A <- null
 (**
 
-I have found for performance testing `N=99` and `F=0.001` gives stable results.
+For performance testing `N=99` and `F=0.001` give stable results.
 
 ## Conclusion
 
