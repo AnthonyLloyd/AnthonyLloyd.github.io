@@ -1,13 +1,18 @@
 (**
 \---
 layout: post
-title: "Median and MAD Revisited"
+title: "Median and MAD Revisited with an Online Estimator"
 tags: [testing,perfomance,fsharp,MAD,median,outlier,statistics]
-description: "Median and MAD Revisited"
+description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 \---
 
-In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}).
+In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) I demostrated a faster [Selection algorithm](https://en.wikipedia.org/wiki/Selection_algorithm).
+I will revisit this focusing on the Median and MAD statistical measures.
+
+Though the Median is robust to outliers, one downside is it requires all the sample values to be kept for the calculation.
+For online algorithms as the sample size increases this creates a problem.
+I will provide an online algorithm to esimate the Median and MAD in limited memory.
 
 ## Revist
 *)
@@ -70,9 +75,13 @@ module Statistics =
 Performance
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
+
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 
-## Estimator
+## Online Estimator
+
+In a previous [post]({% post_url 2016-05-20-performance-testing %}) online statistic calculations were discussed.
+They are useful in performance testing.
 
 *)
 type MedianEstimator =
@@ -105,6 +114,8 @@ type MedianEstimator =
                 m.MAD <- mad
                 m.A <- null
 (**
+
+I have found for performance testing `MedianEstimator(100,0.001)` gives stable results.
 
 ## Conclusion
 

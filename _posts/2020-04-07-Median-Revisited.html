@@ -1,11 +1,15 @@
 ---
 layout: post
-title: "Median and MAD Revisited"
+title: "Median and MAD Revisited with an Online Estimator"
 tags: [testing,perfomance,fsharp,MAD,median,outlier,statistics]
-description: "Median and MAD Revisited"
+description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 ---
-<p>In a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a>.</p>
+<p>In a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a> I demostrated a faster <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection algorithm</a>.
+I will revisit this focusing on the Median and MAD statistical measures.</p>
+<p>Though the Median is robust to outliers, one downside is it requires all the sample values to be kept for the calculation.
+For online algorithms as the sample size increases this creates a problem.
+I will provide an online algorithm to esimate the Median and MAD in limited memory.</p>
 <h2><a name="Revist" class="anchor" href="#Revist">Revist</a></h2>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="m">Statistics</span> <span class="o">=</span>
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="fn">medianInPlace</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">a</span><span class="pn">:</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="vt">float</span><span class="pn">[</span><span class="pn">]</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="id">index</span><span class="pn">:</span><span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="vt">int</span><span class="pn">)</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="id">length</span><span class="pn">:</span><span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="vt">int</span><span class="pn">)</span> <span class="o">=</span>
@@ -65,7 +69,9 @@ keywords: median absolute deviation, MAD, median, outlier, statistics
 <p>Performance</p>
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
-<h2><a name="Estimator" class="anchor" href="#Estimator">Estimator</a></h2>
+<h2><a name="Online-Estimator" class="anchor" href="#Online-Estimator">Online Estimator</a></h2>
+<p>In a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> online statistic calculations were discussed.
+They are useful in performance testing.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="rt">MedianEstimator</span> <span class="o">=</span>
     <span class="k">val</span> <span class="k">mutable</span> <span class="k">private</span> <span onmouseout="hideTip(event, 'fs24', 179)" onmouseover="showTip(event, 'fs24', 179)" class="mv">A</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs3', 180)" onmouseover="showTip(event, 'fs3', 180)" class="vt">float</span> <span onmouseout="hideTip(event, 'fs25', 181)" onmouseover="showTip(event, 'fs25', 181)" class="rt">array</span>
     <span class="k">val</span> <span class="k">mutable</span> <span class="k">private</span> <span onmouseout="hideTip(event, 'fs26', 182)" onmouseover="showTip(event, 'fs26', 182)" class="mv">Median</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs3', 183)" onmouseover="showTip(event, 'fs3', 183)" class="vt">float</span>
@@ -96,6 +102,7 @@ keywords: median absolute deviation, MAD, median, outlier, statistics
                 <span onmouseout="hideTip(event, 'fs34', 298)" onmouseover="showTip(event, 'fs34', 298)" class="mv">m</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 299)" onmouseover="showTip(event, 'fs27', 299)" class="id">MAD</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs44', 300)" onmouseover="showTip(event, 'fs44', 300)" class="id">mad</span>
                 <span onmouseout="hideTip(event, 'fs34', 301)" onmouseover="showTip(event, 'fs34', 301)" class="mv">m</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 302)" onmouseover="showTip(event, 'fs24', 302)" class="id">A</span> <span class="k">&lt;-</span> <span class="k">null</span>
 </code></pre>
+<p>I have found for performance testing <code>MedianEstimator(100,0.001)</code> gives stable results.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>Hello.</p>
 

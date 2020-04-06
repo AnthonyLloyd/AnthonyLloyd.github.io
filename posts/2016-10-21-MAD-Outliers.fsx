@@ -221,7 +221,7 @@ Outliers can be identified as points that are outside a fixed multiple of the me
 
 ## Median and MAD code
 
-The following median function makes use of the [MODIFIND](http://dhost.info/zabrodskyvlada/algor.html) algorithm by Vladimir Zabrodsky.
+The following median function makes use of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the [Quickselect](https://en.wikipedia.org/wiki/Quickselect) algorithm.
 
 The array while loops allow equality which improves performance when there is duplication and ordering in the data.

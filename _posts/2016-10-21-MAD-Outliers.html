@@ -19,7 +19,7 @@ The median and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation"
 <p><span class="math">\[\operatorname{MAD} = \operatorname{median}\left(\left|x_i - \operatorname{median}(x_i)\right|\right)\]</span></p>
 <p>Outliers can be identified as points that are outside a fixed multiple of the median absolute deviation from the median. Recommended values for this multiple are 2.5 or 3.</p>
 <h2><a name="Median-and-MAD-code" class="anchor" href="#Median-and-MAD-code">Median and MAD code</a></h2>
-<p>The following median function makes use of the <a href="http://dhost.info/zabrodskyvlada/algor.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
+<p>The following median function makes use of the <a href="http://zabrodskyvlada.byethost10.com/aat/a_modi.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
 It provides a 20-30% performance improvement over the <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect</a> algorithm.</p>
 <p>The array while loops allow equality which improves performance when there is duplication and ordering in the data.
 The <code>selectInPlace</code> function has also been extended to optionally return the middle of the kth and the k+1 element.</p>
