@@ -144,7 +144,7 @@ For performance testing `N=99` and `F=0.001` give stable results.
 
 ## Conclusion
 
-The superior performance of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm has again been demonstrated compared to other algorithms.
+The superior performance of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm has again been demonstrated compared to current algorithms.
 
 A new type of statistical performance testing has been introduced with useful features of being able to run in parallel and across a range of inputs efficiently.
 
