@@ -150,6 +150,8 @@ This helps but results in systems that are harder to reason about and increases 
 
 ## Conclusion
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/complexity_ship.png" title="Complexity Ship"/>
+
 We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
 Every release of Java and C# add more functional features. Unfortunately, this will not ultimately fix these languages, it just increases their complexity.
 As an industry we need to decide how we should move on.
@@ -158,5 +160,5 @@ For a one off, short term, or simple project you can handle additional complexit
 
 For long term critical systems that evolve over time the focus must be on simplicity. The programming language and tools need to help us do this. This is why I code in F#.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/complexity_ship.png" title="Complexity Ship"/>
+<a href="https://twitter.com/antonmry/status/1247245202831609863?s=20"><img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/python2.png" title="Python"/></a>
 *)
