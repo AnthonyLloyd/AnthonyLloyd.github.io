@@ -87,7 +87,7 @@ The Median and MAD are estimated as useful information.
 As well as being robust to outliers they are also a good compliment since the faster algorithm will always have a positive Median performance improvement.
 This may not be true of the Mean.
 
-This new technique allows performance testing to be run across all threads and also while running other tests.
+Performance testing can be run across all threads and also while running other tests.
 It is also able to compare a range of input data instead of just a single data input.
 
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
@@ -101,7 +101,7 @@ In a previous [post]({% post_url 2016-05-20-performance-testing %}) online stati
 The following online Median and MAD estimator is a hybrid of an exact Median and MAD calculation followed by a recursive estimator.
 The size of the exact sample `N` and a learning rate `Eta` are taken as a parameters. 
 
-The standard error of the Median approximates to:
+The standard error of the sample Median approximates to:
 
 $$$
 SE \sim \frac{MAD}{\sqrt{n}}

@@ -75,7 +75,7 @@ In the previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a> it was
 The Median and MAD are estimated as useful information.
 As well as being robust to outliers they are also a good compliment since the faster algorithm will always have a positive Median performance improvement.
 This may not be true of the Mean.</p>
-<p>This new technique allows performance testing to be run across all threads and also while running other tests.
+<p>Performance testing can be run across all threads and also while running other tests.
 It is also able to compare a range of input data instead of just a single data input.</p>
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 <p>It reaches statistically significate results extremely quickly compared to tests based on the Mean.
@@ -84,7 +84,7 @@ A sigma of 6 gives a good stopping criteria and is used when skipping completed 
 <p>In a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> online statistical calculations were discussed.
 The following online Median and MAD estimator is a hybrid of an exact Median and MAD calculation followed by a recursive estimator.
 The size of the exact sample <code>N</code> and a learning rate <code>Eta</code> are taken as a parameters.</p>
-<p>The standard error of the Median approximates to:</p>
+<p>The standard error of the sample Median approximates to:</p>
 <p><span class="math">\[SE \sim \frac{MAD}{\sqrt{n}}\]</span></p>
 <p>A fixed fraction <code>Eta</code> of the MAD for the learning rate is used as it provides a parameter with a sensible scale.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="rt">MedianEstimator</span> <span class="o">=</span>
