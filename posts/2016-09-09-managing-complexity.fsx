@@ -143,18 +143,18 @@ Functional programming allows functions to be passed around just like data. Func
 This may sound alien but it provides a quantum leap in terms of code reuse and assembling systems.
 In fact, I didn't understand the full power of code reuse until I started programming in a functional language.
 
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/OOP.png" title="OOP"/>
+
 Object orientated programming has a poorer method of assembling systems. Objects are given to other objects. Dependency injection has been invented to make this easier.
 This helps but results in systems that are harder to reason about and increases complexity.
 
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/OOP.png" title="OOP"/>
-
 ## Conclusion
-
-<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/complexity_ship.png" title="Complexity Ship"/>
 
 We need to talk about object oriented programming. We have patterns to work around its deficiencies. These, taken to the limit, make it look more functional.
 Every release of Java and C# add more functional features. Unfortunately, this will not ultimately fix these languages, it just increases their complexity.
 As an industry we need to decide how we should move on.
+
+<img style="border:1px solid black" src="/{{site.baseurl}}public/twitter/complexity_ship.png" title="Complexity Ship"/>
 
 For a one off, short term, or simple project you can handle additional complexity in exchange for some quick productivity gains. This is what Python, Rails, R etc are great at.
 

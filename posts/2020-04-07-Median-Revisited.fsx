@@ -7,14 +7,18 @@ description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 \---
 
-In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) I demostrated a faster [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithm.
-I will revisit this focusing on the Median and MAD statistical measures and their practical use in performance testing.
+In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) a faster [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithm was demostrated.
+This will be revisited focusing on the Median and MAD statistical measures and their practical use in performance testing.
 
 Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
 For online algorithms as the sample size increases this creates a memory problem.
-I will provide an online algorithm to esimate the Median and MAD in fixed memory.
+I will provide an online algorithm to estimate the Median and MAD in fixed memory.
 
-## Full Median Algorithm
+## Median Algorithm
+
+This algorithm is based on the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm by Vladimir Zabrodsky.
+It behaves well with partially sorted data and also has tweek that helps with duplicated data.
+
 *)
 module Statistics =
     let medianInPlace (a:float[]) (index:int) (length:int) =
@@ -72,15 +76,19 @@ module Statistics =
         outerLoop index (index+length-1)
 (**
 
-## Performance
+## Performance Testing
 
 The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdotnet.com/DescriptiveStatistics.html#Median) Quickselect and the [Perfolizer](https://github.com/AndreyAkinshin/perfolizer#quickselectadaptive) QuickSelectAdaptive algorithms.
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
 
-A statistical test on counts of the faster algorithm with the Median and MAD estimated as useful information.
-A sigma of 6 gives a good stopping value.
-This allows performance testing to be run across all threads and reaches statistically significate results extremely quickly.
+This new performance testing technique uses a statistical test on the counts of the faster of two algorithms. 
+The Median and MAD are estimated as useful information.
+As well as being robust to outliers they are also a good compliment to the test since a faster algorithm will always have a positive Median performance improvement.
+This may not be true of the Mean.
+
+A sigma of 6 gives a good stopping criteria and is used when skipping completed tests.
+This new technique allows performance testing to be run across all threads and reaches statistically significate results extremely quickly.
 
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 
