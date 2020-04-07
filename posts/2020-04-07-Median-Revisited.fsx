@@ -7,7 +7,7 @@ description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 \---
 
-In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) a faster [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithm was demostrated.
+In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) a faster [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithm was demonstrated.
 This will be revisited focusing on the Median and MAD statistical measures and their practical use in performance testing.
 
 Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
@@ -90,10 +90,10 @@ This may not be true of the Mean.
 This new technique allows performance testing to be run across all threads and also while running other tests.
 It is also able to compare a range of input data instead of just a single data input.
 
+<img src="/{{site.baseurl}}public/test/median.png" title="median"/>
+
 It reaches statistically significate results extremely quickly compared to tests based on the Mean.
 A sigma of 6 gives a good stopping criteria and is used when skipping completed tests.
-
-<img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 
 ## Online Estimator
 
@@ -140,16 +140,16 @@ type MedianEstimator =
                 m.A <- null
 (**
 
-For performance testing `N=99` and `F=0.001` gives stable results.
+For performance testing `N=99` and `F=0.001` give stable results.
 
 ## Conclusion
 
-The superior performance of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm has again been demostrated compared to other [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithms.
+The superior performance of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm has again been demonstrated compared to other algorithms.
 
 A new type of statistical performance testing has been introduced with useful features of being able to run in parallel and across a range of inputs efficiently.
 
 A fixed memory online Median and MAD estimator has been created to provide efficient and consistent statistics for use in performance testing and other performance critical applications.
 
-Although early days these techniques together look to provide efficient and robust results.
+Although early days these techniques together look to provide robust and efficient results.
 
 *)

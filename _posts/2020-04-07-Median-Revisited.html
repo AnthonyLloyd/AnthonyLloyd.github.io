@@ -5,7 +5,7 @@ tags: [testing,perfomance,fsharp,MAD,median,outlier,statistics]
 description: "Median and MAD Revisited with an Online Estimator"
 keywords: median absolute deviation, MAD, median, outlier, statistics
 ---
-<p>In a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a> a faster <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection</a> algorithm was demostrated.
+<p>In a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a> a faster <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection</a> algorithm was demonstrated.
 This will be revisited focusing on the Median and MAD statistical measures and their practical use in performance testing.</p>
 <p>Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
 For online algorithms as the sample size increases this creates a memory problem.
@@ -77,9 +77,9 @@ As well as being robust to outliers they are also a good compliment since the fa
 This may not be true of the Mean.</p>
 <p>This new technique allows performance testing to be run across all threads and also while running other tests.
 It is also able to compare a range of input data instead of just a single data input.</p>
+<img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 <p>It reaches statistically significate results extremely quickly compared to tests based on the Mean.
 A sigma of 6 gives a good stopping criteria and is used when skipping completed tests.</p>
-<img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 <h2><a name="Online-Estimator" class="anchor" href="#Online-Estimator">Online Estimator</a></h2>
 <p>In a previous <a href="{% post_url 2016-05-20-performance-testing %}">post</a> online statistical calculations were discussed.
 The following online Median and MAD estimator is a hybrid of an exact Median and MAD calculation followed by a recursive estimator.
@@ -117,12 +117,12 @@ The size of the exact sample <code>N</code> and a learning rate <code>Eta</code>
                 <span onmouseout="hideTip(event, 'fs34', 297)" onmouseover="showTip(event, 'fs34', 297)" class="mv">m</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 298)" onmouseover="showTip(event, 'fs27', 298)" class="id">MAD</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs44', 299)" onmouseover="showTip(event, 'fs44', 299)" class="id">mad</span>
                 <span onmouseout="hideTip(event, 'fs34', 300)" onmouseover="showTip(event, 'fs34', 300)" class="mv">m</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 301)" onmouseover="showTip(event, 'fs24', 301)" class="id">A</span> <span class="k">&lt;-</span> <span class="k">null</span>
 </code></pre>
-<p>For performance testing <code>N=99</code> and <code>F=0.001</code> gives stable results.</p>
+<p>For performance testing <code>N=99</code> and <code>F=0.001</code> give stable results.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
-<p>The superior performance of the <a href="http://zabrodskyvlada.byethost10.com/aat/a_modi.html">MODIFIND</a> algorithm has again been demostrated compared to other <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection</a> algorithms.</p>
+<p>The superior performance of the <a href="http://zabrodskyvlada.byethost10.com/aat/a_modi.html">MODIFIND</a> algorithm has again been demonstrated compared to other algorithms.</p>
 <p>A new type of statistical performance testing has been introduced with useful features of being able to run in parallel and across a range of inputs efficiently.</p>
 <p>A fixed memory online Median and MAD estimator has been created to provide efficient and consistent statistics for use in performance testing and other performance critical applications.</p>
-<p>Although early days these techniques together look to provide efficient and robust results.</p>
+<p>Although early days these techniques together look to provide robust and efficient results.</p>
 
 
 <div class="tip" id="fs1">val medianInPlace : a:float [] -&gt; index:int -&gt; length:int -&gt; float</div>
