@@ -11,7 +11,7 @@ In a previous [post]({% post_url 2016-10-21-MAD-Outliers %}) a faster [Selection
 This will be revisited focusing on the Median and MAD statistical measures and their practical use in performance testing.
 
 Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
-For online algorithms as the sample size increases this creates a memory problem.
+For [online](https://en.wikipedia.org/wiki/Online_algorithm) algorithms as the sample size increases this creates a memory problem.
 An online algorithm will be provided to estimate the Median and MAD in fixed memory.
 
 ## Exact Median Algorithm

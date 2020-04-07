@@ -8,7 +8,7 @@ keywords: median absolute deviation, MAD, median, outlier, statistics
 <p>In a previous <a href="{% post_url 2016-10-21-MAD-Outliers %}">post</a> a faster <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection</a> algorithm was demonstrated.
 This will be revisited focusing on the Median and MAD statistical measures and their practical use in performance testing.</p>
 <p>Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
-For online algorithms as the sample size increases this creates a memory problem.
+For <a href="https://en.wikipedia.org/wiki/Online_algorithm">online</a> algorithms as the sample size increases this creates a memory problem.
 An online algorithm will be provided to estimate the Median and MAD in fixed memory.</p>
 <h2><a name="Exact-Median-Algorithm" class="anchor" href="#Exact-Median-Algorithm">Exact Median Algorithm</a></h2>
 <p>This algorithm is based on the <a href="http://zabrodskyvlada.byethost10.com/aat/a_modi.html">MODIFIND</a> algorithm by Vladimir Zabrodsky.
