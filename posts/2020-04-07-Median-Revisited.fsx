@@ -12,12 +12,12 @@ This will be revisited focusing on the Median and MAD statistical measures and t
 
 Though the Median is robust to outliers and a very useful measure, one downside is it requires all the sample values to be kept for the calculation.
 For online algorithms as the sample size increases this creates a memory problem.
-I will provide an online algorithm to estimate the Median and MAD in fixed memory.
+An online algorithm will be provided to estimate the Median and MAD in fixed memory.
 
-## Median Algorithm
+## Exact Median Algorithm
 
 This algorithm is based on the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm by Vladimir Zabrodsky.
-It behaves well with partially sorted data and also has tweek that helps with duplicated data.
+In the previous [post]({% post_url 2016-10-21-MAD-Outliers %}) it was shown to behave well with partially sorted and duplicate data.
 
 *)
 module Statistics =
@@ -82,33 +82,41 @@ The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdo
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
 
-This new performance testing technique uses a statistical test on the counts of the faster of two algorithms. 
+This new performance testing technique uses a statistical test on the counts of the faster of two algorithms.
 The Median and MAD are estimated as useful information.
-As well as being robust to outliers they are also a good compliment to the test since a faster algorithm will always have a positive Median performance improvement.
+As well as being robust to outliers they are also a good compliment since the faster algorithm will always have a positive Median performance improvement.
 This may not be true of the Mean.
 
+This new technique allows performance testing to be run across all threads and also while running other tests.
+It is also able to compare a range of input data instead of just a single data input.
+
+It reaches statistically significate results extremely quickly compared to tests based on the Mean.
 A sigma of 6 gives a good stopping criteria and is used when skipping completed tests.
-This new technique allows performance testing to be run across all threads and reaches statistically significate results extremely quickly.
 
 <img src="/{{site.baseurl}}public/test/median.png" title="median"/>
 
 ## Online Estimator
 
-In a previous [post]({% post_url 2016-05-20-performance-testing %}) online statistic calculations were discussed.
-Hybrid of a full Median and MAD calculation and then a recursive estimator.
+In a previous [post]({% post_url 2016-05-20-performance-testing %}) online statistical calculations were discussed.
+The following online Median and MAD estimator is a hybrid of an exact Median and MAD calculation followed by a recursive estimator.
+The size of the exact sample `N` and a learning rate `Eta` are taken as a parameters. 
+
+The standard error of the Median approximates to:
 
 $$$
 SE \sim \frac{MAD}{\sqrt{n}}
+
+A fixed fraction `Eta` of the MAD for the learning rate is used as it provides a parameter with a sensible scale. 
 
 *)
 type MedianEstimator =
     val mutable private A : float array
     val mutable private Median : float
     val mutable private MAD : float
-    val private F : float
+    val private Eta : float
     val mutable N : int
-    new(n:int,f:float) =
-        {A = Array.zeroCreate n; Median = 0.0; MAD = 0.0; F = f; N = 0}
+    new(n:int,eta:float) =
+        {A = Array.zeroCreate n; Median = 0.0; MAD = 0.0; Eta = eta; N = 0}
     member m.MedianAndMAD =
         if isNull m.A then m.Median, m.MAD
         else
@@ -119,8 +127,8 @@ type MedianEstimator =
             median, Statistics.medianInPlace mad 0 mad.Length
     member m.Add (s:float) =
         if isNull m.A then
-            m.Median <- m.Median +  m.MAD * m.F * float(sign(s-m.Median))
-            m.MAD <- m.MAD +  m.MAD * m.F * float(sign(abs(s-m.Median)-m.MAD))
+            m.Median <- m.Median +  m.MAD * m.Eta * float(sign(s-m.Median))
+            m.MAD <- m.MAD +  m.MAD * m.Eta * float(sign(abs(s-m.Median)-m.MAD))
             m.N <- m.N + 1
         else
             m.A.[m.N] <- s
@@ -132,10 +140,16 @@ type MedianEstimator =
                 m.A <- null
 (**
 
-For performance testing `N=99` and `F=0.001` give stable results.
+For performance testing `N=99` and `F=0.001` gives stable results.
 
 ## Conclusion
 
-Hello.
+The superior performance of the [MODIFIND](http://zabrodskyvlada.byethost10.com/aat/a_modi.html) algorithm has again been demostrated compared to other [Selection](https://en.wikipedia.org/wiki/Selection_algorithm) algorithms.
+
+A new type of statistical performance testing has been introduced with useful features of being able to run in parallel and across a range of inputs efficiently.
+
+A fixed memory online Median and MAD estimator has been created to provide efficient and consistent statistics for use in performance testing and other performance critical applications.
+
+Although early days these techniques together look to provide efficient and robust results.
 
 *)
