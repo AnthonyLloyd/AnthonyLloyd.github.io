@@ -82,7 +82,7 @@ The algorithm is compared to a full sort, the [Math.Net](https://numerics.mathdo
 
 <img src="/{{site.baseurl}}public/test/median_tests.png" title="median tests"/>
 
-This new performance testing technique uses a statistical test on the counts of the faster of two algorithms.
+This performance testing technique created as part of a new testing library [prototype]({% post_url 2020-03-18-integrated-random-testing %}) uses a statistical test on the counts of the faster of two algorithms.
 The Median and MAD are estimated as useful information.
 As well as being robust to outliers they are also a good compliment since the faster algorithm will always have a positive Median performance improvement.
 This may not be true of the Mean.
