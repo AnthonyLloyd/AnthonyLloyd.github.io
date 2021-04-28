@@ -22,13 +22,39 @@ keywords: bitemporal source generator
 <p>DataSeries is an immutable collection representing an ordered table of Reporting Date, Transaction Id (TxId) and Varint (Vint) encoded Values with the latest at the top.</p>
 <p>Subsequent rows are stored as the difference to the prior values stored as Vints. With <a href="https://stackoverflow.com/questions/4533076/google-protocol-buffers-zigzag-encoding">zigzag encoding</a> being used for TxId and Vint as the differences can be positive or negative.</p>
 <p>DataSeries are represented internally as a byte array and provide both small size and quick look up for any transaction and reporting date.</p>
-<p>This forms a <a href="https://martinfowler.com/articles/bitemporal-history.html">bitemporal</a> representation of each value in the database.
-| Date | TxId | Vint |
-|------|------|------|
-|2016-05-21|1234|100|
-|2016-05-19|1201|101|
-|2016-05-18|1229|103|
-|2016-05-18|1189|98|</p>
+<p>This forms a <a href="https://martinfowler.com/articles/bitemporal-history.html">bitemporal</a> representation of each value in the database.</p>
+<table>
+<thead>
+<tr class="header">
+<th><p>Date</p></th>
+<th><p>TxId</p></th>
+<th><p>Vint</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>2016-05-21</p></td>
+<td><p>1234</p></td>
+<td><p>100</p></td>
+</tr>
+<tr class="even">
+<td><p>2016-05-19</p></td>
+<td><p>1201</p></td>
+<td><p>101</p></td>
+</tr>
+<tr class="odd">
+<td><p>2016-05-18</p></td>
+<td><p>1229</p></td>
+<td><p>103</p></td>
+</tr>
+<tr class="even">
+<td><p>2016-05-18</p></td>
+<td><p>1189</p></td>
+<td><p>98</p></td>
+</tr>
+</tbody>
+</table>
+
 <p>DataSeries can also represent sets well as a bitemporal sequence of add and removes.</p>
 <h2><a name="Fixed" class="anchor" href="#Fixed">Fixed</a></h2>
 <p>These are a set of fixed decimal place numbers represented internally as a long.

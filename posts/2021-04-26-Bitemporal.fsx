@@ -34,6 +34,7 @@ Subsequent rows are stored as the difference to the prior values stored as Vints
 DataSeries are represented internally as a byte array and provide both small size and quick look up for any transaction and reporting date.
 
 This forms a [bitemporal](https://martinfowler.com/articles/bitemporal-history.html) representation of each value in the database.
+
 | Date | TxId | Vint |
 |------|------|------|
 |2016-05-21|1234|100|
