@@ -36,7 +36,7 @@ DataSeries are represented internally as a byte array and provide both small siz
 This forms a [bitemporal](https://martinfowler.com/articles/bitemporal-history.html) representation of each value in the database.
 
 | Date | TxId | Vint |
-|------|------|------|
+|:----:|:----:|:----:|
 |2016-05-21|1234|100|
 |2016-05-19|1201|101|
 |2016-05-18|1229|103|
