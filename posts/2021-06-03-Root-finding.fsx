@@ -67,11 +67,11 @@ Our method was also tested on bond spread and option volatility problems which c
 
 The boundary improvement has been extended to allow the caller to set these inner evaluation points.
 This is very useful when you have a good idea of the area the solution should be in from say a previous calibration result.
-This additional reduction of calls for prior information is demonstrated in the bond spread and option volailtity tests.
+This additional reduction of calls for prior information is demonstrated in the bond spread and option volatility tests.
 
 A 20% reduction in function calls is a great result but we must consider we may have overfitted to this problem set.
 The bond spread and option volatility give some comfort this result holds more generally but further testing
-on other problems are needed.
+on other problems is needed.
 
 The code is easy to follow and it is obvious a solution will always be found.
 There may be further optimisations or features that can be added.

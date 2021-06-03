@@ -78,10 +78,10 @@ were used to compare the root-finding methods.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The boundary improvement has been extended to allow the caller to set these inner evaluation points.
 This is very useful when you have a good idea of the area the solution should be in from say a previous calibration result.
-This additional reduction of calls for prior information is demonstrated in the bond spread and option volailtity tests.</p>
+This additional reduction of calls for prior information is demonstrated in the bond spread and option volatility tests.</p>
 <p>A 20% reduction in function calls is a great result but we must consider we may have overfitted to this problem set.
 The bond spread and option volatility give some comfort this result holds more generally but further testing
-on other problems are needed.</p>
+on other problems is needed.</p>
 <p>The code is easy to follow and it is obvious a solution will always be found.
 There may be further optimisations or features that can be added.</p>
 <p>The code and tests can be found <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/SolveRootTests.cs">here</a>.</p>
