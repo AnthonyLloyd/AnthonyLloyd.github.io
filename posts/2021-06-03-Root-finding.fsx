@@ -33,7 +33,7 @@ it under or over shoots then inverse quadratic could do the opposite and fix any
 [Brent's method](https://en.wikipedia.org/wiki/Brent%27s_method) first evaluates the given boundary points.
 
 Our method evaluates points 20% in from the boundary.
-If the root is bound by these points then we have successfully cut the bound region by 60%.
+If the root is bound by these points then we have successfully cut the bound region by 40%.
 If not then by looking at the function values we should have a good indication which of the 20% end regions to test.
 As a further optimisation our method uses linear interpolation to find a point estimate in these end regions and
 tests a point 20% further towards the boundary in the hope to bound the root in a much reduced region.
