@@ -9,7 +9,8 @@ keywords: minimum n-dimension optimiser
 <p>In one dimension a more efficient Minimum algorithm was developed using a robust cubic interpolation.
 This has around 50% fewer function calls than Brent across a number of test functions.</p>
 <p>In N dimensions an efficient <a href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">BFGS</a> algorithm was developed using in place symmetric MKL rank-k, rank-2k functions such that the main loop has no allocations.
-This combined with the above line minimisation results in around 50-70% fewer function calls than other <a href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">BFGS</a> algorithms across a number of test functions.</p>
+This combined with the above line minimisation results in around 50-70% fewer function calls than other <a href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">BFGS</a> algorithms across a number of test functions.
+The performance of the algorithm should also scale well with N.</p>
 <p>Tolerance parameters across all of the optimisation functions have been made simple, intuative, and consistent.</p>
 <p>Here is the <a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Optimization/Optimize.Minimum.cs">code</a> and <a href="https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Optimize.MinimumTests.fs">tests</a>.</p>
 
