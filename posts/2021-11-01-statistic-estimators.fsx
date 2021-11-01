@@ -56,7 +56,7 @@ The problem is that it can produce results that are arbitrarily close to one of 
 
 ## PCHIP interpolation
 
-Fortunately there is a monotone interpolation algorithm that works well and is quick to calculate.  
+Fortunately there is a monotonic interpolation function that works well and is quick to calculate.  
 
 [PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf), or harmonic spline, is a cubic spline interpolation algorithm.
 It has been implemented in a number of places such as [scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html) and [MathNet](https://github.com/mathnet/mathnet-numerics/blob/67f3675f1fae7d708587204e1312bf7588c39bca/src/Numerics/Interpolation/CubicSpline.cs#L306).
