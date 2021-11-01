@@ -37,7 +37,7 @@ Unfortunately there are a some problems with the algorithms put forward in the p
 
 1. The marker increments added each iteration create a [rounding error](https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/) which is important since the marker is compared to integer counts.
 2. The inequality operators used on the quantile values do not agree with the definition of the [cumulative distribution function](https://en.wikipedia.org/wiki/Cumulative_distribution_function).
-3. The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not [monotone](https://en.wikipedia.org/wiki/Monotonic_function).
+3. The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not [monotonic](https://en.wikipedia.org/wiki/Monotonic_function).
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
 

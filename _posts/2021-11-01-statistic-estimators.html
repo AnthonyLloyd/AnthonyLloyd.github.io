@@ -30,7 +30,7 @@ The remaining estimators are based on this paper.</p>
 <ol>
 <li>The marker increments added each iteration create a <a href="https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/">rounding error</a> which is important since the marker is compared to integer counts.</li>
 <li>The inequality operators used on the quantile values do not agree with the definition of the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a>.</li>
-<li>The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not <a href="https://en.wikipedia.org/wiki/Monotonic_function">monotone</a>.</li>
+<li>The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not <a href="https://en.wikipedia.org/wiki/Monotonic_function">monotonic</a>.</li>
 </ol>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
 <p>Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.</p>
