@@ -17,7 +17,8 @@ keywords: statistics pchip median quantiles quartiles histogram
 <li><a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/HistogramEstimator.cs">HistogramEstimator</a> - Histogram estimator by equal quantile range bucketing.</li>
 </ul>
 <p>They can incrementally add observations and statistics can be calculated at any point.
-All have an Add and + operator overload to combined the summary statistics from two separate estimators.</p>
+All have an Add and + operator overload to combined the summary statistics from two separate estimators.
+They are self contained classes that can be copied easily.</p>
 <h2><a name="Moment-Estimators" class="anchor" href="#Moment-Estimators">Moment Estimators</a></h2>
 <p>The moment estimators are a performance optimised set of unbiased central and standard moment calculations.
 The algorithms used are detailed <a href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">here</a>.

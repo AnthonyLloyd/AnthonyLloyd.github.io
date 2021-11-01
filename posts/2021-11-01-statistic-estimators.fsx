@@ -20,6 +20,7 @@ The following are a family of fixed low memory, high performance statistic estim
 
 They can incrementally add observations and statistics can be calculated at any point.
 All have an Add and + operator overload to combined the summary statistics from two separate estimators.
+They are self contained classes that can be copied easily.
 
 ## Moment Estimators
 
