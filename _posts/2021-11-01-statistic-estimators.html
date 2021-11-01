@@ -26,7 +26,7 @@ Nothing radical just performance optimised code to the specific statistics requi
 <h2><a name="P-paper" class="anchor" href="#P-paper">P² paper</a></h2>
 <p><a href="/public/stats/psqr.pdf">This</a> paper by Dr Raj Jain and Dr Imrich Chlamtac describes a great way to estimate ordered statistics like median and quantiles without storing all the observations.
 The remaining estimators are based on this paper.</p>
-<p>Unfortunately there are a some problems with the algorithms put forward in the paper which need correcting:</p>
+<p>Unfortunately there are some problems with the algorithms put forward in the paper which need correcting:</p>
 <ol>
 <li>The marker increments added each iteration create a <a href="https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/">rounding error</a> which is important since the marker is compared to integer counts.</li>
 <li>The inequality operators used on the quantile values do not agree with the definition of the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a>.</li>

@@ -33,7 +33,7 @@ Nothing radical just performance optimised code to the specific statistics requi
 [This](/public/stats/psqr.pdf) paper by Dr Raj Jain and Dr Imrich Chlamtac describes a great way to estimate ordered statistics like median and quantiles without storing all the observations.
 The remaining estimators are based on this paper.
 
-Unfortunately there are a some problems with the algorithms put forward in the paper which need correcting:
+Unfortunately there are some problems with the algorithms put forward in the paper which need correcting:
 
 1. The marker increments added each iteration create a [rounding error](https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/) which is important since the marker is compared to integer counts.
 2. The inequality operators used on the quantile values do not agree with the definition of the [cumulative distribution function](https://en.wikipedia.org/wiki/Cumulative_distribution_function).
