@@ -32,14 +32,14 @@ Nothing radical just performance optimised code to the specific statistics requi
 [This](/public/stats/psqr.pdf) paper by Dr Raj Jain and Dr Imrich Chlamtac describes a great way to estimate ordered statistics like median and quantiles without storing all the observations.
 The remaining estimators are based on this paper.
 
-Unfortunately there are a some problems with algorithms put forward in the papar which need correction:
+Unfortunately there are a some problems with the algorithms put forward in the paper which need correcting:
 
-1. The marker increments added each iteration create a rounding error which is important since the marker is compared to integer counts.
+1. The marker increments added each iteration create a [rounding error](https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/) which is important since the marker is compared to integer counts.
 2. The inequality operators used on the quantile values do not agree with the definition of the [cumulative distribution function](https://en.wikipedia.org/wiki/Cumulative_distribution_function).
 3. The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not [monotone](https://en.wikipedia.org/wiki/Monotonic_function).
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
-Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.
+Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.  
 
 To correct 1. we cannot use increments and need to just calculate the desired marker position.
 Increments were suggested to reduce CPU overhead, but from performance testing in .NET this is not the case.
@@ -68,7 +68,7 @@ Performance has been optimised with [QuartileEstimator](https://github.com/MKL-N
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/estimator_perf.png" title="Performance"/>
 
-The efficiency and low memory of these estimators makes them useful for a wide range of uses from perfomance measurement as above to monitoring and telemetry more generally.
+The efficiency and low memory of these estimators makes them useful for a wide range of uses from performance measurement as above to monitoring and telemetry more generally.
 
-Here is the [code](https://github.com/MKL-NET/MKL.NET/tree/master/MKL.NET.Statistics) and [tests](https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Stats.EstimatorTests.fs).
+Here are the [code](https://github.com/MKL-NET/MKL.NET/tree/master/MKL.NET.Statistics) and [tests](https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Stats.EstimatorTests.fs).
 *)

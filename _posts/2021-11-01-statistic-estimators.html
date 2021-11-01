@@ -25,14 +25,14 @@ Nothing radical just performance optimised code to the specific statistics requi
 <h2><a name="P-paper" class="anchor" href="#P-paper">P² paper</a></h2>
 <p><a href="/public/stats/psqr.pdf">This</a> paper by Dr Raj Jain and Dr Imrich Chlamtac describes a great way to estimate ordered statistics like median and quantiles without storing all the observations.
 The remaining estimators are based on this paper.</p>
-<p>Unfortunately there are a some problems with algorithms put forward in the papar which need correction:</p>
+<p>Unfortunately there are a some problems with the algorithms put forward in the paper which need correcting:</p>
 <ol>
-<li>The marker increments added each iteration create a rounding error which is important since the marker is compared to integer counts.</li>
+<li>The marker increments added each iteration create a <a href="https://aakinshin.net/posts/p2-quantile-estimator-rounding-issue/">rounding error</a> which is important since the marker is compared to integer counts.</li>
 <li>The inequality operators used on the quantile values do not agree with the definition of the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a>.</li>
 <li>The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not <a href="https://en.wikipedia.org/wiki/Monotonic_function">monotone</a>.</li>
 </ol>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
-Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.
+Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.  
 <p>To correct 1. we cannot use increments and need to just calculate the desired marker position.
 Increments were suggested to reduce CPU overhead, but from performance testing in .NET this is not the case.</p>
 <p>To correct 2. we need to compare if the observations are less than <strong>or equal</strong> to the quantile value as per the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">CFD</a> definition.
@@ -50,7 +50,7 @@ It has been implemented in a number of places such as <a href="https://docs.scip
 <p>The memory requirement for these estimators is small and fixed, regardless of the number of observations.</p>
 <p>Performance has been optimised with <a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs">QuartileEstimator</a> being around 40% faster than others more faithful implementations.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/estimator_perf.png" title="Performance"/>
-<p>The efficiency and low memory of these estimators makes them useful for a wide range of uses from perfomance measurement as above to monitoring and telemetry more generally.</p>
-<p>Here is the <a href="https://github.com/MKL-NET/MKL.NET/tree/master/MKL.NET.Statistics">code</a> and <a href="https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Stats.EstimatorTests.fs">tests</a>.</p>
+<p>The efficiency and low memory of these estimators makes them useful for a wide range of uses from performance measurement as above to monitoring and telemetry more generally.</p>
+<p>Here are the <a href="https://github.com/MKL-NET/MKL.NET/tree/master/MKL.NET.Statistics">code</a> and <a href="https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Stats.EstimatorTests.fs">tests</a>.</p>
 
 

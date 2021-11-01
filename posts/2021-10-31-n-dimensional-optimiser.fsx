@@ -18,6 +18,6 @@ The performance of the algorithm should also scale well with N.
 
 Tolerance parameters across all of the optimisation functions have been made simple, intuative, and consistent.
 
-Here is the [code](https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Optimization/Optimize.Minimum.cs) and [tests](https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Optimize.MinimumTests.fs).
+Here are the [code](https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Optimization/Optimize.Minimum.cs) and [tests](https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Optimize.MinimumTests.fs).
 
 *)
