@@ -46,7 +46,7 @@ To correct 1. we cannot use increments and need to just calculate the desired ma
 Increments were suggested to reduce CPU overhead, but from performance testing in .NET this is not the case.
 
 To correct 2. we need to compare if the observations are less than **or equal** to the quantile value as per the [CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) definition.
-We also need allow the possibility that there are more than one observation of the minimum value.
+We also need to allow the possibility that there are more than one observation of the minimum value.
 Some distributions can produce duplicate values and also a large number of the minimum value.
 
 To correct 3. we need to replace the interpolation.
