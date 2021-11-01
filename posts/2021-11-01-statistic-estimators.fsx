@@ -39,14 +39,15 @@ Unfortunately there are a some problems with the algorithms put forward in the p
 3. The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not [monotone](https://en.wikipedia.org/wiki/Monotonic_function).
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
-Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.  
+
+Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.
 
 To correct 1. we cannot use increments and need to just calculate the desired marker position.
 Increments were suggested to reduce CPU overhead, but from performance testing in .NET this is not the case.
 
-To correct 2. we need to compare if the observations are less than **or equal** to the quantile value as per the [CFD](https://en.wikipedia.org/wiki/Cumulative_distribution_function) definition.
-We also need allow the possibility that there are more than one observation of the same minimum value.
-Some distributions can produce duplicate values and also a large probability of a number of the minimum value.
+To correct 2. we need to compare if the observations are less than **or equal** to the quantile value as per the [CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) definition.
+We also need allow the possibility that there are more than one observation of the minimum value.
+Some distributions can produce duplicate values and also a large number of the minimum value.
 
 To correct 3. we need to replace the interpolation.
 The issue is not that the quadratic can overshoot since the algorithm checks this and falls back to linear interpolation.
@@ -58,7 +59,8 @@ Fortunately there is a monotone interpolation algorithm that works well and is q
 
 [PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf), or harmonic spline, is a cubic spline interpolation algorithm.
 It has been implemented in a number of places such as [scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html) and [MathNet](https://github.com/mathnet/mathnet-numerics/blob/67f3675f1fae7d708587204e1312bf7588c39bca/src/Numerics/Interpolation/CubicSpline.cs#L306).
-[PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf) is very useful for modelling [yield curves](/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf) as it produces a stable local interpolation.
+
+[PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf) is very useful for modelling [yield curves](/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf) as it produces a visually pleasing, stable local interpolation.
 
 ## Conclusion
 

@@ -32,20 +32,20 @@ The remaining estimators are based on this paper.</p>
 <li>The Piecewise-Parabolic (P²) interpolation used can produce poor results as the fitted quadratic is not <a href="https://en.wikipedia.org/wiki/Monotonic_function">monotone</a>.</li>
 </ol>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/quad_over.png" title="Quadratic"/>
-Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.  
+<p>Here the dotted line is the fitted quadratic around the middle point that needs to move from 3 to 4.</p>
 <p>To correct 1. we cannot use increments and need to just calculate the desired marker position.
 Increments were suggested to reduce CPU overhead, but from performance testing in .NET this is not the case.</p>
-<p>To correct 2. we need to compare if the observations are less than <strong>or equal</strong> to the quantile value as per the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">CFD</a> definition.
-We also need allow the possibility that there are more than one observation of the same minimum value.
-Some distributions can produce duplicate values and also a large probability of a number of the minimum value.</p>
+<p>To correct 2. we need to compare if the observations are less than <strong>or equal</strong> to the quantile value as per the <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">CDF</a> definition.
+We also need allow the possibility that there are more than one observation of the minimum value.
+Some distributions can produce duplicate values and also a large number of the minimum value.</p>
 <p>To correct 3. we need to replace the interpolation.
 The issue is not that the quadratic can overshoot since the algorithm checks this and falls back to linear interpolation.
 The problem is that it can produce results that are arbitrarily close to one of the points it is next to.</p>
 <h2><a name="PCHIP-interpolation" class="anchor" href="#PCHIP-interpolation">PCHIP interpolation</a></h2>
 <p>Fortunately there is a monotone interpolation algorithm that works well and is quick to calculate.</p>
 <p><a href="/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf">PCHIP</a>, or harmonic spline, is a cubic spline interpolation algorithm.
-It has been implemented in a number of places such as <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html">scipy</a> and <a href="https://github.com/mathnet/mathnet-numerics/blob/67f3675f1fae7d708587204e1312bf7588c39bca/src/Numerics/Interpolation/CubicSpline.cs#L306">MathNet</a>.
-<a href="/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf">PCHIP</a> is very useful for modelling <a href="/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf">yield curves</a> as it produces a stable local interpolation.</p>
+It has been implemented in a number of places such as <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html">scipy</a> and <a href="https://github.com/mathnet/mathnet-numerics/blob/67f3675f1fae7d708587204e1312bf7588c39bca/src/Numerics/Interpolation/CubicSpline.cs#L306">MathNet</a>.</p>
+<p><a href="/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf">PCHIP</a> is very useful for modelling <a href="/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf">yield curves</a> as it produces a visually pleasing, stable local interpolation.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The memory requirement for these estimators is small and fixed, regardless of the number of observations.</p>
 <p>Performance has been optimised with <a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs">QuartileEstimator</a> being around 40% faster than others more faithful implementations.</p>
