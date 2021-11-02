@@ -49,7 +49,7 @@ It has been implemented in a number of places such as <a href="https://docs.scip
 <p><a href="/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf">PCHIP</a> is very useful for modelling <a href="/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf">yield curves</a> as it produces a visually pleasing, stable local interpolation.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>The memory requirement for these estimators is small and fixed, regardless of the number of observations.</p>
-<p>Performance has been optimised with <a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs">QuartileEstimator</a> being around 40% faster than others more faithful implementations.</p>
+<p>Performance has been optimised with <a href="https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs">QuartileEstimator</a> being around 40% faster than other more faithful implementations.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/estimator_perf.png" title="Performance"/>
 <p>The efficiency and low memory of these estimators makes them useful for a wide range of uses from performance measurement as above to monitoring and telemetry more generally.</p>
 <p>Here are the <a href="https://github.com/MKL-NET/MKL.NET/tree/master/MKL.NET.Statistics">code</a> and <a href="https://github.com/MKL-NET/MKL.NET/blob/master/Tests/Stats.EstimatorTests.fs">tests</a>.</p>

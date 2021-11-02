@@ -67,7 +67,7 @@ It has been implemented in a number of places such as [SciPy](https://docs.scipy
 
 The memory requirement for these estimators is small and fixed, regardless of the number of observations.  
 
-Performance has been optimised with [QuartileEstimator](https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs) being around 40% faster than others more faithful implementations.
+Performance has been optimised with [QuartileEstimator](https://github.com/MKL-NET/MKL.NET/blob/master/MKL.NET.Statistics/QuartileEstimator.cs) being around 40% faster than other more faithful implementations.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/interp/estimator_perf.png" title="Performance"/>
 
