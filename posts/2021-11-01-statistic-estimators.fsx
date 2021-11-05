@@ -63,6 +63,8 @@ It has been implemented in a number of places such as [SciPy](https://docs.scipy
 
 [PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf) is very useful for modelling [yield curves](/public/finance/Stable Interpolation for the Yield Curve - Fabien Le Floc'h.pdf) as it produces a visually pleasing, stable local interpolation.
 
+For the estimators the [PCHIP](/public/interp/pchip/A_method_for_constructing_local_monotone_picewise_cubic_interpolants_fritsch1984.pdf) interpolation actually simplifies as the movement is always by one which removes some terms from the calculation, and the data always has increasing (and not equal) x and y values which removes some testing and branching.
+
 ## Conclusion
 
 The memory requirement for these estimators is small and fixed, regardless of the number of observations.  
