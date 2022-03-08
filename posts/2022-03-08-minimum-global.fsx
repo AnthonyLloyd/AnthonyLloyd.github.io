@@ -12,12 +12,11 @@ keywords: minimum n-dimension optimiser, global
 According to the [no free lunch theorem](https://en.wikipedia.org/wiki/No_free_lunch_theorem) it is not possible to have a superior optimisation algorithm when averaged across all possible problems.
 With this encouraging input I started to think about the properties that would be useful in a global minimum algorithm.
 
-One idea that came to mind was that a sequence of finer and finer grids of starting points using the local BFGS minimum would eventually find the global minimum.
+One idea that came to mind was that a sequence of finer and finer grids of starting points using the local BFGS `Minimum` function would eventually find the global minimum.
 It would also find the global minimum for simpler surfaces earlier in the search sequence.
-Each iteration's grid of starting points could be run in parallel.
+For performance each iteration's grid of starting points could be run in parallel.
 
-I thought a lot about what the grid size each iteration should have.
-I realised it is a bit like a game of battleships where you don't know the size of the ships.
+After thinking a lot about what the grid size each iteration should have, I realised it's a bit like a game of battleships where you don't know the size of the ships.
 If the local BFGS search is close enough it will find its way to the minima.
 So the grid search sequence should try to keep reducing the maximum distance between any point in the space to the closest search point.
 
@@ -25,8 +24,8 @@ The most efficient start is a single search point in the centre of the n dimensi
 Next are the $2^n$ points that bisect the diagonals to the centre.
 Then the $2^n$ bisecting points around each of the previous iteration's points and so on.
 
-This sequence has been [implemented](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L735) as an `IEnumerable<MinimumIteration>` in a sync and async form.
-Methods have also been [included](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L805) with a stopping criteria of time and/or number of same minimum value iterations.  
+This sequence has been [implemented](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L735) as a sequence of  `MinimumIteration` in a sync and async form.
+Functions have also been [included](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L805) with a stopping criteria of time and/or number of same minimum value iterations.  
 
 These [test functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization) have been used to test the algorithm.
 The following results were produced running all problems in parallel with a stopping criteria of 4 same iteration or overall time of 20 minutes.
