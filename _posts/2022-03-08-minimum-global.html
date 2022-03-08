@@ -15,8 +15,9 @@ Each iteration's grid of starting points could be run in parallel.</p>
 I realised it is a bit like a game of battleships where you don't know the size of the ships.
 If the local BFGS search is close enough it will find its way to the minima.
 So the grid search sequence should try to keep reducing the maximum distance between any point in the space to the closest search point.</p>
-<p>The most efficient start is a single search point in the centre of the n dimensional space. Next are the <span class="math">\(2^n\)</span> points that bisect the diagonals the centre.
-Then <span class="math">\(2^n\)</span> bisecting points around each of the previous iteration's points and so on.</p>
+<p>The most efficient start is a single search point in the centre of the n dimensional space.
+Next are the <span class="math">\(2^n\)</span> points that bisect the diagonals to the centre.
+Then the <span class="math">\(2^n\)</span> bisecting points around each of the previous iteration's points and so on.</p>
 <p>This sequence has been <a href="https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L735">implemented</a> as an <code>IEnumerable&lt;MinimumIteration&gt;</code> in a sync and async form.
 Methods have also been <a href="https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L805">included</a> with a stopping criteria of time and/or number of same minimum value iterations.</p>
 <p>These <a href="https://en.wikipedia.org/wiki/Test_functions_for_optimization">test functions</a> have been used to test the algorithm.
@@ -124,6 +125,6 @@ Running <span style="color:cyan">15</span> (out of <span style="color:cyan">1,52
 Maximum memory usage was <span style="color:cyan">12,512</span> KB (limit set at <span style="color:cyan">102,400</span> KB).
 <span style="color:cyan">15</span> tests run in <span style="color:cyan">1,200</span> seconds: <span style="color:cyan">15</span> passed, <span style="color:cyan">0</span> failed, <span style="color:cyan">0</span> skipped. <span style="color:green">Success!</span>
 </pre>
-<p><a href="https://github.com/MKL-NET/MKL.NET#mklnetoptimization">MKL.NET.Optimization</a> now covers the key parts of <a href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a> with high performance algorithms and version 1.0.0 has been released.</p>
+<p><a href="https://github.com/MKL-NET/MKL.NET#mklnetoptimization">MKL.NET.Optimization</a> now covers the majority of <a href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a> functionality with high performance algorithms. Version 1.0.0 has been released.</p>
 
 

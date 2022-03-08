@@ -21,8 +21,9 @@ I realised it is a bit like a game of battleships where you don't know the size 
 If the local BFGS search is close enough it will find its way to the minima.
 So the grid search sequence should try to keep reducing the maximum distance between any point in the space to the closest search point.
 
-The most efficient start is a single search point in the centre of the n dimensional space. Next are the $2^n$ points that bisect the diagonals the centre.
-Then $2^n$ bisecting points around each of the previous iteration's points and so on.
+The most efficient start is a single search point in the centre of the n dimensional space.
+Next are the $2^n$ points that bisect the diagonals to the centre.
+Then the $2^n$ bisecting points around each of the previous iteration's points and so on.
 
 This sequence has been [implemented](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L735) as an `IEnumerable<MinimumIteration>` in a sync and async form.
 Methods have also been [included](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L805) with a stopping criteria of time and/or number of same minimum value iterations.  
@@ -134,6 +135,6 @@ Maximum memory usage was <span style="color:cyan">12,512</span> KB (limit set at
 <span style="color:cyan">15</span> tests run in <span style="color:cyan">1,200</span> seconds: <span style="color:cyan">15</span> passed, <span style="color:cyan">0</span> failed, <span style="color:cyan">0</span> skipped. <span style="color:green">Success!</span>
 </pre>
 
-[MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now covers the key parts of [scipy.optimize](https://docs.scipy.org/doc/scipy/reference/optimize.html) with high performance algorithms and version 1.0.0 has been released.
+[MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now covers the majority of [scipy.optimize](https://docs.scipy.org/doc/scipy/reference/optimize.html) functionality with high performance algorithms. Version 1.0.0 has been released.
 
 *)
