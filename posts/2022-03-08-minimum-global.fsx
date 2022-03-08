@@ -30,7 +30,7 @@ Methods have also been included with a stopping criteria of time and/or number o
 These [test functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization) have been used to test the algorithm.
 The following results were produced running all problems in parallel with a stopping criteria of 4 same iteration or overall time of 20 minutes.
 
-<pre style="color:white;background:black;font-family:'Fira Code Retina', consolas, monospace;font-size:9pt;border-radius:5px">
+<pre style="color:white;background:black;font-family:'Fira Code Retina', consolas, monospace;font-size:8pt;border-radius:5px">
 Running <span style="color:cyan">15</span> (out of <span style="color:cyan">1,526</span>) tests for <span style="color:cyan">1</span> iterations on <span style="color:cyan">15</span> threads.
 <span style="color:green">minimum_global.rastrigin</span>
   INFO: time = 0.1 next = 0.1 fmin = +1.98992 xmin = [0.9949586378394885, 0.9949586378394885]
