@@ -10,7 +10,7 @@ keywords: minimum n-dimension optimiser, global
 [MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now has a global minimum algorithm.
 
 According to the [no free lunch theorem](https://en.wikipedia.org/wiki/No_free_lunch_theorem) it is not possible to have a superior optimisation algorithm when averaged across all possible problems.
-With this encouraging idea I started to think about the properties that would be useful in a global minimum algorithm.
+With this encouraging input I started to think about the properties that would be useful in a global minimum algorithm.
 
 One idea that came to mind was that a sequence of finer and finer grids of starting points using the local BFGS minimum would eventually find the global minimum.
 It would also find the global minimum for simpler surfaces earlier in the search sequence.
@@ -24,13 +24,13 @@ So the grid search sequence should try to keep reducing the maximum distance bet
 The most efficient start is a single search point in the centre of the n dimensional space. Next are the $2^n$ points that bisect the diagonals the centre.
 Then $2^n$ bisecting points around each of the previous iteration's points and so on.
 
-This sequence has been implemented as an `IEnumerable<MinimumIteration>` in a sync and async form.
-Methods have also been included with a stopping criteria of time and/or number of same minimum value iterations.  
+This sequence has been [implemented](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L747) as an `IEnumerable<MinimumIteration>` in a sync and async form.
+Methods have also been [included](https://github.com/MKL-NET/MKL.NET/blob/ccba23d994a6bcc238e26a472faa2539b54a9bba/MKL.NET.Optimization/Optimize.Minimum.cs#L821) with a stopping criteria of time and/or number of same minimum value iterations.  
 
 These [test functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization) have been used to test the algorithm.
 The following results were produced running all problems in parallel with a stopping criteria of 4 same iteration or overall time of 20 minutes.
 
-<pre style="color:white;background:black;font-family:'Fira Code Retina', consolas, monospace;font-size:8pt;border-radius:5px">
+<pre style="color:white;background:black;font-family:'Fira Code Retina', consolas, monospace;font-size:7pt;border-radius:5px">
 Running <span style="color:cyan">15</span> (out of <span style="color:cyan">1,526</span>) tests for <span style="color:cyan">1</span> iterations on <span style="color:cyan">15</span> threads.
 <span style="color:green">minimum_global.rastrigin</span>
   INFO: time = 0.1 next = 0.1 fmin = +1.98992 xmin = [0.9949586378394885, 0.9949586378394885]
@@ -134,6 +134,6 @@ Maximum memory usage was <span style="color:cyan">12,512</span> KB (limit set at
 <span style="color:cyan">15</span> tests run in <span style="color:cyan">1,200</span> seconds: <span style="color:cyan">15</span> passed, <span style="color:cyan">0</span> failed, <span style="color:cyan">0</span> skipped. <span style="color:green">Success!</span>
 </pre>
 
-[MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now covers the key parts of [scipy.optimize](https://docs.scipy.org/doc/scipy/reference/optimize.html) and version 1.0.0 has now been released.
+[MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now covers the key parts of [scipy.optimize](https://docs.scipy.org/doc/scipy/reference/optimize.html) with high performance algorithms and version 1.0.0 has been released.
 
 *)
