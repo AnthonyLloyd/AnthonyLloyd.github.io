@@ -19,7 +19,7 @@ Each iteration's grid of starting points could be run in parallel.
 I thought a lot about what the grid size each iteration should have.
 I realised it is a bit like a game of battleships where you don't know the size of the ships.
 If the local BFGS search is close enough it will find its way to the minima.
-So the grid search sequence should try to keep reducing the maximum distance between any point in the space to the closest grid search point.
+So the grid search sequence should try to keep reducing the maximum distance between any point in the space to the closest search point.
 
 The most efficient start is a single search point in the centre of the n dimensional space. Next are the $2^n$ points that bisect the diagonals the centre.
 Then $2^n$ bisecting points around each of the previous iteration's points and so on.
@@ -27,7 +27,7 @@ Then $2^n$ bisecting points around each of the previous iteration's points and s
 This sequence has been implemented as an `IEnumerable<MinimumIteration>` in a sync and async form.
 Methods have also been included with a stopping criteria of time and/or number of same minimum value iterations.  
 
-The following [test functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization) have been used to test the algorithm.
+These [test functions](https://en.wikipedia.org/wiki/Test_functions_for_optimization) have been used to test the algorithm.
 The following results were produced running all problems in parallel with a stopping criteria of 4 same iteration or overall time of 20 minutes.
 
 <pre style="color:white;background:black;font-family:'Fira Code Retina', consolas, monospace;font-size:9pt;border-radius:5px">
