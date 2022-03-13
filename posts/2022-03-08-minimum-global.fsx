@@ -4,7 +4,7 @@ layout: post
 title: "Minimum Global"
 tags: [minimum, n-dimension, optimiser, global]
 description: "Minimum Global"
-keywords: minimum n-dimension optimiser, global
+keywords: minimum n-dimension optimiser global
 \---
 
 [MKL.NET.Optimization](https://github.com/MKL-NET/MKL.NET#mklnetoptimization) now has a global minimum algorithm.
