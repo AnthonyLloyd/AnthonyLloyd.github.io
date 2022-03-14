@@ -18,7 +18,7 @@ Also large examples tend to be more <a href="https://youtu.be/1LNEWF8s1hI?t=2055
 In fact a test that generates any example and runs for a long time is close to being a proof.
 A 'long time' could be 60 seconds in CsCheck since examples are run in parallel by default and often millions can be run in this time.</p>
 <p>When a random test finds a bug it will shrink it down to the smallest possible example so you can more easily reproduce and diagnose the problem.
-CsCheck is particularly good at this.</p>
+CsCheck is particularly good at this as it's the only library that can always skrink to the simplest example and reproduce it directly.</p>
 <h2><a name="Gen-It" class="anchor" href="#Gen-It">Gen It</a></h2>
 <p>Instead of coming up with examples we need to create a generator <code>Gen&lt;T&gt;</code> for them.
 This may sound like a pain, but actually it's really simple with the composable fluent <code>Gen</code> classes in CsCheck, and can be done in one or two lines of code.
