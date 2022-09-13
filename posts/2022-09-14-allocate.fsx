@@ -28,7 +28,7 @@ The random test code not only gives us many failing simple examples but also hin
 
 ## Error Minimising Algorithm
 
-In this case the solution is an error minimisation algorithm which then guarantees smaller weights never gets a larger allocations.
+In this case the solution is an error minimisation algorithm which then guarantees smaller weights never get larger allocations.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate.png" title="Allocate"/>
 
@@ -36,7 +36,7 @@ In this case the solution is an error minimisation algorithm which then guarante
 
 Writing random tests leads to a robust algorithm that covers all possible inputs including negative values.
 
-There were also some nasty precision rounding issues to solve that would be hard to spot using unit testing and a handful of examples.
+There were also some nasty precision rounding issues to solve that would be hard to spot using standard unit testing and a handful of examples.
 
 [Allocate.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs)  
 [AllocatorCheck.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorCheck.cs)  
