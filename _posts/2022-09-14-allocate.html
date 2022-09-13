@@ -1,0 +1,30 @@
+---
+layout: post
+title: "A robust weighted allocation algorithm thanks to CsCheck."
+tags: [cscheck, random, testing, rounding, allocation, weighted, integer]
+description: "A robust weighted allocation algorithm thanks to CsCheck."
+keywords: cscheck random testing rounding allocation weighted integer
+---
+<p>Allocating an integer total over a set of weights is a surprisingly tricky problem.
+Consider a poll result where round percentages are required to add up to 100.
+Or money or shares to be allocated to a number of accounts.</p>
+<p>The most common way of solving this is to round the results and then adjust the largest weights for any residual difference.</p>
+<p>This can produce nonsensical results. It can lead to larger weights getting a smaller allocation.
+For small totals it can result in the largest weight getting no allocation at all.</p>
+<p>With the help of <a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> we will <a href="{% post_url 2018-03-05-rounding %}">revisit</a> this algorithm.</p>
+<h2><a name="CsCheck" class="anchor" href="#CsCheck">CsCheck</a></h2>
+<p>We can create random tests to check for these kinds of issues.
+These guide us to the simplest algorithm that satisfy the requirements.
+The random test code not only gives us many failing simple examples but also hint at the solution.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/tests.png" title="Tests"/>
+<h2><a name="Error-Minimising-Algorithm" class="anchor" href="#Error-Minimising-Algorithm">Error Minimising Algorithm</a></h2>
+<p>In this case the solution is an error minimisation algorithm which then guarantees smaller weights never gets a larger allocations.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate.png" title="Allocate"/>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<p>Writing random tests leads to a robust algorithm that covers all possible inputs including negative values.</p>
+<p>There were also some nasty precision rounding issues to solve that would be hard to spot using unit testing and a handful of examples.</p>
+<p><a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs">Allocate.cs</a>
+<a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorCheck.cs">AllocatorCheck.cs</a>
+<a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorTests.cs">AllocatorTests.cs</a></p>
+
+
