@@ -22,13 +22,13 @@ With the help of [CsCheck](https://www.nuget.org/packages/CsCheck/) we will [rev
 
 We can create random tests to check for these kinds of issues.
 They guide us to the simplest algorithm that satisfy the requirements.
-The random test code not only gives us many simple failing examples, but also hint at the solution.
+The random test code not only gives us many simple failing examples, but also hints at the solution.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/tests.png" title="Tests"/>
 
 ## Error Minimising Algorithm
 
-In this case the solution is an error minimisation algorithm which then guarantees smaller weights never get larger allocations.
+In this case the solution is an error minimisation algorithm, which then guarantees smaller weights never get larger allocations.
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate.png" title="Allocate"/>
 

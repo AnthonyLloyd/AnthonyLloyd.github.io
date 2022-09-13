@@ -15,10 +15,10 @@ For small totals it can result in the largest weight getting no allocation at al
 <h2><a name="CsCheck" class="anchor" href="#CsCheck">CsCheck</a></h2>
 <p>We can create random tests to check for these kinds of issues.
 They guide us to the simplest algorithm that satisfy the requirements.
-The random test code not only gives us many simple failing examples, but also hint at the solution.</p>
+The random test code not only gives us many simple failing examples, but also hints at the solution.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/tests.png" title="Tests"/>
 <h2><a name="Error-Minimising-Algorithm" class="anchor" href="#Error-Minimising-Algorithm">Error Minimising Algorithm</a></h2>
-<p>In this case the solution is an error minimisation algorithm which then guarantees smaller weights never get larger allocations.</p>
+<p>In this case the solution is an error minimisation algorithm, which then guarantees smaller weights never get larger allocations.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate.png" title="Allocate"/>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>Writing random tests leads to a robust algorithm that covers all possible inputs including negative values.</p>
