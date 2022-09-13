@@ -38,7 +38,7 @@ Writing random tests leads to a robust algorithm that covers all possible inputs
 
 There were also some nasty precision rounding issues to solve that would be hard to spot using standard unit testing and a handful of examples.
 
-[Allocate.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs)  
+[Allocator.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs)  
 [AllocatorCheck.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorCheck.cs)  
 [AllocatorTests.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorTests.cs)  
 
