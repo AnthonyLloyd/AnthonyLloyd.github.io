@@ -13,7 +13,7 @@ These algorithms are used to allocate an integer total quantity over a set of we
 [Balinski and Young](https://en.wikipedia.org/wiki/Apportionment_paradox) proved that no allocation algorithm can be free of perceived unintuitive observations, or paradoxes.
 
 The algorithm in the previous [post]({% post_url 2022-09-14-allocate %}) is the most fair with minimum error but it does suffer from the Alabama paradox.
-This is when for a small increment of the total quantity there can be a decrease of one of the allocated values.
+This is when for a small increment of the total quantity there can be a decrease in one of the allocated values.
 
 ## Balinski-Young Algorithm
 
@@ -25,7 +25,7 @@ Again this is tested with [CsCheck](https://www.nuget.org/packages/CsCheck/) inc
 
 ## Conclusion
 
-The Balinski and Young algorithm is said to be slightly biased towards larger weights.
+The Balinski-Young algorithm is said to be slightly biased towards larger weights.
 It can be useful in situations where there is the possibility of small incremental increases to the total quantity.
 
 There is little online about this algorithm (or the one in the previous [post]({% post_url 2022-09-14-allocate %})) and many [unanswered](https://stackoverflow.com/questions/1925691/proportionately-distribute-prorate-a-value-across-a-set-of-values) [questions](https://stackoverflow.com/questions/9088403/distributing-integers-using-weights-how-to-calculate).
