@@ -28,7 +28,7 @@ Again this is tested with [CsCheck](https://www.nuget.org/packages/CsCheck/) inc
 The Balinski and Young algorithm is said to be slightly biased towards larger weights.
 It can be useful in situations where there is the possibility of small incremental increases to the total quantity.
 
-There is little online about this algorithm (or the one in the previous [post]({% post_url 2022-09-14-allocate %})) and many [unanswered](https://stackoverflow.com/questions/1925691/proportionately-distribute-prorate-a-value-across-a-set-of-values/1925719#1925719) [questions](https://stackoverflow.com/questions/9088403/distributing-integers-using-weights-how-to-calculate).
+There is little online about this algorithm (or the one in the previous [post]({% post_url 2022-09-14-allocate %})) and many [unanswered](https://stackoverflow.com/questions/1925691/proportionately-distribute-prorate-a-value-across-a-set-of-values) [questions](https://stackoverflow.com/questions/9088403/distributing-integers-using-weights-how-to-calculate).
 From twitter polls not looking correct, to algorithms with poor properties such as cascade rounding or adjusting the largest weights, there seem to be common software errors in this area.  
 
 [Allocator.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs)  
