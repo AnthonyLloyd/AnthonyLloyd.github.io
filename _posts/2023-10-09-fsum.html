@@ -1,0 +1,38 @@
+---
+layout: post
+title: "Full precision floating-point summation in C#"
+tags: [fsum, twosum, rounding, maths, floating-point]
+description: "Full precision floating-point summation in C#"
+keywords: fsum twosum rounding maths floating-point
+---
+<p><a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf">Shewchuk</a> proved that the following algorithm using multiple nonoverlapping partial sums exactly represents the sum of a sequence of floating-point values.
+The error in the returned sum of the partial sums is less than one <a href="https://en.wikipedia.org/wiki/Unit_in_the_last_place">ulp</a>.
+This depends on IEEE-754 arithmetic guarantees.</p>
+<h2><a name="TwoSum" class="anchor" href="#TwoSum">TwoSum Algorithm</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/2Sum">TwoSum</a> is a floating-point algorithm for computing the exact <a href="https://en.wikipedia.org/wiki/Round-off_error">round-off error</a> in a floating-point addition operation where <span class="math">\(hi + lo = a + b\)</span> exactly.
+The <span class="math">\(hi\)</span> and <span class="math">\(lo\)</span> values are nonoverlapping meaning the least significant nonzero bit of <span class="math">\(hi\)</span> is more significant than the most significant nonzero bit of <span class="math">\(lo\)</span>.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/fsum/twosum.png" title="TwoSum"/>
+<h2><a name="Shewchuk-Algorithm" class="anchor" href="#Shewchuk-Algorithm">Shewchuk Algorithm</a></h2>
+<p>This algorithm tracks all the "lost digits" as the values are added so that the returned value only has a single rounding.
+The inner loop applies <a href="https://en.wikipedia.org/wiki/2Sum">TwoSum</a> hi/lo summation to each partial so that the list remains exact.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/fsum/fsum.png" title="FSum"/>
+<p>A good demonstration of this algorithm is FSum([1e100, 1, -1e100, 1e-100, 1e50, -1, -1e50]) = 1e-100.</p>
+<p>The algorithm has been optimised for C# though remains a few times slower than a normal sum.
+Holding the hi and lo in variables reduces the number of times the partials span needs to be accessed.</p>
+<h2><a name="Neumaier-Algorithm" class="anchor" href="#Neumaier">Neumaier Algorithm</a></h2>
+<p>This algorithm is faster but without the full round-off error reduction.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/fsum/nsum.png" title="NSum"/>
+<h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<p>An optimized C# implementation of the Shewchuk algorithm for full precision summation has been developed, and also the faster but less accurate Neumaier algorithm.
+As always these have been comprehensively tested with <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/MathXTests.cs">CsCheck</a>.</p>
+<p>Python has a version of the Shewchuk algorithm as <a href="https://docs.python.org/3/library/math.html#math.fsum">fsum</a> in the math module of the standard library.
+In the recently released <a href="https://docs.python.org/3/whatsnew/3.12.html">Python 3.12</a> the built-in sum function has been changed to use the <a href="https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Further_enhancements">Neumaier algorithm</a> to reduce numerical error for a smaller performance penalty.</p>
+<p>In the next post FSum and NSum will be used to improve the <a href="{% post_url 2022-09-14-allocate %}">error minimising allocation algorithm</a>.</p>
+<p>Links:<br />
+<a href="https://en.wikipedia.org/wiki/2Sum">TwoSum</a><br />
+<a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf">Adaptive Precision Floating-Point Arithmetic and Fast Robust Geometric Predicates</a><br />
+<a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/MathX.cs">C# TwoSum, NSum and FSum</a><br />
+<a href="https://docs.python.org/3/library/math.html#math.fsum">Python math.fsum</a><br />
+<a href="https://code.activestate.com/recipes/393090/">ASPN cookbook recipes for accurate floating point summation</a><br />
+<a href="https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Further_enhancements">Kahan and Neumaier summation algorithms</a>
+</p>
