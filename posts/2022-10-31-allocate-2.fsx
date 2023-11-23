@@ -32,7 +32,6 @@ There is little online about this algorithm (or the one in the previous [post]({
 From twitter polls not looking correct, to algorithms with poor properties such as cascade rounding or adjusting the largest weights, there seem to be common software errors in this area.  
 
 [Allocator.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs)  
-[AllocatorCheck.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorCheck.cs)  
-[AllocatorTests.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/AllocatorTests.cs)  
+[Allocator_Tests.cs](https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator_Tests.cs)  
 
 *)
