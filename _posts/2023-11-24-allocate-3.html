@@ -24,7 +24,10 @@ Investigating further we find the weight sum is causing the problem.</p>
 <p>We are back to being able to say these two algorithms are the best solutions to the allocation problem.
 I can't think of any other invariants the algorithm parameters could be required to satisfy.</p>
 <p>If possible prefer the long weight versions as the summation has no rounding complication and is much simpler.</p>
-<p>The only possible way to get to the correct algorithm is by using random testing. The edge cases are just too infrequent with numeric algorithms to catch with example based testing.</p>
+<p>The only possible way to get to the correct algorithm is by using random testing.
+The edge cases are just too infrequent with numeric algorithms to catch with example based testing.
+<a href="{% post_url 2022-11-13-cscheck-3 %}">CsCheck 3</a> has recently been released with improved floating-point number generation and testing.</p>
+
 <p>In the next post we will investigate recommendations on which data types should be used for numeric data.</p>
 <p><a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf#page=29">Compression Algorithm</a><br />
 <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs">Allocator.cs</a><br />
