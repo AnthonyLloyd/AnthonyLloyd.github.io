@@ -18,14 +18,14 @@ This is not only about when we need this property to hold, but also about making
 It has a rounding issue that produces occasional off by one differences.
 Investigating further we find the weight sum is causing the problem.</p>
 <h2><a name="Error-Minimising-Algorithm" class="anchor" href="#Error-Minimising-Algorithm">Error Minimising Algorithm</a></h2>
-<p>This can be solved by using the FSum algorithm from the previous <a href="{% post_url 2023-10-09-fsum %}">post</a> with an additional compression step.</p>
+<p>This can be solved by using the FSum algorithm from the previous <a href="{% post_url 2023-10-09-fsum %}">post</a> with an additional <a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf#page=29">compression</a> step.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate_final.png" title="Allocate Final"/>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>We are back to being able to say these two algorithms are the best solutions to the allocation problem.
 I can't think of any other invariants the algorithm parameters could be required to satisfy.</p>
-<p>The only possible way to get to the correct algorithm is by using random testing. The edge cases are just too infrequent.
+<p>The only possible way to get to the correct algorithm is by using random testing. The edge cases are just too infrequent with numeric algorithms.
 If possible prefer the long weight versions as the summation has no rounding issue and is much simpler.</p>
-<p>In the next post we will investigate recommendations on which data types to use for numeric data.</p>
-<p><a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf#page=29">Compression Algorithm</a>
+<p>In the next post we will investigate recommendations on data types to use for numeric data.</p>
+<p><a href="https://people.eecs.berkeley.edu/~jrs/papers/robustr.pdf#page=29">Compression Algorithm</a><br />
 <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator.cs">Allocator.cs</a><br />
 <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator_Tests.cs">Allocator_Tests.cs</a></p>
