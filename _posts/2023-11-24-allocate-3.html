@@ -6,17 +6,17 @@ description: "Allocation Algorithms Revisited"
 keywords: cscheck random testing rounding allocation weighted integer
 ---
 <p>
-I realised recently there is another property allocation algorithms (<a href="{% post_url 2022-09-14-allocate %}">Error-Minimising</a>,<a href="{% post_url 2022-10-31-allocate-2 %}">Balinski-Young</a>) should have.
+I realised recently there is another property allocation algorithms <a href="{% post_url 2022-09-14-allocate %}">Error-Minimising</a> and <a href="{% post_url 2022-10-31-allocate-2 %}">Balinski-Young</a> should have.
 Robust allocation algorithms should produce the same results reordered for reordered weights.
 This is not only about when we need this property to hold, but also about making sure we have the most canonical algorithms possible.
 </p>
-<h2><a name="Tests" class="anchor" href="#Tests">Tests</a></h2>
-<p>It is easy enough to add this to the set of <a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator_Tests.cs">allocator tests</a>.</p>
+<h2><a name="Reordered Weights Tests" class="anchor" href="#Tests">Reordered Weights Tests</a></h2>
+<p>Using <a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> it is easy enough to add this to the set of <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/Allocator_Tests.cs">allocator tests</a>.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/reordered.png" title="Reordered"/>
 <p>Ignore for the moment the new long weight versions.</p>
 <p><a href="{% post_url 2022-10-31-allocate-2 %}">Balinski-Young</a> passes the test but <a href="{% post_url 2022-09-14-allocate %}">Error-Minimising</a> does not.
 It has a rounding issue that produces occasional off by one differences.
-Investigating further we find it is the weight sum causing the problem.</p>
+Investigating further we find the weight sum is causing the problem.</p>
 <h2><a name="Error-Minimising-Algorithm" class="anchor" href="#Error-Minimising-Algorithm">Error Minimising Algorithm</a></h2>
 <p>This can be solved by using the FSum algorithm from the previous <a href="{% post_url 2023-10-09-fsum %}">post</a> with an additional compression step.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/allocate/allocate_final.png" title="Allocate Final"/>
