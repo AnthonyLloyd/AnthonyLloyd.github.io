@@ -1,0 +1,22 @@
+---
+layout: post
+title: "In Defense of Doubles"
+tags: [rounding, double, decimal]
+description: "In Defense of Doubles"
+keywords: rounding double decimal
+---
+<p>I sometimes hear developers say you should always use decimals in financial applications.
+This suprises me as I've worked in this area for many years and would rarely recommend using decimals.
+I'd argue doubles and fixed-point numbers are more sensible options.
+</p>
+<p>The fear of doubles originates in part from the following misleading paragraph in the Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">floating-point numeric types</a> reference.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/misleading.png" title="Misleading"/>
+<p>See also other example discussions:
+<a href="https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency/3730040#3730040">1</a>,
+<a href="https://stackoverflow.com/questions/1008826/what-data-type-should-i-use-to-represent-money-in-c">2</a>,
+<a href="https://stackoverflow.com/questions/693372/what-is-the-best-data-type-to-use-for-money-in-c">3</a>.
+The implication here is that the required accuracy can only be achieved with decimals, and numeric performance is not often important in financial applications.
+These two points couldn't be further from the truth and I'll aim to demonstate this in the rest of the post.
+</p>
+<h2><a name="Accuracy" class="anchor" href="#Accuracy">Accuracy</a></h2>
+<h2><a name="Performance" class="anchor" href="#Performance">Performance</a></h2>
