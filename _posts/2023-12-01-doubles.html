@@ -6,7 +6,7 @@ description: "In Defence of Doubles"
 keywords: rounding double decimal
 ---
 <p>I sometimes hear developers say you should always use decimals in financial applications.
-This surprises me as I've worked in this area for many years and would rarely recommend using decimals.
+This surprises me as I've worked in this area for many years and would rarely if ever recommend using decimals.
 I'd argue doubles and fixed-point numbers are more sensible options.
 </p>
 <p>The fear of doubles originates in part from the following misleading paragraph in the Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types">floating-point numeric types</a> reference.</p>
@@ -22,8 +22,8 @@ These two points couldn't be further from the truth, and I'll aim to demonstrate
 <p><a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> can be used to investigate the accuracy of doubles.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/precision.png" title="Double Precision"/>
 <p>This test models a price say from a text feed and tests it agree with what would be displayed after being stored as a double.
-The test demonstrates that doubles represent faithfully numeric data up to 15 significate figures.
-This is more than enough for prices in a data model.
+The test demonstrates that doubles can hold and store faithfully numeric data up to 15 significate figures.
+This is more than enough for a price in a data model.
 Price timeseries would normally be stored as fixed-point values as they efficiently compress.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/sum_precision.png" title="Sum Precision"/>
 <p>This test investigates the error in double sum calculations by comparing the exact result of a sum of longs.</p>
@@ -86,16 +86,18 @@ Price timeseries would normally be stored as fixed-point values as they efficien
 <p>The table shows the length of random sets of doubles that are still free from rounding error.
 The numerical errors come from two components, firstly the fact that double doesn't store the exact number required, and secondly addition isn't an exact calculation.
 The second component can be eliminated by using <a href="{% post_url 2023-11-24-allocate-3#Neumaier %}">NSum</a> covered in a previous post.</p>
-<p>So we are talking about thousands of doubles totalling many billions before we see the first penny rounding issue.</p>
+<p>So we are talking about thousands of doubles totalling many billions before we see a penny rounding issue.</p>
 <p>This all makes sense since for example Excel also uses doubles to represent numbers.
-You can check this by summing a column of 350 9,999,999,999.99 value cells.
+You can check this by summing a column of 350 9,999,999,999.99 value cells and comparing it to the product.
 If there really was an accuracy problem with doubles being used for storing or calculations financial professionals wouldn't use it.
-Or as a start they would ask for the sum implementation to be updated to <a href="{% post_url 2023-11-24-allocate-3#Neumaier %}">NSum</a> as <a href="https://docs.python.org/3/whatsnew/3.12.html">Python 3.12</a> has recently done.</p>
+Or as a start they would ask for the sum implementation to be updated to <a href="{% post_url 2023-11-24-allocate-3#Neumaier %}">NSum</a> as <a href="https://docs.python.org/3/whatsnew/3.12.html">Python 3.12</a> has recently done.
+</p>
 <p>There are in fact many other more important sources of error than a few cents in the multiple billions.
 Errors in price marks, bid prices vs mid, exchange rate prices for foreign currencies.</p>
+<p>You won't see an inconsistent total on a page or screen due to double accuracy. It could only come from an issue with the methodology such as not rounding after currency conversion.</p>
 <p>If these calculations were to be exact to the penny, I would imagine the calculation methods would also become more complicated.
 For example, if you want to calculate the correct portfolio values in dollars you would need to sum each currency separately to the portfolio level, perform the currency conversion, round and then use <a href="{% post_url 2022-09-14-allocate %}">Allocate</a> to pro-rata back to the positions.
-Similar allocating would need to be done for fees.
+Fees would require similar allocating to be done.
 </p>
 <h2><a name="Performance" class="anchor" href="#Performance">Performance</a></h2>
 <h2><a name="Implementation" class="anchor" href="#Implementation">Implementation</a></h2>
