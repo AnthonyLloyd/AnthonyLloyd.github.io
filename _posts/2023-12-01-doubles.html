@@ -27,62 +27,7 @@ This is more than enough for a price in a data model.
 Price timeseries would normally be stored as fixed-point values as they efficiently compress.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/sum_precision.png" title="Sum Precision"/>
 <p>This test investigates the error in double sum calculations by comparing the exact result of a sum of longs.</p>
-<table>
-  <thead>
-    <tr class="header">
-      <th align="center"><p>Precision</p></th>
-      <th align="center"><p>Min</p></th>
-      <th align="center"><p>Max</p></th>
-      <th align="center"><p>Mid</p></th>
-      <th align="center"><p>Accurate Sum Length</p></th>
-      <th align="center"><p>Approx Sum Total</p></th>
-      <th align="center"><p>Accurate NSum Length</p></th>
-      <th align="center"><p>Approx NSum Total</p></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="odd">
-      <td align="right"><p>12</p></td>
-      <td align="right"><p>1,000,000,000.00</p></td>
-      <td align="right"><p>9,999,999,999.99</p></td>
-      <td align="right"><p>5,500,000,000.00</p></td>
-      <td align="right"><p>350</p></td>
-      <td align="right"><p>1,924,999,999,998.25</p></td>
-      <td align="right"><p>1,700</p></td>
-      <td align="right"><p>9,349,999,999,991.50</p></td>
-    </tr>
-    <tr class="even">
-        <td align="right"><p>11</p></td>
-        <td align="right"><p>100,000,000.00</p></td>
-        <td align="right"><p>999,999,999.99</p></td>
-        <td align="right"><p>550,000,000.00</p></td>
-        <td align="right"><p>1,500</p></td>
-        <td align="right"><p>824,999,999,992.50</p></td>
-        <td align="right"><p>17,900</p></td>
-        <td align="right"><p>9,844,999,999,910.50</p></td>
-      </tr>
-      <tr class="odd">
-        <td align="right"><p>10</p></td>
-        <td align="right"><p>10,000,000.00</p></td>
-        <td align="right"><p>99,999,999.99</p></td>
-        <td align="right"><p>55,000,000.00</p></td>
-        <td align="right"><p>7,100</p></td>
-        <td align="right"><p>390,499,999,964.50</p></td>
-        <td align="right"><p>181,000</p></td>
-        <td align="right"><p>9,954,999,999,095.00</p></td>
-      </tr>
-      <tr class="even">
-          <td align="right"><p>9</p></td>
-          <td align="right"><p>1,000,000.00</p></td>
-          <td align="right"><p>9,999,999.99</p></td>
-          <td align="right"><p>5,500,000.00</p></td>
-          <td align="right"><p>35,500</p></td>
-          <td align="right"><p>195,249,999,822.50</p></td>
-          <td align="right"><p>1,816,000</p></td>
-          <td align="right"><p>9,987,999,990,920.00</p></td>
-      </tr>
-  </tbody>
-</table>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/table.png" title="Sum Table"/>
 <p>The table shows the length of random sets of doubles that are still free from rounding error.
 The numerical errors come from two components, firstly the fact that double doesn't store the exact number required, and secondly addition isn't an exact calculation.
 The second component can be eliminated by using <a href="{% post_url 2023-11-24-allocate-3 %}">NSum</a> covered in a previous post.</p>
