@@ -21,7 +21,7 @@ These two points couldn't be further from the truth, and I'll aim to demonstrate
 <h2><a name="Accuracy" class="anchor" href="#Accuracy">Accuracy</a></h2>
 <p><a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> can be used to investigate the accuracy of doubles.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/precision.png" title="Double Precision"/>
-<p>This test models a price from a text feed and tests it agree with what would be displayed after being stored as a double.
+<p>This test models a price from a text feed and tests it agrees with what would be displayed after being stored as a double.
 The test demonstrates that doubles can hold and store faithfully numeric data up to 15 significate figures.
 This is more than enough for a price in a data model.
 Price timeseries would normally be stored as fixed-point values as they efficiently compress.</p>
@@ -115,7 +115,7 @@ I've built a system like this in the past and covered some of these ideas in an 
 <p>
 This is far from what is usually seen.
 The norm is to calculate and store these values, often overnight, and to promote these derived values to actual data.
-This results in restricted functionality these systems can offer with clunky adjustment processes.
+This results in restricted functionality with clunky adjustment processes.
 </p>
 <p>Performance of decimals vs doubles does matter.
 It turns a few 100 milliseconds on the fly calculation into an unworkable 10 seconds plus.
@@ -132,7 +132,7 @@ Multipliers for loading and display are another important tool.
 <p>Together these mean we are in control and can evolve the system safely.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
 <p>Doubles are the perfect fit for financial applications both in terms of accuracy and performance.
-Right-sizing in a flexible system with always give the best results.
+Right-sizing in a flexible system will always give the best results.
 </p>
 <p>Be a <a href="{% post_url 2018-02-01-architecture-data-first %}">data-first architect</a>.
 Have performance in mind throughout not just as an afterthought.
