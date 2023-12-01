@@ -21,7 +21,7 @@ These two points couldn't be further from the truth, and I'll aim to demonstrate
 <h2><a name="Accuracy" class="anchor" href="#Accuracy">Accuracy</a></h2>
 <p><a href="https://www.nuget.org/packages/CsCheck/">CsCheck</a> can be used to investigate the accuracy of doubles.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/precision.png" title="Double Precision"/>
-<p>This test models a price say from a text feed and tests it agree with what would be displayed after being stored as a double.
+<p>This test models a price from a text feed and tests it agree with what would be displayed after being stored as a double.
 The test demonstrates that doubles can hold and store faithfully numeric data up to 15 significate figures.
 This is more than enough for a price in a data model.
 Price timeseries would normally be stored as fixed-point values as they efficiently compress.</p>
@@ -86,7 +86,7 @@ Price timeseries would normally be stored as fixed-point values as they efficien
 <p>The table shows the length of random sets of doubles that are still free from rounding error.
 The numerical errors come from two components, firstly the fact that double doesn't store the exact number required, and secondly addition isn't an exact calculation.
 The second component can be eliminated by using <a href="{% post_url 2023-11-24-allocate-3 %}">NSum</a> covered in a previous post.</p>
-<p>So we are talking about thousands of doubles totalling many billions before we see a penny rounding issue.</p>
+<p>So, we are talking about thousands of doubles totalling many billions before we see a penny rounding issue.</p>
 <p>This all makes sense since for example Excel also uses doubles to represent numbers.
 You can check this by summing a column of 350 9,999,999,999.99 value cells and comparing it to the product.
 If there really was an accuracy problem with doubles being used for storing or calculations financial professionals wouldn't use it.
@@ -100,12 +100,12 @@ For example, if you want to calculate the correct portfolio values in dollars yo
 Fees would require similar allocating to be done.
 </p>
 <h2><a name="Performance" class="anchor" href="#Performance">Performance</a></h2>
-<p>Decimals are 128 bit, twice the size of 64 bit doubles that fit in a register.
+<p>Decimals are 128-bit, twice the size of 64-bit doubles that fit in a register.
 Faster and BenchmarkDotNet reasonably agree that doubles are at least 22 times faster for addition and 35 times faster for multiplication.
 I've taken care to try to resolve the actual calculation performance difference minimising the memory access effect.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/performance.png" title="Performance"/>
 <p>The performance difference is not surprising as decimals are not supported natively by computer processors.
-When memory and cpu are combined for multiple calculations this can be 50 to 100 times slower for decimals.
+When memory and CPU are combined for multiple calculations, this can be 50 to 100 times slower for decimals.
 They are a bit of a dog.
 </p>
 <p>Valuation, profit and loss, returns and other accounting values can be coded as single pass sequence calculations from aggregated trade data.
@@ -115,17 +115,17 @@ I've built a system like this in the past and covered some of these ideas in an 
 <p>
 This is far from what is usually seen.
 The norm is to calculate and store these values, often overnight, and to promote these derived values to actual data.
-This results in restricted functionality these systems can offer with cluncky adjustment processes.
+This results in restricted functionality these systems can offer with clunky adjustment processes.
 </p>
 <p>Performance of decimals vs doubles does matter.
-It turns a few 100 millisecond on the fly calculation into an unworkable few 10 of seconds.
+It turns a few 100 milliseconds on the fly calculation into an unworkable 10s of seconds.
 It effects the architecture and features you can offer.</p>
 <h2><a name="Implementation" class="anchor" href="#Implementation">Implementation</a></h2>
 <p>There are two key implementation details that simplify financial applications.</p>
-<p>Firstly eliminating primitive obsession. Longs, doubles, decimals, DateTime etc should not be being pased around.
+<p>Firstly, eliminating primitive obsession. Longs, doubles, decimals, DateTime etc should not be being pased around.
 By creating types for quantity, price, trade date, time we can ensure that parsing, conversion, calculation, rounding and display are performed consistently without a performance penalty.</p>
-<p>Secondly a well defined API boundary means we can store data in whatever format makes the most sense while at the same time loading and displaying in a different format.
-For example quantity should always be stored as an int or long. A floating-point quantity doesn't make sense as it needs to be an atomic unit you can exchange.
+<p>Secondly, a well-defined API boundary means we can store data in whatever format makes the most sense while at the same time loading and displaying in a different format.
+For example, quantity should always be stored as an int or long. A floating-point quantity doesn't make sense as it needs to be an atomic unit you can exchange.
 Dollar quantities should be stored in cents and priced as 0.01 USD.
 Multipliers for loading and display are another important tool.
 </p>
@@ -135,7 +135,7 @@ Multipliers for loading and display are another important tool.
 Right-sizing in a flexible system with always give the best results.
 </p>
 <p>Be a <a href="{% post_url 2018-02-01-architecture-data-first %}">data-first architect</a>.
-Have perfromance in mind throughout not just as an afterthought.
+Have performance in mind throughout not just as an afterthought.
 </p>
 <p>
 <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/FloatingPointTests.cs">FloatingPointTests.cs</a><br />
