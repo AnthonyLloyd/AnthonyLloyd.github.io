@@ -31,7 +31,7 @@ Price timeseries would normally be stored as fixed-point values as they efficien
 <p>The table shows the length of random sets of doubles that are still free from rounding error.
 The numerical errors come from two components, firstly the fact that double doesn't store the exact number required, and secondly addition isn't an exact calculation.
 The second component can be eliminated by using <a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier-Algorithm">NSum</a> covered in a previous post.
-<a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier-Algorithm">NSum</a> is nice to have but is generally unnecessary though I have found this kind of correction to be important in <a href="{% post_url 2023-11-24-allocate-3 %}">Allocate</a>.</p>
+<a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier-Algorithm">NSum</a> is nice to have but is generally unnecessary, although I have found this kind of correction to be important in <a href="{% post_url 2023-11-24-allocate-3 %}">Allocate</a>.</p>
 <p>So, we are talking about thousands of doubles totalling many billions before we see a penny rounding issue.</p>
 <p>This all makes sense since for example Excel also uses doubles to represent numbers.
 You can check this by summing a column of 350 9,999,999,999.99 value cells and comparing it to the product.
