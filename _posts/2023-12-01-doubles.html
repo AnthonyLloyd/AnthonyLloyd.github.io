@@ -68,7 +68,7 @@ It effects the architecture and features you can offer.</p>
 <h2><a name="Implementation" class="anchor" href="#Implementation">Implementation</a></h2>
 <p>There are two key implementation details that simplify financial applications.</p>
 <p>Firstly, eliminating primitive obsession. Longs, doubles, decimals, DateTime etc should not be being passed around.
-By creating types for quantity, price, trade date, time we can ensure that parsing, conversion, calculation, rounding and display are performed consistently without a performance penalty.</p>
+By creating struct types for quantity, price, trade date, time we can ensure that parsing, conversion, calculation, rounding and display are performed consistently without a performance penalty.</p>
 <p>Secondly, a well-defined API boundary means we can store data in whatever format makes the most sense while at the same time loading and displaying in a different format.
 For example, quantity should always be stored as an int or long. A floating-point quantity doesn't make sense as it needs to be an atomic unit you can exchange.
 Dollar quantities should be stored in cents and priced as 0.01 USD.
