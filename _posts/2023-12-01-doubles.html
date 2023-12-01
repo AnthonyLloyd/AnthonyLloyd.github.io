@@ -100,5 +100,44 @@ For example, if you want to calculate the correct portfolio values in dollars yo
 Fees would require similar allocating to be done.
 </p>
 <h2><a name="Performance" class="anchor" href="#Performance">Performance</a></h2>
+<p>Decimals are 128 bit, twice the size of 64 bit doubles that fit in a register.
+Faster and BenchmarkDotNet reasonably agree that doubles are at least 22 times faster for addition and 35 times faster for multiplication.
+I've taken care to try to resolve the actual calculation performance difference minimising the memory access effect.</p>
+<img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/performance.png" title="Performance"/>
+<p>The performance difference is not surprising as decimals are not supported natively by computer processors.
+When memory and cpu are combined for multiple calculations this can be 50 to 100 times slower for decimals.
+They are a bit of a dog.
+</p>
+<p>Valuation, profit and loss, returns and other accounting values can be coded as single pass sequence calculations from aggregated trade data.
+They are fast and can be performed on the fly giving functionality that is highly flexible.
+I've built a system like this in the past and covered some of these ideas in an old <a href="{% post_url 2018-02-01-architecture-data-first %}">post</a>.
+</p>
+<p>
+This is far from what is usually seen.
+The norm is to calculate and store these values, often overnight, and to promote these derived values to actual data.
+This results in restricted functionality these systems can offer with cluncky adjustment processes.
+</p>
+<p>Performance of decimals vs doubles does matter.
+It turns a few 100 millisecond on the fly calculation into an unworkable few 10 of seconds.
+It effects the architecture and features you can offer.</p>
 <h2><a name="Implementation" class="anchor" href="#Implementation">Implementation</a></h2>
+<p>There are two key implementation details that simplify financial applications.</p>
+<p>Firstly eliminating primitive obsession. Longs, doubles, decimals, DateTime etc should not be being pased around.
+By creating types for quantity, price, trade date, time we can ensure that parsing, conversion, calculation, rounding and display are performed consistently without a performance penalty.</p>
+<p>Secondly a well defined API boundary means we can store data in whatever format makes the most sense while at the same time loading and displaying in a different format.
+For example quantity should always be stored as an int or long. A floating-point quantity doesn't make sense as it needs to be an atomic unit you can exchange.
+Dollar quantities should be stored in cents and priced as 0.01 USD.
+Multipliers for loading and display are another important tool.
+</p>
+<p>Together these mean we are in control and can evolve the system safely.</p>
 <h2><a name="Conclusion" class="anchor" href="#Conclusion">Conclusion</a></h2>
+<p>Doubles are the perfect fit for financial applications both in terms of accuracy and performance.
+Right-sizing in a flexible system gives the best results.
+</p>
+<p>Be a <a href="{% post_url 2018-02-01-architecture-data-first %}">data-first architect</a>.
+Have perfromance in mind throughout not just as an afterthought.
+</p>
+<p>
+<a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/FloatingPointTests.cs">FloatingPointTests.cs</a><br />
+<a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a><br />
+</p>
