@@ -30,13 +30,13 @@ Price timeseries would normally be stored as fixed-point values as they efficien
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/table.png" title="Sum Table"/>
 <p>The table shows the length of random sets of doubles that are still free from rounding error.
 The numerical errors come from two components, firstly the fact that double doesn't store the exact number required, and secondly addition isn't an exact calculation.
-The second component can be eliminated by using <a href="{% post_url 2023-11-24-allocate-3 %}">NSum</a> covered in a previous post.
-<a href="{% post_url 2023-11-24-allocate-3 %}">NSum</a> is nice to have but is generally unnecessary though I have found this kind of correction to be important in <a href="{% post_url 2023-11-24-allocate-3 %}">Allocate</a></p>
+The second component can be eliminated by using <a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier">NSum</a> covered in a previous post.
+<a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier">NSum</a> is nice to have but is generally unnecessary though I have found this kind of correction to be important in <a href="{% post_url 2023-11-24-allocate-3 %}">Allocate</a></p>
 <p>So, we are talking about thousands of doubles totalling many billions before we see a penny rounding issue.</p>
 <p>This all makes sense since for example Excel also uses doubles to represent numbers.
 You can check this by summing a column of 350 9,999,999,999.99 value cells and comparing it to the product.
 If there really was an accuracy problem with doubles being used for storing or calculations financial professionals wouldn't use it.
-Or as a start they would ask for the sum implementation to be updated to <a href="{% post_url 2023-11-24-allocate-3 %}">NSum</a> as <a href="https://docs.python.org/3/whatsnew/3.12.html">Python 3.12</a> has recently done.
+Or as a start they would ask for the sum implementation to be updated to <a href="http://anthonylloyd.github.io/blog/2023/10/09/fsum#Neumaier">NSum</a> as <a href="https://docs.python.org/3/whatsnew/3.12.html">Python 3.12</a> has recently done.
 </p>
 <p>There are in fact many other more important sources of error than a few cents in the multiple billions.
 Errors in price marks, bid prices vs mid, exchange rate prices for foreign currencies.</p>
@@ -86,4 +86,5 @@ Have performance in mind throughout not just as an afterthought.
 <p>
 <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Tests/FloatingPointTests.cs">FloatingPointTests.cs</a><br />
 <a href="{% post_url 2018-02-01-architecture-data-first %}">Data-First Architecture</a><br />
+<a href="{% post_url 2023-10-09-fsum %}">Full precision floating-point summation in C#</a><br />
 </p>
