@@ -51,7 +51,7 @@ Fees would require similar allocating to be done.
 <p>Decimals are 128-bit, twice the size of 64-bit doubles that fit in a register.
 <a href="https://github.com/AnthonyLloyd/CsCheck#performance-testing">Faster</a> and BenchmarkDotNet reasonably agree that doubles are at least 22 times faster for addition and 35 times faster for multiplication.
 I've taken care to try to resolve the actual calculation performance difference minimising the memory access effect.
-Before doing this they both gave a range performance ratios up to around 250 times faster.</p>
+Before doing this they both gave a range of performance ratios up to around 250 times faster.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/performance.png" title="Performance"/>
 <p>The performance difference is not surprising as decimals are not supported natively by computer processors.
 When memory and CPU are combined for multiple calculations, this can be 50 to 100 times slower for decimals.
