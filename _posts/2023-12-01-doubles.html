@@ -40,7 +40,9 @@ Or as a start they would ask for the sum implementation to be updated to <a href
 </p>
 <p>There are in fact many other more important sources of error than a few cents in the multiple billions.
 Errors in price marks, bid prices vs mid, exchange rate prices for foreign currencies.</p>
-<p>You won't see an inconsistent total on a page or screen due to double accuracy as you can't view enough rows. It could only come from an issue with the methodology such as not rounding after currency conversion.</p>
+<p>You won't see an inconsistent total on a page or screen due to double accuracy as you can't view enough rows.
+It's only an imagined or mistaken risk by developers.
+Seen total errors can only come from an issue with the methodology such as not rounding after currency conversion.</p>
 <p>If these calculations were to be exact to the penny, I would imagine the calculation methods would also become more complicated.
 For example, if you want to calculate the correct portfolio values in dollars you would need to sum each currency separately to the portfolio level, perform the currency conversion, round and then use <a href="{% post_url 2022-09-14-allocate %}">Allocate</a> to pro-rata back to the positions.
 Fees would require similar allocating to be done.
@@ -48,7 +50,8 @@ Fees would require similar allocating to be done.
 <h2><a name="Performance" class="anchor" href="#Performance">Performance</a></h2>
 <p>Decimals are 128-bit, twice the size of 64-bit doubles that fit in a register.
 <a href="https://github.com/AnthonyLloyd/CsCheck#performance-testing">Faster</a> and BenchmarkDotNet reasonably agree that doubles are at least 22 times faster for addition and 35 times faster for multiplication.
-I've taken care to try to resolve the actual calculation performance difference minimising the memory access effect.</p>
+I've taken care to try to resolve the actual calculation performance difference minimising the memory access effect.
+Before doing this they both gave a range performance ratios up to around 250 times faster.</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/doubles/performance.png" title="Performance"/>
 <p>The performance difference is not surprising as decimals are not supported natively by computer processors.
 When memory and CPU are combined for multiple calculations, this can be 50 to 100 times slower for decimals.
