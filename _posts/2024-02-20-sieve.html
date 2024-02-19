@@ -13,7 +13,7 @@ Atomic here means that the valueFactory will only be called once for a key.
 Neither <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=net-8.0#system-collections-concurrent-concurrentdictionary-2-getoradd(-0-system-func((-0-1)))">ConcurrentDictionary</a> or <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.caching.memory.cacheextensions.getorcreateasync?view=dotnet-plat-ext-8.0">IMemoryCache</a> offer this.
 </p>
 <p><a href="https://github.com/AnthonyLloyd/CsCheck/tree/master?tab=readme-ov-file#model-based-testing">SampleModelBased</a> and <a href="https://github.com/AnthonyLloyd/CsCheck/tree/master?tab=readme-ov-file#concurrency-testing">SampleConcurrent</a> have been used to prove the implementation is correct.
-After a lot of experimenting, it became clear that the best way to satisfy these tests was to factor the code into a reusable GetOrAddAtomicAsync extension method and a thread-safe cache.</p>
+After some experimenting it became clear that the best way to satisfy these tests was to factor the code into a reusable GetOrAddAtomicAsync extension method and a thread-safe cache.</p>
 
 <h2><a name="GetOrAddAtomicAsync" class="anchor" href="#GetOrAddAtomicAsync">GetOrAddAtomicAsync</a></h2>
 
