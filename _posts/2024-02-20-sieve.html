@@ -7,13 +7,13 @@ keywords: sieve lru cache cscheck model-based concurrent
 ---
 
 <p><a href="https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/">SIEVE</a> is a new type of <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU">LRU</a> cache.
-Due to its simplicity it offers the chance to create a high performance concurrent cache.</p>
+Due to its simplicity, it offers the chance to create a high performance concurrent cache.</p>
 <p>The requirements for this cache are that it is fast, thread-safe and has an atomic GetOrAdd method.
 Atomic here means that the valueFactory will only be called once for a key.
 Neither <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd?view=net-8.0#system-collections-concurrent-concurrentdictionary-2-getoradd(-0-system-func((-0-1)))">ConcurrentDictionary</a> or <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.caching.memory.cacheextensions.getorcreateasync?view=dotnet-plat-ext-8.0">IMemoryCache</a> offer this.
 </p>
 <p><a href="https://github.com/AnthonyLloyd/CsCheck/tree/master?tab=readme-ov-file#model-based-testing">SampleModelBased</a> and <a href="https://github.com/AnthonyLloyd/CsCheck/tree/master?tab=readme-ov-file#concurrency-testing">SampleConcurrent</a> have been used to prove the implementation is correct.
-After some experimenting it became clear that the best way to satisfy these tests was to factor the code into a more generally usable GetOrAddAtomicAsync extension method and a thread-safe cache.</p>
+After some experimenting it became clear that the best way to satisfy the tests was to factor the code into a more generally usable GetOrAddAtomicAsync extension method and a thread-safe cache.</p>
 
 <h2><a name="GetOrAddAtomicAsync" class="anchor" href="#GetOrAddAtomicAsync">GetOrAddAtomicAsync</a></h2>
 
@@ -27,9 +27,9 @@ After some experimenting it became clear that the best way to satisfy these test
 
 <img style="border:1px solid black" src="/{{site.baseurl}}public/sieve/GetOrAddAtomicAsync_SampleConcurrent.png" title="GetOrAddAtomicAsync_SampleConcurrent"/>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/sieve/SieveLruCache_Tests.png" title="SieveLruCache Tests"/>
-<p>SampleModelBased failure output:</p>
+<p>SampleModelBased example failure output:</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/sieve/SampleModelBased.png" title="SampleModelBased Output"/>
-<p>SampleConcurrent failure output:</p>
+<p>SampleConcurrent example failure output:</p>
 <img style="border:1px solid black" src="/{{site.baseurl}}public/sieve/SampleConcurrent.png" title="SampleConcurrent Output"/>
 
 <p>
