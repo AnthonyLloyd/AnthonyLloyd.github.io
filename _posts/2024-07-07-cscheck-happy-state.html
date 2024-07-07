@@ -11,7 +11,7 @@ I emailed to make him aware of <a href="https://github.com/AnthonyLloyd/CsCheck/
 In reply he encouraged me to write something about these improvements, hopefully to do some bridge building between the communities, as there are too many silos of information.
 </p>
 
-<h2>Random shrinking</h2>
+<h2>Random shrinking and other innovations</h2>
 <p>
 Most property-based testing libraries are a port of QuickCheck and share its tree-based shrinking.
 This is where a lazy tree of possible simpler samples is composed and tested.
@@ -30,7 +30,7 @@ Each generated sample comes with a Size proxy which can be used to compare for s
 
 <p>A more detailed comparison can be found <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Comparison.md">here</a>.</p>
 
-<p>Some other innovative functionality in <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a>:</p>
+<p>Other innovative functionality in <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a>:</p>
 <ul>
     <li><b>Check.SampleModelBased</b> - Stateful model-based testing. This is the simplest and most powerful form of property-based testing.</li>
     <li><b>Check.SampleMetamorphic</b> - Metamorphic testing. This is two path testing. Useful when a model can't be found that wouldn't just be a reimplementation.</li>
@@ -48,7 +48,7 @@ I don't think there has been much of a take up of property-based testing in the 
 
 <p>A good example of the kind of limitation this creates is the ability to design a simple allocation algorithm of an integer over a list of weights.
 The algorithm seems like it should be easy (it's not), but everywhere I've seen it done it's not been correct, from multiple finance companies, twitter, excel and stackoverflow.
-The only correct algorithms I've seen coded are mine (<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate">1</a>,<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-2">2</a>,<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-3">3</a>) found by using <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a>.
+The only correct algorithms I've seen coded are mine (<a href="http://anthonylloyd.github.io/blog/2022/09/14/allocate">1</a>,<a href="http://anthonylloyd.github.io/blog/2022/10/31/allocate-2">2</a>,<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-3">3</a>) found by using <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a>.
 </p>
 
 <p>Other blog examples of <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> use in <a href="http://anthonylloyd.github.io/blog/2021/06/03/Root-finding">optimising numeric algorithms</a> and writing <a href="http://anthonylloyd.github.io/blog/2024/02/20/sieve">a high performance SIEVE LRU cache</a>.</p>
