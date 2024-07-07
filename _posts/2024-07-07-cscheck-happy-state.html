@@ -6,7 +6,7 @@ description: "The happy state of property based testing in C#"
 keywords: csharp cscheck property-based
 ---
 
-<p>I recently spotted Stevan's very thorough blog post about <a href="https://stevana.github.io/the_sad_state_of_property-based_testing_libraries.html">The sad state of property-based testing libraries</a>.
+<p>I recently spotted Stevan's very thorough blog post about <a href="https://stevana.github.io/the_sad_state_of_property-based_testing_libraries.html">the sad state of property-based testing libraries</a> on Hacker News.
 I emailed to make him aware of <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> which has both stateful and parallel testing, and an innovative approach to shrinking.
 In reply he encouraged me to write something about these improvements, hopefully to do some bridge building between the communities, as there are too many silos of information.
 </p>
@@ -14,8 +14,8 @@ In reply he encouraged me to write something about these improvements, hopefully
 <h2>Random shrinking</h2>
 <p>
 Most property-based testing libraries are a port of QuickCheck and share it's tree-based shrinking.
-This is where a lazy tree of possible simpler examples is composed and tested.
-<a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> differs in that generation and shrinking are both random samples.
+This is where a lazy tree of possible simpler samples is composed and tested.
+<a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> differs in that generation and shrinking are both based on random samples.
 Each generated sample comes with a Size proxy which can be used to compare for shrinking. Only samples with a smaller Size are actually tested during shrinking.
 </p>
 
@@ -28,12 +28,35 @@ Each generated sample comes with a Size proxy which can be used to compare for s
     <li>Parallel testing and random shrinking work well together. Repeat is not needed.</li>
 </ul>
 
-<h2>Other innovative functionality in CsCheck</h2>
+<p>A more detailed comparison can be found <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Comparison.md">here</a>.</p>
+
+<h2>Some other innovative functionality in CsCheck:</h2>
 <ul>
-    <li>Check.SampleModelBased - Stateful model-based testing. This is the simplest and most powerful form of property-based testing.</li>
-    <li>Check.SampleMetamorphic - Metamorphic testing. This is two path testing. Useful when a model can't be found that wouldn't just be a reimplimentation.</li>
-    <li>Check.SampleConcurrent - Parallel random testing. Robust concurrency testing. A perfect match for random shrinking.</li>
-    <li>Check.Faster - Statistical performance testing. Correct statistical testing over a range of inputs. BenckmarkDotNet still doesn't have this.</li>
-    <li>Check.Hash - Regression testing without the need for committing data files while also giving detailed information of any change.</li>
-    <li>Causal.Profile - Causal profiling (idea from Emery Berger). Find the regions of code that are the bottleneck.</li>
+    <li><b>Check.SampleModelBased</b> - Stateful model-based testing. This is the simplest and most powerful form of property-based testing.</li>
+    <li><b>Check.SampleMetamorphic</b> - Metamorphic testing. This is two path testing. Useful when a model can't be found that wouldn't just be a reimplimentation.</li>
+    <li><b>Check.SampleConcurrent</b> - Parallel random testing. Robust concurrency testing. A perfect match for random shrinking.</li>
+    <li><b>Check.Faster</b> - Statistical performance testing. Correct statistical testing over a range of inputs. BenckmarkDotNet still doesn't have this.</li>
+    <li><b>Check.Hash</b> - Regression testing without the need for committing data files while also giving detailed information of any change.</li>
+    <li><b>Causal.Profile</b> - Causal profiling (idea from Emery Berger). Find the regions of code that are the bottleneck.</li>
 </ul>
+
+
+<h2>C# community pitch</h2>
+<p>It's not so easy in the C# community to get blog posts or new OSS libraries noticed.
+I don't think there has been much of a take up of property-based testing in the community outside of some people who have used F# before.
+</p>
+
+<p>A good example of the kind of limitation this creates is the design of a simple allocation algorithm of an integer over a list of weights.
+The algorithm seems like it should be simple but everywhere I've seen it done it's not been correct, from multiple finance companies, excel, twitter and stackoverflow.
+The only correct algorithms I've seen coded have been <a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-3">mine</a> found by using CsCheck.</p>
+
+<p>Some places to use random testing:</p>
+<ul>
+    <li>Serialization - the number of bugs seen in serialization code (looking at you json) is almost criminal given how easy it is to roundtrip test serialization using random testing.</li>
+    <li>Caches and collections - often a key part of server and client side code these can be tested against a suitable simplified test model with <code>Model Based</code> testing.</li>
+    <li>Calculations and algorithms - often possible to generalize examples for calculations and algorithms and check the result given the input. Algorithm often have properties they must guarantee. Rounding error issues automatically tested.</li>
+    <li>Code refactoring - keep a copy of the original code with the test, refactor for simplicity and performance, safe in the knowledge it still produces the same results. Pair with a <code>Faster</code> test to monitor the relative performance over a range of inputs. Or if a copy is not feasible create a <code>Regression</code> test to comprehensively make sure there is no change.</li>
+    <li>Multithreading and concurrency - test on the same object instance across multiple threads and examples. Shrink even works for <code>Concurrency</code> testing.</li>
+</ul>
+
+<p>Why use it is discussed further <a href="https://github.com/AnthonyLloyd/CsCheck/blob/master/Why.md">here</a></p>
