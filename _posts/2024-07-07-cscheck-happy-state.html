@@ -48,14 +48,15 @@ I don't think there has been much of a take up of property-based testing in the 
 
 <p>A good example of the kind of limitation this creates is the ability to design a simple allocation algorithm of an integer over a list of weights.
 The algorithm seems like it should be simple, but everywhere I've seen it done it's not been correct, from multiple finance companies, excel, twitter and stackoverflow.
-The only correct algorithms I've seen coded have been <a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-3">mine</a> found by using CsCheck.
+The only correct algorithms I've seen coded are mine (<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate">1</a>,<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-2">1</a>,<a href="http://anthonylloyd.github.io/blog/2023/11/24/allocate-3">3</a>) found by using CsCheck.
 </p>
-<p>Other blog examples of CsCheck use in <a href="http://anthonylloyd.github.io/blog/2021/06/03/Root-finding">optimising numeric algorithms</a> and writing <a href="http://anthonylloyd.github.io/blog/2024/02/20/sieve">a high performance SIEVE LRU cache</a></p>
 
-<p>Some places to use random testing</p>
+<p>Other blog examples of CsCheck use in <a href="http://anthonylloyd.github.io/blog/2021/06/03/Root-finding">optimising numeric algorithms</a> and writing <a href="http://anthonylloyd.github.io/blog/2024/02/20/sieve">a high performance SIEVE LRU cache</a>.</p>
+
+<p>Some places to use random testing:</p>
 <ul>
     <li><b>Serialization</b> - the number of bugs seen in serialization code (looking at you json) is almost criminal given how easy it is to roundtrip test serialization using random testing.</li>
-    <li><b>Caches and collections</b> - often a key part of server and client-side code these can be tested against a suitable simplified test model with <b>Model Based</b> testing.</li>
+    <li><b>Caches and collections</b> - often a key part of server and client-side code these can be tested against a suitable simplified test model with <b>Model-Based</b> testing.</li>
     <li><b>Calculations and algorithms</b> - often possible to generalize examples for calculations and algorithms and check the result given the input. Algorithm often have properties they must guarantee. Rounding error issues automatically tested.</li>
     <li><b>Code refactoring</b> - keep a copy of the original code with the test, refactor for simplicity and performance, safe in the knowledge it still produces the same results. Pair with a <b>Faster</b> test to monitor the relative performance over a range of inputs. Or if a copy is not feasible create a <b>Regression</b> test to comprehensively make sure there is no change.</li>
     <li><b>Multithreading and concurrency</b> - test on the same object instance across multiple threads and examples. Shrink even works for <b>Concurrency</b> testing.</li>
