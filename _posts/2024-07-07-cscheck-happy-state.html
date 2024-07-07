@@ -1,0 +1,39 @@
+---
+layout: post
+title: "The happy state of property-based testing in C#"
+tags: [csharp, cscheck, property-based]
+description: "The happy state of property based testing in C#"
+keywords: csharp cscheck property-based
+---
+
+<p>I recently spotted Stevan's very thorough blog post about <a href="https://stevana.github.io/the_sad_state_of_property-based_testing_libraries.html">The sad state of property-based testing libraries</a>.
+I emailed to make him aware of <a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> which has both stateful and parallel testing, and an innovative approach to shrinking.
+In reply he encouraged me to write something about these improvements, hopefully to do some bridge building between the communities, as there are too many silos of information.
+</p>
+
+<h2>Random shrinking</h2>
+<p>
+Most property-based testing libraries are a port of QuickCheck and share it's tree-based shrinking.
+This is where a lazy tree of possible simpler examples is composed and tested.
+<a href="https://github.com/AnthonyLloyd/CsCheck/">CsCheck</a> differs in that generation and shrinking are both random samples.
+Each generated sample comes with a Size proxy which can be used to compare for shrinking. Only samples with a smaller Size are actually tested during shrinking.
+</p>
+
+<p>This gives the following advantages over tree based shrinking libraries:</p>
+<ul>
+    <li>Automatic shrinking. Gen classes are composable with no need for Arb classes. So less boilerplate.</li>
+    <li>Random testing and shrinking are parallelized. This and PCG make it very fast.</li>
+    <li>Shrunk cases have a seed value. Simpler examples can easily be reproduced.</li>
+    <li>Shrinking can be continued later to give simpler cases for high dimensional problems.</li>
+    <li>Parallel testing and random shrinking work well together. Repeat is not needed.</li>
+</ul>
+
+<h2>Other innovative functionality in CsCheck</h2>
+<ul>
+    <li>Check.SampleModelBased - Stateful model-based testing. This is the simplest and most powerful form of property-based testing.</li>
+    <li>Check.SampleMetamorphic - Metamorphic testing. This is two path testing. Useful when a model can't be found that wouldn't just be a reimplimentation.</li>
+    <li>Check.SampleConcurrent - Parallel random testing. Robust concurrency testing. A perfect match for random shrinking.</li>
+    <li>Check.Faster - Statistical performance testing. Correct statistical testing over a range of inputs. BenckmarkDotNet still doesn't have this.</li>
+    <li>Check.Hash - Regression testing without the need for committing data files while also giving detailed information of any change.</li>
+    <li>Causal.Profile - Causal profiling (idea from Emery Berger). Find the regions of code that are the bottleneck.</li>
+</ul>
